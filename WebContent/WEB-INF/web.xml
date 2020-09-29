@@ -15,17 +15,18 @@
 	</filter-mapping>
 	<!-- servlet 매핑 -->
 	<servlet>
-	 	<servlet-name>maomore</servlet-name>
+	 	<servlet-name>moamore</servlet-name>
 	 	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
 	 	<init-param>
 	 		<param-name>contextConfigLocation</param-name>
 	 		<param-value>
-	 			
+	 			/WEB-INF/controller/spring-servlet.xml
+	 			/WEB-INF/controller/member-controller.xml 			
 	 		</param-value>
 	 	</init-param>
 	</servlet>	 
 	<servlet-mapping>
-	 	<servlet-name>maomore</servlet-name>
+	 	<servlet-name>moamore</servlet-name>
 	 	<url-pattern>*.git</url-pattern>
 	</servlet-mapping>
 </web-app>

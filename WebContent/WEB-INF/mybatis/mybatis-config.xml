@@ -5,7 +5,9 @@
  <!--  mapper위치, Alias설정 -->
  <configuration>
  	<typeAliases>
+ 		<typeAlias type="member.model.dto.MemberDTO" alias="memberDTO"/>
  	</typeAliases>
- 	<mappers>	
+ 	<mappers>
+ 		<mapper resource="/sql/testSQL.xml"	/>
  	</mappers>
  </configuration>
