@@ -7,7 +7,7 @@
 <title>로그인 페이지</title>
 </head>
 <body>
-	<form action="post" target="/moamore/member/loginPro.moa">
+	<form method="post" action="/moamore/member/loginPro.moa">
 		<label> 이메일 아이디
 			<input type="text" name="id"/>
 		</label>
