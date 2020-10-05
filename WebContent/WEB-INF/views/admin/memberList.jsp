@@ -59,7 +59,7 @@
 		<c:if test="${memberList.count > 0}">
 			<fmt:parseNumber var="res" value="${memberList.count / memberList.pageSize}" integerOnly="true"/>
 			
-			<c:set var="pageCount" value="${res + (memberList.count % memberList.pageSize == 0 ? 0 : 1 )} "/>
+			<fmt:parseNumber var="pageCount" value="${res + (memberList.count % memberList.pageSize == 0 ? 0 : 1 )} "/>
 			<c:set var="pageBlock" value="10" />
 			
 			<fmt:parseNumber var="result" value="${(memberList.currPage-1)/pageBlock}" integerOnly="true"/>
