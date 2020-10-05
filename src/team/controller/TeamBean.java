@@ -15,7 +15,7 @@ public class TeamBean {
 	@Autowired
 	private TeamDAOImpl teamDAO = null;
 
-	@RequestMapping("group_list.git")
+	@RequestMapping("group_list.moa")
 	public String viewList() throws SQLException {
 		return "team/group_list";
 	}

@@ -28,6 +28,6 @@
 	</servlet>	 
 	<servlet-mapping>
 	 	<servlet-name>moamore</servlet-name>
-	 	<url-pattern>*.git</url-pattern>
+	 	<url-pattern>*.moa</url-pattern>
 	</servlet-mapping>
 </web-app>
