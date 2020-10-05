@@ -17,15 +17,15 @@ public class MemberBean {
 	@Autowired
 	private MemberDAOImpl memberDAO = null;
 
-	@RequestMapping("test.git")
-	public String signupForm() throws SQLException {
-		 memberDAO.testCount();
-		return "member/test"; 		
-	}
 	@RequestMapping("loginForm.moa")
 	public String loginForm() throws SQLException {
-		memberDAO.testCount();
-		return "member/test"; 		
+		return "member/loginForm"; 		
+	}
+	@RequestMapping("loginPro.moa")
+	public String loginPro(String id, String pw) throws SQLException {
+		
+		
+		return "member/loginPro"; 		
 	}
 		
 }

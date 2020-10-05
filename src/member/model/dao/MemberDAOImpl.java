@@ -17,15 +17,9 @@ public class MemberDAOImpl implements MemberDAO {
 	private SqlSessionTemplate sqlSession = null;
 	
 	@Override
-	public void testCount() throws SQLException {
-		int count = sqlSession.selectOne("test.userCount");
-		System.out.println("테스트 카운트 " + count);	
-	}
-	
-	@Override
-	public void idPwCheck() throws SQLException {
-		// TODO Auto-generated method stub
+	public int idPwCheck(String id, String pw) throws SQLException {
 		
+		return 0;
 	}
 	@Override
 	public void insertMember() throws SQLException {
@@ -46,6 +40,11 @@ public class MemberDAOImpl implements MemberDAO {
 	public int deleteMember() throws SQLException {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	@Override
+	public MemberDTO selectOne() throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
