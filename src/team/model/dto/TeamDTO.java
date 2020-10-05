@@ -1,5 +1,5 @@
 package team.model.dto;
 
-public class MemberDTO {
+public class TeamDTO {
 
 }

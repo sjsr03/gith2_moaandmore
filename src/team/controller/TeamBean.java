@@ -15,9 +15,9 @@ public class TeamBean {
 	@Autowired
 	private TeamDAOImpl teamDAO = null;
 
-	@RequestMapping("group_list.moa")
-	public String signupForm() throws SQLException {
-		return "community/group_list"; 		
+	@RequestMapping("group_list.git")
+	public String viewList() throws SQLException {
+		return "community/group_list";
 	}
 		
 }
