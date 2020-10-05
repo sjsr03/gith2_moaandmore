@@ -1,5 +1,23 @@
 package team.controller;
 
-public class TeamBean {
+import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import team.model.dao.TeamDAOImpl;
+
+@Controller
+@RequestMapping("/team/")
+public class TeamBean {
+	
+	@Autowired
+	private TeamDAOImpl teamDAO = null;
+
+	@RequestMapping("group_list.moa")
+	public String signupForm() throws SQLException {
+		return "community/group_list"; 		
+	}
+		
 }
