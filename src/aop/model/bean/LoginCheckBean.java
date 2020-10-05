@@ -15,7 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Aspect
 public class LoginCheckBean {
 	
-	@Around("execution(* LC*(..))")
+	@Around("execution(* LC*(..))")	//LoginCheck의 LC (로그인 해야만 접속가능하게)
 	public Object around(ProceedingJoinPoint j) throws Throwable {
 		ServletRequestAttributes sa = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = sa.getRequest();
@@ -28,7 +28,7 @@ public class LoginCheckBean {
 			PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인 후 이용하세요!');</script>");
             out.flush();
-			return "member/loginForm";
+			return "member/loginForm";	//로그인페이지로 이동
 		}
 		Object result = j.proceed();
 		return result;
