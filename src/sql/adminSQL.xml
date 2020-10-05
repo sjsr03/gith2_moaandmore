@@ -4,6 +4,15 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <!-- namespace -->
   <mapper namespace="admin">
-  
+  	<!-- 전체 회원 정보 가져오기 -->
+  	<select id="selectAll"  parameterType="hashmap" resultType="memberDTO">
+  		<![CDATA[
+  		SELECT mb.* FROM(SELECT rownum AS r, mb.* FROM (SELECT mb.* FROM member mb ORDER BY mb.reg desc) mb)mb WHERE r >= #{startRow} AND r <= #{endRow}]]>
+  	</select>
+  	
+  	<!-- 전체 회원 수  가져오기 -->
+  	<select id="countAll" resultType="int">
+  		select count(*) from member
+  	</select>
   </mapper>
  
