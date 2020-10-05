@@ -36,6 +36,7 @@ public class MemberBean {
 		return "main"; 		
 	}
 
+
 	@RequestMapping("loginForm.moa")
 	public String NLCloginForm() throws SQLException {
 		return "member/loginForm"; 		
