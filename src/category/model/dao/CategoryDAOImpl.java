@@ -35,7 +35,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 		map.put("list", list);
 		map.put("id", id);
 		
-		
+	
 		
 		sqlSession.insert("category.insertOutComeCategory",map);
 		
