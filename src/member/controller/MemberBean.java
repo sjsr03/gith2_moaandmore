@@ -13,15 +13,19 @@ import member.model.dao.MemberDAO;
 import member.model.dao.MemberDAOImpl;
 import member.model.dto.MemberDTO;
 import member.service.bean.MemberService;
+import member.service.bean.MemberServiceImpl;
 
 @Controller
 @RequestMapping("/member/") // 클래스 레벨
 public class MemberBean {
 	
+	/*
 	@Autowired
 	private MemberDAOImpl memberDAO = null;
+	*/
 	
-	
+	@Autowired
+	private MemberServiceImpl memberService = null;
 	
 	@RequestMapping("loginForm.moa")
 	public String NLCloginForm() throws SQLException {
@@ -45,16 +49,16 @@ public class MemberBean {
 		return "member/signupForm";
 	}
 	
-	
+					
 	@RequestMapping("signupPro.moa")
 	public String signupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
 	
 			
-		
-		
+			memberService.insertMember(dto,request);
+			System.out.println("test");
 		
 			
-			return "member/signupPro";
+			return "member/loginForm";
 		}
 	
 		

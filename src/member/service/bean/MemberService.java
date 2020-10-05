@@ -2,12 +2,14 @@ package member.service.bean;
 
 import java.sql.SQLException;
 
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 import member.model.dto.MemberDTO;
 
 public interface MemberService {
 	
 	//회원가입
-	public void insertMember(MemberDTO dto) throws SQLException;
+	public void insertMember(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException;
 	//아이디 비번 체크
 	public int idPwCheck(String id, String pw) throws SQLException;
 	//회원 한명 데이터 조회

@@ -21,9 +21,15 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		return 0;
 	}
+	
+	
 	@Override
-	public void insertMember() throws SQLException {
-		// TODO Auto-generated method stub
+	public void insertMember(MemberDTO dto) throws SQLException {
+		
+		sqlSession.insert("member.insertMember", dto);
+		
+		
+		
 		
 	}
 	@Override

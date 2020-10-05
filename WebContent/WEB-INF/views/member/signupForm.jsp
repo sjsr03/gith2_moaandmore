@@ -9,7 +9,7 @@
 <body>
 <br />
 	<h1 align="center"> 회원가입 </h1>							
-	<form action="/maomore/member/signupPro.moa" method="post" name="inputForm" >
+	<form action="/moamore/member/signupPro.moa" method="post" name="inputForm" enctype="multipart/form-data">
 		<table>
 			<tr>
 				<td>아이디*</td>
@@ -33,7 +33,7 @@
 			</tr>
 			<tr>
 				<td> 사진 </td>
-				<td><input type="file" name="img"></td>
+				<td><input type="file" name="image"></td>
 			</tr>
 			<tr>
 				<td colspan="2" align="center"> 

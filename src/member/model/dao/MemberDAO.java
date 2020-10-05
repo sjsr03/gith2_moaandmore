@@ -9,7 +9,7 @@ import member.model.dto.MemberDTO;
 public interface MemberDAO {
 		
 	//회원가입
-	public void insertMember() throws SQLException;
+	public void insertMember(MemberDTO dto) throws SQLException;
 	//아이디 비밀번호 체크
 	public int idPwCheck(String id, String pw) throws SQLException;
 	//로그아웃
