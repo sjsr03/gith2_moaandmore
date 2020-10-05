@@ -51,18 +51,15 @@ public class MemberDAOImpl implements MemberDAO {
 		
 	}
 	@Override
-	public int deleteMember() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+	public void deleteMember(String id) throws SQLException {
+		sqlSession.delete("member.deleteMember", id);
 	}
 	@Override
 	public MemberDTO selectOne(String id) throws SQLException {
-		
-			 MemberDTO member= sqlSession.selectOne("member.selectOne",id);
-		
-		
-		
-		return member;
+
+		MemberDTO dto = sqlSession.selectOne("member.selectOne", id);
+		return dto;
+
 	}
 	
 	

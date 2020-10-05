@@ -14,11 +14,11 @@
 		<table>
 			<tr>
 				<td>아이디*</td>
-				<td>${member.id}</td> 
+				<td>${dto.id}</td> 
 			</tr>
 			<tr>
 				<td>비밀번호*</td>
-				<td><input type="password" name="pw" value="${member.pw}"/></td>
+				<td><input type="password" name="pw" value="${dto.pw}"/></td>
 			</tr>
 			<tr>
 				<td>비밀번호 확인*</td>
@@ -27,7 +27,7 @@
 			<tr>
 				<td>닉네임*</td>
 				<td>
-					<input type="text" name="nickname" value="${member.nickname}" />
+					<input type="text" name="nickname" value="${dto.nickname}" />
 					<input type="button" value="닉네임 중복 확인" onclick="confirmId(this.form)" />
 				</td> 
 			</tr>
@@ -35,9 +35,9 @@
 			<tr>
 				<td>사진*</td>
 				<td>
-					<img src="/moamore/save/${member.profile_img}" />
+					<img src="/moamore/save/${dto.profile_img}" />
 					<input type="file" name="image">
-					<input type="hidden" name="eximage" value="${member.profile_img}" />
+					<input type="hidden" name="eximage" value="${dto.profile_img}" />
 				</td> 
 			</tr>
 			<tr>

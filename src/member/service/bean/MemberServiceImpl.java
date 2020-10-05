@@ -73,9 +73,8 @@ public class MemberServiceImpl implements MemberService {
 		return 0;
 	}
 	@Override
-	public int deleteMember(MemberDTO dto) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+	public void deleteMember(String id) throws SQLException {
+		memberDAO.deleteMember(id);	
 	}
 	@Override
 	public int idPwCheck(String id, String pw) throws SQLException {
@@ -133,15 +132,10 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public MemberDTO selectOne(String id) throws SQLException {
-		
-		
-		
-		 MemberDTO member= memberDAO.selectOne(id);
-		
-		
-		
-		
-		return member;
+
+		MemberDTO dto = memberDAO.selectOne(id);
+		return dto;
+
 	}
 	
 }
