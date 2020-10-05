@@ -24,11 +24,11 @@ public class MemberBean {
 	
 	
 	@RequestMapping("loginForm.moa")
-	public String loginForm() throws SQLException {
+	public String NLCloginForm() throws SQLException {
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String loginPro(String id, String pw) throws SQLException {
+	public String NLCloginPro(String id, String pw) throws SQLException {
 		
 		
 		return "member/loginPro"; 		
