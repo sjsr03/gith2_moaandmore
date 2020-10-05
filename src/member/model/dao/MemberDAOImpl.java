@@ -53,9 +53,9 @@ public class MemberDAOImpl implements MemberDAO {
 		sqlSession.delete("member.deleteMember", id);
 	}
 	@Override
-	public MemberDTO selectOne() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberDTO selectOne(String id) throws SQLException {
+		MemberDTO dto = sqlSession.selectOne("member.selectOne", id);
+		return dto;
 	}
 	
 	

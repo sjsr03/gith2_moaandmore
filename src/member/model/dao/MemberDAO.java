@@ -19,6 +19,6 @@ public interface MemberDAO {
 	//회원탈퇴
 	public void deleteMember(String id) throws SQLException;
 	//회원 한명 정보 가져오기
-	public MemberDTO selectOne() throws SQLException;
+	public MemberDTO selectOne(String id) throws SQLException;
 	
 }

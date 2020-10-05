@@ -18,5 +18,9 @@
  	<delete id="deleteMember" parameterType="string">
  		delete from member where id=#{value}
  	</delete>
+ 	
+ 	<select id="selectOne" parameterType="string" resultType="memberDTO" >
+ 		select * from member where id=#{value}
+ 	</select>
 
  </mapper>

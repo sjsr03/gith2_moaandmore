@@ -97,8 +97,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	@Override
 	public MemberDTO selectOne(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		MemberDTO dto = memberDAO.selectOne(id);
+		return dto;
 	}
 	
 }
