@@ -2,20 +2,22 @@ package member.service.bean;
 
 import java.io.File;
 import java.sql.SQLException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-
 import member.model.dao.MemberDAOImpl;
+import org.springframework.stereotype.Service;
+import member.model.dao.MemberDAO;
 import member.model.dto.MemberDTO;
 
+@Service
 public class MemberServiceImpl implements MemberService {
 	
-	
+
 	@Autowired
-	private MemberDAOImpl memberDAO = null;
+	private MemberDAO memberDAO = null;
+
 	
 	@Override
 	public void insertMember(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException {
@@ -81,8 +83,8 @@ public class MemberServiceImpl implements MemberService {
 	}
 	@Override
 	public int idPwCheck(String id, String pw) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = memberDAO.idPwCheck(id, pw);
+		return result;
 	}
 	@Override
 	public void logout(String sessionName) throws SQLException {

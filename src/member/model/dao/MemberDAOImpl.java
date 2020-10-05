@@ -1,6 +1,7 @@
 package member.model.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,8 +19,13 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public int idPwCheck(String id, String pw) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("id", id);
+		map.put("pw", pw);
 		
-		return 0;
+		int result = sqlSession.selectOne("member.idPwCheck", map);
+		
+		return result;
 	}
 	
 	

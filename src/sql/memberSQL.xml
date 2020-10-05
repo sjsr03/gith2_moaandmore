@@ -5,14 +5,14 @@
   
 
 
-
-
  <mapper namespace="member"> 
  	<insert id="insertMember" >
  		insert into member values(#{id},#{pw},#{nickname},#{profile_img},sysdate)
  	</insert>
  
- 
- 
- 
+
+ 	<select id="idPwCheck" resultType="int" parameterType="hashmap" >
+ 		select count(*) from member where id=#{id} and pw=#{pw}
+ 	</select>
+
  </mapper>
