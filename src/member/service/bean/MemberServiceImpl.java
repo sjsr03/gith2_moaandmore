@@ -1,7 +1,13 @@
 package member.service.bean;
 
+
 import java.io.File;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,36 +29,26 @@ public class MemberServiceImpl implements MemberService {
 	public void insertMember(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException {
 		
 		
-			
-			MultipartFile mf = null;
-			String newName = null;
-			try {
-				
-			mf = request.getFile("image");
-			String path = request.getRealPath("save");
-			
-			
-			String orgName = mf.getOriginalFilename(); 
-			
-			
-			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
 		
-			String ext = orgName.substring(orgName.lastIndexOf('.'));
-			long date = System.currentTimeMillis();
-			 newName = imgName+date+ext; 
-		
+				MultipartFile mf = null;
+				String newName = null;
+				try {
+					
+				mf = request.getFile("image");
+				String path = request.getRealPath("save");
+				String orgName = mf.getOriginalFilename(); 
+				String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+				String ext = orgName.substring(orgName.lastIndexOf('.'));
+				long date = System.currentTimeMillis();
+				 newName = imgName+date+ext; 
 			
-			
-			
-			String imgPath = path + "\\" + newName;
-			File copyFile = new File(imgPath);
-			mf.transferTo(copyFile);
-			
+				String imgPath = path + "\\" + newName;
+				File copyFile = new File(imgPath);
+				mf.transferTo(copyFile);
 			
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			
 			dto.setProfile_img(newName);
 			dto.setId(dto.getId());
 			dto.setPw(dto.getPw());
@@ -61,7 +57,7 @@ public class MemberServiceImpl implements MemberService {
 			
 			
 			memberDAO.insertMember(dto);
-			
+			memberDAO.insertCategory(dto.getId());
 			
 	}
 		
@@ -134,6 +130,11 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDTO selectOne(String id) throws SQLException {
 
 		MemberDTO dto = memberDAO.selectOne(id);
+		
+		//기본 카테고리 설정
+	    memberDAO.insertCategory(id);
+		
+		
 		return dto;
 
 	}

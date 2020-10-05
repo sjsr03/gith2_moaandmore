@@ -26,5 +26,15 @@
 	<update id="updateMember" parameterType="memberDTO" >
 		update member set pw=#{pw}, nickname=#{nickname}, profile_img=#{profile_img} where id=#{id}
 	</update>
+
+	<insert id="insertOutComeCategory" parameterType="map">
+		insert into OUTCOME_CATEGORY(category_no,id,category_name)
+		select outcome_category_seq.nextval, o.* from(
+		<foreach collection="list" item="item" separator=",">
+			select #{item.id}, #{item.list} from dual
+		</foreach>) o
+	</insert>
+	
+	
 	
  </mapper>

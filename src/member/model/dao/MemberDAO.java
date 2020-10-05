@@ -20,5 +20,7 @@ public interface MemberDAO {
 	public void deleteMember(String id) throws SQLException;
 	//회원 한명 정보 가져오기
 	public MemberDTO selectOne(String id) throws SQLException;
+	//기본카테고리 설정(회원가입할때 자동으로)
+	public void insertCategory(String id) throws SQLException;
 	
 }
