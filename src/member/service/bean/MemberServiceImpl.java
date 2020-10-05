@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import category.model.dao.CategoryDAO;
 import member.model.dao.MemberDAOImpl;
 import org.springframework.stereotype.Service;
 import member.model.dao.MemberDAO;
@@ -23,7 +25,9 @@ public class MemberServiceImpl implements MemberService {
 
 	@Autowired
 	private MemberDAO memberDAO = null;
-
+	
+	@Autowired
+	private CategoryDAO categoryDAO = null;
 	
 	@Override
 	public void insertMember(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException {
@@ -57,7 +61,7 @@ public class MemberServiceImpl implements MemberService {
 			
 			
 			memberDAO.insertMember(dto);
-			memberDAO.insertCategory(dto.getId());
+			categoryDAO.insertCategory(dto.getId());
 			
 	}
 		
@@ -131,8 +135,7 @@ public class MemberServiceImpl implements MemberService {
 
 		MemberDTO dto = memberDAO.selectOne(id);
 		
-		//기본 카테고리 설정
-	    memberDAO.insertCategory(id);
+	
 		
 		
 		return dto;

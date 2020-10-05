@@ -33,7 +33,8 @@ public class MemberBean {
 	private MemberService memberService = null;
 
 	@RequestMapping("main.moa")	//테스트용 임시 경로
-	public String main() throws SQLException {
+	public String main(Model model) throws SQLException {
+		model.addAttribute("num", 3);
 		return "main"; 		
 	}
 

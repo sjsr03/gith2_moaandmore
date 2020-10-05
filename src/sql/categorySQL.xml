@@ -4,14 +4,21 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <!-- namespace -->
   <mapper namespace="category">
-  
-  
- 	<insert id="insertOutComeCategory" parameterType="map">
+  	<!-- 회원 아이디로 지출카테고리 전체 가져오기 -->
+  	<select id="selectAllById" resultType="outcome_categoryDTO" parameterType="string">
+  		select * from outcome_category where id=#{value}
+  	</select>
+  	
+  	
+	<!-- category 기본설정 -->  	
+  	<insert id="insertOutComeCategory" parameterType="map">
 		insert into OUTCOME_CATEGORY(category_no,id,category_name)
 		select outcome_category_seq.nextval, o.* from(
 		<foreach collection="list" item="item" separator=",">
 			select #{item.id}, #{item.list} from dual
 		</foreach>) o
 	</insert>
+  	
   </mapper>
+
  

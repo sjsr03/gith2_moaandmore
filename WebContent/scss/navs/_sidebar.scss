@@ -85,7 +85,7 @@
     &::after {
       font-weight: 900;
       content: '\f104';
-      font-family: 'Font Awesome 5 Free';
+      font-family: 'NanumSquare';
       margin-right: 0.1rem;
     }
     &:hover {
@@ -100,7 +100,7 @@
     overflow: hidden;
     #sidebarToggle::after {
       content: '\f105';
-      font-family: 'Font Awesome 5 Free';
+      font-family: 'NanumSquare';
       margin-left: 0.25rem;
     }
   }
@@ -182,7 +182,7 @@
             border: 0;
             font-weight: 900;
             content: '\f107';
-            font-family: 'Font Awesome 5 Free';
+            font-family: 'NanumSquare';
           }
           &.collapsed::after {
             content: '\f105';

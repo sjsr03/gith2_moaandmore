@@ -64,24 +64,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	}
 
-	@Override
-	public void insertCategory(String id) throws SQLException {
-		
-		List list = new ArrayList();
-		list.add("병원비");
-		list.add("교통비");
-		list.add(id);
-		
-		Map map = new HashMap();
-		map.put("list", list);
-		map.put("id", id);
-		
-		
-		
-		sqlSession.insert("member.insertOutComeCategory",map);
-		
-		
-	}
+	
 	
 	
 	
