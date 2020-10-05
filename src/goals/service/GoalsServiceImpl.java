@@ -7,13 +7,13 @@ import goals.model.dto.GoalsDTO;
 public class GoalsServiceImpl implements GoalsService {
 
 	@Override
-	public GoalsDTO selectGoal(int goal_no) {
+	public GoalsDTO selectOne(int goal_no) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<GoalsDTO> selectAllGoalsById(String id) {
+	public ArrayList<GoalsDTO> selectAllById(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}

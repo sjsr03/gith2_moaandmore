@@ -7,10 +7,10 @@ import goals.model.dto.GoalsDTO;
 public interface GoalsService {
 
 	//목표 하나가져오기
-		public GoalsDTO selectGoal(int goal_no);
+		public GoalsDTO selectOne(int goal_no);
 		
 		//아이디로 목표 전체 가져오기
-		public ArrayList<GoalsDTO> selectAllGoalsById(String id);
+		public ArrayList<GoalsDTO> selectAllById(String id);
 		
 		//삽입
 		public boolean insertGoal(GoalsDTO goal);
