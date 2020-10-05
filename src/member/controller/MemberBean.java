@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -30,7 +31,8 @@ public class MemberBean {
 	private MemberService memberService = null;
 
 	@RequestMapping("main.moa")	//테스트용 임시 경로
-	public String main() throws SQLException {
+	public String main(Model model) throws SQLException {
+		model.addAttribute("num", 3);
 		return "main"; 		
 	}
 
