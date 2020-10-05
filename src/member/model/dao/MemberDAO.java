@@ -15,10 +15,10 @@ public interface MemberDAO {
 	//로그아웃
 	public void logout() throws SQLException;
 	//정보수정
-	public void modifyMember() throws SQLException;
+	public void modifyMember(MemberDTO dto) throws SQLException;
 	//회원탈퇴
 	public int deleteMember() throws SQLException;
 	//회원 한명 정보 가져오기
-	public MemberDTO selectOne() throws SQLException;
+	public MemberDTO selectOne(String id) throws SQLException;
 	
 }

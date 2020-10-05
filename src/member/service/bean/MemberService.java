@@ -15,7 +15,7 @@ public interface MemberService {
 	//회원 한명 데이터 조회
 	public MemberDTO selectOne(String id) throws SQLException;
 	//회원정보 수정
-	public void modifyMember(MemberDTO dto) throws SQLException;
+	public void modifyMember(MemberDTO dto,MultipartHttpServletRequest request,String eximage) throws SQLException;
 	//회원탈퇴
 	public int deleteMember(MemberDTO dto) throws SQLException;
 	//아이디 중복검사

@@ -66,10 +66,6 @@ public class MemberServiceImpl implements MemberService {
 	}
 		
 		
-		
-		
-		
-		
 	
 	@Override
 	public int confirmId(String id) throws SQLException {
@@ -92,14 +88,60 @@ public class MemberServiceImpl implements MemberService {
 		
 	}
 	@Override
-	public void modifyMember(MemberDTO dto) throws SQLException {
-		// TODO Auto-generated method stub
+	public void modifyMember(MemberDTO dto,MultipartHttpServletRequest request,String eximage) throws SQLException {
+		
+		
+		
+		MultipartFile mf = null;
+		String newName = null;
+		try {
+		
+		mf = request.getFile("image");
+		
+		//사진수정
+		if(mf.getSize() >0) {
+			
+			String path = request.getRealPath("save");
+			String orgName = mf.getOriginalFilename(); 
+			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+			String ext = orgName.substring(orgName.lastIndexOf('.'));
+			long date = System.currentTimeMillis();
+			 newName = imgName+date+ext; 
+		
+			
+			String imgPath = path + "\\" + newName;
+			File copyFile = new File(imgPath);
+			mf.transferTo(copyFile);
+			
+			dto.setProfile_img(newName);
+		
+		// 이전 사진 불러오기
+		}else {
+			
+			dto.setProfile_img(eximage);
+		}
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		memberDAO.modifyMember(dto);
 		
 	}
+	
+	
 	@Override
 	public MemberDTO selectOne(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		
+		
+		 MemberDTO member= memberDAO.selectOne(id);
+		
+		
+		
+		
+		return member;
 	}
 	
 }

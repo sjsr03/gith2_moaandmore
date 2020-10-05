@@ -39,8 +39,10 @@ public class MemberDAOImpl implements MemberDAO {
 		
 	}
 	@Override
-	public void modifyMember() throws SQLException {
-		// TODO Auto-generated method stub
+	public void modifyMember(MemberDTO dto) throws SQLException {
+		
+		sqlSession.update("member.updateMember",dto);
+		
 		
 	}
 	@Override
@@ -54,9 +56,13 @@ public class MemberDAOImpl implements MemberDAO {
 		return 0;
 	}
 	@Override
-	public MemberDTO selectOne() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberDTO selectOne(String id) throws SQLException {
+		
+			 MemberDTO member= sqlSession.selectOne("member.selectOne",id);
+		
+		
+		
+		return member;
 	}
 	
 	
