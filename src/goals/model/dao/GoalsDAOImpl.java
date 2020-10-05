@@ -1,21 +1,31 @@
 package goals.model.dao;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import goals.model.dto.GoalsDTO;
 
+
+@Repository
 public class GoalsDAOImpl implements GoalsDAO{
+	
+	@Autowired
+	private SqlSessionTemplate sqlSession = null;
 
 	@Override
-	public GoalsDTO selectGoal(int goal_no) {
+	public GoalsDTO selectOne(int goal_no) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<GoalsDTO> selectAllGoalsById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<GoalsDTO> selectAllById(String id) {
+		List<GoalsDTO> goalList = sqlSession.selectList("goals.selectAllById", id);
+		return goalList;
 	}
 
 	@Override
