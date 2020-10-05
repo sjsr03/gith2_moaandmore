@@ -2,9 +2,15 @@ package member.service.bean;
 
 import java.sql.SQLException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import member.model.dao.MemberDAO;
 import member.model.dto.MemberDTO;
 
 public class MemberServiceImpl implements MemberService {
+	
+	@Autowired
+	private MemberDAO memberDAO = null;
 	
 	@Override
 	public void insertMember(MemberDTO dto) throws SQLException {
