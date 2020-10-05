@@ -17,7 +17,7 @@ public class AdminBean {
 	
 	@RequestMapping("memberList.moa")
 	public String selectAll() throws SQLException {
-		adminDAO.selectAll();
+		//adminDAO.selectAll();
 		return "admin/memberList";
 	}
 }
