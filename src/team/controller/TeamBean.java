@@ -17,7 +17,7 @@ public class TeamBean {
 
 	@RequestMapping("group_list.git")
 	public String viewList() throws SQLException {
-		return "community/group_list";
+		return "team/group_list";
 	}
 		
 }
