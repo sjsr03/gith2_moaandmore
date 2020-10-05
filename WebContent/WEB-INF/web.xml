@@ -22,7 +22,10 @@
 	 		<param-value>
 	 			/WEB-INF/controller/spring-servlet.xml
 	 			/WEB-INF/controller/member-controller.xml 
-	 			/WEB-INF/controller/team-controller.xml			
+	 			/WEB-INF/controller/team-controller.xml	
+	 			/WEB-INF/controller/admin-controller.xml		
+	 			/WEB-INF/controller/aop-controller.xml	
+	 			/WEB-INF/controller/goals-controller.xml
 	 		</param-value>
 	 	</init-param>
 	</servlet>	 

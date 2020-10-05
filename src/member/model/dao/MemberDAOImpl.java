@@ -1,6 +1,7 @@
 package member.model.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -18,17 +19,30 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public int idPwCheck(String id, String pw) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("id", id);
+		map.put("pw", pw);
 		
-		return 0;
+		int result = sqlSession.selectOne("member.idPwCheck", map);
+		
+		return result;
+	}
+	
+	
+	@Override
+	public void insertMember(MemberDTO dto) throws SQLException {
+		
+		sqlSession.insert("member.insertMember", dto);
+		
+		
+		
+		
 	}
 	@Override
-	public void insertMember() throws SQLException {
-		// TODO Auto-generated method stub
+	public void modifyMember(MemberDTO dto) throws SQLException {
 		
-	}
-	@Override
-	public void modifyMember() throws SQLException {
-		// TODO Auto-generated method stub
+		sqlSession.update("member.updateMember",dto);
+		
 		
 	}
 	@Override
@@ -37,14 +51,15 @@ public class MemberDAOImpl implements MemberDAO {
 		
 	}
 	@Override
-	public int deleteMember() throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+	public void deleteMember(String id) throws SQLException {
+		sqlSession.delete("member.deleteMember", id);
 	}
 	@Override
-	public MemberDTO selectOne() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberDTO selectOne(String id) throws SQLException {
+
+		MemberDTO dto = sqlSession.selectOne("member.selectOne", id);
+		return dto;
+
 	}
 	
 	
