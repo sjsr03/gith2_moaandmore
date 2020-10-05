@@ -17,7 +17,7 @@ public class MemberBean {
 	@Autowired
 	private MemberDAOImpl memberDAO = null;
 
-	@RequestMapping("test.git")
+	@RequestMapping("test.moa")
 	public String signupForm() throws SQLException {
 		 memberDAO.testCount();
 		return "member/test"; 		

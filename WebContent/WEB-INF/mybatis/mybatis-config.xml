@@ -9,5 +9,6 @@
  	</typeAliases>
  	<mappers>
  		<mapper resource="/sql/testSQL.xml"	/>
- 	</mappers>
+ 		<mapper resource="/sql/adminSQL.xml" />
+  	</mappers>
  </configuration>
