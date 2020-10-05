@@ -42,6 +42,12 @@ public class MemberBean {
 		
 		return "member/loginPro"; 		
 	}
+	@RequestMapping("logout.moa")
+	public String LClogout(HttpServletRequest request) throws SQLException {
+		HttpSession session = request.getSession();
+		session.removeAttribute("memId");
+		return "main";
+	}
 	
 		
 }
