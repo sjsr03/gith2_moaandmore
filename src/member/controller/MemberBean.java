@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 
@@ -128,17 +130,12 @@ public class MemberBean {
 		return "main";
 	}
 	
-	
-	
 	@RequestMapping("signupForm.moa")
 	public String signupForm() {
 
 		
-		
 		return "member/signupForm";
 	}
-	
-	
 	
 	
 					
@@ -147,14 +144,46 @@ public class MemberBean {
 	
 			
 			memberService.insertMember(dto,request);
-			System.out.println("test");
+			
 		
 			
 			return "member/loginForm";
 		}
 	
 		
+	
+	
+	
+	@RequestMapping("updateMember.moa")
+	public String updateMember(HttpServletRequest request,Model model)throws SQLException{
 		
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("memId");
+		
+		MemberDTO dto = memberService.selectOne(id);
+		
+		model.addAttribute("dto", dto);
+		
+		return "member/updateMember";
+	}
+	
+	
+	@RequestMapping("updateMemberPro.moa")
+	public String updateMemberPro(MemberDTO dto,MultipartHttpServletRequest request, String eximage,Model model) throws SQLException{
+		
+		
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		dto.setId(id);
+		
+		  memberService.modifyMember(dto,request,eximage);
+		  dto = memberService.selectOne(id);
+		
+		  model.addAttribute("dto", dto);
+		  
+		return "member/updateMember";
+	}
+	
+	
 	
 	
 	
