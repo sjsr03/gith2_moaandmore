@@ -48,6 +48,7 @@ public class LoginCheckBean {
 			out.println("<script>alert('로그아웃 후 이용하세요!');</script>");
 			out.flush();
 			String url = request.getHeader("referer");
+			System.out.println(url);
 			return url;	//이전 페이지로 이동
 		}
 		Object result = j.proceed();
