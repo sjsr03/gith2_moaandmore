@@ -4,6 +4,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
  <!-- namespace -->
+ 
+ 
+ 
+ 
+ 
  <mapper namespace="test"> 
  	<select id="userCount" resultType="int">
  		select count(*) from member

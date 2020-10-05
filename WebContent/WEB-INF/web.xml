@@ -23,6 +23,7 @@
 	 			/WEB-INF/controller/spring-servlet.xml
 	 			/WEB-INF/controller/member-controller.xml
 	 			/WEB-INF/controller/goals-controller.xml
+	 			/WEB-INF/controller/aop-controller.xml	
 	 		</param-value>
 	 	</init-param>
 	</servlet>	 
