@@ -1,6 +1,6 @@
 package goals.service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import goals.model.dto.GoalsDTO;
 
@@ -10,7 +10,7 @@ public interface GoalsService {
 		public GoalsDTO selectOne(int goal_no);
 		
 		//아이디로 목표 전체 가져오기
-		public ArrayList<GoalsDTO> selectAllById(String id);
+		public List<GoalsDTO> selectAllById(String id);
 		
 		//삽입
 		public boolean insertGoal(GoalsDTO goal);
