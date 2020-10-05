@@ -7,6 +7,8 @@
 <title>그룹 리스트</title>
 </head>
 <body>
-
+	<div id="header" width=screen.width style="background-color: gray;">
+		<h1>Header</h1>
+	</div>
 </body>
 </html>
