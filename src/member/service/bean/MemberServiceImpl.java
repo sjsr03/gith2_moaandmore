@@ -77,9 +77,8 @@ public class MemberServiceImpl implements MemberService {
 		return 0;
 	}
 	@Override
-	public int deleteMember(MemberDTO dto) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
+	public void deleteMember(String id) throws SQLException {
+		memberDAO.deleteMember(id);	
 	}
 	@Override
 	public int idPwCheck(String id, String pw) throws SQLException {

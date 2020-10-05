@@ -14,5 +14,9 @@
  	<select id="idPwCheck" resultType="int" parameterType="hashmap" >
  		select count(*) from member where id=#{id} and pw=#{pw}
  	</select>
+ 	
+ 	<delete id="deleteMember" parameterType="string">
+ 		delete from member where id=#{value}
+ 	</delete>
 
  </mapper>

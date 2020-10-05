@@ -77,6 +77,42 @@ public class MemberBean {
 		}
 
 	}
+	
+	@RequestMapping("deleteForm.moa")
+	public String LCdeleteForm() {
+		return "member/deleteForm";
+	}
+	
+	@RequestMapping("deletePro.moa")
+	public String LCdeletePro(String pw, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		String id = (String)request.getSession().getAttribute("memId");
+		int result = memberService.idPwCheck(id, pw);
+		response.setCharacterEncoding("UTF-8"); 
+		response.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = response.getWriter();
+		
+		if(result == 1) {
+			memberService.deleteMember(id);
+			out.println("<script>alert('회원탈퇴가 완료되었습니다.');</script>");
+			out.flush();
+			
+			//세션 쿠키 삭제
+			HttpSession session = request.getSession();
+			session.removeAttribute("memId");	//세션 삭제
+			Cookie[] coo = request.getCookies();
+			for(Cookie c : coo) {
+				if(c.getName().equals("autoId")) c.setMaxAge(0);
+				if(c.getName().equals("autoPw")) c.setMaxAge(0);
+				if(c.getName().equals("autoCh")) c.setMaxAge(0);
+			}
+			
+			return "main";
+		} else {
+			out.println("<script>alert('아이디 비밀번호가 일치하지 않습니다.');</script>");
+			out.flush();
+			return "member/deleteForm"; 
+		}
+	}
 
 
 	@RequestMapping("logout.moa")
