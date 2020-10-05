@@ -1,7 +1,9 @@
 package member.controller;
 
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -44,15 +46,35 @@ public class MemberBean {
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String NLCloginPro(String id, String pw, HttpServletRequest request,Model model) throws SQLException {
+	public String NLCloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
-		if(result==1) {
-			session.setAttribute("memId", id);
-		}
-		model.addAttribute("result", result);
 		
-		return "member/loginPro"; 		
+		if(result==1) {	//아이디 비밀번호 일치하면
+			session.setAttribute("memId", id);	//세션 만들고
+			
+			if(auto != null) {	//자동로그인 체크면 쿠키 추가
+				Cookie c1 = new Cookie("autoId", id);
+				Cookie c2 = new Cookie("autoPw", pw);
+				Cookie c3 = new Cookie("autoCh", auto);
+				c1.setMaxAge(60*60*24);
+				c2.setMaxAge(60*60*24);
+				c3.setMaxAge(60*60*24);
+				response.addCookie(c1);
+				response.addCookie(c2);
+				response.addCookie(c3);
+			}
+			
+			return "main";
+		} else {
+			response.setCharacterEncoding("UTF-8"); 
+			response.setContentType("text/html; charset=UTF-8");
+			PrintWriter out = response.getWriter();
+			out.println("<script>alert('아이디 비밀번호가 일치하지 않습니다');</script>");
+			out.flush();
+			
+			return "member/loginForm";
+		}
 
 	}
 
@@ -60,7 +82,13 @@ public class MemberBean {
 	@RequestMapping("logout.moa")
 	public String LClogout(HttpServletRequest request) throws SQLException {
 		HttpSession session = request.getSession();
-		session.removeAttribute("memId");
+		session.removeAttribute("memId");	//세션 삭제
+		Cookie[] coo = request.getCookies();
+		for(Cookie c : coo) {
+			if(c.getName().equals("autoId")) c.setMaxAge(0);
+			if(c.getName().equals("autoPw")) c.setMaxAge(0);
+			if(c.getName().equals("autoCh")) c.setMaxAge(0);
+		}
 		return "main";
 	}
 	
