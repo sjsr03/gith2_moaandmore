@@ -6,9 +6,12 @@
  <configuration>
  	<typeAliases>
  		<typeAlias type="member.model.dto.MemberDTO" alias="memberDTO"/>
+ 		<typeAlias type="goals.model.dto.GoalsDTO" alias="goalsDTO"/>
  	</typeAliases>
  	<mappers>
- 		<mapper resource="/sql/testSQL.xml"	/>
+		<mapper resource="/sql/goalsSQL.xml"/>	
+ 		<mapper resource="/sql/memberSQL.xml"	/>
  		<mapper resource="/sql/adminSQL.xml" />
   	</mappers>
+
  </configuration>

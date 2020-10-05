@@ -1,21 +1,30 @@
 package goals.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import goals.model.dao.GoalsDAOImpl;
 import goals.model.dto.GoalsDTO;
 
+
+@Service
 public class GoalsServiceImpl implements GoalsService {
+	
+	@Autowired
+	private GoalsDAOImpl goalsDAO = null;
 
 	@Override
-	public GoalsDTO selectGoal(int goal_no) {
+	public GoalsDTO selectOne(int goal_no) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<GoalsDTO> selectAllGoalsById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<GoalsDTO> selectAllById(String id) {	
+		return goalsDAO.selectAllById(id);
 	}
 
 	@Override

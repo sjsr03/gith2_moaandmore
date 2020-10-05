@@ -4,10 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>테스트</title>
+<title>메인 페이지</title>
 </head>
 <body>
- <h1>테스트흐</h1>
-
+	메인페이지
 </body>
 </html>
