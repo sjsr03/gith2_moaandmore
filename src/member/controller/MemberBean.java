@@ -171,7 +171,6 @@ public class MemberBean {
 	public String updateMemberPro(MemberDTO dto,MultipartHttpServletRequest request, String eximage,Model model) throws SQLException{
 		
 		
-		
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		dto.setId(id);
 		
