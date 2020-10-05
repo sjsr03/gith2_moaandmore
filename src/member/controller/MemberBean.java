@@ -22,6 +22,11 @@ public class MemberBean {
 		 memberDAO.testCount();
 		return "member/test"; 		
 	}
+	@RequestMapping("loginForm.moa")
+	public String loginForm() throws SQLException {
+		memberDAO.testCount();
+		return "member/test"; 		
+	}
 		
 }
 
