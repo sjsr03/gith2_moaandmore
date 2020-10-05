@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace -->
+  <mapper namespace="category">
+  
+  
+ 	<insert id="insertOutComeCategory" parameterType="map">
+		insert into OUTCOME_CATEGORY(category_no,id,category_name)
+		select outcome_category_seq.nextval, o.* from(
+		<foreach collection="list" item="item" separator=",">
+			select #{item.id}, #{item.list} from dual
+		</foreach>) o
+	</insert>
+  </mapper>
+ 
