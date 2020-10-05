@@ -28,6 +28,10 @@
 				<td><input type="password" name="pwCh" /></td>
 			</tr>
 			<tr>
+				<td></td>
+				<td><input type="button" value="닉네임 중복 확인" onclick="confirmNickName(this.form)" /></td> 
+			</tr>
+			<tr>
 				<td>닉네임</td>
 				<td><input type="text" name="nickname" /></td>
 			</tr>
