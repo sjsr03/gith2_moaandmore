@@ -19,7 +19,7 @@ public class TeamBean {
 	@Autowired
 	private TeamDAOImpl teamDAO = null;
 
-	@RequestMapping("group_list.moa")
+	@RequestMapping("groupList.moa")
 	public String viewList(String pageNum, Model model) throws SQLException {
 		if(pageNum == null) {
 			pageNum = "1";

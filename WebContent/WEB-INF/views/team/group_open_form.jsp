@@ -66,7 +66,7 @@
 				<td colspan="2" style="text-align: center;">
 					<input type="submit" value="신청" />					
 					<input type="reset" value="재작성" />					
-					<input type="button" value="돌아가기" onclick="window.location='/moamore/team/group_list.moa'" />					
+					<input type="button" value="돌아가기" onclick="window.location='/moamore/team/groupList.moa'" />					
 				</td>
 			</tr>
 		</table>

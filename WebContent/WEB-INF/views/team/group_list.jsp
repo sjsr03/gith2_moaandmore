@@ -62,7 +62,7 @@
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:790px;margin-left: 200px; padding: 10px;">
 		
 		<div class="top" style="width: 100%; height: 40px; padding-top: 5px;">
-			<button onclick="window.location='/moamore/team/group_list.moa'">개설 신청</button>			
+			<button onclick="window.location='/moamore/team/groupOpenForm.moa'">개설 신청</button>			
 			<div style="float:right">
 				<button>진행중</button>
 				<button>종료</button>
