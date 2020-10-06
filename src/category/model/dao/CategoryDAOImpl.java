@@ -91,7 +91,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 		
 	}
 
-
 	@Override
 	public void addOutcomeCategory(String category_name,String id) throws SQLException {
 		
