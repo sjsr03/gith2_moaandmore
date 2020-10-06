@@ -12,18 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartRequest;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import member.model.dao.MemberDAO;
-import member.model.dao.MemberDAOImpl;
 
 import member.model.dto.MemberDTO;
 import member.service.bean.MemberService;
-import member.service.bean.MemberServiceImpl;
 
-import member.service.bean.MemberService;
 
 
 @Controller
@@ -37,9 +33,11 @@ public class MemberBean {
 	private MemberService memberService = null;
 
 	@RequestMapping("main.moa")	//테스트용 임시 경로
-	public String main() throws SQLException {
+	public String main(Model model) throws SQLException {
+		model.addAttribute("num", 3);
 		return "main"; 		
 	}
+
 
 	@RequestMapping("loginForm.moa")
 	public String NLCloginForm() throws SQLException {
@@ -51,7 +49,11 @@ public class MemberBean {
 		HttpSession session = request.getSession();
 		
 		if(result==1) {	//아이디 비밀번호 일치하면
+			MemberDTO dto = memberService.selectOne(id);
+			String nickname = dto.getNickname();
+			
 			session.setAttribute("memId", id);	//세션 만들고
+			session.setAttribute("memName", nickname);
 			
 			if(auto != null) {	//자동로그인 체크면 쿠키 추가
 				Cookie c1 = new Cookie("autoId", id);
@@ -128,17 +130,12 @@ public class MemberBean {
 		return "main";
 	}
 	
-	
-	
 	@RequestMapping("signupForm.moa")
 	public String signupForm() {
 
 		
-		
 		return "member/signupForm";
 	}
-	
-	
 	
 	
 					
@@ -147,14 +144,46 @@ public class MemberBean {
 	
 			
 			memberService.insertMember(dto,request);
-			System.out.println("test");
+			
 		
 			
 			return "member/loginForm";
 		}
 	
 		
+	
+	
+	
+	@RequestMapping("updateMember.moa")
+	public String updateMember(HttpServletRequest request,Model model)throws SQLException{
 		
+		HttpSession session = request.getSession();
+		String id = (String)session.getAttribute("memId");
+		
+		MemberDTO dto = memberService.selectOne(id);
+		
+		model.addAttribute("dto", dto);
+		
+		return "member/updateMember";
+	}
+	
+	
+	@RequestMapping("updateMemberPro.moa")
+	public String updateMemberPro(MemberDTO dto,MultipartHttpServletRequest request, String eximage,Model model) throws SQLException{
+		
+		
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		dto.setId(id);
+		
+		  memberService.modifyMember(dto,request,eximage);
+		  dto = memberService.selectOne(id);
+		
+		  model.addAttribute("dto", dto);
+		  
+		return "member/updateMember";
+	}
+	
+	
 	
 	
 	

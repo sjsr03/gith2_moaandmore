@@ -1,8 +1,10 @@
 package member.model.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +41,10 @@ public class MemberDAOImpl implements MemberDAO {
 		
 	}
 	@Override
-	public void modifyMember() throws SQLException {
-		// TODO Auto-generated method stub
+	public void modifyMember(MemberDTO dto) throws SQLException {
+		
+		sqlSession.update("member.updateMember",dto);
+		
 		
 	}
 	@Override
@@ -53,10 +57,16 @@ public class MemberDAOImpl implements MemberDAO {
 		sqlSession.delete("member.deleteMember", id);
 	}
 	@Override
-	public MemberDTO selectOne() throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberDTO selectOne(String id) throws SQLException {
+
+		MemberDTO dto = sqlSession.selectOne("member.selectOne", id);
+		return dto;
+
 	}
+
+	
+	
+	
 	
 	
 

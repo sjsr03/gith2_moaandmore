@@ -4,15 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
  <!--  mapper위치, Alias설정 -->
 
- <configuration>
-	
+ <configuration>	
  	<typeAliases>
  		<typeAlias type="member.model.dto.MemberDTO" alias="memberDTO"/>
+ 		<typeAlias type="category.model.dto.outcome_categoryDTO" alias="outcome_categoryDTO"/>
  		<typeAlias type="goals.model.dto.GoalsDTO" alias="goalsDTO"/>
  	</typeAliases>
  	<mappers>
- 		<mapper resource="/sql/testSQL.xml"	/>
- 		<mapper resource="/sql/goalsSQL.xml"/>	
- 		<mapper resource="/sql/memberSQL.xml"/>
- 	</mappers>
+		<mapper resource="/sql/goalsSQL.xml"/>	
+ 		<mapper resource="/sql/memberSQL.xml"	/>
+ 		<mapper resource="/sql/adminSQL.xml" />
+ 		<mapper resource="/sql/categorySQL.xml" />
+  	</mappers>
+
  </configuration>

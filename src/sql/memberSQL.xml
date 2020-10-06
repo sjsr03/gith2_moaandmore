@@ -18,5 +18,17 @@
  	<delete id="deleteMember" parameterType="string">
  		delete from member where id=#{value}
  	</delete>
+ 	
+ 	<select id="selectOne" parameterType="string" resultType="memberDTO" >
+ 		select * from member where id=#{value}
+ 	</select>
 
+	<update id="updateMember" parameterType="memberDTO" >
+		update member set pw=#{pw}, nickname=#{nickname}, profile_img=#{profile_img} where id=#{id}
+	</update>
+
+	
+	
+	
+	
  </mapper>
