@@ -3,6 +3,8 @@ package budget.model.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import budget.model.dto.TotalBudgetDTO;
@@ -10,9 +12,17 @@ import budget.model.dto.TotalBudgetDTO;
 @Repository
 public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	
+	@Autowired
+	private SqlSessionTemplate sqlSession = null;
+	
 	@Override
-	public void setBudget(TotalBudgetDTO total, List list, String id) throws SQLException {
-		// TODO Auto-generated method stub
+	public int setBudget(TotalBudgetDTO total) throws SQLException {
+		//기존 예산 모두 close=1 처리
+		sqlSession.update("totalBudget.updateTotalBudget", total.getId());
+		//새 예산 삽입
+		sqlSession.insert("totalBudget.insertTotalBudget", total);
+		TotalBudgetDTO TBdto = sqlSession.selectOne("totalBudget.selectCurrentOneById",total.getId());
 		
+		return TBdto.getBudget_no();
 	}
 }
