@@ -5,6 +5,16 @@
 <head>
 	<meta charset="UTF-8">
 	<title>그룹 개설 신청</title>
+	<style type="text/css">
+		table, th, td {
+		    border: 1px solid black;
+		    padding: 5px;
+		}
+		
+		table {
+		    border-collapse: collapse;
+		}
+	</style>
 </head>
 <body>
 	<br />
@@ -53,7 +63,7 @@
 				<td><input type="password" name="pw"  /></td>
 			</tr>
 			<tr>
-				<td colspan="2">
+				<td colspan="2" style="text-align: center;">
 					<input type="submit" value="신청" />					
 					<input type="reset" value="재작성" />					
 					<input type="button" value="돌아가기" onclick="window.location='/moamore/team/group_list.moa'" />					
