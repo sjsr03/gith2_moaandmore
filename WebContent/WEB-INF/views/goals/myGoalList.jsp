@@ -8,9 +8,12 @@
 <title>myGoalList</title>
 </head>
 <body>
-<h1> ${sessionScope.memId} 님의 목표리스트 </h1>
+<h1> ${sessionScope.memName} 님의 목표리스트 </h1>
 
-<table>
+
+<button onclick="window.location.href='/moamore/goals/insertGoalForm.moa'">+목표</button>
+
+<table border="1">
 	<tr>
 		<td>목표명</td>
 		<td>목표액</td>
@@ -21,24 +24,25 @@
 		<td>공개여부</td>
 	</tr>
 	<c:forEach var="goal" items="${goalList}">
-		<td>${goal.subject}</td>
-		<td>${goal.target_money}원</td>
-		<td>${goal.saving}원</td>
-		<td>${goal.start_day}</td>
-		<td>${goal.end_day}</td>
-		<c:if test="${goal.public_ch eq '0'.charAt(0)}">
-			<td>개인</td>
-		</c:if>
-		<c:if test="${goal.public_ch eq '1'.charAt(0)}">
-			<td>그룹</td>
-		</c:if>
-		<c:if test="${goal.public_type eq '0'.charAt(0)}">
-			<td>--</td>
-		</c:if>
-		<c:if test="${goal.public_type eq '1'.charAt(0)}">
-			<td>공개</td>
-		</c:if>
-		 
+			<td>${goal.subject}</td>
+			<td>${goal.target_money}원</td>
+			<td>${goal.saving}원</td>
+			<td>${goal.start_day}</td>
+			<td>${goal.end_day}</td>
+			<c:if test="${goal.public_ch eq '0'.charAt(0)}">
+				<td>개인</td>
+				<td>--</td>
+			</c:if>
+			<c:if test="${goal.public_ch eq '1'.charAt(0)}">
+				<td>그룹</td>
+				<c:if test="${goal.public_type eq '0'.charAt(0)}">
+					<td>비공개</td>
+				</c:if>
+				<c:if test="${goal.public_type eq '1'.charAt(0)}">
+					<td>공개</td>
+				</c:if>
+			</c:if>
+		</tr>
 	</c:forEach> 
 	 
 	

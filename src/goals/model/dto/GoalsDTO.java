@@ -1,5 +1,6 @@
 package goals.model.dto;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 public class GoalsDTO {
@@ -44,6 +45,7 @@ public class GoalsDTO {
 	public void setSaving(int saving) {
 		this.saving = saving;
 	}
+	
 	public Timestamp getStart_day() {
 		return start_day;
 	}

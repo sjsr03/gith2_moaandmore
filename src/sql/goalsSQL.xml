@@ -7,7 +7,13 @@
 	<select id="selectAllById" parameterType="String" resultType="goalsDTO">
 		select * from goals where id=#{value}
 	</select>
-
+	<insert id="insertGoal" parameterType="goalsDTO">
+		<selectKey keyProperty="goal_no" resultType="int" order="BEFORE">
+ 			select goals_seq.nextVal from dual
+ 		</selectKey>
+		insert into goals values(#{goal_no},#{id},#{subject},#{target_money},#{saving},#{start_day},#{end_day},#{public_ch},#{public_type},#{team_no})
+		
+	</insert>
 
 
 </mapper>
