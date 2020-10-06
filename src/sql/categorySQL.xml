@@ -13,6 +13,11 @@
   		select * from income_category where id=#{value}
   	</select>
   	
+  	<!-- 회원 아이디와 카테고리명으로 카테고리 고유번호 가져오기 -->
+  	<select id="selectNumByName" resultType="int" parameterType="hashmap">
+  		select category_no from outcome_category where id=#{id} and category_name=#{category_name}
+  	</select>
+  	
   	
   	<!-- outcome category 기본설정 -->  
 	 <insert id="insertOutComeCategory" parameterType="map">

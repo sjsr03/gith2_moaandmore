@@ -15,7 +15,7 @@
 		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;" id="firstStep">
 			<ul>
 				<li>
-					총 예산 : <input type="number" name="budget" id="totalBudget"/>원
+					총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
 				</li>
 				<li>
 					기간 단위 : 
@@ -25,7 +25,7 @@
 						<option value="30">한달</option>
 					</select>
 				</li>
-				<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="startday" value="1"/>일
+				<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
 				</li>
 			</ul>
 			<input type="button" value="세부설정 >" onclick="nextStep()"/>
@@ -191,6 +191,7 @@
 				var rate = $(this).val()/$('#totalBudget').val()*100;
 				$(this).parent().next().children('.rate').val(rate.toFixed(1));
 			});
+			reSum();
 		});
 		
 	});

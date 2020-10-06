@@ -21,6 +21,19 @@ public class CategoryDAOImpl implements CategoryDAO {
 		List list = sqlSession.selectList("category.selectAllById", id);
 		return list;
 	}
+	
+	@Override
+	public void insertCategory(String id) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public int selectNumByName(String name, String id) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("category_name", name);
+		map.put("id", id);
+		return sqlSession.selectOne("category.selectNumByName", map);
+	}
 
 
 	@Override
