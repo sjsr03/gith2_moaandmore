@@ -36,6 +36,7 @@ public class BudgetBean {
 		//회원의 지출카테고리 불러오기
 		List categoryList = categoryService.selectAllById(id);
 		
+		
 		model.addAttribute("categoryList", categoryList);
 		return "budget/setBudget";
 	}

@@ -61,7 +61,8 @@ public class MemberServiceImpl implements MemberService {
 			
 			
 			memberDAO.insertMember(dto);
-			categoryDAO.insertCategory(dto.getId());
+			categoryDAO.outcomeInsertCategory(dto.getId());
+			categoryDAO.incomeInsertCategory(dto.getId());
 			
 	}
 		
