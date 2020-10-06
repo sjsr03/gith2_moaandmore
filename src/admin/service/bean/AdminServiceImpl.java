@@ -41,13 +41,11 @@ public class AdminServiceImpl implements AdminService{
 			members = new ArrayList();
 			members = adminDAO.selectAll(startRow, endRow);
 		}
-		number = count - (currPage-1) * pageSize;
 		
 		// 회원 목록 페이지 관련 변수들 + members DTO에 통으로 담아서 리턴
 		memberList.setPageNum(pageNum);
 		memberList.setCurrPage(currPage);
 		memberList.setEndRow(endRow);
-		memberList.setNumber(number);
 		memberList.setPageNum(pageNum);
 		memberList.setPageSize(pageSize);
 		memberList.setStartRow(startRow);

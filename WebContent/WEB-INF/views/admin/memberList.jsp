@@ -8,9 +8,18 @@
 <meta charset="UTF-8">
 <title>memberList</title>
 </head>
-하하하하하
 <body>
-	${memberList.count}
+	<%-- 회원 탈퇴 시키는 함수 --%>
+	<script>
+		function delete_member(id,pageNum){
+			var msg = confirm(" 회원을 정말로 탈퇴시키겠습니까?");
+			if(msg == true){
+				window.location.href='/moamore/admin/deleteMember.moa?id='+id+'&pageNum='+pageNum;
+			}else{
+				alert("취소되었습니다");
+			}
+		}
+	</script>
 	<%-- 가입한 회원이 없을 때 --%>
 	<c:if test="${memberList.count == 0}">
 		가입한 회원이 없습니다.
@@ -20,19 +29,15 @@
 	<c:if test="${memberList.count > 0}">
 		<table>
 			<tr>
-				<td>No.</td>
 				<td>사진</td>
 				<td>아이디</td>
 				<td>닉네임</td>
 				<td>가입날짜</td>
+				<td>탈퇴버튼</td>
 			</tr>
 			<%-- 회원 수 만큼 for문 반복 --%>
 			<c:forEach var="members" items="${memberList.members}">
 				<tr>
-					<td>
-						${memberList.number}
-						<c:set var="memberList.number" value="${memberList.number-1}"/>	
-					</td>
 					<%-- 사진 --%>
 					<td>
 						${members.profile_img}
@@ -48,6 +53,10 @@
 					<%-- 가입날짜 --%>
 					<td>
 						${members.reg}
+					</td>
+					<%--탈퇴버튼 --%>
+					<td>
+						<input type="button" value="삭제" onclick="delete_member('${members.id}','${memberList.pageNum}')"/>
 					</td>
 				</tr>
 			</c:forEach>
