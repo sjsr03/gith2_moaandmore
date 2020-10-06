@@ -26,6 +26,7 @@ public interface CategoryDAO {
 	//지출 카테고리 이름 수정하기
 	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException;
 	
+
 	
 	
 	
