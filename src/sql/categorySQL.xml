@@ -40,6 +40,10 @@
   	<insert id="addoutcomeCategory" parameterType="map">
   		insert into outcome_category values(outcome_category_seq.nextval,#{id},#{category_name})
   	</insert>
+  	<!-- outcome category 이름 수정 -->
+  	<update id="updateoutcomeCategory" parameterType="map">
+  		update outcome_category set category_name=#{newName} where id=#{id} and category_no=#{category_no}
+  	</update>
   	
   </mapper>
 
