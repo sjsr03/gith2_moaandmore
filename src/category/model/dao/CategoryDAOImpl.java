@@ -22,6 +22,18 @@ public class CategoryDAOImpl implements CategoryDAO {
 		return list;
 	}
 
+
+	@Override
+	public List selectAllIncomeCategoryById(String id) throws SQLException {
+		List list = sqlSession.selectList("category.selectAllIncomeCategoryById",id);
+		
+		
+		return list;
+	}
+
+	
+	
+	
 	
 	@Override
 	public void outcomeInsertCategory(String id) throws SQLException {
@@ -66,6 +78,32 @@ public class CategoryDAOImpl implements CategoryDAO {
 		
 	}
 
-	
+
+	@Override
+	public void addIncomeCategory(String category_name,String id) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("category_name", category_name);
+		map.put("id",id);
+		
+		sqlSession.insert("category.addIncomeCategory", map);
+		
+		
+	}
+
+
+	@Override
+	public void addOutcomeCategory(String category_name,String id) throws SQLException {
+		
+		
+		HashMap map = new HashMap();
+		map.put("category_name", category_name);
+		map.put("id",id);
+		
+		sqlSession.insert("category.addoutcomeCategory", map);
+		
+	}
+
+
 	
 }

@@ -9,6 +9,10 @@
   		select * from outcome_category where id=#{value}
   	</select>
   	
+  	<select id="selectAllIncomeCategoryById" resultType="income_categoryDTO" parameterType="string">
+  		select * from income_category where id=#{value}
+  	</select>
+  	
   	
   	<!-- outcome category 기본설정 -->  
 	 <insert id="insertOutComeCategory" parameterType="map">
@@ -26,6 +30,15 @@
   		<foreach collection="list" item="item" separator="UNION ALL">
   		select #{id},#{item} from dual
   		</foreach>) o
+  	</insert>
+  	
+  	<!-- income category 추가 -->
+  	<insert id="addIncomeCategory" parameterType="map">
+  		insert into income_category values(income_category_seq.nextval,#{id},#{category_name})
+  	</insert>
+  	<!-- outcome category 추가 -->
+  	<insert id="addoutcomeCategory" parameterType="map">
+  		insert into outcome_category values(outcome_category_seq.nextval,#{id},#{category_name})
   	</insert>
   	
   </mapper>

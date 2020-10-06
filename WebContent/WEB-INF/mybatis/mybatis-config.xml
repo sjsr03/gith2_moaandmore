@@ -7,8 +7,10 @@
  	<typeAliases>
  		<typeAlias type="member.model.dto.MemberDTO" alias="memberDTO"/>
  		<typeAlias type="category.model.dto.outcome_categoryDTO" alias="outcome_categoryDTO"/>
+ 		<typeAlias type="category.model.dto.income_categoryDTO" alias="income_categoryDTO"/>
  		<typeAlias type="goals.model.dto.GoalsDTO" alias="goalsDTO"/>
  	</typeAliases>
+ 	
  	<mappers>
 		<mapper resource="/sql/goalsSQL.xml"/>	
  		<mapper resource="/sql/memberSQL.xml"	/>
