@@ -1,5 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -70,119 +71,51 @@
 		</div>
 		<div class="middle" style="width: 100%; height: 690px; text-align: center;">
 		
-				<div class="group_one" style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
-					<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-						<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
-						<div style="float: right; padding-right: 10px; font-size: 22px;">30명</div>
-						<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% 80%, #BDBDBD 80% 100%);"><span class="center"></span><span class="big">80%</span><span class="mini">평균달성률</span></span></div>
-					</div>
-					<table style="width:380px; height:130px;">
-						<tr>
-							<td>한 달 안에 백만원!</td>
-						</tr>
-						<tr>
-							<td>기간 : 20.10.04~20.11.04</td>
-						</tr>
-						<tr>
-							<td>목표금액 : 백만원</td>
-						</tr>
-					</table>
+			<c:forEach var="article" items="${articleList}">
+				<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
+						<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
+							<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+							<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>
+							<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% 80%, #BDBDBD 80% 100%);"><span class="center"></span><span class="big">80%</span><span class="mini">평균달성률</span></span></div>
+						</div>
+						<table style="width:380px; height:130px;">
+							<tr>
+								<td>${article.subject}</td>
+							</tr>
+							<tr>
+								<td>기간 : <fmt:formatDate pattern="yyyy-MM-dd" value="${article.start_day}"/>~<fmt:formatDate pattern="yyyy-MM-dd" value="${article.end_day}"/></td>
+							</tr>
+							<tr>
+								<td>목표금액 : ${article.amount}원</td>
+							</tr>
+						</table>
 				</div>
-				<div class="group_two" style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
-					<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-						<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80" style="visibility: hidden;"/></div>
-						<div style="float: right; padding-right: 10px; font-size: 22px;">30명</div>
-						<div class="pie-chart pie-chart2" style="background: conic-gradient(#8b22ff 0% 30%, #BDBDBD 30% 100%);"><span class="center"></span><span class="big">30%</span><span class="mini">평균달성률</span></span></div>
-					</div>
-					<table style="width:380px; height:130px;">
-						<tr>
-							<td>한 달 안에 백만원!</td>
-						</tr>
-						<tr>
-							<td>기간 : 20.10.04~20.11.04</td>
-						</tr>
-						<tr>
-							<td>목표금액 : 백만원</td>
-						</tr>
-					</table>
-				</div>
-				<div class="group_three" style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
-					<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-						<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
-						<div style="float: right; padding-right: 10px; font-size: 22px;">30명</div>
-						<div class="pie-chart pie-chart3" style="background: conic-gradient(#8b22ff 0% 90%, #BDBDBD 90% 100%);"><span class="center"></span><span class="big">90%</span><span class="mini">평균달성률</span></span></div>
-					</div>
-					<table style="width:380px; height:130px;">
-						<tr>
-							<td>한 달 안에 백만원!</td>
-						</tr>
-						<tr>
-							<td>기간 : 20.10.04~20.11.04</td>
-						</tr>
-						<tr>
-							<td>목표금액 : 백만원</td>
-						</tr>
-					</table>
-				</div>
-				<div class="group_four" style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
-					<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-						<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
-						<div style="float: right; padding-right: 10px; font-size: 22px;">30명</div>
-						<div class="pie-chart pie-chart4" style="background: conic-gradient(#8b22ff 0% 50%, #BDBDBD 50% 100%);"><span class="center"></span><span class="big">50%</span><span class="mini">평균달성률</span></span></div>
-					</div>
-					<table style="width:380px; height:130px;">
-						<tr>
-							<td>한 달 안에 백만원!</td>
-						</tr>
-						<tr>
-							<td>기간 : 20.10.04~20.11.04</td>
-						</tr>
-						<tr>
-							<td>목표금액 : 백만원</td>
-						</tr>
-					</table>
-				</div>
-				<div class="group_five" style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
-					<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-						<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
-						<div style="float: right; padding-right: 10px; font-size: 22px;">30명</div>
-						<div class="pie-chart pie-chart5" style="background: conic-gradient(#8b22ff 0% 99%, #BDBDBD 99% 100%);"><span class="center"></span><span class="big">99%</span><span class="mini">평균달성률</span></span></div>
-					</div>
-					<table style="width:380px; height:130px;">
-						<tr>
-							<td>한 달 안에 백만원!</td>
-						</tr>
-						<tr>
-							<td>기간 : 20.10.04~20.11.04</td>
-						</tr>
-						<tr>
-							<td>목표금액 : 백만원</td>
-						</tr>
-					</table>
-				</div>
-				<div class="group_six" style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
-					<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-						<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
-						<div style="float: right; padding-right: 10px; font-size: 22px;">30명</div>
-						<div class="pie-chart pie-chart6" style="background: conic-gradient(#8b22ff 0% 10%, #BDBDBD 10% 100%);"><span class="center"></span><span class="big">10%</span><span class="mini">평균달성률</span></span></div>
-					</div>
-					<table style="width:380px; height:130px;">
-						<tr>
-							<td>한 달 안에 백만원!</td>
-						</tr>
-						<tr>
-							<td>기간 : 20.10.04~20.11.04</td>
-						</tr>
-						<tr>
-							<td>목표금액 : 백만원</td>
-						</tr>
-					</table>
-				</div>
-			
+			</c:forEach>
 		</div>
 		<%-- 게시판 목록 페이지 번호 뷰어 설정 --%>
 		<div align="center">
-		<a>&lt; &gt;</a>
+			<c:if test="${count > 0}">
+				<fmt:parseNumber var="res" value="${count / pageSize}"  integerOnly="true"/>
+				<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}"  />
+				<c:set var="pageBlock" value="10" />
+				<fmt:parseNumber var="result" value="${(currPage-1)/pageBlock}" integerOnly="true" />
+				<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}" />
+				<fmt:parseNumber var="endPage" value="${startPage + pageBlock - 1}" />
+				<c:if test="${endPage > pageCount}">
+					<c:set var="endPage" value="${pageCount}" />
+				</c:if>
+				
+				<c:if test="${startPage > pageBlock}">
+					<a href="/moamore/team/group_list.moa?pageNum=${startPage-pageBlock}" > &lt; </a>
+				</c:if>
+				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1" >
+					<a href="/moamore/team/group_list.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+				</c:forEach>
+				<c:if test="${endPage < pageCount}">
+					<a href="/moamore/team/group_list.moa?pageNum=${startPage+pageBlock}" > &gt; </a>
+				</c:if>
+			
+			</c:if>
 		</div>
 		<div class="bottom"  style="width: 100%; height: 55px; text-align: center; margin-top: 5px;">
 			<form action="/moamore/team/groupListPro.moa" method="post" style="align-self: center;">
