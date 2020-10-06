@@ -21,4 +21,5 @@ public interface MemberDAO {
 	//회원 한명 정보 가져오기
 	public MemberDTO selectOne(String id) throws SQLException;
 	
+	
 }
