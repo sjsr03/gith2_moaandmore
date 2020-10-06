@@ -3,7 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
  <!--  mapper위치, Alias설정 -->
- <configuration>
+
+ <configuration>	
  	<typeAliases>
  		<typeAlias type="member.model.dto.MemberDTO" alias="memberDTO"/>
  		<typeAlias type="category.model.dto.outcome_categoryDTO" alias="outcome_categoryDTO"/>
