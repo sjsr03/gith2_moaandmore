@@ -7,7 +7,7 @@
 <title>Insert Goal Form</title>
 </head>
 <body>
-<h1>목표 추가하기(개인)</h1>
+	<h1>목표 추가하기(개인)</h1>
 	<form action="/moamore/goals/insertGoalPro.moa" method="post">
 		<input type="hidden" name="public_ch" value="0"/>
 		<input type="hidden" name="public_type" value="0"/>

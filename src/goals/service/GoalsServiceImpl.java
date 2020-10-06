@@ -24,8 +24,7 @@ public class GoalsServiceImpl implements GoalsService {
 
 	@Override
 	public GoalsDTO selectOne(int goal_no) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return goalsDAO.selectOne(goal_no);
 	}
 
 	@Override
@@ -49,15 +48,24 @@ public class GoalsServiceImpl implements GoalsService {
 	}
 
 	@Override
-	public boolean modifyGoal(GoalsDTO goal) throws SQLException{
-		// TODO Auto-generated method stub
-		return false;
+	public void modifyGoal(GoalsDTO goal) throws SQLException{
+		goalsDAO.modifyGoal(goal);
 	}
 
 	@Override
 	public boolean deleteGoal(int goal_no) throws SQLException {
-		// TODO Auto-generated method stub
+		goalsDAO.deleteGoal(goal_no);
 		return false;
+	}
+
+	@Override
+	public void myGoalDetail(int goal_no) throws SQLException {
+		//목표 정보
+		GoalsDTO goal = goalsDAO.selectOne(goal_no);
+		RequestContextHolder.getRequestAttributes().setAttribute("goal", goal, RequestAttributes.SCOPE_REQUEST);
+		
+		//목표액 관련 세부내역
+		
 	}
 
 }

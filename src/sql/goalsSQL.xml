@@ -4,16 +4,28 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  
 <mapper namespace="goals">
+	<select id="selectOne" parameterType="int" resultType="goalsDTO">
+		select * from goals where goal_no=#{value}
+	</select>
+	
 	<select id="selectAllById" parameterType="String" resultType="goalsDTO">
 		select * from goals where id=#{value}
 	</select>
+
 	<insert id="insertGoal" parameterType="goalsDTO">
 		<selectKey keyProperty="goal_no" resultType="int" order="BEFORE">
  			select goals_seq.nextVal from dual
  		</selectKey>
 		insert into goals values(#{goal_no},#{id},#{subject},#{target_money},#{saving},#{start_day},#{end_day},#{public_ch},#{public_type},#{team_no})
-		
 	</insert>
+	
+	<update id="modifyGoal" parameterType="goalsDTO">
+		update goals set subject=#{subject}, target_money=#{target_money} where goal_no = #{goal_no}	
+	</update>
+	<delete id="deleteGoal" parameterType="int">
+		delete from goals where goal_no=#{value}
+	</delete>
+	
 
 
 </mapper>
