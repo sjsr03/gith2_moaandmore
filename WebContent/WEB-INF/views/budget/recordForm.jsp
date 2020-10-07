@@ -21,20 +21,17 @@
 		$("#date").datepicker({
 		});
 	});
-	// 예산 외 버튼 클릭시
+	
+	// 체크박스 상태 확인해서 분기처리 체크된 상태면 예산외 아니면 예산 내
 	$(document).ready(function(){
-		$("#btn1").click(function(){
-			window.location.href='/moamore/record/recordForm.moa';
+		$("#checkbox").change(function(){
+			if($("#checkbox").is(":checked")){
+				alert("예산 외 선택!!")
+			}else{
+				alert("예산 내 선택!!!!")
+			}
 		});
 	});
-
-	// 예산 내 버튼 클릭시
-	$(document).ready(function(){
-		$("#btn2").click(function(){
-			alert("예산내 선택");
-		});
-	});
-
 </script>
 </head>
 
@@ -43,8 +40,7 @@
 	<div>
 		<div class="header">
 			<h2> 수입 지출 내역 추가 </h2>	
-			<input id="btn1" type="button" value="예산외" />
-			<input id="btn2" type="button" value="예산내" /> </br>
+			<input id="checkbox" type="checkbox" /> 예산 외 선택 </br>
 			<input type="button" value="지출" />
 			<input type="button" value="수입" />
 		</div>
