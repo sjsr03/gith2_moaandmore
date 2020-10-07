@@ -52,7 +52,7 @@
 			</tr>
 			<tr>
 				<td> 공개여부 </td>
-				<td><input type="radio" name="isopen" value=1 checked="checked"/>공개 <input type="radio" name="isopen" value=0/>비공개</td>
+				<td><input type="radio" name="isopen" value='1' checked="checked"/>공개 <input type="radio" name="isopen" value='0'/>비공개</td>
 			</tr>
 			<tr>
 				<td> 비밀번호<br/><span style="font-size: 7px">비공개 그룹만</span></td>

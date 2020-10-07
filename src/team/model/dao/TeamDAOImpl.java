@@ -35,9 +35,10 @@ public class TeamDAOImpl implements TeamDAO{
 
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
-		dto.setStart_day(dto.getStart_day().replaceAll("-", ""));
-		dto.setEnd_day(dto.getEnd_day().replaceAll("-", ""));
-		sqlSession.insert("team.insertTeamArticle", dto);
+		if(dto.getPw() == null)
+			sqlSession.insert("team.insertTeamArticleNoPw", dto);
+		else
+			sqlSession.insert("team.insertTeamArticle", dto);
 	}
 	
 }

@@ -31,6 +31,9 @@ public class TeamServiceImpl implements TeamService{
 
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
+		dto.setStart_day(dto.getStart_day().replaceAll("-", ""));
+		dto.setEnd_day(dto.getEnd_day().replaceAll("-", ""));
+		
 		dao.insertTeamArticle(dto);
 	}
 

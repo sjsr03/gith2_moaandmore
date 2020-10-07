@@ -48,19 +48,19 @@ public class TeamBean {
 		model.addAttribute("articleList", articleList);
 		model.addAttribute("count", new Integer(count));
 		
-		return "team/GroupList";
+		return "team/groupList";
 	}
 	
 	@RequestMapping("groupOpenForm.moa")
 	public String groupOpenForm(@ModelAttribute("dto") TeamDTO dto) {
-		return "team/GroupOpenForm";
+		return "team/groupOpenForm";
 	}
 	
 	@RequestMapping("groupOpenPro.moa")
 	public String groupOpenPro(TeamDTO dto) throws SQLException{
 		teamService.insertTeamArticle(dto);
 		
-		return "team/GroupOpenPro";
+		return "team/groupOpenPro";
 	}
 		
 }
