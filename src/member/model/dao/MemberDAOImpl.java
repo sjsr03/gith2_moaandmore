@@ -1,8 +1,10 @@
 package member.model.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +63,10 @@ public class MemberDAOImpl implements MemberDAO {
 		return dto;
 
 	}
+
+	
+	
+	
 	
 	
 

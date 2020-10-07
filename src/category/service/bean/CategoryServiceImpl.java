@@ -1,7 +1,9 @@
 package category.service.bean;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,5 +20,42 @@ public class CategoryServiceImpl implements CategoryService{
 	public List selectAllById(String id) throws SQLException {
 		List list = categoryDAO.selectAllById(id); 
 		return list;
+	}
+
+	@Override
+	public List selectAllIncomeCategoryById(String id) throws SQLException {
+		
+			List list = categoryDAO.selectAllIncomeCategoryById(id);
+		
+		
+		return list;
+	}
+
+	
+	
+	@Override
+	public void addIncomeCategory(String category_name,String id) throws SQLException {
+		
+		
+		
+		categoryDAO.addIncomeCategory(category_name,id);
+		
+		
+	}
+
+	@Override
+	public void addOutcomeCategory(String category_name,String id) throws SQLException {
+		
+		
+		
+		categoryDAO.addOutcomeCategory(category_name,id); 
+	}
+
+	@Override
+	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
+	
+		categoryDAO.updateoutcomeCategory(category_no,newName,id);
+		
+		
 	}
 }

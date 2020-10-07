@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace -->
+  <mapper namespace="totalBudget">
+  	<!-- 총예산 새로 생성 -->
+  	<insert id="insertTotalBudget" parameterType="totalBudgetDTO">
+  		insert into total_budget values(total_budget_seq.nextVal, #{id}, #{budget}, #{period}, #{start_day}, #{end_day}, 0)
+  	</insert>
+  	
+  	<!-- 회원의 모든 예산을 close=1(종료된 상태)로 바꿈 (새 예산 삽입 전 사용)-->
+  	<update id="updateTotalBudget" parameterType="string">
+  		update total_budget set close=1 where id=#{value}
+  	</update>
+  	
+  	
+  	<!-- 회원의 현재 총예산정보 가져오기 -->
+  	<select id="selectCurrentOneById" parameterType="string" resultType="totalBudgetDTO">
+  		select * from total_budget where id=#{id} and close=0
+  	</select>
+  </mapper>
+ 

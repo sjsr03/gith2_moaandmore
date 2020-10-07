@@ -7,5 +7,12 @@ import budget.model.dto.TotalBudgetDTO;
 
 public interface BudgetService {
 	
-	public void setBudget(TotalBudgetDTO total, List list, String id) throws SQLException;
+	//예산설정
+	public void setBudget() throws SQLException;
+	
+	//현재 총예산 정보 가져오기
+	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException;
+	
+	//현재 총예산 정보 가져오기
+	public List selectAllbyBudgetNum(int num) throws SQLException;
 }

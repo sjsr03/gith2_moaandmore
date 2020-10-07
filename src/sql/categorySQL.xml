@@ -8,5 +8,48 @@
   	<select id="selectAllById" resultType="outcome_categoryDTO" parameterType="string">
   		select * from outcome_category where id=#{value}
   	</select>
+  	
+  	<select id="selectAllIncomeCategoryById" resultType="income_categoryDTO" parameterType="string">
+  		select * from income_category where id=#{value}
+  	</select>
+  	
+  	<!-- 회원 아이디와 카테고리명으로 카테고리 고유번호 가져오기 -->
+  	<select id="selectNumByName" resultType="int" parameterType="hashmap">
+  		select category_no from outcome_category where id=#{id} and category_name=#{category_name}
+  	</select>
+  	
+  	
+  	<!-- outcome category 기본설정 -->  
+	 <insert id="insertOutComeCategory" parameterType="map">
+		insert into OUTCOME_CATEGORY(category_no,id,category_name)
+		select outcome_category_seq.nextval, o.* from(
+		<foreach collection="list" item="item" separator="UNION ALL">
+		select #{id},#{item} from dual
+		</foreach>) o
+	</insert>
+  	
+  	<!-- income category 기본설정 -->
+  	<insert id="insertInComeCategory" parameterType="map">
+  		insert into income_category(income_category_no,id,category_name)
+  		select income_category_seq.nextval, o.* from(
+  		<foreach collection="list" item="item" separator="UNION ALL">
+  		select #{id},#{item} from dual
+  		</foreach>) o
+  	</insert>
+  	
+  	<!-- income category 추가 -->
+  	<insert id="addIncomeCategory" parameterType="map">
+  		insert into income_category values(income_category_seq.nextval,#{id},#{category_name})
+  	</insert>
+  	<!-- outcome category 추가 -->
+  	<insert id="addoutcomeCategory" parameterType="map">
+  		insert into outcome_category values(outcome_category_seq.nextval,#{id},#{category_name})
+  	</insert>
+  	<!-- outcome category 이름 수정 -->
+  	<update id="updateoutcomeCategory" parameterType="map">
+  		update outcome_category set category_name=#{newName} where id=#{id} and category_no=#{category_no}
+  	</update>
+  	
   </mapper>
+
  
