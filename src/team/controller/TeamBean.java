@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import team.model.dao.TeamDAOImpl;
 import team.model.dto.TeamDTO;
+import team.service.bean.TeamServiceImpl;
 
 @Controller
 @RequestMapping("/team/")
 public class TeamBean {
 	
 	@Autowired
-	private TeamDAOImpl teamDAO = null;
+	private TeamServiceImpl teamService = null;
 
 	@RequestMapping("groupList.moa")
 	public String viewList(String pageNum, Model model) throws SQLException {
@@ -33,10 +33,10 @@ public class TeamBean {
 		int number = 0;	//게시판 상의 글번호 뿌려줄 변수 미리 선언
 		
 		List articleList = null;
-		int count = teamDAO.getTeamArticleCount();
+		int count = teamService.getTeamArticleCount();
 		
 		if(count>0) {
-			articleList = teamDAO.getTeamArticles(startRow, endRow);
+			articleList = teamService.getTeamArticles(startRow, endRow);
 		}
 		number = count-(currPage-1)*pageSize;
 		
@@ -49,19 +49,19 @@ public class TeamBean {
 		model.addAttribute("articleList", articleList);
 		model.addAttribute("count", new Integer(count));
 		
-		return "team/GroupList";
+		return "team/groupList";
 	}
 	
 	@RequestMapping("groupOpenForm.moa")
 	public String groupOpenForm(@ModelAttribute("dto") TeamDTO dto) {
-		return "team/GroupOpenForm";
+		return "team/groupOpenForm";
 	}
 	
 	@RequestMapping("groupOpenPro.moa")
 	public String groupOpenPro(TeamDTO dto) throws SQLException{
-		teamDAO.insertTeamArticle(dto);
+		teamService.insertTeamArticle(dto);
 		
-		return "team/GroupOpenPro";
+		return "team/groupOpenPro";
 	}
 	
 	@RequestMapping("teamDetail.moa")
