@@ -45,10 +45,11 @@ public class LoginCheckBean {
 			response.setCharacterEncoding("UTF-8"); 
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
-			out.println("<script>alert('로그아웃 후 이용하세요!');</script>");
+			out.println("<script>alert('로그아웃 후 이용하세요!');history.go(-1);</script>");
 			out.flush();
-			String url = request.getHeader("referer");
-			return url;	
+//			String url = request.getHeader("referer");
+//			url = url.split("/moamore/")[1];
+			return null;	
 		}
 		Object result = j.proceed();
 		return result;

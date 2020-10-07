@@ -12,6 +12,8 @@
  		<typeAlias type="category.model.dto.outcome_categoryDTO" alias="outcome_categoryDTO"/>
  		<typeAlias type="category.model.dto.income_categoryDTO" alias="income_categoryDTO"/>
  		<typeAlias type="goals.model.dto.GoalsDTO" alias="goalsDTO"/>
+ 		<typeAlias type="team.model.dto.TeamDTO" alias="teamDTO"/>
+ 		<typeAlias type="team.model.dto.TeamMemberDTO" alias="teamMemberDTO"/>
  	</typeAliases>
  	
  	<mappers>
@@ -19,8 +21,10 @@
  		<mapper resource="/sql/memberSQL.xml"	/>
  		<mapper resource="/sql/adminSQL.xml" />
  		<mapper resource="/sql/categorySQL.xml" />
+ 		<mapper resource="/sql/teamSQL.xml" />
  		<mapper resource="/sql/totalBudgetSQL.xml" />
  		<mapper resource="/sql/budgetDetailSQL.xml" />
+ 		<mapper resource="/sql/teamMemberSQL.xml"/>
   	</mappers>
 
  </configuration>

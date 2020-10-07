@@ -39,8 +39,6 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		
 		categoryDAO.addIncomeCategory(category_name,id);
-		
-		
 	}
 
 	@Override

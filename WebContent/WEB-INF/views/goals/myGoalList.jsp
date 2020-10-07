@@ -21,6 +21,13 @@
 			return;
 		}
 	}
+	
+	function enterTeam(){
+		
+		var team_no = 2; 
+		
+		window.location.href="/moamore/goals/enterTeam.moa?team_no="+team_no;
+	}
 
 </script>
 </head>
@@ -68,6 +75,8 @@
 			<td><button onclick="deleteCh('${goal.goal_no}','${goal.public_ch}')">삭제</button></td>
 		</tr>	
 	</c:forEach> 
+	
+	<button onclick="enterTeam()">팀 참여(임시)</button>
 </table>
 
 </body>

@@ -1,7 +1,6 @@
 package goals.service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +11,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import goals.model.dao.GoalsDAOImpl;
 import goals.model.dto.GoalsDTO;
+import team.model.dao.TeamMemberDAOImpl;
+import team.model.dto.TeamMemberDTO;
 
 
 @Service
@@ -19,6 +20,10 @@ public class GoalsServiceImpl implements GoalsService {
 	
 	@Autowired
 	private GoalsDAOImpl goalsDAO = null;
+	
+	@Autowired
+	private TeamMemberDAOImpl teamMemberDAO = null;
+	
 	@Autowired
 	public Date date = null;// util.Date
 
@@ -66,6 +71,28 @@ public class GoalsServiceImpl implements GoalsService {
 		
 		//목표액 관련 세부내역
 		
+	}
+
+	//팀 가입
+	@Override
+	public void enterTeam(int team_no) throws SQLException {
+		
+		//team_member 테이블에 데이터 추가
+		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		String nickname = (String)RequestContextHolder.getRequestAttributes().getAttribute("memName", RequestAttributes.SCOPE_SESSION);
+		
+		//teamMember
+		TeamMemberDTO member = new TeamMemberDTO(team_no, id, nickname, 0);		
+		teamMemberDAO.insertOne(member);
+		
+		//goals테이블에 팀 목표추가
+		//GoalsDTO goal = new GoalsDTO(0, id, "", target_money, saving, start_day, end_day, public_ch, public_type, team_no)
+		GoalsDTO goal = new GoalsDTO();
+		goal.setId(id);
+		goal.setTeam_no(team_no);
+		goalsDAO.insertGoalByTeam(goal);
+		
+			
 	}
 
 }

@@ -34,6 +34,7 @@ public class CategoryBean {
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
 		
+
 		
 		return "category/setCategory";
 	}
@@ -61,12 +62,11 @@ public class CategoryBean {
 		
 		
 		
-		return "category/setCategory";
+		return "redirect:/category/setCategory.moa";
 	}
 	
 	@RequestMapping("updateCategory.moa")
 	public String updateoutcomeCategory(Model model,int category_no,String newName) throws SQLException {
-		
 		
 		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
@@ -81,6 +81,18 @@ public class CategoryBean {
 		
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
+		
+		
+		return "category/setCategory";
+	}
+	
+	@RequestMapping("deleteCategory.moa")
+	public String deleteCategory(int category_no) throws SQLException{
+		System.out.println(category_no);
+		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
+		
+		
 		return "category/setCategory";
 	}
 	

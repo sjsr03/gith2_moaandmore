@@ -19,8 +19,12 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	
 	@Override
 	public int setBudget(TotalBudgetDTO total) throws SQLException {
-		//기존 예산 모두 close=1 처리
-		sqlSession.update("totalBudget.updateTotalBudget", total.getId());
+		//기존에 진행중이던 예산의 종료날짜와 진행상태 변경
+		HashMap map = new HashMap();
+		map.put("id", total.getId());
+		map.put("end_day", total.getStart_day());
+		
+		sqlSession.update("totalBudget.updateTotalBudget", map);
 		//새 예산 삽입
 		sqlSession.insert("totalBudget.insertTotalBudget", total);
 		TotalBudgetDTO TBdto = sqlSession.selectOne("totalBudget.selectCurrentOneById",total.getId());

@@ -28,18 +28,18 @@ public class GoalBean {
 	@RequestMapping("myGoalList.moa")
 	public String myGoalList(Model model) throws SQLException {
 		//아이디별 리스트. 세션으로 id받아오기
-		//String id=  "eunjitest@naver.com";
-		//id = (String)session.getAttribute("memId");
 		List<GoalsDTO> goalList = goalsService.selectAllById();
 		model.addAttribute("goalList", goalList);
 		
 		return "goals/myGoalList";
 	}
 	
+	
 	@RequestMapping("insertGoalForm.moa")
 	public String insertGoalForm() {
 		return "goals/insertGoalForm";
 	}
+	
 	
 	@RequestMapping(value="insertGoalPro.moa", method=RequestMethod.POST)
 	public String insertGoalPro(Model model, GoalsDTO goal) throws SQLException {
@@ -78,6 +78,16 @@ public class GoalBean {
 	public String myGoalDetail(int goal_no) throws SQLException {
 		goalsService.myGoalDetail(goal_no);
 		return "goals/myGoalDetail";
+	}
+	
+	@RequestMapping(value="enterTeam.moa", method=RequestMethod.GET)
+	public String enterTeam(int team_no) throws SQLException {// 
+		
+		team_no =2; //임시
+		goalsService.enterTeam(team_no);
+		
+		
+		return "redirect:/goals/myGoalList.moa";
 	}
 
 }
