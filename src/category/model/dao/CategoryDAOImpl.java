@@ -137,6 +137,19 @@ public class CategoryDAOImpl implements CategoryDAO {
 		return categories;
 	}
 
+	
+	@Override
+	public void removeCategory(int category_no, String id) throws SQLException {
+		
+		Map map = new HashMap();
+		
+		map.put("category_no",category_no);
+		map.put("id", id);
+		
+		sqlSession.delete("category.deleteCategory", map);
+		
+	}
+
 
 	
 }

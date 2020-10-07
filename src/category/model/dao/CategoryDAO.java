@@ -27,7 +27,8 @@ public interface CategoryDAO {
 	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException;
 	// 카테고리 번호로 카테고리 번호+이름 해쉬맵 가져오기 
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException;
-
+	//카테고리 삭제하기
+	public void removeCategory(int category_no,String id) throws SQLException;
 	
 	
 	

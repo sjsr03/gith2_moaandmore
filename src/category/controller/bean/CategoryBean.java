@@ -87,13 +87,18 @@ public class CategoryBean {
 	}
 	
 	@RequestMapping("deleteCategory.moa")
-	public String deleteCategory(int category_no) throws SQLException{
-		System.out.println(category_no);
+	public String deleteCategory(int category_no,Model model) throws SQLException{
+		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-
 		
+		categoryService.removeCategory(category_no,id);
+		List income = categoryService.selectAllIncomeCategoryById(id);
+		List outcome = categoryService.selectAllById(id);
 		
-		return "category/setCategory";
+		model.addAttribute("income",income);
+		model.addAttribute("outcome", outcome);
+		
+		return "redirect:/category/setCategory.moa";
 	}
 	
 	
