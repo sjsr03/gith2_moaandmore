@@ -7,6 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>set category</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://kit.fontawesome.com/959593ce4b.js" crossorigin="anonymous"></script>
 </head>
 <style>
@@ -127,6 +128,12 @@
 	var trigger = document.querySelector(".trigger");
 	var closeButton = document.querySelector(".close-button");
 	var cancelButton = document.querySelector("#cancel");
+	
+	$(document).ready(function(){
+		$('.trigger').on('click', function(){
+			toggleModal();
+		});
+	});
 	
 	function toggleModal(){
 		console.log("1");

@@ -8,5 +8,10 @@
   	<insert id="insertBudgetDetail" parameterType="budgetDetailDTO">
   		insert into budget_detail values(#{category_no}, #{budget_no}, #{category_budget})
   	</insert>
+  	
+  	<!-- 총예산 고유번호에 해당하는 세부정보 가져오기 -->
+  	<select id="selectAllbyBudgetNum" parameterType="int" resultType="budgetDetailDTO">
+  		select * from budget_detail where budget_no=#{value}
+  	</select>
   </mapper>
  

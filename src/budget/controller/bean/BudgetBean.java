@@ -33,12 +33,23 @@ public class BudgetBean {
 		
 		String id = (String) request.getSession().getAttribute("memId");
 		
+		TotalBudgetDTO currentTBudget = budgetService.selectCurrentOne(id);
+		
 		//회원의 지출카테고리 불러오기
 		List categoryList = categoryService.selectAllById(id);
 		
-		
 		model.addAttribute("categoryList", categoryList);
-		return "budget/setBudget";
+		
+		
+		if(currentTBudget != null) {	//현재 진행중인 예산이 있다면
+			model.addAttribute("currentTBudget", currentTBudget);
+			model.addAttribute("detailList", budgetService.selectAllbyBudgetNum(currentTBudget.getBudget_no()));
+			
+			return "budget/modifyBudget";
+		} else {	//진행중인 예산이 없다면 
+			return "budget/setBudget";
+		}
+		
 	}
 	
 	@RequestMapping("setBudgetPro.moa")
