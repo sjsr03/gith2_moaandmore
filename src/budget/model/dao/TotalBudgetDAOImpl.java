@@ -25,4 +25,9 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		
 		return TBdto.getBudget_no();
 	}
+	
+	@Override
+	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException {
+		return sqlSession.selectOne("totalBudget.selectCurrentOneById",id);
+	}
 }

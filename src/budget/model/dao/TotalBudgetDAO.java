@@ -8,4 +8,5 @@ import budget.model.dto.TotalBudgetDTO;
 public interface TotalBudgetDAO {
 
 	public int setBudget(TotalBudgetDTO total) throws SQLException;
+	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException;
 }

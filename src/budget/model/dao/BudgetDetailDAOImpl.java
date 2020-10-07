@@ -22,5 +22,11 @@ public class BudgetDetailDAOImpl implements BudgetDetailDAO {
 			sqlSession.insert("budgetDetail.insertBudgetDetail", dto);
 		}
 	}
+	
+	@Override
+	public List selectAllbyBudgetNum(int num) {
+		List list = sqlSession.selectList("budgetDetail.selectAllbyBudgetNum", num);
+		return list;
+	}
 
 }

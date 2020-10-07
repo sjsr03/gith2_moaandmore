@@ -9,6 +9,18 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
+
+	<!-- 예산 재설정 경고 안내 -->
+	<div id="popup1" class="overlay" style="position: absolute;	top: 0;bottom: 0;left: 0;right: 0;background: rgba(0,0,0,0.5);transition: opacity 200ms;visibility: show;opacity: 0;">
+		<div class="popup" style="margin: 75px auto;padding: 20px;background: #fff;border: 1px solid #666;width: 300px;box-shadow: 0 0 50px rgba(0,0,0,0.5);position: relative;">
+			<h2>Info box</h2>
+			<a class="close" href="#" style="position: absolute;width: 20px;height: 20px;top: 20px;right: 20px;opacity: 0.8;transition: all 200ms;font-size: 24px;font-weight: bold;text-decoration: none;color: #666;">&times;</a>
+			<div>
+				<p>This is done totally without JavaScript. Just HTML and CSS.</p>
+			</div>
+		</div>
+	</div>
+
 	
 	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
 	
@@ -16,17 +28,17 @@
 		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;" id="firstStep">
 			<ul>
 				<li>
-					총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
+					총 예산 : <input type="number" name="totalBudget" id="totalBudget" value="${currentTBudget.budget }"/>원
 				</li>
 				<li>
 					기간 단위 : 
 					<select name="period" id="period">
-						<option value="7">7일</option>
-						<option value="14">14일</option>
-						<option value="30">한달</option>
+						<option value="7" >7일</option>
+						<option value="14" <c:if test="${currentTBudget.period==14}">selected</c:if>>14일</option>
+						<option value="30" <c:if test="${currentTBudget.period==30}">selected</c:if>>한달</option>
 					</select>
 				</li>
-				<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
+				<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
 				</li>
 			</ul>
 			<input type="button" value="세부설정 >" onclick="nextStep()"/>
@@ -42,28 +54,33 @@
 					<td>비율</td>
 					<td>&nbsp;</td>
 				</tr>
-				<tr>
+				
+				<c:forEach var="k" items="${detailList}">
+					<tr>
 					<td>
 						<select name="category_name" class="category_name" required>
-							<option class="none" disabled selected>==카테고리 선택==</option>
+							<option class="none" disabled>==카테고리 선택==</option>
 							<c:forEach items="${categoryList}" var="i">
-								<option value="${i.category_name }">${i.category_name }</option>
+								<option value="${i.category_name }" <c:if test="${i.category_no == k.category_no }">selected</c:if>>${i.category_name }</option>
 							</c:forEach>
 						</select>
 					</td>
 					<td>
-						<input type="number" name="amount" min="0" required class="amount"/>
+						<input type="number" name="amount" min="0" required class="amount" value="${k.category_budget}"/>
 					</td>
 					<td>
 						<input type="number" readonly class="rate"/>%
 					</td>
-					<!-- 맨위라인은 삭제 안되게
-					<td>
-						<input type="button" class="deleteBtn" value="삭제"/>
-					</td>
-					 -->
+					<c:if test="${i != 1 }">
+						<td>
+							<input type="button" class="deleteBtn" value="삭제"/>
+						</td>
+					</c:if>
 					
 				</tr>
+				</c:forEach>
+				
+				
 			</table>
 			<hr>
 			카테고리별 예산 합계 : <strong id="amountSum"></strong>원<br/>
@@ -83,6 +100,11 @@
 	var y = document.getElementById("secondStep");
 	
 	$(document).ready(function(){
+		$('#TbudgetPrint').text($('#totalBudget').val());
+		$('.amount').each(function(){
+			reRate($(this));
+		});
+		reSum();
 		$('#insertLine').on('click', function(){ //라인 추가
 			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
@@ -123,6 +145,32 @@
 		$('.category_name').on('change', function(){
 			optControl();
 		});
+		
+		//비율 및 총합 자동계산
+		$('.amount').on('keyup', function(){
+			reRate($(this));
+			reSum();
+		});
+		
+		//삭제버튼 기능
+		$('.deleteBtn').on('click', function(){
+			//라인 삭제하면 해당 카테고리 사용가능
+			var x = $(this).parent().parent().children('option:selected').val();
+			$('option').each(function(){
+				if($(this).val()==x){
+					$(this).prop('hidden', true);
+				}
+			});
+			//삭제
+			$(this).parent().parent().remove();
+			
+			//합계 자동계산
+			reSum();
+			//모든 none은 선택불가
+			$('.none').prop('disabled',true);
+			$('.none').prop('hidden',false);
+		});
+		
 		
 		//이미 선택된 카테고리명 옵션은 재선택 못하게 disabled / 선택된게 아니면 disabled false
 		function optControl(){
@@ -186,10 +234,9 @@
 			var Tbudget = $(this).val();
 			$('#TbudgetPrint').text(Tbudget);
 			
-			//적힌 비율도 다시 계산
+			//적힌 비율과 합계도 다시 계산
 			$('.amount').each(function(){
-				var rate = $(this).val()/$('#totalBudget').val()*100;
-				$(this).parent().next().children('.rate').val(rate.toFixed(1));
+				reRate($(this));
 			});
 			reSum();
 		});
