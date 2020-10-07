@@ -24,7 +24,7 @@
 		<table>
 			<tr>
 				<td> 신 청 자 </td>
-				<td><input type="text" name="leader" readonly="readonly" value="${dto.leader}"/></td>
+				<td><input type="text" name="leader" readonly="readonly" value="닉네임"/></td>
 			</tr>
 			<tr>
 				<td> 목 표 명 </td>
@@ -36,7 +36,7 @@
 			</tr>
 			<tr>
 				<td> 목표금액 </td>
-				<td><input type="text" name="amount"  /></td>
+				<td><input type="number" name="amount"  /></td>
 			</tr>
 			<tr>
 				<td> 시 작 일 </td>
@@ -48,15 +48,15 @@
 			</tr>
 			<tr>
 				<td> 참여자 수 </td>
-				<td><input type="text" name="people"  /></td>
+				<td><input type="number" name="people"  /></td>
 			</tr>
 			<tr>
 				<td> 공개여부 </td>
-				<td><input type="radio" name="isopen" value="공개" checked="checked"/>공개 <input type="radio" name="isopen" value="비공개"/>비공개</td>
+				<td><input type="radio" name="isopen" value=1 checked="checked"/>공개 <input type="radio" name="isopen" value=0/>비공개</td>
 			</tr>
 			<tr>
 				<td> 비밀번호<br/><span style="font-size: 7px">비공개 그룹만</span></td>
-				<td><input type="password" name="pw"  /></td>
+				<td><input type="number" name="pw"  /></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">

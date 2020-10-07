@@ -7,12 +7,12 @@ public class TeamDTO {
 	private String subject;
 	private String content;
 	private Integer amount;
-	private Timestamp start_day;
-	private Timestamp end_day;
+	private String start_day;
+	private String end_day;
 	private String leader;
 	private Integer people;
 	private Integer status;
-	private Integer isopen;
+	private String isopen;
 	private Integer password;
 	
 	
@@ -40,16 +40,16 @@ public class TeamDTO {
 	public void setAmount(Integer amount) {
 		this.amount = amount;
 	}
-	public Timestamp getStart_day() {
+	public String getStart_day() {
 		return start_day;
 	}
-	public void setStart_day(Timestamp start_day) {
+	public void setStart_day(String start_day) {
 		this.start_day = start_day;
 	}
-	public Timestamp getEnd_day() {
+	public String getEnd_day() {
 		return end_day;
 	}
-	public void setEnd_day(Timestamp end_day) {
+	public void setEnd_day(String end_day) {
 		this.end_day = end_day;
 	}
 	public String getLeader() {
@@ -70,10 +70,10 @@ public class TeamDTO {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Integer getIsopen() {
+	public String getIsopen() {
 		return isopen;
 	}
-	public void setIsopen(Integer isopen) {
+	public void setIsopen(String isopen) {
 		this.isopen = isopen;
 	}
 	public Integer getPassword() {
