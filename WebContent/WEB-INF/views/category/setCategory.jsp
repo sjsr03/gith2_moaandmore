@@ -83,15 +83,15 @@
 			</td>
 		
 			<!-- 팝업될 레이어 -->
-			<div  id="modal" class=" modal modal${status.count}">
+			<div  id="modal" class="modal modal${status.count}">
 				<div class="modal-content">
 					<span class="close-button">&times;</span>
 					<h1 class="title"> ${outcome.category_name} 카테고리 수정하기</h1>
 					<form action="/moamore/category/updateCategory.moa" method="post">
 						<textarea name="newName" placeholder="카테고리 이름을 입력해주세요"></textarea>
-						<button  class="delete" onclick="window.location='/moamore/category/updateCategory.moa?category_no=${outcome.category_no}'">삭제</button>			
-						<input type="submit" id="update" value="변경" />
-						<input type="button" id="cancel" value="취소"/>
+						<button  class="delete" onclick="window.location='/moamore/category/deleteCategory.moa?category_no=${outcome.category_no}'">삭제</button>									
+						<input type="submit" value="변경" />
+						<input type="button" class ="cancel" id="cancel" value="취소"/>
 						<input type="hidden" name="category_no" value=${outcome.category_no} />
 					</form>
 				</div>
@@ -123,31 +123,32 @@
 
 <script type="text/javascript">	
 
- 
+
 $(document).ready(function(){
 	$(".trigger").on('click',function(){
 		foundClass(event);
-		//toggleModal(event);
+		
+	});
+	$(".close-button").on('click',function(){
+		$('.modal').remove('.show-modal');
+	});
+
+	$(".cancel").on('click',function(){
+		$('.modal').remove('.show-modal');
 	});
 });
 
-
-
 function toggleModal(){
-	
-	console.log(modal);
-	//여기서 trigger class에 맞는 modal 클래스를 찾아야 한다
-	// trigger1 들어왔으면 modal1에 추가되야 하고
-	// trigger2 --> modal2
-	
+
 	modal.classList.toggle("show-modal");
 }
+
+closeButton.addEventListener("click",toggleModal);
+
 
 
 //클릭된 button의 trigger 클래스를 찾아야 한다. 
 function foundClass(event){
-	
-	
 	//var triggers = document.querySelectorAll("#trigger");
 	var modals = document.querySelectorAll("#modal");
 	
@@ -158,9 +159,7 @@ function foundClass(event){
 	var target = event.target;
 	var targetClass = $(target).attr('class');
 	var targetclIdx = targetClass.substr(15,2);
-	console.log(targetclIdx);
-	
-	
+	//console.log(targetclIdx);
 	
 	
 	for(var i=0; i<modals.length; i++) {
@@ -169,49 +168,39 @@ function foundClass(event){
 		  var modalclass= $(mm).attr('class');
 		// console.log(modalclass);
 		
-		 //이거 가지고 태그 가져오기
-		 	
-		 var modalclIdx = modalclass.substr(12,2);
-		 //console.log(targetclIdx);
-		 if(targetclIdx === modalclIdx){
-			 var modalcl = modalclass.substr(7,13);
-			 console.log(modalcl);
-			 
-			 var aaaa = document.getElementByClassName(modalcl)[0];
-			 console.log(aaaa);
-			 
-			//modalcl.classList.toggle("show-modal");
-			
 		 
+		 var modalclIdx = modalclass.substr(11,2);
+		// console.log(targetclIdx);
+		 console.log(modalclIdx);
+		 if(targetclIdx === modalclIdx){
+			//이거 가지고 태그 가져오기
+			 var modalcl = modalclass.substr(6,13);
+			 //console.log(modalcl);
+			//modal.classList.toggle("show-modal");
+			
+			$('.'+modalcl).addClass('show-modal');
+			//addclass 하면서 close-button 클릭하면 
+			
+
 		 }
-		
-		
 	}
-	
-	
-	
 }
 
 
 
+
+
+
 	
 	
-	var closeButton = document.querySelector(".close-button");
 	var cancel = document.querySelector("#cancel");
 	
 	
 	
 	var modal = document.querySelector(".modal");
 	var triggers = document.querySelectorAll("trigger");
-	//console.log(triggers);
 	var modals = document.querySelectorAll(".modal");
-	//console.log(modals);
-	
-	//console.log(triggers.item(4));
-	
-	
-	
-	
+
 	
 	
 	function windowOnClick(event){
@@ -221,26 +210,10 @@ function foundClass(event){
 	}
 	
 	
-	function foundclass(){
-		document.querySelector(".modal");
-		
-	}
-	
-
-	
-	
-
-	closeButton.addEventListener("click",toggleModal);
 	cancel.addEventListener("click",toggleModal);
 	window.addEventListener("click",windowOnClick);
 	
-	/*
-	for(var i = 0; i<trigger.length; i++) {
-		selectall[i].addEventListener(…);
-		}
-	*/
-	
-	//$("[class*='trigger']");
+
 </script>
 
 </body>
