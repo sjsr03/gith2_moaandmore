@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
+import team.model.dto.TeamDTO;
+
 public class TeamDAOImpl implements TeamDAO{
 	
 	private SqlSessionTemplate sqlSession = null;
@@ -29,6 +31,11 @@ public class TeamDAOImpl implements TeamDAO{
 		List list = sqlSession.selectList("team.selectOpenAll", map);
 		
 		return list;
+	}
+
+	@Override
+	public void insertTeamArticle(TeamDTO dto) throws SQLException {
+		sqlSession.insert("team.insertTeamArticle", dto);
 	}
 	
 }

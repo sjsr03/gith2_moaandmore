@@ -51,10 +51,6 @@
 				<td><input type="text" name="people"  /></td>
 			</tr>
 			<tr>
-				<td> 목표내용 </td>
-				<td><input type="text" name="content"  /></td>
-			</tr>
-			<tr>
 				<td> 공개여부 </td>
 				<td><input type="radio" name="isopen" value="공개" checked="checked"/>공개 <input type="radio" name="isopen" value="비공개"/>비공개</td>
 			</tr>

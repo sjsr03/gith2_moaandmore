@@ -11,4 +11,8 @@
 		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people from team where status=2 and ISOPEN=1 order by team_no desc) where r >= #{start} and r <= #{end} order by r asc
 		]]>
 	</select>
+	
+	<insert id="insertTeamArticle" parameterType="teamDTO">
+		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, #{start_day}, #{end_day}, #{leader}, #{people}, 0, #{isopen}, #{password})
+	</insert>
 </mapper>
