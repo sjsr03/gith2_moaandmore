@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -83,7 +84,7 @@
 								<td>${article.subject}</td>
 							</tr>
 							<tr>
-								<td>기간 : <fmt:formatDate pattern="yyyy-MM-dd" value="${article.start_day}"/>~<fmt:formatDate pattern="yyyy-MM-dd" value="${article.end_day}"/></td>
+								<td>기간 : ${fn:substring(article.start_day,0,10)}~${fn:substring(article.end_day,0,10)}</td>
 							</tr>
 							<tr>
 								<td>목표금액 : ${article.amount}원</td>
@@ -106,13 +107,13 @@
 				</c:if>
 				
 				<c:if test="${startPage > pageBlock}">
-					<a href="/moamore/team/group_list.moa?pageNum=${startPage-pageBlock}" > &lt; </a>
+					<a href="/moamore/team/groupList.moa?pageNum=${startPage-pageBlock}" > &lt; </a>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1" >
-					<a href="/moamore/team/group_list.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<a href="/moamore/team/groupList.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 				</c:forEach>
 				<c:if test="${endPage < pageCount}">
-					<a href="/moamore/team/group_list.moa?pageNum=${startPage+pageBlock}" > &gt; </a>
+					<a href="/moamore/team/groupList.moa?pageNum=${startPage+pageBlock}" > &gt; </a>
 				</c:if>
 			
 			</c:if>
