@@ -58,4 +58,10 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		
 	}
+	// 카테고리 번호로 카테고리 이름을 뽑아오기
+	@Override
+	public List selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		List categoryNames = categoryDAO.selectBudgetCategoryNames(categoryNums);
+		return categoryNames;
+	}
 }

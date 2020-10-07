@@ -19,5 +19,11 @@
   	<select id="selectCurrentOneById" parameterType="string" resultType="totalBudgetDTO">
   		select * from total_budget where id=#{id} and close=0
   	</select>
+ 	
+  	
+  	<!-- // 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
+  	<select id="selectBudgetNum" parameterType="hashmap" resultType="int">
+  		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= #{dateTime} and end_day >= #{dateTime}]]>	 
+  	</select>
   </mapper>
  

@@ -50,6 +50,16 @@
   		update outcome_category set category_name=#{newName} where id=#{id} and category_no=#{category_no}
   	</update>
   	
+  	
+  	<!-- 회원 아이디와 카테고리 num 으로 카테고리 이름 가져오기 -->
+  	<select id="selectBudgetCategoryNames" resultType="string">
+  		select category_name from outcome_category where category_no in
+  		<foreach collection='list' index='index' item='num' open='(' close=')' separator=','>
+  		#{num}
+  		</foreach>
+  	</select>
+  	
+  	
   </mapper>
 
  
