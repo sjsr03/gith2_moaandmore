@@ -22,6 +22,7 @@ public interface MemberService {
 	public int confirmId(String id) throws SQLException;
 	//로그아웃
 	public void logout(String sessionName) throws SQLException;
+	
 
 
 

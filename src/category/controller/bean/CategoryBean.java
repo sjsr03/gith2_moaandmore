@@ -34,6 +34,7 @@ public class CategoryBean {
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
 		
+
 		
 		return "category/setCategory";
 	}
@@ -61,7 +62,7 @@ public class CategoryBean {
 		
 		
 		
-		return "category/setCategory";
+		return "redirect:/category/setCategory.moa";
 	}
 	
 	@RequestMapping("updateCategory.moa")
@@ -81,6 +82,8 @@ public class CategoryBean {
 		
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
+		
+		
 		return "category/setCategory";
 	}
 	
