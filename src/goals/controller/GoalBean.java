@@ -79,5 +79,15 @@ public class GoalBean {
 		goalsService.myGoalDetail(goal_no);
 		return "goals/myGoalDetail";
 	}
+	
+	@RequestMapping(value="enterTeam.moa", method=RequestMethod.GET)
+	public String enterTeam(int team_no) throws SQLException {// 
+		
+		team_no =2; //임시
+		goalsService.enterTeam(team_no);
+		
+		
+		return "goals/myGoalList";
+	}
 
 }

@@ -41,6 +41,9 @@ public class MemberBean {
 
 	@RequestMapping("loginForm.moa")
 	public String NLCloginForm() throws SQLException {
+		
+
+		
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
