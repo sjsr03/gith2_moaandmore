@@ -8,20 +8,48 @@
 <title>예산 설정</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
+<style>
+	#popup1 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, .7);
+		z-index: 1;
+		backdrop-filter: blur(4px);
+ 		-webkit-backdrop-filter: blur(4px);
+	}
+	.popup {
+		padding: 20px;
+		background: #fff;
+		border-radius: 5px;
+		box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+	}
+	p span {
+		color:red;
+	}
+</style>
 <body>
 
 	<!-- 예산 재설정 경고 안내 -->
-	<div id="popup1" class="overlay" style="position: absolute;	top: 0;bottom: 0;left: 0;right: 0;background: rgba(0,0,0,0.5);transition: opacity 200ms;visibility: show;opacity: 0;">
-		<div class="popup" style="margin: 75px auto;padding: 20px;background: #fff;border: 1px solid #666;width: 300px;box-shadow: 0 0 50px rgba(0,0,0,0.5);position: relative;">
-			<h2>Info box</h2>
-			<a class="close" href="#" style="position: absolute;width: 20px;height: 20px;top: 20px;right: 20px;opacity: 0.8;transition: all 200ms;font-size: 24px;font-weight: bold;text-decoration: none;color: #666;">&times;</a>
+	<div id="popup1">
+		<div class="popup">
+			<h2>예산 설정 변경</h2>
 			<div>
-				<p>This is done totally without JavaScript. Just HTML and CSS.</p>
+				<p>진행중인 예산이 있습니다. <br/>예산설정을 변경할 경우 기존의 예산은 <span>종료</span>되며, <br/>오늘부터 새로운 예산이 시작됩니다. <br/><br/>계속하시겠습니까?</p>
 			</div>
+			<button onclick="$('#popup1').css('display','none');">확인</button>
+			<button onclick="history.go(-1);">취소</button>
 		</div>
 	</div>
 
 	
+	
+	<!-- 폼 시작 -->
 	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
 	
 	<div style="width:600px;height:1000px;overflow:hidden;position:absolute;left:0px;">
