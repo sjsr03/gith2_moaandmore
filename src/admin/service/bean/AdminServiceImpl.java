@@ -36,7 +36,6 @@ public class AdminServiceImpl implements AdminService{
 		List members = null;
 		// 전체 회원 수 가져오기 
 		count = adminDAO.countAll();
-		System.out.println("서비스에서 count : " + count);
 		if(count > 0) {	// 회원이 한명이라도 있으면 selectAll()호출	
 			members = new ArrayList();
 			members = adminDAO.selectAll(startRow, endRow);

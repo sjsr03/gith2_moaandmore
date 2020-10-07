@@ -9,10 +9,9 @@
   		insert into total_budget values(total_budget_seq.nextVal, #{id}, #{budget}, #{period}, #{start_day}, #{end_day}, 0)
   	</insert>
   	
-  	
-  	<!-- 회원의 모든 예산을 close=1(종료된 상태)로 바꿈 (새 예산 삽입 전 사용)-->
-  	<update id="updateTotalBudget" parameterType="string">
-  		update total_budget set close=1 where id=#{value}
+  	<!-- 현재 진행중인 예산의 종료일을 (오늘날짜-1초)로, close=1로 변경 -->
+  	<update id="updateTotalBudget" parameterType="hashmap">
+  		update total_budget set close=1, end_day=#{end_day}-1/100000 where id=#{id} and close=0
   	</update>
   	
   	

@@ -68,4 +68,21 @@ public class GoalsServiceImpl implements GoalsService {
 		
 	}
 
+	//팀 가입
+	@Override
+	public void enterTeam(int team_no) throws SQLException {
+		
+		//team_member 테이블에 데이터 추가
+		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		String nickname = (String)RequestContextHolder.getRequestAttributes().getAttribute("memName", RequestAttributes.SCOPE_SESSION);
+		
+		//teamMember
+		
+		//goals테이블에 팀 목표추가
+		
+		
+		
+			
+	}
+
 }

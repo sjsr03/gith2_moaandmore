@@ -122,7 +122,7 @@
 
 
 <script type="text/javascript">	
-console.log(document.getElementByClassName("modal1"));
+
  
 $(document).ready(function(){
 	$(".trigger").on('click',function(){
@@ -170,11 +170,6 @@ function foundClass(event){
 		// console.log(modalclass);
 		
 		 //이거 가지고 태그 가져오기
-		
-		
-		
-		
-		 
 		 	
 		 var modalclIdx = modalclass.substr(12,2);
 		 //console.log(targetclIdx);

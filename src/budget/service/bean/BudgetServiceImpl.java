@@ -105,5 +105,16 @@ public class BudgetServiceImpl implements BudgetService {
 		
 	}
 	
+	@Override
+	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException {
+		
+		return totalBudgetDAO.selectCurrentOne(id);
+	}
+	@Override
+	public List selectAllbyBudgetNum(int num) throws SQLException {
+		
+		return budgetDetailDAO.selectAllbyBudgetNum(num);
+	}
+	
 
 }

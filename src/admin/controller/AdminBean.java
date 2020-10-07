@@ -34,7 +34,6 @@ public class AdminBean {
 	public String deleteMember(String id, String pageNum, Model model) throws SQLException{
 		memberService.deleteMember(id);
 		model.addAttribute("pageNum", pageNum);
-		System.out.println("test");
 		return "redirect:memberList.moa";
 	}
 }
