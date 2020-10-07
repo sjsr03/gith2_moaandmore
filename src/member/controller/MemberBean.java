@@ -49,6 +49,8 @@ public class MemberBean {
 		HttpSession session = request.getSession();
 		
 		if(result==1) {	//아이디 비밀번호 일치하면
+			
+
 			MemberDTO dto = memberService.selectOne(id);
 			String nickname = dto.getNickname();
 			
@@ -68,6 +70,7 @@ public class MemberBean {
 			}
 			
 			return "main";
+			
 		} else {
 			response.setCharacterEncoding("UTF-8"); 
 			response.setContentType("text/html; charset=UTF-8");
