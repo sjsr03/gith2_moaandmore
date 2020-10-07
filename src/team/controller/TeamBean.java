@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import team.model.dao.TeamDAOImpl;
 import team.model.dto.TeamDTO;
@@ -62,5 +63,13 @@ public class TeamBean {
 		
 		return "team/GroupOpenPro";
 	}
+	
+	@RequestMapping("teamDetail.moa")
+	public String teampDetail(@RequestParam("team_no") int team_no){
+		
+		
+		return "team/groupDetail";
+	}	
+	
 		
 }
