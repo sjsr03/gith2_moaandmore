@@ -23,4 +23,6 @@ public interface GoalsService {
 		public boolean deleteGoal(int goal_no) throws SQLException;
 		
 		public void myGoalDetail(int goal_no) throws SQLException;
+		
+		public void enterTeam(int team_no) throws SQLException;
 }

@@ -15,6 +15,25 @@ public class GoalsDTO {
 	private char public_type;// 비공개0 공개0
 	private int team_no;//fk. 그룹목표인 경우 id, 개인인경우 -1
 	
+	public GoalsDTO(int goal_no, String id, String subject, int target_money, int saving, Timestamp start_day,
+			Timestamp end_day, char public_ch, char public_type, int team_no) {
+		super();
+		this.goal_no = goal_no;
+		this.id = id;
+		this.subject = subject;
+		this.target_money = target_money;
+		this.saving = saving;
+		this.start_day = start_day;
+		this.end_day = end_day;
+		this.public_ch = public_ch;
+		this.public_type = public_type;
+		this.team_no = team_no;
+	}
+	
+	public GoalsDTO() {
+		
+	}
+
 	public int getGoal_no() {
 		return goal_no;
 	}

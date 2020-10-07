@@ -15,9 +15,12 @@ public interface GoalsDAO {
 	//아이디로 목표 전체 가져오기
 	public List<GoalsDTO> selectAllById(String id) throws SQLException;
 	
-	//삽입
+	//개인 목표 삽입
 	public boolean insertGoal(GoalsDTO goal) throws SQLException;
 	
+	//팀 목표 삽입
+	public void insertGoalByTeam(GoalsDTO goal) throws SQLException;
+  	
 	//수정
 	public void modifyGoal(GoalsDTO goal) throws SQLException;
 	

@@ -12,6 +12,10 @@
 		]]>
 	</select>
 	
+	<select id="selectOne" parameterType="int" resultType="teamDTO">
+		select * from team where team_no=#{value}
+	</select>
+	
 	<insert id="insertTeamArticle" parameterType="teamDTO">
 		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}, #{pw})
 	</insert>
