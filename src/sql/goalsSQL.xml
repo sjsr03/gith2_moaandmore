@@ -18,9 +18,9 @@
  		</selectKey>
 		insert into goals values(#{goal_no},#{id},#{subject},#{target_money},#{saving},#{start_day},#{end_day},#{public_ch},#{public_type},#{team_no})
 	</insert>
-	
+		
 	<update id="modifyGoal" parameterType="goalsDTO">
-		update goals set subject=#{subject}, target_money=#{target_money} where goal_no = #{goal_no}	
+		update goals set subject=#{subject}, target_money=#{target_money} where goal_no = #{goal_no}
 	</update>
 	<delete id="deleteGoal" parameterType="int">
 		delete from goals where goal_no=#{value}
