@@ -19,17 +19,56 @@
 <script>
 	$(function(){
 		$("#date").datepicker({
+			dateFormat:"yy-mm-dd"
 		});
 	});
 	
 	// 체크박스 상태 확인해서 분기처리 체크된 상태면 예산외 아니면 예산 내
 	$(document).ready(function(){
+		$(".btn").hide();
 		$("#checkbox").change(function(){
 			if($("#checkbox").is(":checked")){
-				alert("예산 외 선택!!")
+				alert("예산 외 선택!!");
+				$(".btn").show();		
 			}else{
-				alert("예산 내 선택!!!!")
+				alert("예산 내 선택!!!!");
+				$(".btn").hide();	
+				
 			}
+		});	
+		
+		$("#date").on('change',function(){
+			if($("#checkbox").is(":checked")){
+				// 작동안하게 막ㅇ아버리고
+				//alert("작동 ㄴㄴ");
+			}else{
+				//alert("작동 ㅇㅇ");
+				// 작동하게 하기
+				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax
+				$(document).ready(function(){		
+					$.ajax({
+						type : "POST",
+						url : "budgetCategory.moa",
+						data : {date:$("#date").val()},
+						error : function(error){
+							console.log("에러!!");
+						},
+						success : function(data){
+							console.log("성공!!!")
+						}
+					});
+				});
+				// 예산 카테고리 가져기위해 컨트롤러에서 데이터 가져오기 ajax
+				$(document).ready(function(){
+					
+				});
+			}
+		});
+		$("#outcome").click(function(){
+			alert("지출");
+		});
+		$("#income").click(function(){
+			alert("수입");
 		});
 	});
 </script>
@@ -41,8 +80,9 @@
 		<div class="header">
 			<h2> 수입 지출 내역 추가 </h2>	
 			<input id="checkbox" type="checkbox" /> 예산 외 선택 </br>
-			<input type="button" value="지출" />
-			<input type="button" value="수입" />
+			<!-- 지출 수입 버튼은 예산외 버튼 선택해야 보임 -->
+			<input type="button" class="btn" value="지출" id="outcome" name="outcome"/>
+			<input type="button" class="btn" value="수입" id="income" name="income" />
 		</div>
 		<div class="content">
 			<ul>

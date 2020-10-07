@@ -3,6 +3,7 @@ package budget.model.dao;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,4 +36,11 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException {
 		return sqlSession.selectOne("totalBudget.selectCurrentOneById",id);
 	}
+	
+	@Override
+	public int selectBudgetNum(HashMap map) {
+		int budgetNum = sqlSession.selectOne("totalBudget.selectBudgetNum", map);
+		return budgetNum;
+	}
+
 }

@@ -5,7 +5,9 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -117,6 +119,16 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		return budgetDetailDAO.selectAllbyBudgetNum(num);
 	}
+
+	// 날짜랑 아이디로 해당 예산 번호 꺼내오기 
+	@Override
+	public int selectBudgetNum(String id, Timestamp dateTime) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("id", id);
+		map.put("dateTime", dateTime);
+		int budgetNum = totalBudgetDAO.selectBudgetNum(map);
+		return budgetNum;
+	}
 	
 	@Override
 	public List selectLeftMoneyById(String id) throws SQLException {
@@ -124,5 +136,13 @@ public class BudgetServiceImpl implements BudgetService {
 		return list;
 	}
 	
+	// 예산번호로 해당 예산 카테고리 번호 가져오기 list로 가져오기
+
+	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
+		List categoryList = budgetDetailDAO.selectBudgetCategoryNums(budgetNum);
+		
+		return categoryList;
+	}
+  
 
 }

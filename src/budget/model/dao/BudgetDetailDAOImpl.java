@@ -1,6 +1,10 @@
 package budget.model.dao;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +33,13 @@ public class BudgetDetailDAOImpl implements BudgetDetailDAO {
 		return list;
 	}
 
+	@Override
+	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
+		List categoryList = new ArrayList();
+		//리스트처리
+		categoryList = sqlSession.selectList("budgetDetail.selectBudgetCategoryNums", budgetNum);
+		return categoryList;
+	}
+
+	
 }
