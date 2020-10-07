@@ -6,6 +6,13 @@ public class TeamMemberDTO {
 	private String nickname;
 	private int saving;
 	
+	public TeamMemberDTO(int team_no, String id, String nickname, int saving) {
+		super();
+		this.team_no = team_no;
+		this.id = id;
+		this.nickname = nickname;
+		this.saving = saving;
+	}
 	public int getTeam_no() {
 		return team_no;
 	}
