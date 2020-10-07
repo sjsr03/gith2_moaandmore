@@ -50,4 +50,12 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		categoryDAO.addOutcomeCategory(category_name,id); 
 	}
+
+	@Override
+	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
+	
+		categoryDAO.updateoutcomeCategory(category_no,newName,id);
+		
+		
+	}
 }

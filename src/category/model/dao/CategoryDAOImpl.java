@@ -117,5 +117,18 @@ public class CategoryDAOImpl implements CategoryDAO {
 	}
 
 
+	@Override
+	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
+	
+		HashMap map = new HashMap();
+		map.put("category_no",category_no);
+		map.put("newName", newName);
+		map.put("id", id);
+		
+		sqlSession.update("category.updateoutcomeCategory",map);
+		
+	}
+
+
 	
 }

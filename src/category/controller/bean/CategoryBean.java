@@ -63,7 +63,26 @@ public class CategoryBean {
 		
 		return "category/setCategory";
 	}
-
+	
+	@RequestMapping("updateCategory.moa")
+	public String updateoutcomeCategory(Model model,int category_no,String newName) throws SQLException {
+		
+		
+		
+		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		
+		categoryService.updateoutcomeCategory(category_no,newName,id);
+		
+		
+		
+		
+		List income = categoryService.selectAllIncomeCategoryById(id);
+		List outcome = categoryService.selectAllById(id);
+		
+		model.addAttribute("income",income);
+		model.addAttribute("outcome", outcome);
+		return "category/setCategory";
+	}
 	
 	
 }
