@@ -2,6 +2,7 @@ package budget.controller.bean;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +66,7 @@ public class RecordBean {
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
 		// 카테고리 번호로 카테고리 이름 목록뽑아오기 
-		List categoryNames = categoryService.selectBudgetCategoryNames(categoryNums);
+		HashMap categoryNames = categoryService.selectBudgetCategoryNames(categoryNums);
 
 		return null;
 	}

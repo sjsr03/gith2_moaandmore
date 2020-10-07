@@ -1,6 +1,7 @@
 package category.service.bean;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 public interface CategoryService {
@@ -18,7 +19,7 @@ public interface CategoryService {
 	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException;
 	
 	// 카테고리 번호로 카테고리 이름 list 뽑아오기
-	public List selectBudgetCategoryNames(List categoryNums) throws SQLException;
+	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException;
 	
 
 }

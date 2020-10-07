@@ -127,11 +127,14 @@ public class CategoryDAOImpl implements CategoryDAO {
 	}
 	// 카테고리 번호로 카테고리 이름 가져오기 
 	@Override
-	public List selectBudgetCategoryNames(List categoryNums) throws SQLException {
-		List categoryNames = new ArrayList();
-		categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
+	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		List categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
 		
-		return categoryNames;
+		HashMap categories = new HashMap();
+		for(int i = 0; i < categoryNums.size(); i++) {
+			categories.put(categoryNums.get(i), categoryNames.get(i));
+		}
+		return categories;
 	}
 
 

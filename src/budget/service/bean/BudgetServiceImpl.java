@@ -137,7 +137,7 @@ public class BudgetServiceImpl implements BudgetService {
 	}
 	
 	// 예산번호로 해당 예산 카테고리 번호 가져오기 list로 가져오기
-
+	@Override
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
 		List categoryList = budgetDetailDAO.selectBudgetCategoryNums(budgetNum);
 		
