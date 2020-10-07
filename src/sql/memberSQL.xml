@@ -7,7 +7,7 @@
 
  <mapper namespace="member"> 
  	<insert id="insertMember" >
- 		insert into member values(#{id},#{pw},#{nickname},#{profile_img},sysdate)
+ 		insert into member values(#{id},#{pw},#{profile_img},sysdate,#{nickname})
  	</insert>
  
 
