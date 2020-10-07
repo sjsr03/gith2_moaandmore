@@ -17,8 +17,10 @@ public interface GoalsService {
 		public boolean insertGoal(GoalsDTO goal) throws SQLException;
 		
 		//수정
-		public boolean modifyGoal(GoalsDTO goal) throws SQLException;
+		public void modifyGoal(GoalsDTO goal) throws SQLException;
 		
 		//삭제
 		public boolean deleteGoal(int goal_no) throws SQLException;
+		
+		public void myGoalDetail(int goal_no) throws SQLException;
 }

@@ -19,8 +19,7 @@ public class GoalsDAOImpl implements GoalsDAO{
 
 	@Override
 	public GoalsDTO selectOne(int goal_no) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne("goals.selectOne", goal_no);
 	}
 
 	@Override
@@ -36,15 +35,13 @@ public class GoalsDAOImpl implements GoalsDAO{
 	}
 
 	@Override
-	public boolean modifyGoal(GoalsDTO goal) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+	public void modifyGoal(GoalsDTO goal) throws SQLException {
+		sqlSession.update("goals.modifyGoal", goal);
 	}
 
 	@Override
-	public boolean deleteGoal(int goal_no) throws SQLException {
-		// TODO Auto-generated method stub
-		return false;
+	public void deleteGoal(int goal_no) throws SQLException {
+		sqlSession.delete("goals.deleteGoal",goal_no);
 	}
 
 }

@@ -7,5 +7,5 @@ import budget.model.dto.TotalBudgetDTO;
 
 public interface TotalBudgetDAO {
 
-	public void setBudget(TotalBudgetDTO total, List list, String id) throws SQLException;
+	public int setBudget(TotalBudgetDTO total) throws SQLException;
 }
