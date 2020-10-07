@@ -15,6 +15,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import budget.model.dao.BudgetDetailDAO;
+import budget.model.dao.LeftMoneyDAO;
 import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.TotalBudgetDTO;
@@ -29,7 +30,8 @@ public class BudgetServiceImpl implements BudgetService {
 	private CategoryDAO categoryDAO = null;
 	@Autowired
 	private BudgetDetailDAO budgetDetailDAO = null;
-	
+	@Autowired
+	private LeftMoneyDAO leftMoneyDAO = null;
 	
 	//신규 예산 설정
 	@Override
@@ -114,6 +116,12 @@ public class BudgetServiceImpl implements BudgetService {
 	public List selectAllbyBudgetNum(int num) throws SQLException {
 		
 		return budgetDetailDAO.selectAllbyBudgetNum(num);
+	}
+	
+	@Override
+	public List selectLeftMoneyById(String id) throws SQLException {
+		List list = leftMoneyDAO.selectAllById(id);
+		return list;
 	}
 	
 

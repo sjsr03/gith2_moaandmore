@@ -15,4 +15,7 @@ public interface BudgetService {
 	
 	//현재 총예산 정보 가져오기
 	public List selectAllbyBudgetNum(int num) throws SQLException;
+	
+	//회원의 남은 예산 정보 가져오기
+	public List selectLeftMoneyById(String id) throws SQLException;
 }

@@ -76,7 +76,7 @@
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">예산</h6>
-            <a class="collapse-item" href="buttons.html">오늘의 예산</a>
+            <a class="collapse-item" href="/moamore/budget/todayBudget.moa">오늘의 예산</a>
             <a class="collapse-item" href="/moamore/budget/setBudget.moa">예산 설정</a>
           </div>
         </div>
