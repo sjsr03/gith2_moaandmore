@@ -1,15 +1,19 @@
-package team.model.dao;
+package team.service.bean;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import team.model.dao.TeamDAO;
 import team.model.dto.TeamDTO;
 
-public class TeamDAOImpl implements TeamDAO{
+public class TeamServiceImpl implements TeamService{
 	
+	@Autowired
+	TeamDAO dao = null; 
+
 	private SqlSessionTemplate sqlSession = null;
 	public void setSqlSession(SqlSessionTemplate sqlSession) {
 		this.sqlSession = sqlSession;
@@ -17,27 +21,17 @@ public class TeamDAOImpl implements TeamDAO{
 	
 	@Override
 	public int getTeamArticleCount() throws SQLException {
-		int count = sqlSession.selectOne("team.countOpenAll");
-		
-		return count;
+		return dao.getTeamArticleCount();
 	}
-	
+
 	@Override
 	public List getTeamArticles(int start, int end) throws SQLException {
-		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
-		
-		List list = sqlSession.selectList("team.selectOpenAll", map);
-		
-		return list;
+		return dao.getTeamArticles(start, end);
 	}
 
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
-		dto.setStart_day(dto.getStart_day().replaceAll("-", ""));
-		dto.setEnd_day(dto.getEnd_day().replaceAll("-", ""));
-		sqlSession.insert("team.insertTeamArticle", dto);
+		dao.insertTeamArticle(dto);
 	}
-	
+
 }

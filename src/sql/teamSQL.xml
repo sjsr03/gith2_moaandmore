@@ -13,6 +13,6 @@
 	</select>
 	
 	<insert id="insertTeamArticle" parameterType="teamDTO">
-		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, convert(date,#{start_day}),  convert(date,#{end_day}), #{leader}, #{people}, 0, #{isopen}, null)
+		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}, null)
 	</insert>
 </mapper>
