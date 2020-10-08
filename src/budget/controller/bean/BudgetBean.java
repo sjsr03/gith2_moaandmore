@@ -17,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.LeftMoneyDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
@@ -69,19 +70,29 @@ public class BudgetBean {
 	@RequestMapping("todayBudget.moa")
 	public String LCtodayBudget(HttpServletRequest request, Model model) throws SQLException {
 		String id = (String) request.getSession().getAttribute("memId");
+		//현재 진행중인 예산 정보 가져오기
+		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
+		List BDdtoList = budgetService.selectAllbyBudgetNum(TBdto.getBudget_no());
 		
-		//임시로 남은돈 정보만 가져오는 상태
-		
-		List leftMoneyList = budgetService.selectLeftMoneyById(id);
+		//현재 예산의 카테고리정보 가져오기
 		List categoryNums = new ArrayList();
-		for (Object obj:leftMoneyList) {
-			LeftMoneyDTO dto = (LeftMoneyDTO)obj;
+		for (Object obj:BDdtoList) {
+			BudgetDetailDTO dto = (BudgetDetailDTO)obj;
 			categoryNums.add(dto.getCategory_no());
 		}
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
+		System.out.println(categories);
+		
+		
+		// 남은돈 정보
+		
+		List leftMoneyList = budgetService.selectLeftMoneyById(id);
+		
 		
 		model.addAttribute("leftMoney", leftMoneyList);
 		model.addAttribute("categories", categories);
+		model.addAttribute("TBdto", TBdto);
+		model.addAttribute("BDdtoList", BDdtoList);
 		
 		return "budget/todayBudget";
 	}
