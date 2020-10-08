@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import team.model.dao.TeamDAO;
 import team.model.dto.TeamDTO;
-
+@Service
 public class TeamServiceImpl implements TeamService{
 	
 	@Autowired

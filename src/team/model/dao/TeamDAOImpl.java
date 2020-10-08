@@ -5,10 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.stereotype.Repository;
 
 import team.model.dto.TeamDTO;
 
 
+@Repository
 public class TeamDAOImpl implements TeamDAO{
 	
 	private SqlSessionTemplate sqlSession = null;

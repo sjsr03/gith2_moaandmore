@@ -4,11 +4,12 @@ import java.sql.SQLException;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import team.model.dto.TeamMemberDTO;
 
-@Service
+@Repository
 public class TeamMemberDAOImpl implements TeamMemberDAO {
 
 	@Autowired 

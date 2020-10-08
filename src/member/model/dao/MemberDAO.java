@@ -20,6 +20,7 @@ public interface MemberDAO {
 	public void deleteMember(String id) throws SQLException;
 	//회원 한명 정보 가져오기
 	public MemberDTO selectOne(String id) throws SQLException;
-	
+	//닉네임으로 아이디 가져오기
+	public String selectOneByNick(String nickname) throws SQLException;
 	
 }
