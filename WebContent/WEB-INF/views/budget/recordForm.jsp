@@ -60,10 +60,10 @@
 						success : function(data){							
 							console.log(data);
 							//datas = data;
-							// 카테고리 새로 바꿔주기
-							$("#category").find("option").remove();
-							for(var i = 0; i < data.length-1; i++){
-								
+							// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
+							$("#category").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
+							for(var i = 0; i < data.length-1; i++){ // 리턴받은 categories의 마지막 키와 값은 예산번호에 해당
+								$("#category").append("<option value="+data.get)
 							}
 						}
 					});
