@@ -24,7 +24,7 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		map.put("id", total.getId());
 		map.put("end_day", total.getStart_day());
 		
-		sqlSession.update("totalBudget.updateTotalBudget", map);
+		sqlSession.update("totalBudget.updateTotalBudgetEnd", map);
 		//새 예산 삽입
 		sqlSession.insert("totalBudget.insertTotalBudget", total);
 		TotalBudgetDTO TBdto = sqlSession.selectOne("totalBudget.selectCurrentOneById",total.getId());
@@ -41,6 +41,11 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	public int selectBudgetNum(HashMap map) {
 		int budgetNum = sqlSession.selectOne("totalBudget.selectBudgetNum", map);
 		return budgetNum;
+	}
+	
+	@Override
+	public void updateTotalBudget(TotalBudgetDTO dto) throws SQLException {
+		sqlSession.update("totalBudget.updateTotalBudget", dto);
 	}
 
 }

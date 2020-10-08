@@ -109,6 +109,42 @@ public class BudgetServiceImpl implements BudgetService {
 		
 	}
 	
+	
+	@Override
+	public void updateBudget() throws SQLException {
+		
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		int budget_no = Integer.parseInt(request.getParameter("budget_no"));
+		int budget = Integer.parseInt(request.getParameter("totalBudget"));
+		String id = (String) request.getSession().getAttribute("memId");
+		
+		
+		
+		TotalBudgetDTO TBdto = new TotalBudgetDTO();
+		TBdto.setBudget_no(budget_no);
+		TBdto.setBudget(budget);
+		
+		totalBudgetDAO.updateTotalBudget(TBdto);
+		
+		///////////////// 세부 예산 ////////////////////
+		
+		String[] category_name = request.getParameterValues("category_name");
+		String[] amount = request.getParameterValues("amount");
+		
+		List budget_detail = new ArrayList();
+		for(int i = 0; i < category_name.length; i++) {
+			BudgetDetailDTO BDdto = new BudgetDetailDTO();
+			BDdto.setBudget_no(budget_no);
+			BDdto.setCategory_budget(Integer.parseInt(amount[i]));
+			BDdto.setCategory_no(categoryDAO.selectNumByName(category_name[i], id));
+			
+			budget_detail.add(BDdto);
+		}
+		
+		budgetDetailDAO.updateBudgetDetail(budget_detail);
+		
+	}
+	
 	@Override
 	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException {
 		

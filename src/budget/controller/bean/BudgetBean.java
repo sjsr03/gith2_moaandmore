@@ -3,8 +3,10 @@ package budget.controller.bean;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dto.BudgetDetailDTO;
+import budget.model.dto.LeftMoneyDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
 import category.service.bean.CategoryService;
@@ -45,7 +49,7 @@ public class BudgetBean {
 			model.addAttribute("currentTBudget", currentTBudget);
 			model.addAttribute("detailList", budgetService.selectAllbyBudgetNum(currentTBudget.getBudget_no()));
 			
-			return "budget/modifyBudget";
+			return "budget/updateBudget";
 		} else {	//진행중인 예산이 없다면 
 			return "budget/setBudget";
 		}
@@ -53,20 +57,42 @@ public class BudgetBean {
 	}
 	
 	@RequestMapping("setBudgetPro.moa")
-	public String setBudgetForm() throws SQLException {
-		budgetService.setBudget();
+	public String setBudgetForm(HttpServletRequest request) throws SQLException {
+		String isNewBudget = request.getParameter("isNewBudget");
+		if(isNewBudget.equals("1")) { //새로운 예산 생성이면
+			budgetService.setBudget();
+		} else {//기존 예산 수정이면
+			budgetService.updateBudget();
+		}
 		return "main";
 	}
 	
 	@RequestMapping("todayBudget.moa")
 	public String LCtodayBudget(HttpServletRequest request, Model model) throws SQLException {
 		String id = (String) request.getSession().getAttribute("memId");
+		//현재 진행중인 예산 정보 가져오기
+		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
+		List BDdtoList = budgetService.selectAllbyBudgetNum(TBdto.getBudget_no());
 		
-		//임시로 남은돈 정보만 가져오는 상태
+		//현재 예산의 카테고리정보 가져오기
+		List categoryNums = new ArrayList();
+		for (Object obj:BDdtoList) {
+			BudgetDetailDTO dto = (BudgetDetailDTO)obj;
+			categoryNums.add(dto.getCategory_no());
+		}
+		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
+		System.out.println(categories);
+		
+		
+		// 남은돈 정보
 		
 		List leftMoneyList = budgetService.selectLeftMoneyById(id);
 		
+		
 		model.addAttribute("leftMoney", leftMoneyList);
+		model.addAttribute("categories", categories);
+		model.addAttribute("TBdto", TBdto);
+		model.addAttribute("BDdtoList", BDdtoList);
 		
 		return "budget/todayBudget";
 	}

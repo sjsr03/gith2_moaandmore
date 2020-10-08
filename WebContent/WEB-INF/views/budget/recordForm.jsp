@@ -45,16 +45,26 @@
 				//alert("작동 ㅇㅇ");
 				// 작동하게 하기
 				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax
-				$(document).ready(function(){		
+				var datas;
+				$(document).ready(function(){	
+					
 					$.ajax({
 						type : "POST",
 						url : "budgetCategory.moa",
 						data : {date:$("#date").val()},
+						dataType : "json",
+						async: false,
 						error : function(error){
 							console.log("에러!!");
 						},
-						success : function(data){
-							console.log("성공!!!")
+						success : function(data){							
+							console.log(data);
+							//datas = data;
+							// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
+							$("#category").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
+							for(var i = 0; i < data.length-1; i++){ // 리턴받은 categories의 마지막 키와 값은 예산번호에 해당
+								$("#category").append("<option value="+data.get)
+							}
 						}
 					});
 				});
@@ -71,11 +81,14 @@
 			alert("수입");
 		});
 	});
+
+	
 </script>
 </head>
 
 <body>
 <form action="/moamore/record/recordPro.moa" method="post" enctype="multipart/form-data">
+<h2>datas : ${datas}</h2>
 	<div>
 		<div class="header">
 			<h2> 수입 지출 내역 추가 </h2>	

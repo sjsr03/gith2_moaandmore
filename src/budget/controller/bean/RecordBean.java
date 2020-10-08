@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import budget.model.dto.NoBudgetDTO;
 import budget.service.bean.BudgetService;
@@ -21,6 +23,7 @@ import category.service.bean.CategoryService;
 
 
 @Controller
+@EnableWebMvc
 @RequestMapping("/record/")
 public class RecordBean {
 
@@ -50,26 +53,33 @@ public class RecordBean {
 	}
 	
 	// ajax로 회원 예산 카테고리 가져오기
-	@RequestMapping("budgetCategory.moa")
-	@ResponseBody
-	public String budgetCategory(HttpServletRequest request, String date) throws SQLException{
+	@RequestMapping(value="budgetCategory.moa", method= {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody Map budgetCategory(HttpServletRequest request, String date) throws SQLException{
 		//String id = request.getParameter("memId");
 		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
-
+		
+		
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
 		Timestamp dateTime = Timestamp.valueOf(newDate);
+		
 		// 예산 번호 뽑아오기
 		int budgetNum = budgetService.selectBudgetNum("test50", dateTime);
 		
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
-		// 카테고리 번호로 카테고리 이름 목록뽑아오기 
-		HashMap categoryNames = categoryService.selectBudgetCategoryNames(categoryNums);
-
-		return null;
+		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)
+		
+		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
+		
+		// categories에 예산 번호 추가해주기   
+		categories.put("budgetNum", budgetNum);
+		
+		return categories;	
 	}
+	
+	
 	
 	@RequestMapping(value="recordPro.moa", method=RequestMethod.POST)
 	public String recordPro(MultipartHttpServletRequest request) throws Exception{

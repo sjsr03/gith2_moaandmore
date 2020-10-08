@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import team.model.dto.TeamDTO;
 import team.service.bean.TeamServiceImpl;
@@ -62,5 +63,14 @@ public class TeamBean {
 		
 		return "team/groupOpenPro";
 	}
+	
+	@RequestMapping("teamDetail.moa")
+	public String teampDetail(@RequestParam("team_no")int team_no, Model model) throws SQLException{
+		TeamDTO team = teamService.selectOne(team_no);
+		
+		model.addAttribute("team", team);
+		return "team/groupDetail";
+	}	
+	
 		
 }
