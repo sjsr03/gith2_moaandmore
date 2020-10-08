@@ -16,7 +16,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 
 import category.service.bean.CategoryService;
 
-
 @Controller
 @RequestMapping("/category/")
 public class CategoryBean {
