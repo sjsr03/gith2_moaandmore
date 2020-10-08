@@ -29,5 +29,7 @@ public interface CategoryService {
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException;
 	//회원 한명의 수입 카테고리명 다 가져오기
 	public List selectIncomeCategoryNamesbyId(String id) throws SQLException;
+	//카테고리 넘으로 budget테이블,nobudget테이블 개수 가져오기
+	public int selectCategoryInfo(int category_no,String id)throws SQLException;
 
 }

@@ -88,7 +88,7 @@ public class CategoryServiceImpl implements CategoryService{
 		
 	}
 	
-	//회원 한명의 수출카테고리명 가져오기
+	//회원 한명의 지출카테고리명 가져오기
 	@Override
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException {
 		
@@ -96,7 +96,8 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		return outcomeCategoryNames;
 	}
-
+	
+	//회원 한명의 수입 카테고리 가져오기
 	@Override
 	public List selectIncomeCategoryNamesbyId(String id) throws SQLException {
 		
@@ -104,6 +105,24 @@ public class CategoryServiceImpl implements CategoryService{
 		
 		return incomeCategoryNames;
 		
+	}
+
+	//카테고리 넘으로 budget테이블 정보 가져오기
+	@Override
+	public int selectCategoryInfo(int category_no,String id) throws SQLException {
+		
+		int budgetCount = categoryDAO.selectBudgetInfo(category_no,id);
+		System.out.println("budgetCount"+budgetCount);
+		int nobudgetCount = categoryDAO.selectNobudgetInfo(category_no,id);
+		System.out.println("nobudgetCount"+nobudgetCount);
+		
+		
+		int exist = 0;
+		if(budgetCount >0 || nobudgetCount >0) {
+			exist = 1;
+		}
+		
+		return exist;
 	}
 
 	

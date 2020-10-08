@@ -197,6 +197,32 @@ public class CategoryDAOImpl implements CategoryDAO {
 		
 		return incomeCategoryNames;
 	}
+	
+	//카테고리 넘으로 budget테이블 개수 가져오기
+	@Override
+	public int selectBudgetInfo(int category_no, String id) throws SQLException {
+		
+		Map map = new HashMap();
+		map.put("category_no", category_no);
+		map.put("id", id);
+		
+		int count=sqlSession.selectOne("category.selectBudgetInfo", map);
+		//System.out.println(count);
+		return count;
+	}
+	
+	//카테고리넘으로 nobudget테이블 개수 가져오기
+	@Override
+	public int selectNobudgetInfo(int category_no, String id) throws SQLException {
+		
+		Map map = new HashMap();
+		map.put("category_no", category_no);
+		map.put("id", id);
+		
+		int count=sqlSession.selectOne("category.selectNoBudgetInfo", map);
+		System.out.println(count);
+		return count;
+	}
 
 
 
