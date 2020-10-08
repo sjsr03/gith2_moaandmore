@@ -58,8 +58,15 @@ public class CategoryServiceImpl implements CategoryService{
 	}
 	// 카테고리 번호로 카테고리 이름을 뽑아오기
 	@Override
-	public List selectBudgetCategoryNames(List categoryNums) throws SQLException {
-		List categoryNames = categoryDAO.selectBudgetCategoryNames(categoryNums);
+	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		HashMap categoryNames = categoryDAO.selectBudgetCategoryNames(categoryNums);
 		return categoryNames;
+	}
+
+	@Override
+	public void removeCategory(int category_no, String id) throws SQLException {
+		
+		categoryDAO.removeCategory(category_no,id);
+		
 	}
 }

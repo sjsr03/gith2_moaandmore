@@ -71,6 +71,7 @@ public class RecordBean {
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
 		// 카테고리 번호로 카테고리 이름 목록뽑아오기 
+		/*
 		List categoryNames = categoryService.selectBudgetCategoryNames(categoryNums);
 		
 		
@@ -79,7 +80,8 @@ public class RecordBean {
 			map.put(categoryNums.get(i), categoryNames.get(i));
 		}
 		map.put("budgetNum", budgetNum);
-		return map;
+		*/
+		return map;	
 	}
 	
 	

@@ -11,6 +11,9 @@ public interface BudgetService {
 	//예산설정
 	public void setBudget() throws SQLException;
 	
+	//예산 수정
+	public void updateBudget() throws SQLException;
+	
 	//현재 총예산 정보 가져오기
 	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException;
 	

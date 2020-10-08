@@ -22,6 +22,7 @@
 		z-index: 1;
 		backdrop-filter: blur(4px);
  		-webkit-backdrop-filter: blur(4px);
+ 		display:none;
 	}
 	.popup {
 		padding: 20px;
@@ -32,18 +33,21 @@
 	p span {
 		color:red;
 	}
+	input[type=number] {
+		width:70px;
+	}
 </style>
 <body>
 
 	<!-- 예산 재설정 경고 안내 -->
 	<div id="popup1">
 		<div class="popup">
-			<h2>예산 설정 변경</h2>
+			<h2>예산 주기 변경</h2>
 			<div>
-				<p>진행중인 예산이 있습니다. <br/>예산설정을 변경할 경우 기존의 예산은 <span>종료</span>되며, <br/>오늘부터 새로운 예산이 시작됩니다. <br/><br/>계속하시겠습니까?</p>
+				<p>예산 주기를 변경할 시 기존의 예산은 종료되며, 오늘부터 새로운 예산이 시작됩니다.<br/>주기를 변경하시겠습니까?</p>
 			</div>
-			<button onclick="$('#popup1').css('display','none');">확인</button>
-			<button onclick="history.go(-1);">취소</button>
+			<button id="PeChOk">확인</button>
+			<button id="PeChCancel">취소</button>
 		</div>
 	</div>
 
@@ -52,8 +56,8 @@
 	<!-- 폼 시작 -->
 	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
 	
-	<div style="width:600px;height:1000px;overflow:hidden;position:absolute;left:0px;">
-		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;" id="firstStep">
+	<div style="width:600px;height:1000px;overflow:hidden;position:absolute;left:0px;top:20px;">
+		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;top:20px;" id="firstStep">
 			<ul>
 				<li>
 					총 예산 : <input type="number" name="totalBudget" id="totalBudget" value="${currentTBudget.budget }"/>원
@@ -71,7 +75,7 @@
 			</ul>
 			<input type="button" value="세부설정 >" onclick="nextStep()"/>
 		</div>
-		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:600px;" id="secondStep">
+		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:600px;top:20px;" id="secondStep">
 			<input type="button" value="<이전단계" onclick="preStep()"/>
 			<input type="button" value="추가" id="insertLine"/>
 			
@@ -80,6 +84,7 @@
 					<td>카테고리</td>
 					<td>금액</td>
 					<td>비율</td>
+					<td>하루 예산</td>
 					<td>&nbsp;</td>
 				</tr>
 				
@@ -99,6 +104,9 @@
 					<td>
 						<input type="number" readonly class="rate"/>%
 					</td>
+					<td>
+						<input type="number" readonly class="dayAmount"/>원
+					</td>
 					<c:if test="${i != 1 }">
 						<td>
 							<input type="button" class="deleteBtn" value="삭제"/>
@@ -116,10 +124,15 @@
 			<br/>
 			카테고리별 예산 합계와 총 예산이 동일하도록 설정하세요
 			<br/>
-			<input type="hidden" value="새로운 예산 생성" id="createBudget" />
+			<input type="hidden" value="예산 설정 수정" id="createBudget" />
 		</div>
 	</div>
+	<input type="hidden" name="budget_no" value="${currentTBudget.budget_no }" />
+	<input type="hidden" name="isNewBudget" id="isNewBudget" value="0" />
 	</form>
+	
+	<div><span id="warn" style="color:red; display:none">주기를 변경하셨습니다. 새로운 예산이 생성됩니다.</span></div>
+	<div style="position:absolute; top:500px;"><h1>예산 수정하면 기존 기록 반영해서 상태 보여주는 부분 아직 안함 <br/>(수입지출 기록 완료되면 수정할 것)</h1></div>
 </body>
 
 <script>
@@ -128,11 +141,57 @@
 	var y = document.getElementById("secondStep");
 	
 	$(document).ready(function(){
+		
+		//페이지 불러오면 미리 계산되어있게
 		$('#TbudgetPrint').text($('#totalBudget').val());
 		$('.amount').each(function(){
 			reRate($(this));
+			calDay($(this));
 		});
 		reSum();
+		
+		//period가 변경되면 경고창 출력
+		$('#period').on('change', function(){
+			$('#popup1').css({display: 'flex'});
+		});
+		
+		//period 변경을 취소하면 다시 원래값으로
+		$('#PeChCancel').on('click', function(){
+			$('#popup1').css('display','none');
+			$('#period').children('option[value=${currentTBudget.period}]').prop('selected',true);
+			setStartDay(); //월 시작일 출력여부 결정
+		});
+		
+		//period 변경에서 확인을 누르면 값 더 바꿔도 경고창 다시 안뜨게(대신 경고문 띄워져있음)
+		$('#PeChOk').on('click', function(){
+			$('.amount').each(function(){
+				calDay($(this));
+			});
+			
+			$('#popup1').remove();
+			$('#warn').css('display', 'flex');
+			
+				
+			//경고문 출력 여부
+			$('#period').on('change', function(){
+				$('.amount').each(function(){
+					calDay($(this));
+				});
+				
+				
+				if($('#period').val() != ${currentTBudget.period}) {
+					$('#warn').css('display', 'flex');
+					$('#isNewBudget').val(1);
+				} else {
+					$('#warn').css('display', 'none');
+					$('#isNewBudget').val(0);
+				}
+				
+			});
+		});
+		
+		
+		
 		$('#insertLine').on('click', function(){ //라인 추가
 			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
@@ -160,6 +219,7 @@
 			$('.amount').on('keyup', function(){
 				reRate($(this));
 				reSum();
+				calDay($(this));
 			});
 			
 			//카테고리명이 change일 때 옵션 속성 변경
@@ -169,6 +229,11 @@
 			
 		});	//라인추가 function 끝
 		
+		//총예산, 카테고리별 금액, 주기가 변경될때마다 '하루예산'계산
+		function calDay(amount) {
+			amount.parent().next().next().children('.dayAmount').val((amount.val()/$('#period').val()).toFixed(1));		
+		}
+		
 		//카테고리명이 change일 때 옵션 속성 변경
 		$('.category_name').on('change', function(){
 			optControl();
@@ -177,6 +242,7 @@
 		//비율 및 총합 자동계산
 		$('.amount').on('keyup', function(){
 			reRate($(this));
+			calDay($(this));
 			reSum();
 		});
 		
@@ -218,13 +284,16 @@
 		
 		//한달주기일때만 월 시작일 설정
 		$('#period').on('change', function(){
+			setStartDay();
+		});
+		//월 시작일 설정 출력 여부
+		function setStartDay(){
 			if($('#period').val()=='30') {
 				$('#startday').css("display","block");
 			} else {
 				$('#startday').css("display","none");
 			}
-		});
-		
+		};
 		//적은 금액 변하면 비율 및 총합 자동계산
 		$('.amount').on('keyup', function(){
 			reRate($(this));
@@ -265,6 +334,7 @@
 			//적힌 비율과 합계도 다시 계산
 			$('.amount').each(function(){
 				reRate($(this));
+				calDay($(this));
 			});
 			reSum();
 		});

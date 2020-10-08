@@ -28,6 +28,14 @@ public class BudgetDetailDAOImpl implements BudgetDetailDAO {
 	}
 	
 	@Override
+	public void updateBudgetDetail(List budget_detail) {
+		for (int i = 0; i < budget_detail.size(); i++) {
+			BudgetDetailDTO dto = (BudgetDetailDTO) budget_detail.get(i);
+			sqlSession.update("budgetDetail.updateBudgetDetail", dto);
+		}
+	}
+	
+	@Override
 	public List selectAllbyBudgetNum(int num) {
 		List list = sqlSession.selectList("budgetDetail.selectAllbyBudgetNum", num);
 		return list;
@@ -40,6 +48,5 @@ public class BudgetDetailDAOImpl implements BudgetDetailDAO {
 		categoryList = sqlSession.selectList("budgetDetail.selectBudgetCategoryNums", budgetNum);
 		return categoryList;
 	}
-
 	
 }

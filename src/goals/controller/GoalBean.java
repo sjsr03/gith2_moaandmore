@@ -82,12 +82,11 @@ public class GoalBean {
 	
 	@RequestMapping(value="enterTeam.moa", method=RequestMethod.GET)
 	public String enterTeam(int team_no) throws SQLException {// 
-		
-		team_no =2; //임시
+		System.out.println(team_no);
 		goalsService.enterTeam(team_no);
 		
 		
-		return "redirect:/goals/myGoalList.moa";
+		return "redirect:/team/groupList.moa";
 	}
 
 }
