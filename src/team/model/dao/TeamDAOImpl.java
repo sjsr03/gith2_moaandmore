@@ -36,7 +36,7 @@ public class TeamDAOImpl implements TeamDAO{
 
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
-		if(dto.getPw() == null)
+		if(dto.getPassword() == null)
 			sqlSession.insert("team.insertTeamArticleNoPw", dto);
 		else
 			sqlSession.insert("team.insertTeamArticle", dto);
