@@ -47,5 +47,10 @@ public class TeamDAOImpl implements TeamDAO{
 		
 		return sqlSession.selectOne("team.selectOne", team_no);
 	}
+
+	@Override
+	public void updateTeamStatus(TeamDTO dto) throws SQLException {
+		sqlSession.update("team.updateTeamStatus", dto);
+	}
 	
 }

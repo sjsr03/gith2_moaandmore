@@ -58,7 +58,7 @@ public class TeamBean {
 	}
 	
 	@RequestMapping("groupOpenPro.moa")
-	public String groupOpenPro(TeamDTO dto) throws SQLException{
+	public String groupOpenPro(TeamDTO dto, String join_mem_nick) throws SQLException{
 		teamService.insertTeamArticle(dto);
 		
 		return "team/groupOpenPro";

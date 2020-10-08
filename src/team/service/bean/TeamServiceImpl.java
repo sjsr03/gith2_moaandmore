@@ -42,4 +42,9 @@ public class TeamServiceImpl implements TeamService{
 		return dao.selectOne(team_no);
 	}
 
+	@Override
+	public void updateTeamStatus(TeamDTO dto) throws SQLException {
+		dao.updateTeamStatus(dto);
+	}
+
 }

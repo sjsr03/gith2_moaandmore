@@ -5,8 +5,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>그룹 신청 승인 페이지</title>
+	<meta charset="UTF-8">
+	<title>그룹 신청 승인 페이지</title>
+	<style type="text/css">
+		table, th, td {
+		    border: 1px solid black;
+		    padding: 5px;
+		}
+		
+		table {
+		    border-collapse: collapse;
+		}
+	</style>
 </head>
 <body>
 	<div class="middle" style="width: 100%;text-align: center;">
@@ -21,19 +31,30 @@
 					<td>참여자 수</td>
 					<td>공개여부</td>
 					<td>비밀번호</td>
+					<td></td>
 				</tr>
 				<c:forEach var="article" items="${modelDTO.articleList}">
-					<tr>
-						<td>${article.leader}</td>
-						<td>${article.subject}</td>
-						<td>${article.content}</td>
-						<td>${article.amount}</td>
-						<td>${fn:substring(article.start_day,0,10)}</td>
-						<td>${fn:substring(article.end_day,0,10)}</td>
-						<td>${article.people}</td>
-						<td>${article.isopen}</td>
-						<td>${article.password}</td>
-					</tr>
+					<form action="/moamore/admin/groupWaitAdminPro.moa" method="post">
+						<input type="hidden" name="team_no" value="${article.team_no}"/>
+						<tr>
+							<td>${article.leader}</td>
+							<td>${article.subject}</td>
+							<td>${article.content}</td>
+							<td>${article.amount}</td>
+							<td>${fn:substring(article.start_day,0,10)}</td>
+							<td>${fn:substring(article.end_day,0,10)}</td>
+							<td>${article.people}</td>
+							<td>${article.isopen}</td>
+							<td>${article.password}</td>
+							<td>
+								<select name="status">
+									<option value='1'>승인</option>
+									<option value='-1'>거절</option>
+								</select>
+								<input type="submit" value="확인"/>
+							</td>
+						</tr>
+					</form>
 				</c:forEach>
 			</table>
 	</div>

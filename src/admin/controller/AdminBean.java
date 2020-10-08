@@ -12,6 +12,8 @@ import admin.model.dto.MemberListDTO;
 import admin.model.dto.ModelDTO;
 import admin.service.bean.AdminServiceImpl;
 import member.service.bean.MemberServiceImpl;
+import team.model.dto.TeamDTO;
+import team.service.bean.TeamServiceImpl;
 
 @Controller
 @RequestMapping("/admin/") // 클래스 레벨
@@ -22,6 +24,9 @@ public class AdminBean {
 	
 	@Autowired
 	private MemberServiceImpl memberService = null;
+	
+	@Autowired
+	private TeamServiceImpl teamService = null;
 	
 	
 	@RequestMapping("memberList.moa")
@@ -46,5 +51,12 @@ public class AdminBean {
 		model.addAttribute("modelDTO",dto);
 		
 		return "admin/groupWaitAdminList";
+	}
+	
+	@RequestMapping("groupWaitAdminPro.moa")
+	public String groupWaitAdminPro(TeamDTO dto) throws SQLException {
+		teamService.updateTeamStatus(dto);
+		
+		return "admin/groupWaitAdminPro";
 	}
 }

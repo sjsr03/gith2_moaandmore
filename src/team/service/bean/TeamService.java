@@ -17,4 +17,7 @@ public interface TeamService {
 		
 		//그룹 신청
 		public void insertTeamArticle(TeamDTO dto) throws SQLException;
+		
+		//그룹 상태 수정
+		public void updateTeamStatus(TeamDTO dto) throws SQLException;
 }
