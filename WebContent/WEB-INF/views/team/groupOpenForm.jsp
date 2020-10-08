@@ -24,7 +24,7 @@
 		<table>
 			<tr>
 				<td> 신 청 자 </td>
-				<td><input type="text" name="leader" readonly="readonly" value="닉네임"/></td>
+				<td><input type="text" name="leader" readonly="readonly" value="${sessionScope.memName}"/></td>
 			</tr>
 			<tr>
 				<td> 목 표 명 </td>
