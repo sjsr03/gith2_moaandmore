@@ -34,6 +34,15 @@
 
 
 <button onclick="window.location.href='/moamore/goals/insertGoalForm.moa'">+목표</button>
+<select>
+	<option>정렬</option>
+	<option>정렬</option>
+	<option>정렬</option>
+	<option>정렬</option>
+	<option>정렬</option>
+	
+
+</select>
 
 <table border="1">
 	<tr>
