@@ -17,9 +17,9 @@ public interface CategoryService {
 	public void addOutcomeCategory(String category_name, String id) throws SQLException;
 	//지출 카테고리 이름 수정하기
 	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException;
-	
 	// 카테고리 번호로 카테고리 이름 list 뽑아오기
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException;
-	
+	//카테고리 삭제하기
+	public void removeCategory(int category_no,String id)throws SQLException;	
 
 }

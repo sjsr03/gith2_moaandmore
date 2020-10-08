@@ -1,6 +1,7 @@
 package category.model.dto;
 
 public class income_categoryDTO {
+	
 	private int category_no;
 	private String id;
 	private String category_name;

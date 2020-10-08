@@ -62,4 +62,11 @@ public class CategoryServiceImpl implements CategoryService{
 		HashMap categoryNames = categoryDAO.selectBudgetCategoryNames(categoryNums);
 		return categoryNames;
 	}
+
+	@Override
+	public void removeCategory(int category_no, String id) throws SQLException {
+		
+		categoryDAO.removeCategory(category_no,id);
+		
+	}
 }

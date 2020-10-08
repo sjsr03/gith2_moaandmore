@@ -37,4 +37,9 @@ public class TeamServiceImpl implements TeamService{
 		dao.insertTeamArticle(dto);
 	}
 
+	@Override
+	public TeamDTO selectOne(int team_no) throws SQLException {
+		return dao.selectOne(team_no);
+	}
+
 }
