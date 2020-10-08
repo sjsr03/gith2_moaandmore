@@ -10,11 +10,13 @@
 	function deleteCh(goal_no, public_ch){
 		var ch = true;
 		
+		console.log(public_ch);
 		if(public_ch == '1'){
-			result = confirm("해당 목표를 삭제하면 참여중인 그룹을 탈퇴하며 그룹목표를 다시 진행할 수 없습니다. 삭제하시겠습니까?");
-			ch = false;
+			ch = confirm("해당 목표를 삭제하면 참여중인 그룹을 탈퇴하며 그룹목표를 다시 진행할 수 없습니다. 삭제하시겠습니까?");
+			
 		}
 		
+		console.log(ch);
 		if(ch){
 			window.location.href = "/moamore/goals/deleteGoal.moa?goal_no="+goal_no+"&public_ch="+public_ch;
 		}else{
@@ -22,12 +24,7 @@
 		}
 	}
 	
-	function enterTeam(){
-		
-		var team_no = 2; 
-		
-		window.location.href="/moamore/goals/enterTeam.moa?team_no="+team_no;
-	}
+	
 
 </script>
 </head>
@@ -47,12 +44,12 @@
 		<td>마감날짜</td>
 		<td>유형</td>
 		<td>공개여부</td>
-		<td>수정<td/>
-		<td>삭제<td/>
+		<td>수정</td>
+		<td>삭제</td>
 	</tr>
 	<c:forEach var="goal" items="${goalList}">
-		<tr onclick="window.location.href='/moamore/goals/myGoalDetail.moa?goal_no=${goal.goal_no}'">
-			<td>${goal.subject}</td>
+		<tr>
+			<td onclick="window.location.href='/moamore/goals/myGoalDetail.moa?goal_no=${goal.goal_no}'">${goal.subject}</td>
 			<td>${goal.target_money}원</td>
 			<td>${goal.saving}원</td>
 			<td>${goal.start_day}</td>
@@ -76,7 +73,7 @@
 		</tr>	
 	</c:forEach> 
 	
-	<button onclick="enterTeam()">팀 참여(임시)</button>
+	
 </table>
 
 </body>

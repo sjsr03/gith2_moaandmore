@@ -73,7 +73,7 @@
 		<div class="middle" style="width: 100%; height: 690px; text-align: center;">
 		
 			<c:forEach var="article" items="${articleList}">
-				<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;">
+				<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
 						<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
 							<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
 							<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>

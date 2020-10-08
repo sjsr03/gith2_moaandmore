@@ -65,7 +65,7 @@ public class TeamBean {
 	}
 	
 	@RequestMapping("teamDetail.moa")
-	public String teampDetail(@RequestParam("team_no") int team_no, Model model) throws SQLException{
+	public String teampDetail(@RequestParam("team_no")int team_no, Model model) throws SQLException{
 		TeamDTO team = teamService.selectOne(team_no);
 		
 		model.addAttribute("team", team);
