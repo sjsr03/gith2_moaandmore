@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import team.model.dto.TeamDTO;
+import team.service.bean.TeamMemberServiceImpl;
 import team.service.bean.TeamServiceImpl;
 
 @Controller
@@ -19,6 +20,8 @@ public class TeamBean {
 	
 	@Autowired
 	private TeamServiceImpl teamService = null;
+	
+
 
 	@RequestMapping("groupList.moa")
 	public String viewList(String pageNum, Model model) throws SQLException {

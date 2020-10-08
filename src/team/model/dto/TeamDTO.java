@@ -14,7 +14,7 @@ public class TeamDTO {
 	private Integer status;
 	private String isopen;
 	private Integer pw;
-	
+	 
 	
 	public Integer getTeam_no() {
 		return team_no;
