@@ -61,6 +61,14 @@
 <body>
 <br />
 <h2>카테고리 설정</h2>
+${already}
+<c:if test="${already == 'true'}">
+console.log(1);
+	<script>
+		alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
+	</script>
+</c:if>
+
 
 <form action="/moamore/category/setCategoryPro.moa" method="post">
 <table>
@@ -102,15 +110,16 @@
 					<h1 class="title"> ${outcome.category_name} 카테고리 수정하기</h1>
 					<form action="/moamore/category/updateCategory.moa" method="post">
 						<textarea name="newName" placeholder="카테고리 이름을 입력해주세요"></textarea>								
-						<input type="button" value="삭제 " onclick="window.location='/moamore/category/deleteCategory.moa?category_no=${outcome.category_no}'"/>
+						<input type="button" value="삭제 " onclick="window.location='/moamore/category/deleteCategory.moa?category_no=${outcome.category_no}&inorout=outcome'"/>
 						<input type="submit" value="변경" />
 						<input type="button" class ="cancel" id="cancel" value="취소"/>
 						<input type="hidden" name="category_no" value=${outcome.category_no} />
-						
+						<input type="hidden" name="inorout" value="outcome" />
 					</form>
 				</div>
 			</div>	
 		</c:forEach>
+		
 	</tr>
 </table>		
 
@@ -134,11 +143,11 @@
 					<h1 class="title"> ${income.category_name} 카테고리 수정하기</h1>
 					<form action="/moamore/category/updateCategory.moa" method="post">
 						<textarea name="newName" placeholder="카테고리 이름을 입력해주세요"></textarea>								
-						<input type="button" value="삭제 " onclick="window.location='/moamore/category/deleteCategory.moa?category_no=${income.category_no}'"/>
+						<input type="button" value="삭제 " onclick="window.location='/moamore/category/deleteCategory.moa?category_no=${income.category_no}&inorout=income'"/>
 						<input type="submit" value="변경" />
 						<input type="button" class ="cancel" id="cancel" value="취소"/>
 						<input type="hidden" name="category_no" value=${income.category_no} />
-																				
+						<input type="hidden" name="inorout" value="income" />														
 					</form>
 				</div>
 			</div>	
