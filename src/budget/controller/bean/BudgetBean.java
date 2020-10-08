@@ -22,6 +22,8 @@ import budget.model.dto.LeftMoneyDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
 import category.service.bean.CategoryService;
+import goals.model.dto.GoalsDTO;
+import goals.service.GoalsService;
 
 @Controller
 @RequestMapping("/budget/")
@@ -31,6 +33,8 @@ public class BudgetBean {
 	private BudgetService budgetService = null;
 	@Autowired
 	private CategoryService categoryService = null;
+	@Autowired
+	private GoalsService goalsService = null;
 	
 	@RequestMapping("setBudget.moa")
 	public String LCsetBudgetForm(HttpServletRequest request, Model model) throws SQLException {
@@ -81,7 +85,10 @@ public class BudgetBean {
 			categoryNums.add(dto.getCategory_no());
 		}
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
-		System.out.println(categories);
+		
+		
+		//회원의 목표 리스트 가져오기
+		List<GoalsDTO> goals = goalsService.selectAllById();
 		
 		
 		// 남은돈 정보
@@ -93,6 +100,7 @@ public class BudgetBean {
 		model.addAttribute("categories", categories);
 		model.addAttribute("TBdto", TBdto);
 		model.addAttribute("BDdtoList", BDdtoList);
+		model.addAttribute("goals", goals);
 		
 		return "budget/todayBudget";
 	}

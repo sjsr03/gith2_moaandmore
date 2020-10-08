@@ -33,6 +33,11 @@
 	input[type=number] {
 		width:70px;
 	}
+	#leftMoneyList, tr, td {
+		border:1px solid #ccc;
+		border-collapse:collapse;
+		padding:2px;
+	}
 </style>
 
 
@@ -88,8 +93,8 @@
 							<td><input type="checkbox" class="chk" name="category" value="${i.category_no}"/></td>
 							<td>${categories[i.category_no] }</td>
 							<td>${i.amount }</td>
-							<td><input type="number" class="inputAmount"/></td>
-							<td><input type="number" readonly class="LeftAfterTrans" /></td>
+							<td><input type="number" class="inputAmount" value="0" max="${i.amount}" min="0"/></td>
+							<td><input type="number" readonly class="LeftAfterTrans" value="${i.amount }"/></td>
 						</tr>
 					</c:forEach>
 						<tr>
@@ -112,8 +117,8 @@
 					<div>
 						목표 선택
 						<select id="targetGoal">
-							<c:forEach items="${BDdtoList }" var="j">
-								<option value=${j.category_no }>${categories[j.category_no] }</option>
+							<c:forEach items="${goals }" var="j">
+								<option value=${j.goal_no }>${j.subject }</option>
 							</c:forEach>
 						</select>
 					</div>
@@ -130,13 +135,28 @@
 <script>
 	$(document).ready(function(){
 		//남은 돈 총합 계산
-		calSum();
+		calSumFirst();
+
+		
+		//분배금액 바뀔 때마다
+		$('.inputAmount').on('keyup', function(){
+			//총합 계산
+			calSumTrans();
+			//남은금액 계산
+			calRest($(this));
+		});
+		
+		//체크될때마다
+		$('.chk').on('change',function(){
+			//총합 계산
+			calSumTrans();
+		});
 	});
 	
 	
 	
-	//남은돈 총합 계산하기
-	function calSum() {
+	//남은돈 총합 계산하기(페이지 불러올 때 한 번)
+	function calSumFirst() {
 		var sum = 0;
 		
 		$('.amount').each(function(){
@@ -144,6 +164,37 @@
 		});
 		
 		$('#totalLeftMoney').text(sum);
+	}
+	
+	
+	//전환할 총 금액 합산
+	function calSumTrans() {
+		var sum = 0;
+		//체크된 것들만
+		$('.chk:checked').each(function(){
+			var inputAmount = $(this).parent().parent().children('.inputAmount').val();
+			console.log(inputAmount);
+			if(inputAmount==null) {
+				sum += 0;
+			} else {
+				sum += parseInt(inputAmount);
+			}
+		});
+		
+		$('#transSum').text(sum);
+	}
+	
+	
+	//전환 후 남은 금액 자동계산
+	function calRest(inputAmount) {
+		var rest = 0;
+		var Ori = parseInt(inputAmount.parent().prev().text());
+		if(inputAmount.val()=="") {
+			rest = Ori;
+		} else {
+			rest = Ori - parseInt(inputAmount.val());
+		}
+		inputAmount.parent().next().children('.LeftAfterTrans').val(rest);
 	}
 </script>
 </html>
