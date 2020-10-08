@@ -60,16 +60,22 @@
 
 <body>
 <br />
+
 <h2>카테고리 설정</h2>
-<span>${already}</span>
-<c:if test="${already == '1'}">
-console.log(1);
+
+
+<c:if test="${already == 'true'}">
 	<script>
 		alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
 	</script>
 </c:if>
 
 
+<c:if test="${exist==1}">
+	<script>
+		alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
+	</script>
+</c:if>
 <form action="/moamore/category/setCategoryPro.moa" method="post">
 <table>
 	<tr>

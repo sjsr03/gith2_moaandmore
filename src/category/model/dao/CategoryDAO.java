@@ -37,5 +37,8 @@ public interface CategoryDAO {
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException;
 	//회원 한명의 수입 카테고리명 다 가져오기
 	public List selectIncomeCategoryNamesbyId(String id) throws SQLException;
-	
+	//카테고리 넘으로 budget테이블 개수 가져오기(for 삭제막기)
+	public int selectBudgetInfo(int category_no,String id)throws SQLException;
+	//카테고리 넘으로 nobudget테이블 개수 가져오기(for 삭제막기)
+	public int selectNobudgetInfo(int category_no,String id) throws SQLException;
 }
