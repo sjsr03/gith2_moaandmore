@@ -41,5 +41,11 @@ public class TeamDAOImpl implements TeamDAO{
 		else
 			sqlSession.insert("team.insertTeamArticle", dto);
 	}
+
+	@Override
+	public TeamDTO selectOne(int team_no) throws SQLException {
+		
+		return sqlSession.selectOne("team.selectOne", team_no);
+	}
 	
 }
