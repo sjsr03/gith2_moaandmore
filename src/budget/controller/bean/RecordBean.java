@@ -89,6 +89,7 @@ public class RecordBean {
 		System.out.println("날짜 : " + request.getParameter("date"));
 		System.out.println("시간 : " + request.getParameter("time"));
 		System.out.println("메모 : " + request.getParameter("memo"));
+		System.out.println("뚜두두두두두두둥!!타입 나와라!!!!: " + request.getParameter("type"));
 		//System.out.println("내역 : " + request.getParameter("time"));
 		
 		// 여기서 예산외인지 내인지 체크해서 dto에 값 일일이 넣어주기(dto 통으로 못받아줌)
