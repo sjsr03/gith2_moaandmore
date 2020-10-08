@@ -10,28 +10,28 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import budget.model.dto.BudgetDetailDTO;
+import budget.model.dto.TotalBudgetDetailDTO;
 
 @Repository
-public class BudgetDetailDAOImpl implements BudgetDetailDAO {
+public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession = null;
 
 	
 	@Override
-	public void insertBudgetDetail(List budget_detail) {
-		for (int i = 0; i < budget_detail.size(); i++) {
-			BudgetDetailDTO dto = (BudgetDetailDTO) budget_detail.get(i);
-			sqlSession.insert("budgetDetail.insertBudgetDetail", dto);
+	public void insertTotalBudgetDetail(List total_budget_detail) {
+		for (int i = 0; i < total_budget_detail.size(); i++) {
+			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) total_budget_detail.get(i);
+			sqlSession.insert("budgetDetail.insertTotalBudgetDetail", dto);
 		}
 	}
 	
 	@Override
-	public void updateBudgetDetail(List budget_detail) {
-		for (int i = 0; i < budget_detail.size(); i++) {
-			BudgetDetailDTO dto = (BudgetDetailDTO) budget_detail.get(i);
-			sqlSession.update("budgetDetail.updateBudgetDetail", dto);
+	public void updateTotalBudgetDetail(List total_budget_detail) {
+		for (int i = 0; i < total_budget_detail.size(); i++) {
+			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) total_budget_detail.get(i);
+			sqlSession.update("budgetDetail.updateTotalBudgetDetail", dto);
 		}
 	}
 	

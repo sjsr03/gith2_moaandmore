@@ -1,6 +1,6 @@
 package budget.model.dto;
 
-public class BudgetDetailDTO {
+public class TotalBudgetDetailDTO {
 	private int category_no;
 	private int budget_no;
 	private int category_budget;

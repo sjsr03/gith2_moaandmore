@@ -17,7 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import budget.model.dao.LeftMoneyDAO;
-import budget.model.dto.BudgetDetailDTO;
+import budget.model.dto.TotalBudgetDetailDTO;
 import budget.model.dto.LeftMoneyDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
@@ -81,7 +81,7 @@ public class BudgetBean {
 		//현재 예산의 카테고리정보 가져오기
 		List categoryNums = new ArrayList();
 		for (Object obj:BDdtoList) {
-			BudgetDetailDTO dto = (BudgetDetailDTO)obj;
+			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO)obj;
 			categoryNums.add(dto.getCategory_no());
 		}
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
@@ -103,5 +103,15 @@ public class BudgetBean {
 		model.addAttribute("goals", goals);
 		
 		return "budget/todayBudget";
+	}
+	
+	
+	
+	@RequestMapping("LeftMoneyTransfer.moa")
+	public String LeftMoneyTransfer() {
+		
+		
+		
+		return "budget/LeftMoneyTransfer";
 	}
 }

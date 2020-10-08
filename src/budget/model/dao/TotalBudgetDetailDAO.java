@@ -5,11 +5,11 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-public interface BudgetDetailDAO {
+public interface TotalBudgetDetailDAO {
 
 	
 	//예산 세부내용 작성
-	public void insertBudgetDetail(List budget_detail);
+	public void insertTotalBudgetDetail(List total_budget_detail);
 	
 	//총예산 고유번호에 해당하는 예산 세부내용 가져오기
 	public List selectAllbyBudgetNum(int num);
@@ -18,5 +18,5 @@ public interface BudgetDetailDAO {
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException;
 	
 	//예산 세부내용 수정
-	public void updateBudgetDetail(List budget_detail);
+	public void updateTotalBudgetDetail(List total_budget_detail);
 }
