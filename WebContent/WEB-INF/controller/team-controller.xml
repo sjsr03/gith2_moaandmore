@@ -11,11 +11,4 @@ http://www.springframework.org/schema/context/spring-context-4.3.xsd"
 
 	<context:component-scan base-package="team"/>
 	
-	<bean id="teamDAO" class="team.model.dao.TeamDAOImpl">
-		<property name="sqlSession" ref="sqlSession"/>
-	</bean>
-	
-
-	<bean id="teamService" class="team.service.bean.TeamServiceImpl"/>
-
 </beans>

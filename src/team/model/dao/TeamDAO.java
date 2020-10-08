@@ -12,6 +12,9 @@ public interface TeamDAO {
 	public List getTeamArticles(int start, int end) throws SQLException;
 	//그룹 신청
 	public void insertTeamArticle(TeamDTO dto) throws SQLException;
+	//그룹 상태 수정
+	public void updateTeamStatus(TeamDTO dto) throws SQLException;
+	
 	
 	//그룹 하나
 	public TeamDTO selectOne(int team_no) throws SQLException;
