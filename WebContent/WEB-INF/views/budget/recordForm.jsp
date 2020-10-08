@@ -25,6 +25,8 @@
 	
 	// 체크박스 상태 확인해서 분기처리 체크된 상태면 예산외 아니면 예산 내
 	$(document).ready(function(){
+		$("#incomecategory").css("display", "none"); // 수입 지출 카테고리 숨기기
+		$("#outcomecategory").css("display", "none"); 
 		$(".btn").hide();
 		$("#checkbox").change(function(){
 			if($("#checkbox").is(":checked")){
@@ -42,6 +44,8 @@
 				// 작동안하게 막ㅇ아버리고
 				//alert("작동 ㄴㄴ");
 			}else{
+				$("#type").val("budgetOutcome");
+				console.log($("#type").val());
 				//alert("작동 ㅇㅇ");
 				// 작동하게 하기
 				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax
@@ -58,27 +62,40 @@
 							console.log("에러!!");
 						},
 						success : function(data){							
-							console.log(data);
-							//datas = data;
+							//console.log(data);
+
 							// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
 							$("#category").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
-							for(var i = 0; i < data.length-1; i++){ // 리턴받은 categories의 마지막 키와 값은 예산번호에 해당
-								$("#category").append("<option value="+data.get)
+
+							for(var key in data){
+								//console.log("컬럼:" + key + "value : " + data[key]);
+								//console.log(typeof key);
+								if(key != 'budgetNum'){ 
+									$("#category").append("<option value='"+data[key]+"'>"+data[key]+"</option>");
+								}								
 							}
 						}
 					});
 				});
-				// 예산 카테고리 가져기위해 컨트롤러에서 데이터 가져오기 ajax
-				$(document).ready(function(){
-					
-				});
+
 			}
 		});
-		$("#outcome").click(function(){
+		
+		// 버튼 누를 때마다 카테고리 나타내기/숨기기
+		$("#outcome").click(function(){ // 지출 카테고리로 세팅 
 			alert("지출");
+			$("#outcomecategory").css("display", "block"); 
+			$("#incomecategory").css("display", "none"); 
+			$("#type").val("outcome");
+			console.log($("#type").val());
+			
 		});
-		$("#income").click(function(){
+		$("#income").click(function(){ // 수입 카테고리로 세팅		
 			alert("수입");
+			$("#incomecategory").css("display", "block");
+			$("#outcomecategory").css("display", "none"); 
+			$("#type").val("income");
+			console.log($("#type").val());
 		});
 	});
 
@@ -88,7 +105,8 @@
 
 <body>
 <form action="/moamore/record/recordPro.moa" method="post" enctype="multipart/form-data">
-<h2>datas : ${datas}</h2>
+<%-- 데이터 넘어갈 때 수입인지 지출인지 예산내 지출인지도 보내줘야한다. --%>
+<input type="hidden" id="type" name="type" value="type"/>
 	<div>
 		<div class="header">
 			<h2> 수입 지출 내역 추가 </h2>	
@@ -101,9 +119,16 @@
 			<ul>
 				<li class="category-section">
 					<div class="input-area">
-						<select id="category" name="category">
-						<c:forEach var="outcomeCategories" items="${outcomeCategories}">
+						<select id="outcomecategory" name="outcomecategory">
+						<c:forEach var="outcomeCategories" items= "${outcomeCategories}" >
 							<option value="${outcomeCategories.category_no}">${outcomeCategories.category_name}</option>
+						</c:forEach>
+						</select>
+					</div>
+					<div class="input-area">
+						<select id="incomecategory" name="incomecategory">
+						<c:forEach var="incomeCategories" items= "${incomeCategories}" >
+							<option value="${incomeCategories.category_no}">${incomeCategories.category_name}</option>
 						</c:forEach>
 						</select>
 					</div>
@@ -118,7 +143,7 @@
 						<input type="text" placeholder="금액을 입력하세요" id="money" name="money" />
 					</div>
 				</li>
-				<!-- 날짜 -->
+				<!-- 날짜 시간  -->
 				<li>
 					<div>
 						<input type="text" id="date" name="date" />

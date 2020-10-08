@@ -63,6 +63,7 @@
 
 <h2>카테고리 설정</h2>
 
+
 <c:if test="${already == 'true'}">
 	<script>
 		alert("이미 있는 이름입니다.다른이름을 사용해주세요.");

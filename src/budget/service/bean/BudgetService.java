@@ -28,4 +28,9 @@ public interface BudgetService {
 	
 	// 예산 번호로 해당 예산 카테고리번호 리스트 가져오기
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException;
+	
+	//남은 돈 전환
+	public void LeftMoneyTransfer() throws SQLException;
+	
+	
 }

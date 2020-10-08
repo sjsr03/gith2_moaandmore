@@ -59,7 +59,6 @@ public class CategoryBean {
 				String incomeCategoryName = (String)incomeCategoryNames.get(i);
 				
 				if(incomeCategoryName.equals(category_name)) {
-					model.addAttribute("already","true");
 					
 					already = true;
 					break;
@@ -68,7 +67,7 @@ public class CategoryBean {
 			//이름이 안겹치면 수정 가능
 			if(already == false) {
 				categoryService.addIncomeCategory(category_name,id);
-			}	
+			}		
 			
 			
 			
@@ -82,17 +81,19 @@ public class CategoryBean {
 				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
 				
 				if(outcomeCategoryName.equals(category_name)) {
+
 					
-					System.out.println(1);
+					
 					already = true;
 					model.addAttribute("already",already);
 					break;
+
 				}
 			}
 			//이름이 안겹치면 수정 가능
 			if(already == false) {
 				categoryService.addOutcomeCategory(category_name,id);
-			}	
+			}		
 			
 			
 		}
@@ -102,36 +103,38 @@ public class CategoryBean {
 		
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
+		model.addAttribute("already",already);
 	
 	
-		//return "forward:/category/setCategory.moa";
-		//return "/category/setCategoryPro";
+
+	
 		return "category/setCategoryPro";
+
 	}
 	//카테고리 수정하기
 	@RequestMapping("updateCategory.moa")
 	public String updateoutcomeCategory(Model model,String inorout,int category_no,String newName) throws SQLException {
 		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-		boolean already = false;
+		String already = "false";
 		//지출카테고리 수정
 		if(inorout.equals("outcome")) {
 			List outcomeCategoryNames = categoryService.selectOutcomeCategoryNamesbyId(id);
 			
-			
+				
 			//지출카테고리 이름 겹치는지 검사
 			for(int i=0;i<outcomeCategoryNames.size(); i++) {
 				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
 				
 				if(outcomeCategoryName.equals(newName)) {
-					model.addAttribute("already","true");
-					already = true;
-					break;
+					already ="true";
 				}
 			}
 			//이름이 안겹치면 수정 가능
-			if(already == false) {
+			if(!already.equals("true")) {
+				
 				categoryService.updateoutcomeCategory(category_no,newName,id);
+				
 			}	
 			
 		
@@ -146,15 +149,12 @@ public class CategoryBean {
 				String incomeCategoryName = (String)incomeCategoryNames.get(i);
 				
 				if(incomeCategoryName.equals(newName)) {
-					model.addAttribute("already","true");
-					already = true;
-					break;
-				
+					already = "true";
 				}
 			
 			}
 			//이름이 안겹치면 수정 가능
-			if(already == false){
+			if(!already.equals("true")){
 				categoryService.updateincomeCategory(category_no,newName,id);
 				
 			}
@@ -164,8 +164,10 @@ public class CategoryBean {
 		List income = categoryService.selectAllIncomeCategoryById(id);
 		List outcome = categoryService.selectAllById(id);
 		
+		System.out.println(already);
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
+		model.addAttribute("already", already);
 		
 		
 		return "category/setCategory";
@@ -173,13 +175,13 @@ public class CategoryBean {
 	//카테고리 삭제하기
 	@RequestMapping("deleteCategory.moa")
 	public String deleteCategory(int category_no,Model model,String inorout) throws SQLException{
-		System.out.println("no :"+category_no);
+		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		
 		//budget테이블,nobudget테이블에 해당 category_no가 있는지 확인
 		//exist 1이면 삭제 불가
 		int exist = categoryService.selectCategoryInfo(category_no,id);	
-		System.out.println("exist"+exist);
+		
 		
 		if(exist == 0) {
 		
@@ -202,7 +204,7 @@ public class CategoryBean {
 		model.addAttribute("outcome", outcome);
 		model.addAttribute("exist", exist);
 		
-		//return "redirect:/category/setCategory.moa";
+		
 		return "category/setCategory";
 	}
 	

@@ -16,10 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import budget.model.dao.BudgetDetailDAO;
+import budget.model.dao.TotalBudgetDetailDAO;
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dao.RecordTransferDAO;
 import budget.model.dao.TotalBudgetDAO;
-import budget.model.dto.BudgetDetailDTO;
+import budget.model.dto.TotalBudgetDetailDTO;
+import budget.model.dto.RecordTransferDTO;
 import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
 
@@ -31,9 +33,12 @@ public class BudgetServiceImpl implements BudgetService {
 	@Autowired
 	private CategoryDAO categoryDAO = null;
 	@Autowired
-	private BudgetDetailDAO budgetDetailDAO = null;
+	private TotalBudgetDetailDAO totalBudgetDetailDAO = null;
 	@Autowired
 	private LeftMoneyDAO leftMoneyDAO = null;
+	@Autowired
+	private RecordTransferDAO recordTransferDAO = null;
+	
 	
 	//신규 예산 설정
 	@Override
@@ -95,17 +100,17 @@ public class BudgetServiceImpl implements BudgetService {
 		String[] category_name = request.getParameterValues("category_name");
 		String[] amount = request.getParameterValues("amount");
 		
-		List budget_detail = new ArrayList();
+		List total_budget_detail = new ArrayList();
 		for(int i = 0; i < category_name.length; i++) {
-			BudgetDetailDTO BDdto = new BudgetDetailDTO();
+			TotalBudgetDetailDTO BDdto = new TotalBudgetDetailDTO();
 			BDdto.setBudget_no(budget_no);
 			BDdto.setCategory_budget(Integer.parseInt(amount[i]));
 			BDdto.setCategory_no(categoryDAO.selectNumByName(category_name[i], id));
 			
-			budget_detail.add(BDdto);
+			total_budget_detail.add(BDdto);
 		}
 		
-		budgetDetailDAO.insertBudgetDetail(budget_detail);
+		totalBudgetDetailDAO.insertTotalBudgetDetail(total_budget_detail);
 		
 	}
 	
@@ -131,17 +136,17 @@ public class BudgetServiceImpl implements BudgetService {
 		String[] category_name = request.getParameterValues("category_name");
 		String[] amount = request.getParameterValues("amount");
 		
-		List budget_detail = new ArrayList();
+		List total_budget_detail = new ArrayList();
 		for(int i = 0; i < category_name.length; i++) {
-			BudgetDetailDTO BDdto = new BudgetDetailDTO();
+			TotalBudgetDetailDTO BDdto = new TotalBudgetDetailDTO();
 			BDdto.setBudget_no(budget_no);
 			BDdto.setCategory_budget(Integer.parseInt(amount[i]));
 			BDdto.setCategory_no(categoryDAO.selectNumByName(category_name[i], id));
 			
-			budget_detail.add(BDdto);
+			total_budget_detail.add(BDdto);
 		}
 		
-		budgetDetailDAO.updateBudgetDetail(budget_detail);
+		totalBudgetDetailDAO.updateTotalBudgetDetail(total_budget_detail);
 		
 	}
 	
@@ -153,7 +158,7 @@ public class BudgetServiceImpl implements BudgetService {
 	@Override
 	public List selectAllbyBudgetNum(int num) throws SQLException {
 		
-		return budgetDetailDAO.selectAllbyBudgetNum(num);
+		return totalBudgetDetailDAO.selectAllbyBudgetNum(num);
 	}
 
 	// 날짜랑 아이디로 해당 예산 번호 꺼내오기 
@@ -175,10 +180,47 @@ public class BudgetServiceImpl implements BudgetService {
 	// 예산번호로 해당 예산 카테고리 번호 가져오기 list로 가져오기
 	@Override
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
-		List categoryList = budgetDetailDAO.selectBudgetCategoryNums(budgetNum);
+		List categoryList = totalBudgetDetailDAO.selectBudgetCategoryNums(budgetNum);
 		
 		return categoryList;
 	}
+	
+	
+	@Override
+	public void LeftMoneyTransfer() throws SQLException {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		
+		String id = (String) request.getSession().getAttribute("memId");
+		
+		String[] categories = request.getParameterValues("category");
+		String[] inputAmount = request.getParameterValues("inputAmount");
+		
+		String target_table = request.getParameter("target_table");
+		String subSel = request.getParameter("subSel");
+		
+		List recordList = new ArrayList();
+		for(int i = 0; i < categories.length; i++) {
+			RecordTransferDTO RTdto = new RecordTransferDTO();
+			RTdto.setAmount(Integer.parseInt(inputAmount[i]));
+			RTdto.setCategory_no(Integer.parseInt(categories[i]));
+			RTdto.setId(id);
+			RTdto.setTarget_table(target_table);
+			RTdto.setTarget_no(Integer.parseInt(subSel));
+			
+			recordList.add(RTdto);
+		}
+		
+		recordTransferDAO.insertRecordTransfer(recordList);
+		
+		
+		/////////////////// 기록 삽입 끝///////////////////
+		
+		//leftmoney에서 해당 액수만큼 차감
+		
+		
+		
+	}
+	
   
 
 }

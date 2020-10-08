@@ -152,5 +152,12 @@ public class MemberServiceImpl implements MemberService {
 		return dto;
 
 	}
+
+
+
+	@Override
+	public String selectOneByNick(String nickname) throws SQLException {
+		return memberDAO.selectOneByNick(nickname);
+	}
 	
 }
