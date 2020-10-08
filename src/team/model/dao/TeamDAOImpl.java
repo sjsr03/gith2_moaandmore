@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import team.model.dto.TeamDTO;
@@ -13,6 +14,7 @@ import team.model.dto.TeamDTO;
 @Repository
 public class TeamDAOImpl implements TeamDAO{
 	
+	@Autowired
 	private SqlSessionTemplate sqlSession = null;
 	public void setSqlSession(SqlSessionTemplate sqlSession) {
 		this.sqlSession = sqlSession;
