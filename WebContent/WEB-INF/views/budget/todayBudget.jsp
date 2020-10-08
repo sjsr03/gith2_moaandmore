@@ -110,7 +110,7 @@
 						<br/>
 						<label><input type="radio" name="target_table" value="goals" />목표로 보내기</label>
 					</div>
-					<div style="display:inline-block; border:1px solid #ccc">
+					<div style="display:inline-block; width:300px; height:50px; border:1px solid #ccc">
 						<div id="subCat">
 							재분배할 카테고리
 							<select id="targetCat" name="subSel">
@@ -217,8 +217,8 @@
 		var target = $('input:radio:checked').val();
 		
 		if(target == 'budget') {
-			$('#subCat').css('display','flex');
 			$('#subGoal').css('display','none');
+			$('#subCat').css('display','flex');
 		} else {
 			$('#subCat').css('display','none');
 			$('#subGoal').css('display','flex');
