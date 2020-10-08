@@ -16,4 +16,7 @@ public interface BudgetDetailDAO {
 	
 	// 예산 번호로 해당 예산 카테고리번호 리스트 가져오기
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException;
+	
+	//예산 세부내용 수정
+	public void updateBudgetDetail(List budget_detail);
 }

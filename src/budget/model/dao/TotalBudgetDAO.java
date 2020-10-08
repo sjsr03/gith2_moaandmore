@@ -14,4 +14,7 @@ public interface TotalBudgetDAO {
 	
 	// 아이디, 날짜로 해당 예산 번호 가져오기
 	public int selectBudgetNum(HashMap map) throws SQLException;
+	
+	//총예산 금액 변경
+	public void updateTotalBudget(TotalBudgetDTO dto) throws SQLException;
 }

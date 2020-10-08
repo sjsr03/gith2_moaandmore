@@ -40,6 +40,7 @@
 					<td>카테고리</td>
 					<td>금액</td>
 					<td>비율</td>
+					<td>하루 예산</td>
 					<td>&nbsp;</td>
 				</tr>
 				<tr>
@@ -56,6 +57,9 @@
 					</td>
 					<td>
 						<input type="number" readonly class="rate"/>%
+					</td>
+					<td>
+						<input type="number" readonly class="dayAmount"/>%
 					</td>
 					<!-- 맨위라인은 삭제 안되게
 					<td>
@@ -110,6 +114,7 @@
 			$('.amount').on('keyup', function(){
 				reRate($(this));
 				reSum();
+				calDay($(this));
 			});
 			
 			//카테고리명이 change일 때 옵션 속성 변경
@@ -118,6 +123,11 @@
 			});
 			
 		});	//라인추가 function 끝
+		
+		//총예산, 카테고리별 금액, 주기가 변경될때마다 '하루예산'계산
+		function calDay(amount) {
+			amount.parent().next().next().children('.dayAmount').val((amount.val()/$('#period').val()).toFixed(1));		
+		}
 		
 		//카테고리명이 change일 때 옵션 속성 변경
 		$('.category_name').on('change', function(){
@@ -153,6 +163,7 @@
 		$('.amount').on('keyup', function(){
 			reRate($(this));
 			reSum();
+			calDay($(this));
 		});
 		
 		//비율 자동계산
@@ -190,6 +201,7 @@
 			$('.amount').each(function(){
 				var rate = $(this).val()/$('#totalBudget').val()*100;
 				$(this).parent().next().children('.rate').val(rate.toFixed(1));
+				calDay($(this));
 			});
 			reSum();
 		});

@@ -3,8 +3,10 @@ package budget.controller.bean;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dto.LeftMoneyDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
 import category.service.bean.CategoryService;
@@ -45,7 +48,7 @@ public class BudgetBean {
 			model.addAttribute("currentTBudget", currentTBudget);
 			model.addAttribute("detailList", budgetService.selectAllbyBudgetNum(currentTBudget.getBudget_no()));
 			
-			return "budget/modifyBudget";
+			return "budget/updateBudget";
 		} else {	//진행중인 예산이 없다면 
 			return "budget/setBudget";
 		}
@@ -53,8 +56,13 @@ public class BudgetBean {
 	}
 	
 	@RequestMapping("setBudgetPro.moa")
-	public String setBudgetForm() throws SQLException {
-		budgetService.setBudget();
+	public String setBudgetForm(HttpServletRequest request) throws SQLException {
+		String isNewBudget = request.getParameter("isNewBudget");
+		if(isNewBudget.equals("1")) { //새로운 예산 생성이면
+			budgetService.setBudget();
+		} else {//기존 예산 수정이면
+			budgetService.updateBudget();
+		}
 		return "main";
 	}
 	
@@ -65,8 +73,15 @@ public class BudgetBean {
 		//임시로 남은돈 정보만 가져오는 상태
 		
 		List leftMoneyList = budgetService.selectLeftMoneyById(id);
+		List categoryNums = new ArrayList();
+		for (Object obj:leftMoneyList) {
+			LeftMoneyDTO dto = (LeftMoneyDTO)obj;
+			categoryNums.add(dto.getCategory_no());
+		}
+		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
 		model.addAttribute("leftMoney", leftMoneyList);
+		model.addAttribute("categories", categories);
 		
 		return "budget/todayBudget";
 	}

@@ -18,5 +18,10 @@
 	<select id="selectBudgetCategoryNums" parameterType='int' resultType="int">
 		select * from budget_detail where budget_no=#{value}
 	</select>
+	
+	<!-- 총예산 고유번호에 해당하는 세부정보 수정 -->
+	<update id="updateBudgetDetail" parameterType="budgetDetailDTO">
+		update budget_detail set category_budget=#{category_budget} where category_no=#{category_no} and budget_no=#{budget_no}
+	</update>
   </mapper>
  

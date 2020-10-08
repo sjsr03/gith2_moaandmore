@@ -6,6 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>오늘의 예산</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 	예산 기간 :  ~  (일) <br/>
@@ -23,7 +24,7 @@
 	<div>
 		<c:forEach items="${leftMoney}" var="i" >
 			<div>
-				${i.category_no } : ${i.amount }원
+				${categories[i.category_no] } : ${i.amount }원
 			</div>
 		</c:forEach>
 	</div>
@@ -34,4 +35,9 @@
 	
 	
 </body>
+<script>
+	$(document).ready(function(){
+		
+	});
+</script>
 </html>
