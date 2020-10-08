@@ -24,10 +24,14 @@ public class TeamBean {
 	@Autowired
 	private TeamServiceImpl teamService = null;
 	
+<<<<<<< HEAD
 	@Autowired
 	private TeamMemberServiceImpl teamMemService = null;
 	
 	
+=======
+
+>>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore.git
 
 	@RequestMapping("groupList.moa")
 	public String viewList(String pageNum, Model model) throws SQLException {

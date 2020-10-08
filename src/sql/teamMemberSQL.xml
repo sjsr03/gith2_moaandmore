@@ -9,7 +9,9 @@
 	<insert id="insertOne" parameterType="teamMemberDTO">
 		insert into team_member values(#{team_no},#{id},#{nickname},#{saving})	
 	</insert>
-
+	<select id="selectAllByTeamNo" parameterType="int" resultType="teamMemberDTO">
+		select * from team_member where team_no = #{value} ORDER BY saving DESC	
+	</select>
 
 
 </mapper>

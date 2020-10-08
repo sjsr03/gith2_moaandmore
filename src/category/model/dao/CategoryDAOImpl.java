@@ -151,7 +151,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 		HashMap categories = new HashMap();
 		for(int i = 0; i < categoryNames.size(); i++) {
 			categories.put(categoryNums.get(i), categoryNames.get(i));
-			System.out.println(categoryNums.get(i) + " : " +  categoryNames.get(i));
 		}
 		return categories;
 	}

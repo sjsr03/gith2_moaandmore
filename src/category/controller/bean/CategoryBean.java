@@ -45,7 +45,7 @@ public class CategoryBean {
 	
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		//카테고리명 안겹치는지 확인
-		boolean already = false;
+		int already = 0;
 		//수입카테고리 추가하기
 		if(categoryOption.equals("수입")) {
 			
@@ -55,14 +55,12 @@ public class CategoryBean {
 				String incomeCategoryName = (String)incomeCategoryNames.get(i);
 				
 				if(incomeCategoryName.equals(category_name)) {
-					model.addAttribute("already","true");
 					
-					already = true;
-					break;
+					already = 1;
 				}
 			}
 			//이름이 안겹치면 수정 가능
-			if(already == false) {
+			if(already == 0) {
 				categoryService.addIncomeCategory(category_name,id);
 			}	
 			
@@ -76,14 +74,12 @@ public class CategoryBean {
 				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
 				
 				if(outcomeCategoryName.equals(category_name)) {
-					model.addAttribute("already","true");
-					System.out.println(1);
-					already = true;
-					break;
+					already = 1;
+					model.addAttribute("already", already);
 				}
 			}
 			//이름이 안겹치면 수정 가능
-			if(already == false) {
+			if(already == 0) {
 				categoryService.addOutcomeCategory(category_name,id);
 			}	
 			
@@ -95,17 +91,18 @@ public class CategoryBean {
 		
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
+		model.addAttribute("already",already);
+		System.out.println(already);
 	
-	
-		return "redirect:/category/setCategory.moa";
-		//return "/category/setCategory";
+		//return "redirect:/category/setCategory.moa";
+		return "category/setCategory";
 	}
 	//카테고리 수정하기
 	@RequestMapping("updateCategory.moa")
 	public String updateoutcomeCategory(Model model,String inorout,int category_no,String newName) throws SQLException {
 		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-		boolean already = false;
+		int already = 0;
 		//지출카테고리 수정
 		if(inorout.equals("outcome")) {
 			List outcomeCategoryNames = categoryService.selectOutcomeCategoryNamesbyId(id);
@@ -116,13 +113,11 @@ public class CategoryBean {
 				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
 				
 				if(outcomeCategoryName.equals(newName)) {
-					model.addAttribute("already","true");
-					already = true;
-					break;
+					already = 1;
 				}
 			}
 			//이름이 안겹치면 수정 가능
-			if(already == false) {
+			if(already == 0) {
 				categoryService.updateoutcomeCategory(category_no,newName,id);
 			}	
 			
@@ -138,15 +133,12 @@ public class CategoryBean {
 				String incomeCategoryName = (String)incomeCategoryNames.get(i);
 				
 				if(incomeCategoryName.equals(newName)) {
-					model.addAttribute("already","true");
-					already = true;
-					break;
-				
+					already = 1;
 				}
 			
 			}
 			//이름이 안겹치면 수정 가능
-			if(already == false){
+			if(already == 0){
 				categoryService.updateincomeCategory(category_no,newName,id);
 				
 			}
@@ -158,6 +150,7 @@ public class CategoryBean {
 		
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
+		model.addAttribute("already", already);
 		
 		
 		return "category/setCategory";
