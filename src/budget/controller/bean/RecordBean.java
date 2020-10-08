@@ -58,7 +58,6 @@ public class RecordBean {
 		//String id = request.getParameter("memId");
 		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
 		
-		Map map = new HashMap();
 		
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
@@ -70,18 +69,14 @@ public class RecordBean {
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
-		// 카테고리 번호로 카테고리 이름 목록뽑아오기 
-		/*
-		List categoryNames = categoryService.selectBudgetCategoryNames(categoryNums);
+		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)
 		
+		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
+		// categories에 예산 번호 추가해주기   
+		categories.put("budgetNum", budgetNum);
 		
-		for(int i = 0; i < categoryNums.size(); i++) {
-			map.put(categoryNums.get(i), categoryNames.get(i));
-		}
-		map.put("budgetNum", budgetNum);
-		*/
-		return map;	
+		return categories;	
 	}
 	
 	
