@@ -16,7 +16,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import budget.model.dto.BudgetDTO;
+import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
+import budget.model.dto.NoBudgetDetailDTO;
 import budget.service.bean.BudgetService;
 import budget.service.bean.RecordService;
 import category.service.bean.CategoryService;
@@ -82,7 +85,7 @@ public class RecordBean {
 	
 	
 	@RequestMapping(value="recordPro.moa", method=RequestMethod.POST)
-	public String recordPro(MultipartHttpServletRequest request) throws Exception{
+	public String recordPro(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBugetDetailDTO) throws Exception{
 		System.out.println("category 나오니? :" +request.getParameter("category"));
 		System.out.println("내역 : "  + request.getParameter("subject"));
 		System.out.println("금액 : " + request.getParameter("money"));
@@ -90,13 +93,12 @@ public class RecordBean {
 		System.out.println("시간 : " + request.getParameter("time"));
 		System.out.println("메모 : " + request.getParameter("memo"));
 		System.out.println("뚜두두두두두두둥!!타입 나와라!!!!: " + request.getParameter("type"));
-		//System.out.println("내역 : " + request.getParameter("time"));
 		
-		// 여기서 예산외인지 내인지 체크해서 dto에 값 일일이 넣어주기(dto 통으로 못받아줌)
-		// 일단 에산 외부터 ㄱㄱ
-		/*
-
-		*/
+		String reg = request.getParameter("date") + request.getParameter("time");
+		Timestamp newReg = Timestamp.valueOf(reg);
+		
+		recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBugetDetailDTO, newReg);
+		
 		return "budget/moneyLog";
 	}
 	

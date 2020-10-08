@@ -143,7 +143,7 @@
 						<input type="text" placeholder="금액을 입력하세요" id="money" name="money" />
 					</div>
 				</li>
-				<!-- 날짜 -->
+				<!-- 날짜 시간  -->
 				<li>
 					<div>
 						<input type="text" id="date" name="date" />
