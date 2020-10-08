@@ -2,6 +2,7 @@ package category.model.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,11 +129,13 @@ public class CategoryDAOImpl implements CategoryDAO {
 	// 카테고리 번호로 카테고리 이름 가져오기 
 	@Override
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		Collections.sort(categoryNums);
 		List categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
-		
+	
 		HashMap categories = new HashMap();
-		for(int i = 0; i < categoryNums.size(); i++) {
+		for(int i = 0; i < categoryNames.size(); i++) {
 			categories.put(categoryNums.get(i), categoryNames.get(i));
+			System.out.println(categoryNums.get(i) + " : " +  categoryNames.get(i));
 		}
 		return categories;
 	}
