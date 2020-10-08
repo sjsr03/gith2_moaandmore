@@ -95,13 +95,7 @@ public class RecordBean {
 		// 여기서 예산외인지 내인지 체크해서 dto에 값 일일이 넣어주기(dto 통으로 못받아줌)
 		// 일단 에산 외부터 ㄱㄱ
 		/*
-		NoBudgetDTO nobuget = new NoBudgetDTO();
-		nobuget.setNobudget_no(request.getParameter(""));
-		nobuget.setAmount(amount);
-		nobuget.setCategory_no(category_no);
-		nobuget.setDate(date);
-		nobuget.setType(type);
-		nobuget.setId(id);
+
 		*/
 		return "budget/moneyLog";
 	}
