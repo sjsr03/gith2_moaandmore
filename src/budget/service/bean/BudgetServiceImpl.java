@@ -21,6 +21,7 @@ import budget.model.dao.LeftMoneyDAO;
 import budget.model.dao.RecordTransferDAO;
 import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.TotalBudgetDetailDTO;
+import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.RecordTransferDTO;
 import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
@@ -196,7 +197,16 @@ public class BudgetServiceImpl implements BudgetService {
 		String[] inputAmount = request.getParameterValues("inputAmount");
 		
 		String target_table = request.getParameter("target_table");
-		String subSel = request.getParameter("subSel");
+		String subSel = null;
+		String[] subSels = request.getParameterValues("subSel");
+		if (target_table.equals("budget")) {
+			subSel = subSels[0];
+		} else {
+			subSel = subSels[1];
+		}
+		
+		int sum = 0;
+		
 		
 		List recordList = new ArrayList();
 		for(int i = 0; i < categories.length; i++) {
@@ -208,6 +218,8 @@ public class BudgetServiceImpl implements BudgetService {
 			RTdto.setTarget_no(Integer.parseInt(subSel));
 			
 			recordList.add(RTdto);
+			
+			sum += RTdto.getAmount();
 		}
 		
 		recordTransferDAO.insertRecordTransfer(recordList);
@@ -215,7 +227,21 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		/////////////////// 기록 삽입 끝///////////////////
 		
-		//leftmoney에서 해당 액수만큼 차감
+		if(target_table.equals("budget")) {
+			TotalBudgetDetailDTO dto = new TotalBudgetDetailDTO();
+			dto.setBudget_no(totalBudgetDAO.selectCurrentOne(id).getBudget_no());
+			dto.setCategory_budget(sum);
+			dto.setCategory_no(Integer.parseInt(subSel));
+			
+			recordTransferDAO.updateRecordTBD(dto);
+		} else {
+			RecordGoalsDTO dto = new RecordGoalsDTO();
+			dto.setAmount(sum);
+			dto.setGoal_no(Integer.parseInt(subSel));
+			dto.setId(id);
+			
+			recordTransferDAO.insertRecordGoals(dto);
+		}
 		
 		
 		

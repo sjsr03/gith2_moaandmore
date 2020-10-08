@@ -23,5 +23,10 @@
 	<update id="updateTotalBudgetDetail" parameterType="totalBudgetDetailDTO">
 		update total_budget_detail set category_budget=#{category_budget} where category_no=#{category_no} and budget_no=#{budget_no}
 	</update>
+	
+	<!-- 남은 돈 전환받았을 때 설정 수정 -->
+	<update id="updateTBDAfterTransfer" parameterType="recordTransferDTO" >
+		update total_budget_detail set category_budget=(category_budget-#{amount}) where budget_no=#{target_no} and category_no=#{category_no}
+	</update>
   </mapper>
  

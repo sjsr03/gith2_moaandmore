@@ -9,5 +9,10 @@
   		insert into Record_transfer values(record_transfer_seq.nextVal,#{id},#{category_no},sysdate, #{amount}, #{target_table}, #{target_no})
   	</insert>
   	
+  	<!-- 예산에 재분배 -->
+  	<update id="updatePlusRecordTBD" parameterType="totalBudgetDetailDTO">
+  		update total_budget_detail set category_budget=(category_budget-#{category_budget}) where budget_no=#{budget_no} and category_no=#{category_no}
+  	</update>
+  	
   </mapper>
  
