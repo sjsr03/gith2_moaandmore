@@ -45,9 +45,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 	}
 
 	
-	
-	
-	
 	@Override
 	public void outcomeInsertCategory(String id) throws SQLException {
 		
@@ -126,6 +123,30 @@ public class CategoryDAOImpl implements CategoryDAO {
 		map.put("id", id);
 		
 		sqlSession.update("category.updateoutcomeCategory",map);
+		
+	}
+	// 카테고리 번호로 카테고리 이름 가져오기 
+	@Override
+	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		List categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
+		
+		HashMap categories = new HashMap();
+		for(int i = 0; i < categoryNums.size(); i++) {
+			categories.put(categoryNums.get(i), categoryNames.get(i));
+		}
+		return categories;
+	}
+
+	
+	@Override
+	public void removeCategory(int category_no, String id) throws SQLException {
+		
+		Map map = new HashMap();
+		
+		map.put("category_no",category_no);
+		map.put("id", id);
+		
+		sqlSession.delete("category.deleteCategory", map);
 		
 	}
 

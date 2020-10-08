@@ -10,7 +10,7 @@
   	</select>
   	
   	<select id="selectAllIncomeCategoryById" resultType="income_categoryDTO" parameterType="string">
-  		select * from income_category where id=#{value} order by income_category_no
+  		select * from income_category where id=#{value} order by category_no
   	</select>
   	
   	<!-- 회원 아이디와 카테고리명으로 카테고리 고유번호 가져오기 -->
@@ -30,7 +30,7 @@
   	
   	<!-- income category 기본설정 -->
   	<insert id="insertInComeCategory" parameterType="map">
-  		insert into income_category(income_category_no,id,category_name)
+  		insert into income_category(category_no,id,category_name)
   		select income_category_seq.nextval, o.* from(
   		<foreach collection="list" item="item" separator="UNION ALL">
   		select #{id},#{item} from dual
@@ -49,6 +49,21 @@
   	<update id="updateoutcomeCategory" parameterType="map">
   		update outcome_category set category_name=#{newName} where id=#{id} and category_no=#{category_no}
   	</update>
+  	
+  	
+  	<!-- 회원 아이디와 카테고리 num 으로 카테고리 이름 가져오기 -->
+  	<select id="selectBudgetCategoryNames" resultType="string">
+  		select category_name from outcome_category where category_no in
+  		<foreach collection='list' index='index' item='num' open='(' close=')' separator=','>
+  		#{num}
+  		</foreach>
+  	</select>
+  	
+  	<!-- 카테고리 삭제하기 -->
+	<delete id="deleteCategory" parameterType="map">
+		delete from outcome_category where id=#{id} and category_no=#{category_no}
+	</delete>  	
+  	
   	
   </mapper>
 

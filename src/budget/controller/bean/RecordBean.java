@@ -1,6 +1,8 @@
 package budget.controller.bean;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import budget.model.dto.NoBudgetDTO;
+import budget.service.bean.BudgetService;
 import budget.service.bean.RecordService;
 import category.service.bean.CategoryService;
 
@@ -26,6 +30,9 @@ public class RecordBean {
 	@Autowired
 	private CategoryService categoryService = null;
 	
+	@Autowired
+	private BudgetService budgetService = null;
+	
 	@RequestMapping("recordForm.moa")
 	public String recordForm(HttpServletRequest request, Model model)throws SQLException {
 		// 여기에서 해당 회원의 카테고리까지 한번에 다 가져올 것임
@@ -34,9 +41,34 @@ public class RecordBean {
 		//String id = (String)request.getSession().getAttribute("memId");
 		// 일단 test50 값 임의로 넣어줘서 처리
 		List outcomeCategories = categoryService.selectAllById("test50");
+		List incomeCategories = categoryService.selectAllIncomeCategoryById("test50");
 		model.addAttribute("outcomeCategories", outcomeCategories);
+		model.addAttribute("incomeCategories", incomeCategories);
+		
 		
 		return "budget/recordForm";
+	}
+	
+	// ajax로 회원 예산 카테고리 가져오기
+	@RequestMapping("budgetCategory.moa")
+	@ResponseBody
+	public String budgetCategory(HttpServletRequest request, String date) throws SQLException{
+		//String id = request.getParameter("memId");
+		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
+
+		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
+		String newDate = date + " 00:00:00";
+		Timestamp dateTime = Timestamp.valueOf(newDate);
+		// 예산 번호 뽑아오기
+		int budgetNum = budgetService.selectBudgetNum("test50", dateTime);
+		
+		// 카테고리 번호 뽑아오기
+		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
+		
+		// 카테고리 번호로 카테고리 이름 목록뽑아오기 
+		HashMap categoryNames = categoryService.selectBudgetCategoryNames(categoryNums);
+
+		return null;
 	}
 	
 	@RequestMapping(value="recordPro.moa", method=RequestMethod.POST)

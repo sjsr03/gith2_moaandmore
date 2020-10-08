@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import budget.model.dao.LeftMoneyDAO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
 import category.service.bean.CategoryService;
@@ -24,7 +25,6 @@ public class BudgetBean {
 
 	@Autowired
 	private BudgetService budgetService = null;
-	
 	@Autowired
 	private CategoryService categoryService = null;
 	
@@ -56,5 +56,18 @@ public class BudgetBean {
 	public String setBudgetForm() throws SQLException {
 		budgetService.setBudget();
 		return "main";
+	}
+	
+	@RequestMapping("todayBudget.moa")
+	public String LCtodayBudget(HttpServletRequest request, Model model) throws SQLException {
+		String id = (String) request.getSession().getAttribute("memId");
+		
+		//임시로 남은돈 정보만 가져오는 상태
+		
+		List leftMoneyList = budgetService.selectLeftMoneyById(id);
+		
+		model.addAttribute("leftMoney", leftMoneyList);
+		
+		return "budget/todayBudget";
 	}
 }
