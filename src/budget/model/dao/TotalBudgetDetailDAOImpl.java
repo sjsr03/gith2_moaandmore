@@ -23,7 +23,7 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	public void insertTotalBudgetDetail(List total_budget_detail) {
 		for (int i = 0; i < total_budget_detail.size(); i++) {
 			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) total_budget_detail.get(i);
-			sqlSession.insert("budgetDetail.insertTotalBudgetDetail", dto);
+			sqlSession.insert("totalBudgetDetailDAO.insertTotalBudgetDetail", dto);
 		}
 	}
 	
@@ -31,13 +31,13 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	public void updateTotalBudgetDetail(List total_budget_detail) {
 		for (int i = 0; i < total_budget_detail.size(); i++) {
 			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) total_budget_detail.get(i);
-			sqlSession.update("budgetDetail.updateTotalBudgetDetail", dto);
+			sqlSession.update("totalBudgetDetailDAO.updateTotalBudgetDetail", dto);
 		}
 	}
 	
 	@Override
 	public List selectAllbyBudgetNum(int num) {
-		List list = sqlSession.selectList("budgetDetail.selectAllbyBudgetNum", num);
+		List list = sqlSession.selectList("totalBudgetDetailDAO.selectAllbyBudgetNum", num);
 		return list;
 	}
 
@@ -45,7 +45,7 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
 		List categoryList = new ArrayList();
 		//리스트처리
-		categoryList = sqlSession.selectList("budgetDetail.selectBudgetCategoryNums", budgetNum);
+		categoryList = sqlSession.selectList("totalBudgetDetailDAO.selectBudgetCategoryNums", budgetNum);
 		return categoryList;
 	}
 	

@@ -31,7 +31,7 @@ public class BudgetServiceImpl implements BudgetService {
 	@Autowired
 	private CategoryDAO categoryDAO = null;
 	@Autowired
-	private TotalBudgetDetailDAO budgetDetailDAO = null;
+	private TotalBudgetDetailDAO totalBudgetDetailDAO = null;
 	@Autowired
 	private LeftMoneyDAO leftMoneyDAO = null;
 	
@@ -105,7 +105,7 @@ public class BudgetServiceImpl implements BudgetService {
 			total_budget_detail.add(BDdto);
 		}
 		
-		budgetDetailDAO.insertTotalBudgetDetail(total_budget_detail);
+		totalBudgetDetailDAO.insertTotalBudgetDetail(total_budget_detail);
 		
 	}
 	
@@ -141,7 +141,7 @@ public class BudgetServiceImpl implements BudgetService {
 			total_budget_detail.add(BDdto);
 		}
 		
-		budgetDetailDAO.updateTotalBudgetDetail(total_budget_detail);
+		totalBudgetDetailDAO.updateTotalBudgetDetail(total_budget_detail);
 		
 	}
 	
@@ -153,7 +153,7 @@ public class BudgetServiceImpl implements BudgetService {
 	@Override
 	public List selectAllbyBudgetNum(int num) throws SQLException {
 		
-		return budgetDetailDAO.selectAllbyBudgetNum(num);
+		return totalBudgetDetailDAO.selectAllbyBudgetNum(num);
 	}
 
 	// 날짜랑 아이디로 해당 예산 번호 꺼내오기 
@@ -175,7 +175,7 @@ public class BudgetServiceImpl implements BudgetService {
 	// 예산번호로 해당 예산 카테고리 번호 가져오기 list로 가져오기
 	@Override
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
-		List categoryList = budgetDetailDAO.selectBudgetCategoryNums(budgetNum);
+		List categoryList = totalBudgetDetailDAO.selectBudgetCategoryNums(budgetNum);
 		
 		return categoryList;
 	}
