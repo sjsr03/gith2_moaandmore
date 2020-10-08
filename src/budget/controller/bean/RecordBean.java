@@ -87,6 +87,7 @@ public class RecordBean {
 	
 	@RequestMapping(value="recordPro.moa", method=RequestMethod.POST)
 	public String recordPro(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBugetDetailDTO) throws Exception{
+		/*
 		System.out.println("category 나오니? :" +request.getParameter("category"));
 		System.out.println("내역 : "  + request.getParameter("subject"));
 		System.out.println("금액 : " + request.getParameter("money"));
@@ -94,11 +95,13 @@ public class RecordBean {
 		System.out.println("시간 : " + request.getParameter("time"));
 		System.out.println("메모 : " + request.getParameter("memo"));
 		System.out.println("뚜두두두두두두둥!!타입 나와라!!!!: " + request.getParameter("type"));
+		*/
 		
 		String reg = request.getParameter("date") + request.getParameter("time");
 		Timestamp newReg = Timestamp.valueOf(reg);
+		System.out.println(newReg);
 		
-		recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBugetDetailDTO, newReg);
+		//recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBugetDetailDTO, newReg);
 		
 		return "budget/moneyLog";
 	}

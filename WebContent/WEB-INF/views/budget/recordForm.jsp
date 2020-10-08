@@ -18,7 +18,7 @@
 </style>
 <script>
 	$(function(){
-		$("#date").datepicker({
+		$("#reg").datepicker({
 			dateFormat:"yy-mm-dd"
 		});
 	});
@@ -39,7 +39,7 @@
 			}
 		});	
 		
-		$("#date").on('change',function(){
+		$("#reg").on('change',function(){
 			if($("#checkbox").is(":checked")){
 				// 작동안하게 막ㅇ아버리고
 				//alert("작동 ㄴㄴ");
@@ -81,6 +81,7 @@
 			}
 		});
 		
+		
 		// 버튼 누를 때마다 카테고리 나타내기/숨기기
 		$("#outcome").click(function(){ // 지출 카테고리로 세팅 
 			alert("지출");
@@ -97,6 +98,36 @@
 			$("#type").val("income");
 			console.log($("#type").val());
 		});
+		$("#check").click(function(){
+			//console.log($("#date").val() + $("#time").val());
+			var oldDate = $("#reg").val();
+			var oldTime = $("#time").val();
+			var beforeDate = new Date(oldDate + " " + oldTime);
+			console.log(beforeDate);
+			
+			//newDate = date_to_str(beforeDate);
+			date = date_to_str(beforeDate);
+			//console.log(newDate);
+			//var date = new date(newDate);
+			//console.log(date);
+			$("#recordForm").submit();
+			
+		});
+		
+		// 날짜 형식 변경 
+		function date_to_str(format){
+		    var year = format.getFullYear();
+		    var month = format.getMonth() + 1;
+		    if(month<10) month = '0' + month;
+		    var date = format.getDate();
+		    if(date<10) date = '0' + date;
+		    var hour = format.getHours();
+		    if(hour<10) hour = '0' + hour;
+		    var min = format.getMinutes();
+		    if(min<10) min = '0' + min;
+		    var sec = '00'
+		    return year + "-" + month + "-" + date + " " + hour + ":" + min + ":" + sec;
+	    }
 	});
 
 	
@@ -104,7 +135,7 @@
 </head>
 
 <body>
-<form action="/moamore/record/recordPro.moa" method="post" enctype="multipart/form-data">
+<form id="recordForm" action="/moamore/record/recordPro.moa" method="post" enctype="multipart/form-data">
 <%-- 데이터 넘어갈 때 수입인지 지출인지 예산내 지출인지도 보내줘야한다. --%>
 <input type="hidden" id="type" name="type" value="type"/>
 	<div>
@@ -146,7 +177,7 @@
 				<!-- 날짜 시간  -->
 				<li>
 					<div>
-						<input type="text" id="date" name="date" />
+						<input type="text" id="reg" name="reg" />
 					</div>
 				<!-- 시간 -->			
 					<div>
@@ -166,7 +197,7 @@
 				</li>
 			</ul>
 			<input type="button" value="취소" />
-			<input type="submit" value="확인"/>
+			<input type="button" id="check" value="확인"/>
 		</div>
 	</div>
 </form>
