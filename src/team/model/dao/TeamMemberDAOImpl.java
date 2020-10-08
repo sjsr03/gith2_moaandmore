@@ -1,16 +1,11 @@
 package team.model.dao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-<<<<<<< HEAD
-import org.springframework.stereotype.Service;
-=======
->>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore.git
 
 import team.model.dto.TeamMemberDTO;
 

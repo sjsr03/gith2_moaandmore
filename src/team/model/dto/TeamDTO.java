@@ -13,13 +13,8 @@ public class TeamDTO {
 	private Integer people;
 	private Integer status;
 	private String isopen;
-<<<<<<< HEAD
 	private Integer password;
 	
-=======
-	private Integer pw;
-	 
->>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore.git
 	
 	public Integer getTeam_no() {
 		return team_no;

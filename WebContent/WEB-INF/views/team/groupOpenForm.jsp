@@ -18,7 +18,7 @@
 	<script>
 		function setDisplay(value){
 			if(value=="1"){
-				var input_pw = document.getElementsByName('pw');
+				var input_pw = document.getElementsByName('password');
 				var input_mem_nick = document.getElementsByName('join_mem_nick');
 				
 				for(var i=0; i<input_pw.length; i++){
