@@ -5,12 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import team.model.dto.TeamDTO;
 
 
+@Repository
 public class TeamDAOImpl implements TeamDAO{
 	
+	@Autowired
 	private SqlSessionTemplate sqlSession = null;
 	public void setSqlSession(SqlSessionTemplate sqlSession) {
 		this.sqlSession = sqlSession;
@@ -36,7 +40,7 @@ public class TeamDAOImpl implements TeamDAO{
 
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
-		if(dto.getPw() == null)
+		if(dto.getPassword() == null)
 			sqlSession.insert("team.insertTeamArticleNoPw", dto);
 		else
 			sqlSession.insert("team.insertTeamArticle", dto);
@@ -46,6 +50,11 @@ public class TeamDAOImpl implements TeamDAO{
 	public TeamDTO selectOne(int team_no) throws SQLException {
 		
 		return sqlSession.selectOne("team.selectOne", team_no);
+	}
+
+	@Override
+	public void updateTeamStatus(TeamDTO dto) throws SQLException {
+		sqlSession.update("team.updateTeamStatus", dto);
 	}
 	
 }

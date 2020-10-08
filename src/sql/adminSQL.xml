@@ -14,5 +14,17 @@
   	<select id="countAll" resultType="int">
   		select count(*) from member
   	</select>
+  	
+  	<!-- 승인 대기 그룹들 범위 지정 목록 가져오기 -->
+  	<select id="selectAllGroupWaitAdmin" parameterType="hashmap" resultType="teamDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,team_no,subject,content,amount,start_day,end_day,leader,people,isopen,password from (SELECT team_no,subject,content,amount,start_day,end_day,leader,people,isopen,password from team where status=0 order by team_no desc)) where r >= #{start} and r <= #{end} order by r ASC
+		]]>
+	</select>
+	
+	<!-- 승인 대기 그룹들 전체 개수 가져오기 -->
+	<select id="selectAllGroupWaitAdminCount" resultType="int">
+		SELECT count(*) FROM TEAM WHERE STATUS=0
+	</select>
   </mapper>
  

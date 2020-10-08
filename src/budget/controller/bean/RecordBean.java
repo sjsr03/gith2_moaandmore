@@ -79,6 +79,7 @@ public class RecordBean {
 		// categories에 예산 번호 추가해주기   
 		categories.put("budgetNum", budgetNum);
 		
+
 		return categories;	
 	}
 	
