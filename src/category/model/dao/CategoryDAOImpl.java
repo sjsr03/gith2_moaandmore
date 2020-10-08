@@ -2,6 +2,7 @@ package category.model.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +17,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession = null;
 	
+
 	@Override
 	public List selectAllById(String id) throws SQLException {
 		List list = sqlSession.selectList("category.selectAllById", id);
@@ -27,6 +29,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 		// TODO Auto-generated method stub
 		
 	}
+	
 	@Override
 	public int selectNumByName(String name, String id) throws SQLException {
 		HashMap map = new HashMap();
@@ -113,7 +116,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 		
 	}
 
-
+	//지출카테고리 이름 수정하기
 	@Override
 	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
 	
@@ -125,30 +128,75 @@ public class CategoryDAOImpl implements CategoryDAO {
 		sqlSession.update("category.updateoutcomeCategory",map);
 		
 	}
+	
+	//수입카테고리 이름 수정하기
+	@Override
+	public void updateincomeCategory(int category_no, String newName, String id) throws SQLException {
+
+		HashMap map = new HashMap();
+		map.put("category_no",category_no);
+		map.put("newName", newName);
+		map.put("id", id);
+		
+		sqlSession.update("category.updateincomeCategory",map);
+		
+	}
+	
 	// 카테고리 번호로 카테고리 이름 가져오기 
 	@Override
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		Collections.sort(categoryNums);
 		List categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
-		
+	
 		HashMap categories = new HashMap();
-		for(int i = 0; i < categoryNums.size(); i++) {
+		for(int i = 0; i < categoryNames.size(); i++) {
 			categories.put(categoryNums.get(i), categoryNames.get(i));
 		}
 		return categories;
 	}
 
-	
+	//지출 카테고리 삭제하기
 	@Override
-	public void removeCategory(int category_no, String id) throws SQLException {
+	public void deleteOutcomeCategory(int category_no, String id) throws SQLException {
 		
 		Map map = new HashMap();
 		
 		map.put("category_no",category_no);
 		map.put("id", id);
 		
-		sqlSession.delete("category.deleteCategory", map);
+		sqlSession.delete("category.deleteOutcomeCategory", map);
 		
 	}
+	//수입 카테고리 삭제하기
+	@Override
+	public void deleteIncomeCategory(int category_no, String id) throws SQLException {
+		Map map = new HashMap();
+		
+		map.put("category_no",category_no);
+		map.put("id", id);
+		
+		sqlSession.delete("category.deleteIncomeCategory", map);
+		
+	}
+
+	//회원 한명의 수출 카테고리명 다 가져오기
+	@Override
+	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException {
+
+		List outcomeCategoryNames = sqlSession.selectList("category.selectOutcomeCategoryName",id);
+		
+		return outcomeCategoryNames;
+	}
+	
+	//회원 한명의 수입 카테고리명 다 가져오기
+	@Override
+	public List selectIncomeCategoryNamesbyId(String id) throws SQLException {
+		
+		List incomeCategoryNames = sqlSession.selectList("category.selectIncomeCategoryName",id);
+		
+		return incomeCategoryNames;
+	}
+
 
 
 	

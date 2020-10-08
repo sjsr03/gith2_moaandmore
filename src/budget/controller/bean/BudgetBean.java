@@ -17,10 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dto.TotalBudgetDetailDTO;
 import budget.model.dto.LeftMoneyDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
 import category.service.bean.CategoryService;
+import goals.model.dto.GoalsDTO;
+import goals.service.GoalsService;
 
 @Controller
 @RequestMapping("/budget/")
@@ -30,6 +33,8 @@ public class BudgetBean {
 	private BudgetService budgetService = null;
 	@Autowired
 	private CategoryService categoryService = null;
+	@Autowired
+	private GoalsService goalsService = null;
 	
 	@RequestMapping("setBudget.moa")
 	public String LCsetBudgetForm(HttpServletRequest request, Model model) throws SQLException {
@@ -69,20 +74,45 @@ public class BudgetBean {
 	@RequestMapping("todayBudget.moa")
 	public String LCtodayBudget(HttpServletRequest request, Model model) throws SQLException {
 		String id = (String) request.getSession().getAttribute("memId");
+		//현재 진행중인 예산 정보 가져오기
+		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
+		System.out.println(TBdto.getBudget_no());
+		List BDdtoList = budgetService.selectAllbyBudgetNum(TBdto.getBudget_no());
 		
-		//임시로 남은돈 정보만 가져오는 상태
-		
-		List leftMoneyList = budgetService.selectLeftMoneyById(id);
+		//현재 예산의 카테고리정보 가져오기
 		List categoryNums = new ArrayList();
-		for (Object obj:leftMoneyList) {
-			LeftMoneyDTO dto = (LeftMoneyDTO)obj;
+		for (Object obj:BDdtoList) {
+			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO)obj;
 			categoryNums.add(dto.getCategory_no());
 		}
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
+		
+		//회원의 목표 리스트 가져오기
+		List<GoalsDTO> goals = goalsService.selectAllById();
+		
+		
+		// 남은돈 정보
+		
+		List leftMoneyList = budgetService.selectLeftMoneyById(id);
+		
+		
 		model.addAttribute("leftMoney", leftMoneyList);
 		model.addAttribute("categories", categories);
+		model.addAttribute("TBdto", TBdto);
+		model.addAttribute("BDdtoList", BDdtoList);
+		model.addAttribute("goals", goals);
 		
 		return "budget/todayBudget";
+	}
+	
+	
+	
+	@RequestMapping("LeftMoneyTransfer.moa")
+	public String LeftMoneyTransfer() {
+		
+		
+		
+		return "budget/LeftMoneyTransfer";
 	}
 }

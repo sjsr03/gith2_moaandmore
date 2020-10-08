@@ -58,7 +58,6 @@ public class RecordBean {
 		//String id = request.getParameter("memId");
 		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
 		
-		Map map = new HashMap();
 		
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
@@ -70,18 +69,15 @@ public class RecordBean {
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
-		// 카테고리 번호로 카테고리 이름 목록뽑아오기 
-		/*
-		List categoryNames = categoryService.selectBudgetCategoryNames(categoryNums);
+		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)
 		
+		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
+		// categories에 예산 번호 추가해주기   
+		categories.put("budgetNum", budgetNum);
 		
-		for(int i = 0; i < categoryNums.size(); i++) {
-			map.put(categoryNums.get(i), categoryNames.get(i));
-		}
-		map.put("budgetNum", budgetNum);
-		*/
-		return map;	
+
+		return categories;	
 	}
 	
 	
@@ -94,18 +90,13 @@ public class RecordBean {
 		System.out.println("날짜 : " + request.getParameter("date"));
 		System.out.println("시간 : " + request.getParameter("time"));
 		System.out.println("메모 : " + request.getParameter("memo"));
+		System.out.println("뚜두두두두두두둥!!타입 나와라!!!!: " + request.getParameter("type"));
 		//System.out.println("내역 : " + request.getParameter("time"));
 		
 		// 여기서 예산외인지 내인지 체크해서 dto에 값 일일이 넣어주기(dto 통으로 못받아줌)
 		// 일단 에산 외부터 ㄱㄱ
 		/*
-		NoBudgetDTO nobuget = new NoBudgetDTO();
-		nobuget.setNobudget_no(request.getParameter(""));
-		nobuget.setAmount(amount);
-		nobuget.setCategory_no(category_no);
-		nobuget.setDate(date);
-		nobuget.setType(type);
-		nobuget.setId(id);
+
 		*/
 		return "budget/moneyLog";
 	}
