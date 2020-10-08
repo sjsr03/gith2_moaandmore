@@ -68,11 +68,12 @@ public class CategoryBean {
 	@RequestMapping("updateCategory.moa")
 	public String updateoutcomeCategory(Model model,int category_no,String newName) throws SQLException {
 		
+		System.out.println(category_no);
+		System.out.println(newName);
 		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		
 		categoryService.updateoutcomeCategory(category_no,newName,id);
-		
 		
 		
 		

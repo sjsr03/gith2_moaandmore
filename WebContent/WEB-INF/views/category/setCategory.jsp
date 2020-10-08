@@ -106,6 +106,7 @@
 						<input type="submit" value="변경" />
 						<input type="button" class ="cancel" id="cancel" value="취소"/>
 						<input type="hidden" name="category_no" value=${outcome.category_no} />
+						
 					</form>
 				</div>
 			</div>	
@@ -137,14 +138,13 @@
 						<input type="submit" value="변경" />
 						<input type="button" class ="cancel" id="cancel" value="취소"/>
 						<input type="hidden" name="category_no" value=${income.category_no} />
+																				
 					</form>
 				</div>
 			</div>	
-			
 		</c:forEach>
 	</tr> 
 </table>
-
 
 <script type="text/javascript">	
 
@@ -164,7 +164,6 @@ $(document).ready(function(){
 		$(this).parent().parent().toggleClass('show-modal');
 	});
 });
-
 
 
 
