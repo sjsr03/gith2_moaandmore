@@ -18,6 +18,9 @@
 	
 	<insert id="insertTeamArticle" parameterType="teamDTO">
 		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}, #{password})
+		<selectKey keyProperty="team_no" resultType="int" order="AFTER">
+			select team_seq.currVal from dual
+		</selectKey>
 	</insert>
 	<insert id="insertTeamArticleNoPw" parameterType="teamDTO">
 		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}, null)
