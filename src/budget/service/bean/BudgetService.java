@@ -32,4 +32,5 @@ public interface BudgetService {
 	//남은 돈 전환
 	public void LeftMoneyTransfer() throws SQLException;
 	
+	
 }

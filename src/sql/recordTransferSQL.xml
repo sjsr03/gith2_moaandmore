@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace -->
+  <mapper namespace="recordTransfer">
+  	<!-- 남은돈 전환 기록 삽입 -->
+  	<insert id="insertRecordTransfer" parameterType="recordTransferDTO">
+  		insert into Record_transfer values(record_transfer_seq.nextVal,#{id},#{category_no},sysdate, #{amount}, #{target_table}, #{target_no})
+  	</insert>
+  	
+  </mapper>
+ 
