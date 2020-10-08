@@ -45,16 +45,26 @@
 				//alert("작동 ㅇㅇ");
 				// 작동하게 하기
 				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax
-				$(document).ready(function(){		
+				var datas;
+				$(document).ready(function(){	
+					
 					$.ajax({
 						type : "POST",
 						url : "budgetCategory.moa",
 						data : {date:$("#date").val()},
+						dataType : "json",
+						async: false,
 						error : function(error){
 							console.log("에러!!");
 						},
-						success : function(data){
-							console.log("성공!!!")
+						success : function(data){							
+							console.log(data);
+							//datas = data;
+							// 카테고리 새로 바꿔주기
+							$("#category").find("option").remove();
+							for(var i = 0; i < data.length-1; i++){
+								
+							}
 						}
 					});
 				});
@@ -71,11 +81,14 @@
 			alert("수입");
 		});
 	});
+
+	
 </script>
 </head>
 
 <body>
 <form action="/moamore/record/recordPro.moa" method="post" enctype="multipart/form-data">
+<h2>datas : ${datas}</h2>
 	<div>
 		<div class="header">
 			<h2> 수입 지출 내역 추가 </h2>	
