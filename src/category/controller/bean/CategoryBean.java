@@ -88,7 +88,6 @@ public class CategoryBean {
 			}	
 			
 			
-			
 		}
 		
 		List income = categoryService.selectAllIncomeCategoryById(id);
