@@ -17,6 +17,8 @@
  		<typeAlias type="goals.model.dto.GoalsDTO" alias="goalsDTO"/>
  		<typeAlias type="team.model.dto.TeamDTO" alias="teamDTO"/>
  		<typeAlias type="team.model.dto.TeamMemberDTO" alias="teamMemberDTO"/>
+ 		<typeAlias type="budget.model.dto.BudgetDTO" alias="budgetDTO"/>
+ 		<typeAlias type="budget.model.dto.NoBudgetDTO" alias="nobudgetDTO"/>
  	</typeAliases>
  	
  	<mappers>
@@ -28,9 +30,10 @@
  		<mapper resource="/sql/recordGoalsSQL.xml" />
  		<mapper resource="/sql/teamSQL.xml" />
  		<mapper resource="/sql/totalBudgetSQL.xml" />
- 		<mapper resource="/sql/totalBudgetDetailSQL.xml" />
+ 	 	<mapper resource="/sql/totalBudgetDetailSQL.xml" />
  		<mapper resource="/sql/teamMemberSQL.xml"/>
  		<mapper resource="/sql/recordTransferSQL.xml"/>
+ 		<mapper resource="/sql/calendarSQL.xml" />
   	</mappers>
 
  </configuration>
