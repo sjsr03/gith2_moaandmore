@@ -10,7 +10,7 @@
 <body>
 	<c:if test="${result==1 }" >
 		<script>
-			window.location='/moamore/member/main.moa';
+			window.location='/moamore/main.moa';
 		</script>
 	</c:if>
 	<c:if test="${result!=1 }">
