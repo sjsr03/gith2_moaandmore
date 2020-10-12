@@ -1,6 +1,7 @@
 package budget.model.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		map.put("id", total.getId());
 		map.put("end_day", total.getStart_day());
 		
+		sqlSession.update("totalBudget.updateTBClose", total.getId());
 		sqlSession.update("totalBudget.updateTotalBudgetEnd", map);
 		//새 예산 삽입
 		sqlSession.insert("totalBudget.insertTotalBudget", total);
@@ -39,7 +41,12 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	
 	@Override
 	public int selectBudgetNum(HashMap map) {
-		int budgetNum = sqlSession.selectOne("totalBudget.selectBudgetNum", map);
+		int budgetNum = 0;
+		try{
+			budgetNum = sqlSession.selectOne("totalBudget.selectBudgetNum", map);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return budgetNum;
 	}
 	
@@ -47,5 +54,20 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	public void updateTotalBudget(TotalBudgetDTO dto) throws SQLException {
 		sqlSession.update("totalBudget.updateTotalBudget", dto);
 	}
+
+	@Override
+	public List selectBudgetStartDayById(String id) throws SQLException {
+		List startDayList = new ArrayList();
+		startDayList = sqlSession.selectList("totalBudget.selectBudgetStartDayById", "test50");
+		return startDayList;
+	}
+
+	@Override
+	public List selectBudgetEndDayById(String id) throws SQLException {
+		List endDayList = new ArrayList();
+		endDayList = sqlSession.selectList("totalBudget.selectBudgetEndDayById", "test50");
+		return endDayList;
+	}
+	
 
 }
