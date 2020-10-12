@@ -21,13 +21,13 @@ public class TeamServiceImpl implements TeamService{
 	}
 	
 	@Override
-	public int getTeamArticleCount() throws SQLException {
-		return dao.getTeamArticleCount();
+	public int getTeamArticleCount(int pageStatus) throws SQLException {
+		return dao.getTeamArticleCount(pageStatus);
 	}
 
 	@Override
-	public List getTeamArticles(int start, int end) throws SQLException {
-		return dao.getTeamArticles(start, end);
+	public List getTeamArticles(int pageStatus, int start, int end) throws SQLException {
+		return dao.getTeamArticles(pageStatus, start, end);
 	}
 
 	@Override
