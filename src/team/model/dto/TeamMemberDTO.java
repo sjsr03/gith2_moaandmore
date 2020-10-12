@@ -6,6 +6,8 @@ public class TeamMemberDTO {
 	private String nickname;
 	private int saving;
 	
+	public TeamMemberDTO() {};
+	
 	public TeamMemberDTO(int team_no, String id, String nickname, int saving) {
 		super();
 		this.team_no = team_no;

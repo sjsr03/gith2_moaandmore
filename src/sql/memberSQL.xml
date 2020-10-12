@@ -10,7 +10,6 @@
  		insert into member values(#{id},#{pw},#{profile_img},sysdate,#{nickname})
  	</insert>
  
-
  	<select id="idPwCheck" resultType="int" parameterType="hashmap" >
  		select count(*) from member where id=#{id} and pw=#{pw}
  	</select>
@@ -26,9 +25,11 @@
 	<update id="updateMember" parameterType="memberDTO" >
 		update member set pw=#{pw}, nickname=#{nickname}, profile_img=#{profile_img} where id=#{id}
 	</update>
+	
+	<select id="selectOneByNick" parameterType="string" resultType="string" >
+ 		select id from member where nickname=#{value}
+ 	</select>
 
-	
-	
-	
+
 	
  </mapper>

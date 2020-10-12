@@ -9,5 +9,11 @@
   		select * from LEFT_MONEY where id=#{value} order by category_no asc
   	</select>
   	
+  	
+  	<!-- 전환한만큼 남은돈에서 차감 -->
+  	<update id="updateMinusLeftMoney" parameterType="recordTransferDTO">
+  		update left_money set amount=(amount-#{amount}) where id=#{id} and category_no=#{category_no}
+  	</update>
+  	
   </mapper>
  

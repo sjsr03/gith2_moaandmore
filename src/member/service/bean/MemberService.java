@@ -22,7 +22,8 @@ public interface MemberService {
 	public int confirmId(String id) throws SQLException;
 	//로그아웃
 	public void logout(String sessionName) throws SQLException;
-	
+	//닉네임으로 아이디 가져오기
+	public String selectOneByNick(String nickname) throws SQLException;
 
 
 

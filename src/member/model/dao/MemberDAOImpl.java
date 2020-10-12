@@ -64,6 +64,12 @@ public class MemberDAOImpl implements MemberDAO {
 
 	}
 
+
+	@Override
+	public String selectOneByNick(String nickname) throws SQLException {
+		return sqlSession.selectOne("member.selectOneByNick", nickname);
+	}
+
 	
 	
 	

@@ -10,6 +10,6 @@
 >
 	<context:component-scan base-package="member"/>
 	
-	<bean class="member.service.bean.MemberServiceImpl" id="memberService"/>
-	
+	<bean id="calendarService" class="member.service.bean.CalendarServiceImpl"/>
+	<bean id="calendarDAO" class="member.model.dao.CalendarDAOImpl" />
 </beans>

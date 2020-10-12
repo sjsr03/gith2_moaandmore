@@ -13,7 +13,7 @@ public class TeamDTO {
 	private Integer people;
 	private Integer status;
 	private String isopen;
-	private Integer pw;
+	private Integer password;
 	
 	
 	public Integer getTeam_no() {
@@ -76,10 +76,10 @@ public class TeamDTO {
 	public void setIsopen(String isopen) {
 		this.isopen = isopen;
 	}
-	public Integer getPw() {
-		return pw;
+	public Integer getPassword() {
+		return password;
 	}
-	public void setPw(Integer pw) {
-		this.pw = pw;
+	public void setPassword(Integer password) {
+		this.password = password;
 	}
 }

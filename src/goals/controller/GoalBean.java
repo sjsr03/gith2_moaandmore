@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,11 +67,13 @@ public class GoalBean {
 	}
 	
 	@RequestMapping(value="deleteGoal.moa", method=RequestMethod.GET)
-	public String deleteGoal(@RequestParam("goal_no") int goal_no, @RequestParam("public_ch") int public_ch, Model model) throws SQLException {
+	public String deleteGoal(int goal_no, int public_ch, Model model, HttpServletRequest request) throws SQLException {
 		
 		goalsService.deleteGoal(goal_no);
 		model.addAttribute("msg", "삭제되었습니다.");
 		model.addAttribute("url", "/moamore/goals/myGoalList.moa");	
+		
+		
 		return "goals/redirect";
 	}
 	
@@ -82,12 +85,10 @@ public class GoalBean {
 	
 	@RequestMapping(value="enterTeam.moa", method=RequestMethod.GET)
 	public String enterTeam(int team_no) throws SQLException {// 
-		
-		team_no =2; //임시
 		goalsService.enterTeam(team_no);
 		
 		
-		return "redirect:/goals/myGoalList.moa";
+		return "redirect:/team/teamDetail.moa?team_no="+team_no;
 	}
 
 }

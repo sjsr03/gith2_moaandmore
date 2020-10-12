@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- namespce -->
+  <mapper namespace="record">
+  	<!-- 예산 내역 입력하기 -->
+  	<insert id="insertBudget" parameterType="budgetDTO" useGeneratedKeys="true" keyProperty="budget_outcome_no" keyColumn="budget_outcome_no">	
+  		insert into budget values(budget_outcome_no_seq.nextval, #{budget_no}, #{id}, #{category_no}, #{amount}, #{date})
+  	</insert>
+  	<!-- 예산 세부내역 입력하기 -->
+  	<insert id="insertBudgetDetail" parameterType="budgetDetailDTO">
+  		insert into budget_detail values(#{budget_outcome_no}, #{content}, #{memo}, #{img})
+  	</insert>
+  	<!-- 예산 외 내역 입력하기(noBudget) -->
+  	<insert id="insertNoBudget" parameterType="noBudgetDTO" useGeneratedKeys="true" keyProperty="nobudget_no" keyColumn="nobudget_no">
+  		insert into nobudget values(nobudget_no_seq.nextVal, #{id}, #{type}, #{category_no}, #{amount}, #{date})
+  	</insert>
+  	<!-- 예산 외 세부내역 입력하기 -->
+  	<insert id="insertNoBudgetDetail" parameterType="noBudgetDetailDTO">
+  		insert into nobudget_detail values(${nobudget_no}, #{content}, #{memo}, #{img})
+  	</insert>
+  </mapper>

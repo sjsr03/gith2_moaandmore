@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,10 +17,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import budget.model.dao.BudgetDetailDAO;
+import budget.model.dao.TotalBudgetDetailDAO;
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dao.RecordTransferDAO;
 import budget.model.dao.TotalBudgetDAO;
-import budget.model.dto.BudgetDetailDTO;
+import budget.model.dto.TotalBudgetDetailDTO;
+import budget.model.dto.RecordGoalsDTO;
+import budget.model.dto.RecordTransferDTO;
 import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
 
@@ -31,9 +35,12 @@ public class BudgetServiceImpl implements BudgetService {
 	@Autowired
 	private CategoryDAO categoryDAO = null;
 	@Autowired
-	private BudgetDetailDAO budgetDetailDAO = null;
+	private TotalBudgetDetailDAO totalBudgetDetailDAO = null;
 	@Autowired
 	private LeftMoneyDAO leftMoneyDAO = null;
+	@Autowired
+	private RecordTransferDAO recordTransferDAO = null;
+	
 	
 	//신규 예산 설정
 	@Override
@@ -95,17 +102,53 @@ public class BudgetServiceImpl implements BudgetService {
 		String[] category_name = request.getParameterValues("category_name");
 		String[] amount = request.getParameterValues("amount");
 		
-		List budget_detail = new ArrayList();
+		List total_budget_detail = new ArrayList();
 		for(int i = 0; i < category_name.length; i++) {
-			BudgetDetailDTO BDdto = new BudgetDetailDTO();
+			TotalBudgetDetailDTO BDdto = new TotalBudgetDetailDTO();
 			BDdto.setBudget_no(budget_no);
 			BDdto.setCategory_budget(Integer.parseInt(amount[i]));
 			BDdto.setCategory_no(categoryDAO.selectNumByName(category_name[i], id));
 			
-			budget_detail.add(BDdto);
+			total_budget_detail.add(BDdto);
 		}
 		
-		budgetDetailDAO.insertBudgetDetail(budget_detail);
+		totalBudgetDetailDAO.insertTotalBudgetDetail(total_budget_detail);
+		
+	}
+	
+	
+	@Override
+	public void updateBudget() throws SQLException {
+		
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		int budget_no = Integer.parseInt(request.getParameter("budget_no"));
+		int budget = Integer.parseInt(request.getParameter("totalBudget"));
+		String id = (String) request.getSession().getAttribute("memId");
+		
+		
+		
+		TotalBudgetDTO TBdto = new TotalBudgetDTO();
+		TBdto.setBudget_no(budget_no);
+		TBdto.setBudget(budget);
+		
+		totalBudgetDAO.updateTotalBudget(TBdto);
+		
+		///////////////// 세부 예산 ////////////////////
+		
+		String[] category_name = request.getParameterValues("category_name");
+		String[] amount = request.getParameterValues("amount");
+		
+		List total_budget_detail = new ArrayList();
+		for(int i = 0; i < category_name.length; i++) {
+			TotalBudgetDetailDTO BDdto = new TotalBudgetDetailDTO();
+			BDdto.setBudget_no(budget_no);
+			BDdto.setCategory_budget(Integer.parseInt(amount[i]));
+			BDdto.setCategory_no(categoryDAO.selectNumByName(category_name[i], id));
+			
+			total_budget_detail.add(BDdto);
+		}
+		
+		totalBudgetDetailDAO.updateTotalBudgetDetail(total_budget_detail);
 		
 	}
 	
@@ -117,7 +160,7 @@ public class BudgetServiceImpl implements BudgetService {
 	@Override
 	public List selectAllbyBudgetNum(int num) throws SQLException {
 		
-		return budgetDetailDAO.selectAllbyBudgetNum(num);
+		return totalBudgetDetailDAO.selectAllbyBudgetNum(num);
 	}
 
 	// 날짜랑 아이디로 해당 예산 번호 꺼내오기 
@@ -126,7 +169,9 @@ public class BudgetServiceImpl implements BudgetService {
 		HashMap map = new HashMap();
 		map.put("id", id);
 		map.put("dateTime", dateTime);
+		
 		int budgetNum = totalBudgetDAO.selectBudgetNum(map);
+		
 		return budgetNum;
 	}
 	
@@ -139,10 +184,89 @@ public class BudgetServiceImpl implements BudgetService {
 	// 예산번호로 해당 예산 카테고리 번호 가져오기 list로 가져오기
 	@Override
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
-		List categoryList = budgetDetailDAO.selectBudgetCategoryNums(budgetNum);
+		List categoryList = totalBudgetDetailDAO.selectBudgetCategoryNums(budgetNum);
 		
 		return categoryList;
 	}
+	@Override
+	public void LeftMoneyTransfer() throws SQLException {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		
+		String id = (String) request.getSession().getAttribute("memId");
+		
+		String[] categories = request.getParameterValues("category");
+		String[] inputAmount = request.getParameterValues("inputAmount");
+		
+		String target_table = request.getParameter("target_table");
+		String subSel = null;
+		String[] subSels = request.getParameterValues("subSel");
+		if (target_table.equals("budget")) {
+			subSel = subSels[0];
+		} else {
+			subSel = subSels[1];
+		}
+		
+		int sum = 0;
+		
+		
+		List recordList = new ArrayList();
+		for(int i = 0; i < categories.length; i++) {
+			RecordTransferDTO RTdto = new RecordTransferDTO();
+			RTdto.setAmount(Integer.parseInt(inputAmount[i]));
+			RTdto.setCategory_no(Integer.parseInt(categories[i]));
+			RTdto.setId(id);
+			RTdto.setTarget_table(target_table);
+			RTdto.setTarget_no(Integer.parseInt(subSel));
+			
+			recordList.add(RTdto);
+			
+			sum += RTdto.getAmount();
+		}
+		
+		recordTransferDAO.insertRecordTransfer(recordList);
+		
+		
+		/////////////////// 기록 삽입 끝///////////////////
+		
+		if(target_table.equals("budget")) {
+			TotalBudgetDetailDTO dto = new TotalBudgetDetailDTO();
+			dto.setBudget_no(totalBudgetDAO.selectCurrentOne(id).getBudget_no());
+			dto.setCategory_budget(sum);
+			dto.setCategory_no(Integer.parseInt(subSel));
+			
+			recordTransferDAO.updateRecordTBD(dto);
+		} else {
+			RecordGoalsDTO dto = new RecordGoalsDTO();
+			dto.setAmount(sum);
+			dto.setGoal_no(Integer.parseInt(subSel));
+			dto.setId(id);
+			
+			recordTransferDAO.insertRecordGoals(dto);
+		}
+		
+		
+		
+	}
+
+	
+	// 날짜로 예산 유무 체크하기
+	@Override
+	public Boolean checkDate(String date, String id) throws SQLException {
+		Boolean result = false;
+		// 회원의 모든 예산 정보부터 가져오기
+		List<TotalBudgetDTO> budgetList = totalBudgetDAO.selectAllTotalBudgetById(id);
+		for(int i = 0; i < budgetList.size(); i++) {
+			Timestamp start = budgetList.get(i).getStart_day();
+			System.out.println(start);
+			Timestamp end = budgetList.get(i).getEnd_day();
+			System.out.println(end);
+		}
+		
+		return result;
+	}
+
+
+	
   
 
 }

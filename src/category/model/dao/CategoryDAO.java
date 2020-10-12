@@ -25,12 +25,20 @@ public interface CategoryDAO {
 	public void addOutcomeCategory(String category_name,String id) throws SQLException;
 	//지출 카테고리 이름 수정하기
 	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException;
+	//수입 카테고리 이름 수정하기
+	public void updateincomeCategory(int category_no, String newName,String id) throws SQLException;
 	// 카테고리 번호로 카테고리 번호+이름 해쉬맵 가져오기 
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException;
-	//카테고리 삭제하기
-	public void removeCategory(int category_no,String id) throws SQLException;
-	
-	
-	
-	
+	//지출 카테고리 삭제하기
+	public void deleteOutcomeCategory(int category_no,String id) throws SQLException;
+	//수입 카테고리 삭제하기
+	public void deleteIncomeCategory(int category_no,String id) throws SQLException;
+	//회원 한명의 수출 카테고리명 다 가져오기
+	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException;
+	//회원 한명의 수입 카테고리명 다 가져오기
+	public List selectIncomeCategoryNamesbyId(String id) throws SQLException;
+	//카테고리 넘으로 budget테이블 개수 가져오기(for 삭제막기)
+	public int selectBudgetInfo(int category_no,String id)throws SQLException;
+	//카테고리 넘으로 nobudget테이블 개수 가져오기(for 삭제막기)
+	public int selectNobudgetInfo(int category_no,String id) throws SQLException;
 }

@@ -11,6 +11,9 @@ public interface BudgetService {
 	//예산설정
 	public void setBudget() throws SQLException;
 	
+	//예산 수정
+	public void updateBudget() throws SQLException;
+	
 	//현재 총예산 정보 가져오기
 	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException;
 	
@@ -25,4 +28,11 @@ public interface BudgetService {
 	
 	// 예산 번호로 해당 예산 카테고리번호 리스트 가져오기
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException;
+	
+	//남은 돈 전환
+	public void LeftMoneyTransfer() throws SQLException;
+	
+	// 날짜로 예산 유무 체크
+	public Boolean checkDate(String date, String id)throws SQLException;
+	
 }

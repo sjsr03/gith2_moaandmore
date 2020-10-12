@@ -41,15 +41,22 @@
   	<insert id="addIncomeCategory" parameterType="map">
   		insert into income_category values(income_category_seq.nextval,#{id},#{category_name})
   	</insert>
+  	
   	<!-- outcome category 추가 -->
   	<insert id="addoutcomeCategory" parameterType="map">
   		insert into outcome_category values(outcome_category_seq.nextval,#{id},#{category_name})
   	</insert>
+  	
   	<!-- outcome category 이름 수정 -->
   	<update id="updateoutcomeCategory" parameterType="map">
   		update outcome_category set category_name=#{newName} where id=#{id} and category_no=#{category_no}
   	</update>
   	
+  	<!-- income category 이름 수정 -->
+  	<update id="updateincomeCategory" parameterType="map">
+  		update income_category set category_name=#{newName} where id=#{id} and category_no=#{category_no}
+  	</update>
+  
   	
   	<!-- 회원 아이디와 카테고리 num 으로 카테고리 이름 가져오기 -->
   	<select id="selectBudgetCategoryNames" resultType="string">
@@ -59,12 +66,36 @@
   		</foreach>
   	</select>
   	
-  	<!-- 카테고리 삭제하기 -->
-	<delete id="deleteCategory" parameterType="map">
+  	<!-- 지출 카테고리 삭제하기 -->
+	<delete id="deleteOutcomeCategory" parameterType="map">
 		delete from outcome_category where id=#{id} and category_no=#{category_no}
 	</delete>  	
   	
-  	
+  	<!-- 수입 카테고리 삭제하기 -->
+	<delete id="deleteIncomeCategory" parameterType="map">
+		delete from income_category where id=#{id} and category_no=#{category_no}
+	</delete>  	
+	
+	<!-- 회원 한명의 수출카테고리명 다 가져오기 -->
+	<select id="selectOutcomeCategoryName" parameterType="string" resultType="string">
+		select category_name from outcome_category where id=#{id}
+	</select>
+	
+	
+	<!-- 회원 한명의 수입카테고리명 다 가져오기 -->
+	<select id="selectIncomeCategoryName" parameterType="string" resultType="string">
+		select category_name from income_category where id=#{id}
+	</select>
+	
+	<!-- 카테고리 넘으로 budget테이블 정보 갖고오기 -->
+	<select id="selectBudgetInfo" parameterType="map" resultType="int">
+		select count(*) from budget where id=#{id} and category_no=#{category_no}
+	</select>
+	
+	<!-- 카테고리 넘으로 Nobudget테이블 정보 갖고오기 -->
+	<select id="selectNoBudgetInfo" parameterType="map" resultType="int">
+		select count(*) from nobudget where id=#{id} and category_no=#{category_no}
+	</select>
   </mapper>
 
  

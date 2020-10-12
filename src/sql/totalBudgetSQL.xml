@@ -10,7 +10,7 @@
   	</insert>
   	
   	<!-- 현재 진행중인 예산의 종료일을 (오늘날짜-1초)로, close=1로 변경 -->
-  	<update id="updateTotalBudget" parameterType="hashmap">
+  	<update id="updateTotalBudgetEnd" parameterType="hashmap">
   		update total_budget set close=1, end_day=#{end_day}-1/100000 where id=#{id} and close=0
   	</update>
   	
@@ -19,11 +19,21 @@
   	<select id="selectCurrentOneById" parameterType="string" resultType="totalBudgetDTO">
   		select * from total_budget where id=#{id} and close=0
   	</select>
+  	
+  	<!-- 총예산금액 수정 -->
+  	<update id="updateTotalBudget" parameterType="totalBudgetDTO">
+  		update total_budget set budget=#{budget} where budget_no=#{budget_no}
+  	</update>
  	
   	
-  	<!-- // 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
+  	<!-- 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
   	<select id="selectBudgetNum" parameterType="hashmap" resultType="int">
   		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= #{dateTime} and end_day >= #{dateTime}]]>	 
+  	</select>
+  	
+  	<!-- 아이디로 모든 예산 가져오기 -->
+  	<select id="selectAllTotalBudgetById" parameterMap="string" resultType="string">
+  		SELECT TO_CHAR(start_day, 'YYYY-MM-DD'),TO_CHAR(end_day, 'YYYY-MM-DD') FROM TOTAL_BUDGET WHERE id=#{value}
   	</select>
   </mapper>
  

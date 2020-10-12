@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace -->
+  <mapper namespace="recordGoals">
+  	<!-- 목표기록 삽입 -->
+  	<insert id="insertRecordGoal" parameterType="totalBudgetDTO">
+  		insert into record_goals values(record_goals_seq.nextVal, #{goal_no}, #{id}, sysdate, #{amount})
+  	</insert>
+  </mapper>
+ 
