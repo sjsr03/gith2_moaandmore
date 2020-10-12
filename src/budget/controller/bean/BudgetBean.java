@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import budget.model.dao.LeftMoneyDAO;
 import budget.model.dto.TotalBudgetDetailDTO;
@@ -68,7 +69,7 @@ public class BudgetBean {
 		} else {//기존 예산 수정이면
 			budgetService.updateBudget();
 		}
-		return "main";
+		return "redirect:main.moa";
 	}
 	
 	@RequestMapping("todayBudget.moa")
@@ -113,5 +114,41 @@ public class BudgetBean {
 		
 		
 		return "budget/LeftMoneyTransfer";
+	}
+	
+	@RequestMapping(value = "getWarnMessage.moa", produces = "application/text; charset=utf-8")
+	@ResponseBody
+	public String getWarnMessage(int firstOfMonth) {
+//		String message = "이번 예산 주기는 ";
+//		Calendar today = Calendar.getInstance();
+//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+//		message += sdf.format(today.getTime()) + "부터 ";
+//		
+//		System.out.println(today.getTime());
+//		System.out.println(today.;
+//		System.out.println(firstOfMonth);
+//		if(today.DATE > firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
+//			today.add(Calendar.MONTH, 1);
+//		} 
+//		
+//		today.set(Calendar.DATE, firstOfMonth-1);
+//		
+//		message += sdf.format(today.getTime()) + "까지입니다.";
+		
+		String message = "이번 예산 주기는 ";
+		Date today = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
+		message += sdf.format(today) + "부터 다음 월 시작일 전날인 ";
+		
+		if(today.getDate() >= firstOfMonth-1) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
+			today.setMonth(today.getMonth()+1);
+		} 
+		
+		today.setDate(firstOfMonth-1);
+		
+		message += sdf.format(today.getTime()) + "까지입니다.";
+		
+		
+		return message;
 	}
 }

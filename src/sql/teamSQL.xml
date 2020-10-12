@@ -3,12 +3,38 @@
   
 <mapper namespace="team">
 	<select id="countOpenAll" resultType="int">
-		SELECT count(*) FROM TEAM WHERE STATUS=2 AND ISOPEN=1
+	<![CDATA[
+		SELECT count(*) FROM TEAM WHERE STATUS=2 AND ISOPEN=1 AND to_char(START_DAY, 'yyyymmdd' ) <= to_char(sysdate, 'yyyymmdd') AND to_char(END_DAY, 'yyyymmdd' ) >= to_char(sysdate, 'yyyymmdd')
+	]]>
+	</select>
+	
+	<select id="countEndAll" resultType="int">
+	<![CDATA[
+		SELECT count(*) FROM TEAM WHERE STATUS=2 AND ISOPEN=1 AND to_char(END_DAY, 'yyyymmdd' ) < to_char(sysdate, 'yyyymmdd')
+	]]>
+	</select>
+	
+	<select id="countOpenApAll" resultType="int">
+	<![CDATA[
+		SELECT count(*) FROM TEAM WHERE STATUS=2 AND ISOPEN=1 AND to_char(START_DAY, 'yyyymmdd' ) > to_char(sysdate, 'yyyymmdd')
+	]]>
 	</select>
 	
 	<select id="selectOpenAll" parameterType="hashmap" resultType="teamDTO">
 		<![CDATA[
-		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people from team where status=2 and ISOPEN=1 order by team_no desc) where r >= #{start} and r <= #{end} order by r asc
+		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people FROM (SELECT team_no,subject,amount,start_day,end_day,people from team where status=2 and ISOPEN=1 AND to_char(START_DAY, 'yyyymmdd' ) <= to_char(sysdate, 'yyyymmdd') AND to_char(END_DAY, 'yyyymmdd' ) >= to_char(sysdate, 'yyyymmdd') order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+		]]>
+	</select>
+	
+	<select id="selectEndAll" parameterType="hashmap" resultType="teamDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people FROM (SELECT team_no,subject,amount,start_day,end_day,people from team where status=2 and ISOPEN=1 AND to_char(END_DAY, 'yyyymmdd' ) < to_char(sysdate, 'yyyymmdd') order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+		]]>
+	</select>
+	
+	<select id="selectOpenApAll" parameterType="hashmap" resultType="teamDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people FROM (SELECT team_no,subject,amount,start_day,end_day,people from team where status=2 and ISOPEN=1 AND to_char(START_DAY, 'yyyymmdd' ) > to_char(sysdate, 'yyyymmdd') order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
 		]]>
 	</select>
 	

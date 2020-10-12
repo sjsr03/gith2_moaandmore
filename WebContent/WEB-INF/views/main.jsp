@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +43,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/member/main.moa">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/main.moa">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -51,10 +52,26 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
+      
+      
+      <!-- 예산 사용액 그래프 -->
+      <div class="card border-left-info shadow h-10 py-2">
+   		<div class="card-header py-3">
+      		<h6 class="m-0 font-weight-bold text-primary">총 예산액 : ${totalBudget.budget}원</h6></div>
+      	<div class="card-body">
+      		<div class="progress">
+			 <div class="progress-bar" role="progressbar" style="width: ${outcomeSum/totalBudget.budget*100}%" aria-valuenow="${outcomeSum/totalBudget.budget*100}" aria-valuemin="0" aria-valuemax="100"><fmt:formatNumber pattern=".0" value="${outcomeSum/totalBudget.budget*100}"/>% 사용</div>
+			</div>
+      	</div>
+      </div>
+      
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">
-        <a class="nav-link" href="/moamore/member/main.moa">
+        <a class="nav-link" href="/moamore/main.moa">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>대시보드</span></a>
       </li>
@@ -195,6 +212,61 @@
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">대시보드</h1>
             
+            
+           	<!-- 첫번째 줄 -->
+            <div class="row">
+            
+            	<!-- 오늘의 예산 -->
+            	<div class="col-xl-5 col-lg-5">
+	              <div class="card shadow mb-4">
+	                <!-- Card Header - Dropdown -->
+	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
+	                  <div class="dropdown no-arrow">
+	                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+	                    </a>
+	                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+	                      <a class="dropdown-item" href="/moamore/budget/todayBudget.moa">오늘의 예산</a>
+	                    </div>
+	                  </div>
+	                </div>
+	                <!-- Card Body -->
+	                <div class="card-body">
+	                	<div>
+	                		
+	                	</div>
+	                	
+	                </div>
+	              </div>
+	            </div>
+	            
+	            
+            	<!-- 목표 -->
+            	<div class="col-xl-5 col-lg-5">
+	              <div class="card shadow mb-4">
+	                <!-- Card Header - Dropdown -->
+	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
+	                  <div class="dropdown no-arrow">
+	                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+	                    </a>
+	                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+	                      <a class="dropdown-item" href="/moamore/budget/todayBudget.moa">오늘의 예산</a>
+	                    </div>
+	                  </div>
+	                </div>
+	                <!-- Card Body -->
+	                <div class="card-body">
+	                	<div>
+	                		
+	                	</div>
+	                	
+	                </div>
+	              </div>
+	            </div>
+            </div>
             
             
             

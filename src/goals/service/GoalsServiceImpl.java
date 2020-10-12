@@ -58,9 +58,9 @@ public class GoalsServiceImpl implements GoalsService {
 	}
 
 	@Override
-	public boolean deleteGoal(int goal_no) throws SQLException {
-		goalsDAO.deleteGoal(goal_no);
-		return false;
+	public void deleteGoal(int goal_no,int public_ch, int team_no) throws SQLException {
+		goalsDAO.deleteGoal(goal_no, public_ch, team_no);
+		
 	}
 
 	@Override

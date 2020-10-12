@@ -46,14 +46,14 @@ public class MemberBean {
 
 
 	@RequestMapping("loginForm.moa")
-	public String NLCloginForm() throws SQLException {
+	public String NLCloginForm() {
 		
 
 		
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String NLCloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String loginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
 		
@@ -77,19 +77,10 @@ public class MemberBean {
 				response.addCookie(c2);
 				response.addCookie(c3);
 			}
-			
-			return "main";
-			
-		} else {
-			response.setCharacterEncoding("UTF-8"); 
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('아이디 비밀번호가 일치하지 않습니다');</script>");
-			out.flush();
-			
-			return "member/loginForm";
 		}
+		model.addAttribute("result",result);
 
+		return "member/loginPro";
 	}
 	
 	@RequestMapping("deleteForm.moa")
@@ -98,7 +89,7 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("deletePro.moa")
-	public String LCdeletePro(String pw, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String deletePro(String pw, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = (String)request.getSession().getAttribute("memId");
 		int result = memberService.idPwCheck(id, pw);
 		response.setCharacterEncoding("UTF-8"); 
@@ -130,7 +121,7 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String LClogout(HttpServletRequest request) throws SQLException {
+	public String LClogout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		Cookie[] coo = request.getCookies();

@@ -25,6 +25,7 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		map.put("id", total.getId());
 		map.put("end_day", total.getStart_day());
 		
+		sqlSession.update("totalBudget.updateTBClose", total.getId());
 		sqlSession.update("totalBudget.updateTotalBudgetEnd", map);
 		//새 예산 삽입
 		sqlSession.insert("totalBudget.insertTotalBudget", total);
