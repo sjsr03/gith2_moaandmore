@@ -56,10 +56,18 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	}
 
 	@Override
-	public List selectAllTotalBudgetById(String id) throws SQLException {
-		List dateList = new ArrayList();
-		dateList = sqlSession.selectList("totalBudget.selectAllTotalBudgetById", "test50");
-		return dateList;
+	public List selectBudgetStartDayById(String id) throws SQLException {
+		List startDayList = new ArrayList();
+		startDayList = sqlSession.selectList("totalBudget.selectBudgetStartDayById", "test50");
+		return startDayList;
 	}
+
+	@Override
+	public List selectBudgetEndDayById(String id) throws SQLException {
+		List endDayList = new ArrayList();
+		endDayList = sqlSession.selectList("totalBudget.selectBudgetEndDayById", "test50");
+		return endDayList;
+	}
+	
 
 }
