@@ -10,7 +10,6 @@
  		insert into member values(#{id},#{pw},#{profile_img},sysdate,#{nickname})
  	</insert>
  
-
  	<select id="idPwCheck" resultType="int" parameterType="hashmap" >
  		select count(*) from member where id=#{id} and pw=#{pw}
  	</select>
@@ -31,8 +30,6 @@
  		select id from member where nickname=#{value}
  	</select>
 
-	
-	
-	
+
 	
  </mapper>

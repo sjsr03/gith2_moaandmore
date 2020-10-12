@@ -21,6 +21,7 @@
  		<typeAlias type="budget.model.dto.BudgetDetailDTO" alias="budgetDetailDTO"/>
  		<typeAlias type="budget.model.dto.NoBudgetDTO" alias="noBudgetDTO"/>
  		<typeAlias type="budget.model.dto.NoBudgetDetailDTO" alias="noBudgetDetailDTO"/>
+
  	</typeAliases>
  	
  	<mappers>
@@ -32,10 +33,11 @@
  		<mapper resource="/sql/recordGoalsSQL.xml" />
  		<mapper resource="/sql/teamSQL.xml" />
  		<mapper resource="/sql/totalBudgetSQL.xml" />
- 		<mapper resource="/sql/totalBudgetDetailSQL.xml" />
+ 	 	<mapper resource="/sql/totalBudgetDetailSQL.xml" />
  		<mapper resource="/sql/teamMemberSQL.xml"/>
  		<mapper resource="/sql/recordTransferSQL.xml"/>
  		<mapper resource="/sql/recordSQL.xml"/>
+ 		<mapper resource="/sql/calendarSQL.xml" />
   	</mappers>
 
  </configuration>

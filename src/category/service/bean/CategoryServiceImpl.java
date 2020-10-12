@@ -112,9 +112,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public int selectCategoryInfo(int category_no,String id) throws SQLException {
 		
 		int budgetCount = categoryDAO.selectBudgetInfo(category_no,id);
-		System.out.println("budgetCount"+budgetCount);
 		int nobudgetCount = categoryDAO.selectNobudgetInfo(category_no,id);
-		System.out.println("nobudgetCount"+nobudgetCount);
 		
 		
 		int exist = 0;

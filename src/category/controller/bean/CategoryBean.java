@@ -206,6 +206,5 @@ public class CategoryBean {
 		
 		return "category/setCategory";
 	}
-	
-	
+
 }
