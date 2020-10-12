@@ -29,9 +29,10 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		
 		
 		sqlSession.insert("record.insertBudget", budgetDTO);
-	
+		System.out.println("시퀀스값111111111 : " + budgetDTO.getBudget_outcome_no());
 		// budget 테이블의 예산 구분번호 리턴(방금 +1된 시퀀스값)
 		int budget_outcome_no = budgetDTO.getBudget_outcome_no();
+		System.out.println("시퀀스값 : " + budget_outcome_no);
 		return budget_outcome_no;
 	}
 	// 예산 지출 세부내역 입력

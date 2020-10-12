@@ -30,10 +30,7 @@ public class RecordServiceImpl implements RecordService{
 	private RecordBudgetDAO recordBudgetDAO = null;
 	@Autowired
 	private RecordNoBudgetDAO recordNoBudgetDAO = null;
-	
-	
-	
-	
+
 	// 수입/지출내역 insert 메서드  
 	@Override
 	public void insertRecord(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO, Timestamp date) throws SQLException, IOException {
@@ -78,7 +75,7 @@ public class RecordServiceImpl implements RecordService{
 		System.out.println("예산외 타입 : " +noBudgetDTO.getType());
 		*/
 		
-		System.out.println("타입 확인!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 : " + request.getParameter("type"));
+		System.out.println("타입 확인! : " + request.getParameter("type"));
 		
 		
 		// dto에 세팅 

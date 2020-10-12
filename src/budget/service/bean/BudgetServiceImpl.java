@@ -2,9 +2,11 @@ package budget.service.bean;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -172,7 +174,7 @@ public class BudgetServiceImpl implements BudgetService {
 		map.put("dateTime", dateTime);
 		
 		int budgetNum = totalBudgetDAO.selectBudgetNum(map);
-		
+		System.out.println("서비스에서 버겟넘 : " + budgetNum);
 		return budgetNum;
 	}
 	
@@ -248,35 +250,25 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		
 	}
-
-
-	@Override
-	public Boolean checkDate(java.lang.String date, java.lang.String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
-	// 날짜로 예산 유무 체크하기
-	/*
+
 	@Override
-	public Boolean checkDate(String date, String id) throws SQLException {
-		Boolean result = false;
-		// 회원의 예산 시작 날짜들 가져오기
-		List startDayList = totalBudgetDAO.selectBudgetStartDayById(id);
-		// 회원의 예산 끝나는 날짜 가져오기
-		List endDayList = totalBudgetDAO.selectBudgetEndDayById(id);
-		for(int i = 0; i < startDayList.size(); i++) {
-			System.out.println("시작날짜 : " +startDayList.get(i) + " 끝나는 날짜 : " + endDayList.get(i) );
-			//(String)startDayList.get(i);
-			
-			
-		System.out.println(date);
+	public List selectBudgetDate(String id) throws SQLException {
+		List budgetDateTime = new ArrayList();
+		budgetDateTime = totalBudgetDAO.selectBudgetDate(id);
 		
-		return result;
+		String start = (String)budgetDateTime.get(0);
+		String end = (String)budgetDateTime.get(1);
+		
+		// budgetDate의 값들에서 시간을 뺴서 날짜만 보내주기
+		List budgetDate = new ArrayList();
+		budgetDate.add(end.substring(0, 10));
+		budgetDate.add(start.substring(0, 10));		
+		return budgetDate;
 	}
 
-	
-	 */
+
+	 
 
 }
 	

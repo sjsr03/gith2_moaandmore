@@ -46,6 +46,8 @@ public class RecordBean {
 	public String recordForm(HttpServletRequest request, Model model)throws SQLException {
 		// 여기에서 해당 회원의 카테고리까지 한번에 다 가져올 것임
 		// 가져와서 model로 다 뿌려주기!!! (수입, 지출, 예산지출 list에 담아서)
+		String id = (String)request.getSession().getAttribute("memId");
+		
 		
 		// 현재 날짜+시간 받아오기
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -54,7 +56,7 @@ public class RecordBean {
 		System.out.println(now);
 		Timestamp dateTime = Timestamp.valueOf(now);
 		// 예산 번호 뽑아오기
-		int budgetNum = budgetService.selectBudgetNum("test50", dateTime);
+		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
 		
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
@@ -62,38 +64,38 @@ public class RecordBean {
 		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
-		//String id = (String)request.getSession().getAttribute("memId");
+		
 		// 일단 test50 값 임의로 넣어줘서 처리
-		List outcomeCategories = categoryService.selectAllById("test50");
-		List incomeCategories = categoryService.selectAllIncomeCategoryById("test50");
+		List outcomeCategories = categoryService.selectAllById(id);
+		List incomeCategories = categoryService.selectAllIncomeCategoryById(id);
 		
 		System.out.println("예산 카테고리 :" + categories.size());
 		
+		
+		// 현재 진행중인 예산의 끝나는 날짜와 지난 예산의 시작 날짜를 가져오기
+		List budgetDate = budgetService.selectBudgetDate(id);
+		System.out.println(budgetDate.size());
+		System.out.println("리스트리스트 날짜리스트 " + budgetDate.get(0) + "," + budgetDate.get(1));
+		model.addAttribute("budgetDate", budgetDate);
 		model.addAttribute("outcomeCategories", outcomeCategories);
 		model.addAttribute("incomeCategories", incomeCategories);
 		model.addAttribute("categories", categories);
-		
+		model.addAttribute("id", id);
 		return "budget/recordForm";
 	}
 	
 	// ajax로 회원 예산 카테고리 가져오기
 	@RequestMapping(value="budgetCategory.moa", method= {RequestMethod.GET, RequestMethod.POST})
-	public @ResponseBody Map budgetCategory(HttpServletRequest request, String date) throws SQLException{
-		//String id = request.getParameter("memId");
+	public @ResponseBody Map budgetCategory(HttpServletRequest request, String date, String id) throws SQLException{
 		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
-		
 		
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
 		Timestamp dateTime = Timestamp.valueOf(newDate);
-		
-		// 예산 번호 뽑기 전 아이디로 예산들 가져와서 날짜랑 비교 후에 예산 뽑아야함!!
-		boolean result = budgetService.checkDate(date, "test50");
-		
-		
+		System.out.println("컨트롤러에서 id" + id);
 		// 예산 번호 뽑아오기
-		int budgetNum = budgetService.selectBudgetNum("test50", dateTime);
-		
+		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
+		System.out.println("컨트롤러 버겟 넘 : "+budgetNum);
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
@@ -101,8 +103,7 @@ public class RecordBean {
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
 		// categories에 예산 번호 추가해주기   
-		categories.put("budgetNum", budgetNum);
-		
+		categories.put("budgetNum", budgetNum);	
 		
 		return categories;	
 	}
@@ -122,14 +123,11 @@ public class RecordBean {
 		System.out.println("뚜두두두두두두둥!!타입 나와라!!!!: " + request.getParameter("type"));
 		*/
 		
-		/*
+		
 		String id = (String)request.getSession().getAttribute("memId");
 		budgetDTO.setId(id);
 		noBudgetDTO.setId(id);
-		일단 test50으로 해봄
-		*/
-		budgetDTO.setId("test50");
-		noBudgetDTO.setId("test50");
+	
 		System.out.println(request.getParameter("category_no"));
 		int category_no = Integer.parseInt(request.getParameter("category_no"));
 		budgetDTO.setCategory_no(category_no);
@@ -139,6 +137,8 @@ public class RecordBean {
 		System.out.println(oldDate);
 		Timestamp date = Timestamp.valueOf(oldDate);
 		System.out.println(date);
+		
+		System.out.println("버겟 넘버!!! : " + request.getParameter("budget_no"));
 		
 		recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBudgetDetailDTO, date);
 		

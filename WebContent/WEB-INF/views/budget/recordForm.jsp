@@ -21,6 +21,7 @@
 	$(function(){
 		$("#reg").datepicker({
 			dateFormat:"yy-mm-dd"
+			
 		});
 	});
 	
@@ -45,8 +46,6 @@
 				$("#category").css("display", "block");
 				$("#outcomecategory").css("display", "none"); 
 				$("#incomecategory").css("display", "none"); 
-				// 예산 외 지출 수입 누르다가 다시 예산외선택 체크박스 해제하면 == 예산으로 돌아오면
-				// select 박스가 빈 상태로 나옴 **해결해야함 
 			}
 		});	
 		
@@ -58,33 +57,48 @@
 				console.log($("#type").val());
 
 				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax				
-				$(document).ready(function(){						
-					$.ajax({
-						type : "POST",
-						url : "budgetCategory.moa",
-						data : {date:$("#reg").val()},
-						dataType : "json",
-						async: false,
-						error : function(error){
-							alert("날짜에 해당하는 예산이 없습니다 다시 선택하세요!!");
-						},
-						success : function(data){							
-							//console.log(data);
-							// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
-							$("#category").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
+				$(document).ready(function(){
+					
+					console.log("${budgetDate.get(0)}");
+					console.log("${budgetDate.get(1)}");
+					
+					var start = new Date("${budgetDate.get(0)}");
+					var end = new Date("${budgetDate.get(1)}");							
+					var selectedDay = new Date($("#reg").val());
+					
+					if((start <= selectedDay) && (end >= selectedDay)){
+						$.ajax({
+							type : "POST",
+							url : "budgetCategory.moa",
+							data : {date:$("#reg").val(), id:"${id}"},
+							dataType : "json",
+							async: false,
+							error : function(request,status,error){
+								alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 
-							for(var key in data){
-								console.log("컬럼:" + key + "value : " + data[key]);
-								//console.log(typeof key);
-								if(key != 'budgetNum'){ 
-									$("#category").append("<option value='"+key+"'>"+data[key]+"</option>");
-								}else{ // budgetNum 이면 변수에 담아주기
-									budget_no = data[key];
-								}								
+							},
+							success : function(data){							
+								//console.log(data);
+								// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
+								$("#category").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
+
+								for(var key in data){
+									console.log("컬럼:" + key + "value : " + data[key]);
+									//console.log(typeof key);
+									if(key != 'budgetNum'){ 
+										$("#category").append("<option value='"+key+"'>"+data[key]+"</option>");
+									}else{ // budgetNum 이면 변수에 담아주기
+										budget_no = data[key];
+									}								
+								}
+								$("#category").css("display", "block");
 							}
-							$("#category").css("display", "block");
-						}
-					});
+						});
+					}else{
+						alert("날짜에 해당하는 예산이 없습니다. 다시 선택해주세요.");
+						$("#reg").val('');
+						
+					}				
 				});
 			}
 		});
@@ -97,9 +111,7 @@
 			console.log($("#type").val());
 			console.log("셀렉트 박스 옵션값은 ???? ");
 			console.log($("#outcomecategory option:selected").val())
-			// 예산에서 선택후 예산외 수입지출을 눌렀을 경우 예산 관련 카테고리에 대한 value값이 남아있음
-			//$("#category").find("option").remove(); // 굳이 삭제 안해ㅑ도되는듯 
-			//$("#category").find("option:selected").removeAttr("selected")
+
 			// 카테고리 선택하면 hidden으로 값넘겨주기
 			$("#outcomecategory").change(function(){
 				console.log($(this).val())		
@@ -122,51 +134,24 @@
 			});
 		});
 		$("#check").click(function(){
-			//console.log($("#date").val() + $("#time").val());
-			/*
-			var oldDate = $("#reg").val();
-			var oldTime = $("#time").val();
-			var beforeDate = new Date(oldDate + " " + oldTime);
-			console.log(beforeDate);
 			
-			//newDate = date_to_str(beforeDate);
-			date = date_to_str(beforeDate);
-			
-			var date111 = new Date(date);
-			console.log(typeof date111);
-			//console.log(newDate);
-			//var date = new date(newDate);
-			//console.log(date);
-			//$("#recordForm").submit();
-			*/
 			var reg = $("#reg").val();
 			var time = $("#time").val();
 			var date = reg + " " + time + ":00";
 		
-			//----------------------------------------------
+			console.log("버겟 넘~~~ : " + budget_no);
 			// budgetNum도 hidden으로 보내주기
-			// budgetNum은 for문에서 옴 
-			//console.log("번호 : " + budget_no);
-
 			var intBudget_no = Number(budget_no);
 			//console.log(typeof intBudget_no);
 			
 			$("#budget_no").val(intBudget_no);
-			//$("#budget_no").val(Number($(budget_no).val()));
-			//console.log($("#budget_no").val());
-			//alert($("#budget_no").val());
-
-			
+	
 			// category_no 예산일 때 카테고리 넘버 보내주기 
-			// 이부분은 다시해볼 것.....카테고리 select에서 선택된 value값을 가져와야하는데 못가져옴 
-			// select 옵션 부분을 ajax로 만지고 있어서 그럴지도 ...ㅅㅂ  일단 직접 세팅해서 처리해보자 
-			/**/
 			var selectedOption = $("#category option:selected").val(); 
 			var numberOption = Number(selectedOption);
 			$("#category_no").val(numberOption);
 			console.log(typeof numberOption);
-			console.log("카테고리 번호" + numberOption); // 결과 안나옴 ...엥 이제 잘나옴요;; 
-
+			console.log("카테고리 번호" + numberOption); 
 			console.log($("#category_no").val());
 			
 			$("#recordForm").submit();
@@ -181,6 +166,7 @@
 <input type="hidden" id="type" name="type" value="type"/>
 <input type="hidden" id="budget_no" name="budget_no" value="0"/>
 <input type="hidden" id="category_no" name="category_no" value="0"/> 
+
 	<div>
 		<div class="header">
 			<h2> 수입 지출 내역 추가 </h2>	
@@ -250,7 +236,7 @@
 					</div>
 				</li>
 			</ul>
-			<input type="button" value="취소" />
+			<input type="reset" value="취소" />
 			<input type="button" id="check" value="확인"/>
 		</div>
 	</div>

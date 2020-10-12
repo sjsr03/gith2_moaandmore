@@ -25,20 +25,21 @@
   		update total_budget set budget=#{budget} where budget_no=#{budget_no}
   	</update>
  	
-  	
+ 	
   	<!-- 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
   	<select id="selectBudgetNum" parameterType="hashmap" resultType="int">
   		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= #{dateTime} and end_day >= #{dateTime}]]>	 
   	</select>
+
+  	<!-- 지난 예산 시작 날짜 가져오기 -->
+  	<select id="selectBudgetStartDate" parameterType="string" resultType="string">
+  		select end_day from TOTAL_BUDGET WHERE id=#{value} and close=0
+  	</select>
+  	<!-- 현재 예산 끝나는 날짜 가져오기 -->
+  	<select id="selectBudgetEndDate" parameterType="string" resultType="string">
+  		select start_day from TOTAL_BUDGET WHERE id=#{value} and close=1
+  	</select>
   	
-  	<!-- 아이디로 모든 예산 시작날짜 가져오기 -->
-  	<select id="selectBudgetStartDayById" parameterType="string" resultType="string">
-  		SELECT TO_CHAR(start_day, 'YYYY-MM-DD') FROM TOTAL_BUDGET WHERE id=#{value} and close=0 or close=1
-  	</select>
-  	<!-- 아이디로 모든 예산 마지막날짜 가져오기 -->
-  	<select id="selectBudgetEndDayById" parameterType="string" resultType="string">
-  		SELECT TO_CHAR(end_day, 'YYYY-MM-DD') FROM TOTAL_BUDGET WHERE id=#{value} and close=0 or close=1
-  	</select>
   	
   </mapper>
  
