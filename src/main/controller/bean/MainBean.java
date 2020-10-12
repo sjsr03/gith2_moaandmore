@@ -7,22 +7,24 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
+import main.service.bean.MainService;
 
 @Controller
-@RequestMapping("*")
-public class mainBean {
+public class MainBean {
 	
 	@Autowired
 	private BudgetService budgetService = null;
-	
+	@Autowired
+	private MainService mainService = null;
 	
 	
 	@RequestMapping("main.moa")
-	public String main(HttpServletRequest request) throws SQLException {
+	public String main(HttpServletRequest request, Model model) throws SQLException {
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("memId");
 		//로그인했다면
@@ -30,11 +32,17 @@ public class mainBean {
 			//현재 총예산 불러오기
 			TotalBudgetDTO totalBudget = budgetService.selectCurrentOne(id);
 			
+			//만약 현재 설정된 예산이 없다면 예산설정 페이지로
+			if(totalBudget == null) {
+				return "redirect:/budget/setBudget.moa";
+			}
 			
+			//현재 예산에서 총 소비액 불러오기
+			int outcomeSum = mainService.selectOutcomeSumByBudgetId(totalBudget.getBudget_no());
 			
+			model.addAttribute("totalBudget",totalBudget);
+			model.addAttribute("outcomeSum",outcomeSum);
 		}
-		
-		
 		
 		return "main";
 	}

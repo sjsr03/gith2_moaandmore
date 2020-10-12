@@ -37,6 +37,7 @@
  		<mapper resource="/sql/teamMemberSQL.xml"/>
  		<mapper resource="/sql/recordTransferSQL.xml"/>
  		<mapper resource="/sql/recordSQL.xml"/>
+ 		<mapper resource="/sql/reportSQL.xml"/>
  		<mapper resource="/sql/calendarSQL.xml" />
   	</mappers>
 
