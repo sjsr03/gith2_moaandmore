@@ -6,13 +6,15 @@ public class BudgetDetailDTO {
 	private String content;
 	private String memo;
 	private String img;
+
 	
-	public int getNobudget_no() {
+	public int getBudget_outcome_no() {
 		return budget_outcome_no;
 	}
-	public void setNobudget_no(int budget_outcome_no) {
+	public void setBudget_outcome_no(int budget_outcome_no) {
 		this.budget_outcome_no = budget_outcome_no;
 	}
+	
 	public String getContent() {
 		return content;
 	}
