@@ -85,7 +85,7 @@ public class BudgetBean {
 			categoryNums.add(dto.getCategory_no());
 		}
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
-		
+		System.out.println(categories);
 		
 		//회원의 목표 리스트 가져오기
 		List<GoalsDTO> goals = goalsService.selectAllById();

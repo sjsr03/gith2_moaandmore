@@ -16,11 +16,18 @@
   	</select>
 	
 	
+	 <select id="selectNoBudgetDatebyId" parameterType="string" resultType="nobudgetDTO">
+  		select * from nobudget where id=#{value}
+  	</select>
 	
-	 <!-- 
-	<select id="selectBudgetAmountBydate" parameterType="map" resultType="int">
-		select sum(amount) from budget where id=#{id} and TO_CHAR("date",'YYYY-MM-DD') = '2020-10-08' 
-	</select>	
-	  -->
+	
+	
+	<select id="selectNoBudgetIncomeAmountBydate" parameterType="map" resultType="int">
+  		<foreach collection="budgetAlldate" item="item" separator="UNION ALL">
+  		select sum(amount) from budget where id=#{id} and type='income' and TO_CHAR("date",'YYYY-MM-DD')= #{item}
+  		</foreach>
+  	</select>
+	
+	
   </mapper>
  
