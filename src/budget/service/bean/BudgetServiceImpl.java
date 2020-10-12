@@ -260,7 +260,7 @@ public class BudgetServiceImpl implements BudgetService {
 		List endDayList = totalBudgetDAO.selectBudgetEndDayById(id);
 		for(int i = 0; i < startDayList.size(); i++) {
 			System.out.println("시작날짜 : " +startDayList.get(i) + " 끝나는 날짜 : " + endDayList.get(i) );
-			(String)startDayList.get(i);
+			//(String)startDayList.get(i);
 			
 			
 		System.out.println(date);
@@ -271,4 +271,6 @@ public class BudgetServiceImpl implements BudgetService {
 	
  
 
+}
+	
 }
