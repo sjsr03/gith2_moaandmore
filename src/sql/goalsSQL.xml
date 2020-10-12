@@ -22,8 +22,18 @@
 	<update id="modifyGoal" parameterType="goalsDTO">
 		update goals set subject=#{subject}, target_money=#{target_money} where goal_no = #{goal_no}
 	</update>
-	<delete id="deleteGoal" parameterType="int">
-		delete from goals where goal_no=#{value}
+	
+	<delete id="deleteGoal" parameterType="java.util.HashMap">
+		{call
+		declare
+		begin
+			delete from goals where goal_no=#{goal_no};
+			<if test="public_ch = '1'">
+				delete from team_member where team_no =#{team_no} and id=#{id};
+			</if>
+		end
+		}
+		
 	</delete>
 	
 
