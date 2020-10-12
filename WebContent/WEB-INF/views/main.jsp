@@ -54,9 +54,11 @@
       
       
       <!-- 예산 사용액 그래프 -->
-      <div class="card shadow mb-4">
+      <div class="card border-left-info shadow h-100 py-2">
       	<div class="card-body">
-      		
+      		<div>총 예산액 : ${totalBudget.budget}원</div>
+      		<div>${outcomeSum/totalBudget.budget*100}% 사용</div>
+      		<div>${date}</div>
       	</div>
       </div>
       

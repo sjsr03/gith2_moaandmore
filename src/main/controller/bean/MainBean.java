@@ -1,6 +1,8 @@
 package main.controller.bean;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,8 +42,12 @@ public class MainBean {
 			//현재 예산에서 총 소비액 불러오기
 			int outcomeSum = mainService.selectOutcomeSumByBudgetId(totalBudget.getBudget_no());
 			
+			boolean t = Timestamp.valueOf("2020-11-10 00:00:00").after(Timestamp.valueOf("2020-11-11 00:00:00"));
+			
+			
 			model.addAttribute("totalBudget",totalBudget);
 			model.addAttribute("outcomeSum",outcomeSum);
+			model.addAttribute("date",t);
 		}
 		
 		return "main";
