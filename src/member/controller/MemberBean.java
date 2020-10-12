@@ -43,13 +43,6 @@ public class MemberBean {
 	@Autowired
 	private CalendarService calendarService = null;
 	
-	
-
-	@RequestMapping("main.moa")	//테스트용 임시 경로
-	public String main(Model model) throws SQLException {
-		model.addAttribute("num", 3);
-		return "main"; 		
-	}
 
 
 	@RequestMapping("loginForm.moa")
