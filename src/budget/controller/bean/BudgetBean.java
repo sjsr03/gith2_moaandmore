@@ -68,7 +68,7 @@ public class BudgetBean {
 		} else {//기존 예산 수정이면
 			budgetService.updateBudget();
 		}
-		return "main";
+		return "redirect:main.moa";
 	}
 	
 	@RequestMapping("todayBudget.moa")

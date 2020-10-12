@@ -13,7 +13,10 @@ public class ReportDAOImpl implements ReportDAO{
 	
 	@Override
 	public int selectOutcomeSumByBudgetId(int num) {
-		int sum = sqlSession.selectOne("report.selectOutcomeSumByBudgetId", num);
+		int sum = 0;
+		if(sqlSession.selectOne("report.selectOutcomeSumByBudgetId", num) != null) {
+			sum = sqlSession.selectOne("report.selectOutcomeSumByBudgetId", num);
+		}
 		return sum;
 	}
 }

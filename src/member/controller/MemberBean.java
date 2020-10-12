@@ -46,7 +46,7 @@ public class MemberBean {
 
 
 	@RequestMapping("loginForm.moa")
-	public String NLCloginForm() throws SQLException {
+	public String NLCloginForm() {
 		
 
 		
@@ -121,7 +121,7 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String LClogout(HttpServletRequest request) throws SQLException {
+	public String LClogout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		Cookie[] coo = request.getCookies();

@@ -8,10 +8,15 @@
 <title>예산 설정</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
+<style>
+	input[type="number"] {
+		width:80px;
+	}
+</style>
 <body>
 	
 	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
-	
+	<input type="hidden" name="isNewBudget" id="isNewBudget" value="1" />
 	<div style="width:600px;height:1000px;overflow:hidden;position:absolute;left:0px;">
 		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;" id="firstStep">
 			<ul>
@@ -59,7 +64,7 @@
 						<input type="number" readonly class="rate"/>%
 					</td>
 					<td>
-						<input type="number" readonly class="dayAmount"/>%
+						<input type="number" readonly class="dayAmount"/>원
 					</td>
 					<!-- 맨위라인은 삭제 안되게
 					<td>
@@ -88,7 +93,7 @@
 	
 	$(document).ready(function(){
 		$('#insertLine').on('click', function(){ //라인 추가
-			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
+			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
 			
 			//삭제버튼 기능
