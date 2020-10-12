@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -168,7 +169,9 @@ public class BudgetServiceImpl implements BudgetService {
 		HashMap map = new HashMap();
 		map.put("id", id);
 		map.put("dateTime", dateTime);
+		
 		int budgetNum = totalBudgetDAO.selectBudgetNum(map);
+		
 		return budgetNum;
 	}
 	
@@ -185,8 +188,6 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		return categoryList;
 	}
-	
-	
 	@Override
 	public void LeftMoneyTransfer() throws SQLException {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -246,6 +247,25 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		
 	}
+
+	
+	// 날짜로 예산 유무 체크하기
+	@Override
+	public Boolean checkDate(String date, String id) throws SQLException {
+		Boolean result = false;
+		// 회원의 모든 예산 정보부터 가져오기
+		List<TotalBudgetDTO> budgetList = totalBudgetDAO.selectAllTotalBudgetById(id);
+		for(int i = 0; i < budgetList.size(); i++) {
+			Timestamp start = budgetList.get(i).getStart_day();
+			System.out.println(start);
+			Timestamp end = budgetList.get(i).getEnd_day();
+			System.out.println(end);
+		}
+		
+		return result;
+	}
+
+
 	
   
 

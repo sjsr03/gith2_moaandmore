@@ -26,9 +26,14 @@
   	</update>
  	
   	
-  	<!-- // 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
+  	<!-- 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
   	<select id="selectBudgetNum" parameterType="hashmap" resultType="int">
   		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= #{dateTime} and end_day >= #{dateTime}]]>	 
+  	</select>
+  	
+  	<!-- 아이디로 모든 예산 가져오기 -->
+  	<select id="selectAllTotalBudgetById" parameterMap="string" resultType="string">
+  		SELECT TO_CHAR(start_day, 'YYYY-MM-DD'),TO_CHAR(end_day, 'YYYY-MM-DD') FROM TOTAL_BUDGET WHERE id=#{value}
   	</select>
   </mapper>
  
