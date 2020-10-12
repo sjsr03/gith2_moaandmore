@@ -18,6 +18,9 @@ public interface TotalBudgetDAO {
 	//총예산 금액 변경
 	public void updateTotalBudget(TotalBudgetDTO dto) throws SQLException;
 	
-	// 회원의 모든 예산 정보 가져오기
-	public List selectAllTotalBudgetById(String id)throws SQLException;
+	// 회원의 현재, 지난 예산 시작 날짜 가져오기
+	public List selectBudgetStartDayById(String id)throws SQLException;
+	
+	// 회원의 현재, 지난 예산 끝나는 날짜 가져오기
+	public List selectBudgetEndDayById(String id)throws SQLException;
 }
