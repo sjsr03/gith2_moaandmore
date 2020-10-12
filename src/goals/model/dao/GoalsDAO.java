@@ -25,7 +25,7 @@ public interface GoalsDAO {
 	public void modifyGoal(GoalsDTO goal) throws SQLException;
 	
 	//삭제
-	public void deleteGoal(int goal_no) throws SQLException;
+	public void deleteGoal(int goal_no,int public_ch, int team_no) throws SQLException;
 	
 	
 }

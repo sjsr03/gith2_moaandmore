@@ -29,9 +29,13 @@ public class TeamBean {
 	
 
 	@RequestMapping("groupList.moa")
-	public String viewList(String pageNum, Model model) throws SQLException {
+	public String viewList(String pageNum, String pageStatus, Model model) throws SQLException {
 		if(pageNum == null) {
 			pageNum = "1";
+		}
+		
+		if(pageStatus == null) {
+			pageStatus = "2";
 		}
 		
 		int pageSize = 6;
@@ -41,14 +45,16 @@ public class TeamBean {
 		int number = 0;	//게시판 상의 글번호 뿌려줄 변수 미리 선언
 		
 		List articleList = null;
-		int count = teamService.getTeamArticleCount();
+		int count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus));
 		
 		if(count>0) {
-			articleList = teamService.getTeamArticles(startRow, endRow);
+			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow);
 		}
+		
 		number = count-(currPage-1)*pageSize;
 		
 		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageStatus", pageStatus);
 		model.addAttribute("pageSize", new Integer(pageSize));
 		model.addAttribute("currPage", new Integer(currPage));
 		model.addAttribute("startRow", new Integer(startRow));
