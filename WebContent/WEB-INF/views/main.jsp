@@ -51,6 +51,18 @@
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
+      
+      
+      <!-- 예산 사용액 그래프 -->
+      <div class="card shadow mb-4">
+      	<div class="card-body">
+      		
+      	</div>
+      </div>
+      
+      
+      <!-- Divider -->
+      <hr class="sidebar-divider my-0">
 
       <!-- Nav Item - Dashboard -->
       <li class="nav-item active">

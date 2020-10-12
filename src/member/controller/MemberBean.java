@@ -53,7 +53,7 @@ public class MemberBean {
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String NLCloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String loginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
 		
@@ -78,7 +78,7 @@ public class MemberBean {
 				response.addCookie(c3);
 			}
 			
-			return "main";
+			return "redirect:main.moa";
 			
 		} else {
 			response.setCharacterEncoding("UTF-8"); 
@@ -98,7 +98,7 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("deletePro.moa")
-	public String LCdeletePro(String pw, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String deletePro(String pw, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = (String)request.getSession().getAttribute("memId");
 		int result = memberService.idPwCheck(id, pw);
 		response.setCharacterEncoding("UTF-8"); 

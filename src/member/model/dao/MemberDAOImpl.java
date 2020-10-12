@@ -25,7 +25,9 @@ public class MemberDAOImpl implements MemberDAO {
 		map.put("id", id);
 		map.put("pw", pw);
 		
+		System.out.println(id + pw);
 		int result = sqlSession.selectOne("member.idPwCheck", map);
+		System.out.println(result);
 		
 		return result;
 	}
