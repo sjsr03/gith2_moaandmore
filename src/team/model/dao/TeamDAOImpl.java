@@ -25,7 +25,7 @@ public class TeamDAOImpl implements TeamDAO{
 		int count = 0;
 		
 		if(pageStatus==2) {
-			//진행중 그룹등
+			//진행중 그룹들
 			count = sqlSession.selectOne("team.countOpenAll");
 		}else if(pageStatus == 1) {
 			//개설예정 그룹들
