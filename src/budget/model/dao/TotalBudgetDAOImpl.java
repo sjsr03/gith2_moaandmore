@@ -1,6 +1,7 @@
 package budget.model.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,13 +40,25 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	
 	@Override
 	public int selectBudgetNum(HashMap map) {
-		int budgetNum = sqlSession.selectOne("totalBudget.selectBudgetNum", map);
+		int budgetNum = 0;
+		try{
+			budgetNum = sqlSession.selectOne("totalBudget.selectBudgetNum", map);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		return budgetNum;
 	}
 	
 	@Override
 	public void updateTotalBudget(TotalBudgetDTO dto) throws SQLException {
 		sqlSession.update("totalBudget.updateTotalBudget", dto);
+	}
+
+	@Override
+	public List selectAllTotalBudgetById(String id) throws SQLException {
+		List dateList = new ArrayList();
+		dateList = sqlSession.selectList("totalBudget.selectAllTotalBudgetById", "test50");
+		return dateList;
 	}
 
 }

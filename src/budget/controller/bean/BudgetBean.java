@@ -76,7 +76,6 @@ public class BudgetBean {
 		String id = (String) request.getSession().getAttribute("memId");
 		//현재 진행중인 예산 정보 가져오기
 		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
-		System.out.println(TBdto.getBudget_no());
 		List BDdtoList = budgetService.selectAllbyBudgetNum(TBdto.getBudget_no());
 		
 		//현재 예산의 카테고리정보 가져오기
@@ -109,8 +108,8 @@ public class BudgetBean {
 	
 	
 	@RequestMapping("LeftMoneyTransfer.moa")
-	public String LeftMoneyTransfer() {
-		
+	public String LeftMoneyTransfer() throws SQLException {
+		budgetService.LeftMoneyTransfer();
 		
 		
 		return "budget/LeftMoneyTransfer";

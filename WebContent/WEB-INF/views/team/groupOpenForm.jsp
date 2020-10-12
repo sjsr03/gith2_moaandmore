@@ -15,6 +15,27 @@
 		    border-collapse: collapse;
 		}
 	</style>
+	<script>
+		function setDisplay(value){
+			if(value=="1"){
+				var input_pw = document.getElementsByName('password');
+				var input_mem_nick = document.getElementsByName('join_mem_nick');
+				
+				for(var i=0; i<input_pw.length; i++){
+					input_pw[i].value = '';
+				}
+				for(var i=0; i<input_mem_nick.length; i++){
+					input_mem_nick[i].value = '';
+				}
+				
+				pw_area.style.display = 'none';
+				mem_area.style.display = 'none';
+			} else{
+				pw_area.style.display = '';
+				mem_area.style.display = '';
+			}
+		}
+	</script>
 </head>
 <body>
 	<br />
@@ -52,11 +73,18 @@
 			</tr>
 			<tr>
 				<td> 공개여부 </td>
-				<td><input type="radio" name="isopen" value='1' checked="checked"/>공개 <input type="radio" name="isopen" value='0'/>비공개</td>
+				<td>
+					<input type="radio" name="isopen" id="open" value="1" checked="checked" onchange="setDisplay(this.value)"/>공개
+					<input type="radio" name="isopen" id="close" value="0" onchange="setDisplay(this.value)"/>비공개
+				</td>
 			</tr>
-			<tr>
-				<td> 비밀번호<br/><span style="font-size: 7px">비공개 그룹만</span></td>
-				<td><input type="number" name="pw"  /></td>
+			<tr id="pw_area" style="display: none;">
+				<td> 비밀번호 </td>
+				<td><input type="number" name="password"/></td>
+			</tr>
+			<tr id="mem_area" style="display: none;">
+				<td style="text-align: center;"> 참가 멤버<br/>닉네임 </td>
+				<td><input type="text" name="join_mem_nick" placeholder=",로 구분해주세요"/></td>
 			</tr>
 			<tr>
 				<td colspan="2" style="text-align: center;">
