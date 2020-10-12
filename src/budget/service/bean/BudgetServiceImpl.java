@@ -2,12 +2,15 @@ package budget.service.bean;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,6 +32,7 @@ import category.model.dao.CategoryDAO;
 @Service
 public class BudgetServiceImpl implements BudgetService {
 
+	private static final String String = null;
 	@Autowired
 	private TotalBudgetDAO totalBudgetDAO = null;
 	@Autowired
@@ -168,7 +172,9 @@ public class BudgetServiceImpl implements BudgetService {
 		HashMap map = new HashMap();
 		map.put("id", id);
 		map.put("dateTime", dateTime);
+		
 		int budgetNum = totalBudgetDAO.selectBudgetNum(map);
+		System.out.println("서비스에서 버겟넘 : " + budgetNum);
 		return budgetNum;
 	}
 	
@@ -185,8 +191,6 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		return categoryList;
 	}
-	
-	
 	@Override
 	public void LeftMoneyTransfer() throws SQLException {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -247,6 +251,25 @@ public class BudgetServiceImpl implements BudgetService {
 		
 	}
 	
-  
+
+	@Override
+	public List selectBudgetDate(String id) throws SQLException {
+		List budgetDateTime = new ArrayList();
+		budgetDateTime = totalBudgetDAO.selectBudgetDate(id);
+		
+		String start = (String)budgetDateTime.get(0);
+		String end = (String)budgetDateTime.get(1);
+		
+		// budgetDate의 값들에서 시간을 뺴서 날짜만 보내주기
+		List budgetDate = new ArrayList();
+		budgetDate.add(end.substring(0, 10));
+		budgetDate.add(start.substring(0, 10));		
+		return budgetDate;
+	}
+
+
+	 
 
 }
+	
+

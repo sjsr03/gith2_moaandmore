@@ -17,4 +17,7 @@ public interface TotalBudgetDAO {
 	
 	//총예산 금액 변경
 	public void updateTotalBudget(TotalBudgetDTO dto) throws SQLException;
+	
+	// 회원의 현재 예산의 마지막날, 지난예산의 시작날짜 가져오기
+	public List selectBudgetDate(String id)throws SQLException;
 }

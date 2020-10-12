@@ -3,11 +3,14 @@ package goals.model.dao;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import goals.model.dto.GoalsDTO;
 import team.model.dto.TeamDTO;
@@ -62,8 +65,18 @@ public class GoalsDAOImpl implements GoalsDAO{
 	}
 
 	@Override
-	public void deleteGoal(int goal_no) throws SQLException {
-		sqlSession.delete("goals.deleteGoal",goal_no);
+	public void deleteGoal(int goal_no, int public_ch, int team_no) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("goal_no", goal_no);
+		map.put("public_ch", public_ch);
+		map.put("team_no", team_no);
+		
+		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		map.put("id", id );
+		
+		
+		sqlSession.delete("goals.deleteGoal",map);
 	}
 
 	

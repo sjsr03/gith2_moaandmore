@@ -29,6 +29,7 @@
 	 			/WEB-INF/controller/budget-controller.xml
 	 			/WEB-INF/controller/category-controller.xml
 	 			/WEB-INF/controller/calendar-controller.xml
+	 			/WEB-INF/controller/main-controller.xml
 	 		</param-value>
 	 	</init-param>
 	</servlet>	 

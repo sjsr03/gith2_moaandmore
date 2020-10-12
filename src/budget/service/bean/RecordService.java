@@ -14,5 +14,6 @@ import budget.model.dto.NoBudgetDetailDTO;
 public interface RecordService {
 
 	// 수입지출내역 추가메서드
-	public void insertRecord(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBugetDetailDTO, Timestamp newReg) throws SQLException, IOException;
+	public void insertRecord(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBugetDetailDTO, Timestamp date) throws SQLException, IOException;
+
 }

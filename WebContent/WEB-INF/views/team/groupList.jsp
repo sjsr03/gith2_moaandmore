@@ -65,33 +65,39 @@
 		<div class="top" style="width: 100%; height: 40px; padding-top: 5px;">
 			<button onclick="window.location='/moamore/team/groupOpenForm.moa'">개설 신청</button>			
 			<div style="float:right">
-				<button>진행중</button>
-				<button>종료</button>
-				<button>개설예정</button>
+				<button onclick="location='/moamore/team/groupList.moa?pageStatus=2'">진행중</button>
+				<button onclick="location='/moamore/team/groupList.moa?pageStatus=3'">종료</button>
+				<button onclick="location='/moamore/team/groupList.moa?pageStatus=1'">개설예정</button>
 			</div>
 		</div>
 		<div class="middle" style="width: 100%; height: 690px; text-align: center;">
 		
-			<c:forEach var="article" items="${articleList}">
-				<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
-						<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-							<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
-							<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>
-							<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% 80%, #BDBDBD 80% 100%);"><span class="center"></span><span class="big">80%</span><span class="mini">평균달성률</span></span></div>
-						</div>
-						<table style="width:380px; height:130px;">
-							<tr>
-								<td>${article.subject}</td>
-							</tr>
-							<tr>
-								<td>기간 : ${fn:substring(article.start_day,0,10)}~${fn:substring(article.end_day,0,10)}</td>
-							</tr>
-							<tr>
-								<td>목표금액 : ${article.amount}원</td>
-							</tr>
-						</table>
-				</div>
-			</c:forEach>
+			<c:if test="${articleList == null}">
+				<script>alert('해당되는 조건의 그룹이 없습니다.');</script>
+			</c:if>
+		
+			<c:if test="${articleList != null}">
+				<c:forEach var="article" items="${articleList}">
+					<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
+							<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
+								<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+								<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>
+								<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% 80%, #BDBDBD 80% 100%);"><span class="center"></span><span class="big">80%</span><span class="mini">평균달성률</span></span></div>
+							</div>
+							<table style="width:380px; height:130px;">
+								<tr>
+									<td>${article.subject}</td>
+								</tr>
+								<tr>
+									<td>기간 : ${fn:substring(article.start_day,0,10)}~${fn:substring(article.end_day,0,10)}</td>
+								</tr>
+								<tr>
+									<td>목표금액 : ${article.amount}원</td>
+								</tr>
+							</table>
+					</div>
+				</c:forEach>
+			</c:if>
 		</div>
 		<%-- 게시판 목록 페이지 번호 뷰어 설정 --%>
 		<div align="center">
@@ -107,13 +113,13 @@
 				</c:if>
 				
 				<c:if test="${startPage > pageBlock}">
-					<a href="/moamore/team/groupList.moa?pageNum=${startPage-pageBlock}" > &lt; </a>
+					<a href="/moamore/team/groupList.moa?pageNum=${startPage-pageBlock}&pageStatus=${pageStatus}" > &lt; </a>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1" >
-					<a href="/moamore/team/groupList.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<a href="/moamore/team/groupList.moa?pageNum=${i}&pageStatus=${pageStatus}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 				</c:forEach>
 				<c:if test="${endPage < pageCount}">
-					<a href="/moamore/team/groupList.moa?pageNum=${startPage+pageBlock}" > &gt; </a>
+					<a href="/moamore/team/groupList.moa?pageNum=${startPage+pageBlock}&pageStatus=${pageStatus}" > &gt; </a>
 				</c:if>
 			
 			</c:if>
