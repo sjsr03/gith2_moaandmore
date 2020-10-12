@@ -30,6 +30,7 @@ import category.model.dao.CategoryDAO;
 @Service
 public class BudgetServiceImpl implements BudgetService {
 
+	private static final String String = null;
 	@Autowired
 	private TotalBudgetDAO totalBudgetDAO = null;
 	@Autowired
@@ -248,25 +249,35 @@ public class BudgetServiceImpl implements BudgetService {
 		
 	}
 
+
+	@Override
+	public Boolean checkDate(java.lang.String date, java.lang.String id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	// 날짜로 예산 유무 체크하기
+	/*
 	@Override
 	public Boolean checkDate(String date, String id) throws SQLException {
 		Boolean result = false;
-		// 회원의 모든 예산 정보부터 가져오기
-		List<TotalBudgetDTO> budgetList = totalBudgetDAO.selectAllTotalBudgetById(id);
-		for(int i = 0; i < budgetList.size(); i++) {
-			Timestamp start = budgetList.get(i).getStart_day();
-			System.out.println(start);
-			Timestamp end = budgetList.get(i).getEnd_day();
-			System.out.println(end);
-		}
+		// 회원의 예산 시작 날짜들 가져오기
+		List startDayList = totalBudgetDAO.selectBudgetStartDayById(id);
+		// 회원의 예산 끝나는 날짜 가져오기
+		List endDayList = totalBudgetDAO.selectBudgetEndDayById(id);
+		for(int i = 0; i < startDayList.size(); i++) {
+			System.out.println("시작날짜 : " +startDayList.get(i) + " 끝나는 날짜 : " + endDayList.get(i) );
+			//(String)startDayList.get(i);
+			
+			
+		System.out.println(date);
 		
 		return result;
 	}
 
-
 	
-  
+	 */
 
 }
+	
+
