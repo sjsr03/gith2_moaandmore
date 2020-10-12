@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -31,7 +32,12 @@
 						<option value="30">한달</option>
 					</select>
 				</li>
-				<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
+				<jsp:useBean id="now" class="java.util.Date" />
+				<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
+				<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
+				<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
+					<br/>
+					<span id="warn"></span>
 				</li>
 			</ul>
 			<input type="button" value="세부설정 >" onclick="nextStep()"/>
@@ -92,6 +98,21 @@
 	var y = document.getElementById("secondStep");
 	
 	$(document).ready(function(){
+		//월 시작일을 변경하는 경우
+		$('#startday > input').on('change', function(){
+			$.ajax({
+				type:"post",
+				url:"getWarnMessage.moa",
+				data: {
+					firstOfMonth:$(this).val()
+				},
+				success: function(data){
+					$("#warn").text(data);
+				}
+				
+			})
+		});
+		
 		$('#insertLine').on('click', function(){ //라인 추가
 			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();

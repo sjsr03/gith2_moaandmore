@@ -43,7 +43,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/member/main.moa">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/main.moa">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
@@ -217,7 +217,7 @@
             <div class="row">
             
             	<!-- 오늘의 예산 -->
-            	<div class="col-xl-8 col-lg-7">
+            	<div class="col-xl-5 col-lg-5">
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -243,7 +243,7 @@
 	            
 	            
             	<!-- 목표 -->
-            	<div class="col-xl-8 col-lg-7">
+            	<div class="col-xl-5 col-lg-5">
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
