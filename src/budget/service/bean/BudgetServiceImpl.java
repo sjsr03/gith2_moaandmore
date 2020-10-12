@@ -248,9 +248,16 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		
 	}
+
+
+	@Override
+	public Boolean checkDate(java.lang.String date, java.lang.String id) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	// 날짜로 예산 유무 체크하기
-	
+	/*
 	@Override
 	public Boolean checkDate(String date, String id) throws SQLException {
 		Boolean result = false;
@@ -269,8 +276,8 @@ public class BudgetServiceImpl implements BudgetService {
 	}
 
 	
- 
+	 */
 
 }
 	
-}
+
