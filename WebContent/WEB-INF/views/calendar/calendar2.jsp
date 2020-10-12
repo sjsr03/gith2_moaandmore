@@ -26,22 +26,16 @@
 </style>
 <body>
 
+
+${map["2020-10-08"]}
+
 <div id='calendar'></div>
 
 </body>
 <script>
-	<%--
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
-      });
-	--%>
+
 	
-	
-    function draw(data){
+	 document.addEventListener('DOMContentLoaded', function() {
     	    var calendarEl = document.getElementById('calendar');
 
     	    var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -52,9 +46,7 @@
     	        center: 'title',
     	        right: ''
     	      },
-    	      events: data
-    	    	  /*
-    	    	  [
+    	      events:[
     	        {
     	          title: 'All Day Event',
     	          start: '2020-09-01'
@@ -102,12 +94,12 @@
     	          start: '2020-09-28'
     	        }
     	      ]
-    	    	  */
+    	    	
     	    });
 
     	    calendar.render();
     	  });
-    }
+    
     </script>
 
 
