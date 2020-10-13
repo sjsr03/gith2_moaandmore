@@ -21,4 +21,10 @@
   	<insert id="insertNoBudgetDetail" parameterType="noBudgetDetailDTO">
   		insert into nobudget_detail values(${nobudget_no}, #{content}, #{memo}, #{img})
   	</insert>
+  	<!-- 
+  	SELECT t2.* from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT * FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=21) ORDER BY reg DESC)t1)t2 WHERE r >=1 AND r <=10
+  	 -->
+  	<select id="selectBudgetRecord" parameterType="hashmap" resultType="budgetRecordDTO">
+  		select * from budget
+  	</select>
   </mapper>

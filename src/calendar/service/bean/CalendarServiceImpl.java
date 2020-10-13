@@ -100,7 +100,7 @@ public class CalendarServiceImpl implements CalendarService{
 		for(int i=0; i<noBudget.size(); i++) {
 			NoBudgetDTO noBudgetList = (NoBudgetDTO)noBudget.get(i);
 			
-			Date indata =noBudgetList.getDate();
+			Date indata =noBudgetList.getReg();
 			String noBudgetDate = yyyymmdd.format(indata);
 			
 			if(!noBudgetalldate.contains(noBudgetDate)){

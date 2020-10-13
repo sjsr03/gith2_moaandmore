@@ -7,9 +7,7 @@
 <meta charset="UTF-8">
 <title>수입지출내역 추가</title>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
+
 <style>
 	ul{
 		list-style:none;
@@ -17,14 +15,6 @@
 	}
 </style>
 <script>
-	// 달력기능
-	$(function(){
-		$("#reg").datepicker({
-			dateFormat:"yy-mm-dd"
-			
-		});
-	});
-	
 	// 체크박스 상태 확인(체크된 상태면 nobudget 아니면 budget)
 	$(document).ready(function(){
 		var budget_no = 0;
@@ -32,7 +22,6 @@
 		$("#incomecategory").css("display", "none"); 
 		$("#outcomecategory").css("display", "none"); 
 		$(".btn").hide();
-		
 		
 		$("#checkbox").change(function(){
 			if($("#checkbox").is(":checked")){
@@ -49,7 +38,7 @@
 			}
 		});	
 		
-		$("#reg").on('change',function(){
+		$("#date").on('change',function(){
 			if($("#checkbox").is(":checked")){
 			}else{
 				// 예산일 때만 달력 체크하면 값 가져오게 처리
@@ -64,13 +53,13 @@
 					
 					var start = new Date("${budgetDate.get(0)}");
 					var end = new Date("${budgetDate.get(1)}");							
-					var selectedDay = new Date($("#reg").val());
+					var selectedDay = new Date($("#date").val());
 					
 					if((start <= selectedDay) && (end >= selectedDay)){
 						$.ajax({
 							type : "POST",
 							url : "budgetCategory.moa",
-							data : {date:$("#reg").val(), id:"${id}"},
+							data : {date:$("#date").val(), id:"${id}"},
 							dataType : "json",
 							async: false,
 							error : function(request,status,error){
@@ -78,7 +67,8 @@
 
 							},
 							success : function(data){							
-								//console.log(data);
+								console.log($("#date").val());
+								console.log(typeof date);
 								// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
 								$("#category").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
 
@@ -96,7 +86,7 @@
 						});
 					}else{
 						alert("날짜에 해당하는 예산이 없습니다. 다시 선택해주세요.");
-						$("#reg").val('');
+						$("#date").val('');
 						
 					}				
 				});
@@ -135,10 +125,7 @@
 		});
 		$("#check").click(function(){
 			
-			var reg = $("#reg").val();
-			var time = $("#time").val();
-			var date = reg + " " + time + ":00";
-		
+			
 			console.log("버겟 넘~~~ : " + budget_no);
 			// budgetNum도 hidden으로 보내주기
 			var intBudget_no = Number(budget_no);
@@ -217,7 +204,7 @@
 				<!-- 날짜 시간  -->
 				<li>
 					<div>
-						<input type="text" id="reg" name="reg" />
+						<input type="date" id="date" name="date" />
 					</div>
 				<!-- 시간 -->			
 					<div>
