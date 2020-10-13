@@ -58,7 +58,9 @@
 		<h1 style="margin-top:0; margin-bottom: 0;">Header</h1>
 	</div>
 	<div class="menu" style="background-color:#FFD6FF;width:200px;height:810px;float:left;">
-	
+		<c:if test="${sessionScope.memName != null}">
+			<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a>
+		</c:if>
 	</div>
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:790px;margin-left: 200px; padding: 10px;">
 		

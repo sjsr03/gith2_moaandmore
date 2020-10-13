@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestAttributes;
 
 import member.model.dao.MemberDAOImpl;
 import team.model.dao.TeamMemberDAOImpl;
@@ -64,6 +65,39 @@ public class TeamBean {
 		model.addAttribute("count", new Integer(count));
 		
 		return "team/groupList";
+	}
+	
+	@RequestMapping("groupMyRequestList.moa")
+	public String teamMyRequestList(String nickname, String pageNum, Model model) throws SQLException {
+		if(pageNum == null) {
+			pageNum = "1";
+		}
+		
+		int pageSize = 10;
+		int currPage = Integer.parseInt(pageNum);	//페이지 계산을 위해 숫자로 형변환
+		int startRow = (currPage-1)*pageSize+1;
+		int endRow = currPage*pageSize;
+		int number = 0;	//게시판 상의 글번호 뿌려줄 변수 미리 선언
+		
+		List articleList = null;
+		int count = teamService.getTeamMyRequestCount(nickname);
+		
+		if(count>0) {
+			articleList = teamService.getTeamMyRequests(nickname,startRow, endRow);
+		}
+		
+		number = count-(currPage-1)*pageSize;
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageSize", new Integer(pageSize));
+		model.addAttribute("currPage", new Integer(currPage));
+		model.addAttribute("startRow", new Integer(startRow));
+		model.addAttribute("endRow", new Integer(endRow));
+		model.addAttribute("number", new Integer(number));
+		model.addAttribute("articleList", articleList);
+		model.addAttribute("count", new Integer(count));
+		
+		return "team/groupMyRequestList";
 	}
 	
 	@RequestMapping("groupOpenForm.moa")

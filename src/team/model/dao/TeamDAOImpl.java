@@ -81,5 +81,24 @@ public class TeamDAOImpl implements TeamDAO{
 	public void updateTeamStatus(TeamDTO dto) throws SQLException {
 		sqlSession.update("team.updateTeamStatus", dto);
 	}
+
+	@Override
+	public int getTeamMyRequestCount(String nickname) throws SQLException {
+		int count = sqlSession.selectOne("team.countAllTeamMyRequest", nickname);
+		
+		return count;
+	}
+
+	@Override
+	public List getTeamMyRequests(String nickname, int start, int end) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("leader", nickname);
+		
+		List list = sqlSession.selectList("team.selectAllTeamMyRequest", map);
+		
+		return list;
+	}
 	
 }
