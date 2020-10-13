@@ -17,4 +17,6 @@ public interface RecordBudgetDAO {
 	// 예산 번호로 지출 기록 가져오기 
 	public List selectAllBudgetByNum(int budgetNum, int startRow, int endRow) throws SQLException; 
 	
+	// 예산번호로 지출 기록 총 개수 가져오기
+	public int countAllBudgetByNum(int budgetNum)throws SQLException;
 }

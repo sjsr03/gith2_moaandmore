@@ -33,7 +33,7 @@
  	
   	<!-- 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
   	<select id="selectBudgetNum" parameterType="hashmap" resultType="int">
-  		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= #{dateTime} and end_day >= #{dateTime}]]>	 
+  		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= TO_DATE('#{dateTime}', 'YYYY-MM-DD HH24:MI:SS')  and end_day >= TO_DATE('#{dateTime}', 'YYYY-MM-DD HH24:MI:SS')]]>		 
   	</select>
 
   	<!-- 지난 예산 시작 날짜 가져오기 -->

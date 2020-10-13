@@ -172,6 +172,7 @@ public class BudgetServiceImpl implements BudgetService {
 	@Override
 	public int selectBudgetNum(String id, Timestamp dateTime) throws SQLException {
 		HashMap map = new HashMap();
+		System.out.println("확인확인 : " + dateTime);
 		map.put("id", id);
 		map.put("dateTime", dateTime);
 		
@@ -269,18 +270,6 @@ public class BudgetServiceImpl implements BudgetService {
 		return budgetDate;
 	}
 
-	// 예산번호로 해당 예산 기록 목록 가져오기
-	@Override
-	public List selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
-		int startRow = 0;
-		int endRow = 0;
-		
-		List budgetRecordList =  recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
-		return budgetRecordList;
-	}
-
-	
-	
 
 }
 	

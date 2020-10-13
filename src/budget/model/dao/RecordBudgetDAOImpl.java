@@ -58,6 +58,14 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		budgetRecordList = sqlSession.selectList("record.selectBudgetRecord", para); 
 		return budgetRecordList;
 	}
+	@Override
+	public int countAllBudgetByNum(int budgetNum) throws SQLException {
+		int count = 0;
+		count = sqlSession.selectOne("record.countBudgetRecord", budgetNum);
+		return count;
+	}
+	
+	
 
 	
 }
