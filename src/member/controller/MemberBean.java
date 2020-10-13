@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import budget.model.dto.BudgetDTO;
 import category.service.bean.CategoryService;
 import member.model.dto.MemberDTO;
-import member.service.bean.CalendarService;
+
 import member.service.bean.MemberService;
 
 
@@ -39,14 +39,11 @@ public class MemberBean {
 	@Autowired
 	private MemberService memberService = null;
 	
-	
-	@Autowired
-	private CalendarService calendarService = null;
-	
+
 
 
 	@RequestMapping("loginForm.moa")
-	public String NLCloginForm() throws SQLException {
+	public String NLCloginForm() {
 		
 
 		
@@ -121,7 +118,7 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String LClogout(HttpServletRequest request) throws SQLException {
+	public String LClogout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		Cookie[] coo = request.getCookies();
@@ -187,31 +184,7 @@ public class MemberBean {
 	}
 	
 	
-	@RequestMapping("calendar.moa")
-	public String calendar(Model model) throws SQLException{
-		
-		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-
-		//id로 budget테이블에서 데이터가 있는 날짜 가져오기
-		List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
-		
-		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> AllbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
-		
-		Map map = new HashMap();
-		
-		for(int i = 0; i<budgetAlldate.size(); i++) {
-
-			map.put(budgetAlldate.get(i), AllbudgetAmount.get(i));
-			
-		}
-		
-		System.out.println(map);
-		
-		
-		
-		return "calendar/calendar";
-	}
+	
 	
 	
 	

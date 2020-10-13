@@ -98,7 +98,7 @@
 		</ul>
 	</div>
 	
-	
+	<button onclick="window.location.href='/moamore/team/groupList.moa'">그룹목록 페이지로</button>
 
 </body>
 </html>

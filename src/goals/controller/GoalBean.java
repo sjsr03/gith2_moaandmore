@@ -67,9 +67,10 @@ public class GoalBean {
 	}
 	
 	@RequestMapping(value="deleteGoal.moa", method=RequestMethod.GET)
-	public String deleteGoal(int goal_no, int public_ch, Model model, HttpServletRequest request) throws SQLException {
+	public String deleteGoal(int goal_no, int public_ch, int team_no,  Model model, HttpServletRequest request) throws SQLException {
 		
-		goalsService.deleteGoal(goal_no);
+		goalsService.deleteGoal(goal_no, public_ch, team_no);
+
 		model.addAttribute("msg", "삭제되었습니다.");
 		model.addAttribute("url", "/moamore/goals/myGoalList.moa");	
 		

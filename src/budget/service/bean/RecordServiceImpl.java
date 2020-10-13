@@ -30,40 +30,50 @@ public class RecordServiceImpl implements RecordService{
 	private RecordBudgetDAO recordBudgetDAO = null;
 	@Autowired
 	private RecordNoBudgetDAO recordNoBudgetDAO = null;
-	
-	
-	
-	
+
 	// 수입/지출내역 insert 메서드  
 	@Override
 	public void insertRecord(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO, Timestamp date) throws SQLException, IOException {
 		
-		// 이미지 저장처리 
+		
+		// 이미지 저장처리 			
 		MultipartFile mf = request.getFile("image");
-		String path = request.getRealPath("save"); // 저장할 폴더 경로
-		String orgName = mf.getOriginalFilename(); 
-		String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
-		
-		// 이미지 파일 확장자만 추출
-		String ext = orgName.substring(orgName.lastIndexOf('.'));
-		System.out.println("subString 확장자 이름 : " + ext);
-		
-		// 이름에 실행되는 시간 넣어주기 
-		long now = System.currentTimeMillis();
-		// 새로운 이름 만들기
-		String newName = imgName+now+ext;
-		System.out.println(newName);
-		
-		// imgPath 다시 만들어주기(newName사용)
-		String imgPath = path + "\\" + newName;
-		System.out.println("newName으로 새로만든 imgPath : " + imgPath);
-		
-		// 저장해주기
-		File file = new File(imgPath);
-		File copyFile = new File(imgPath);
-		
-		mf.transferTo(copyFile);
+		if(mf.getSize() > 0) {
+			System.out.println("이미지파일 : " +  mf);
+			String path = request.getRealPath("save"); // 저장할 폴더 경로
+			String orgName = mf.getOriginalFilename(); 
+			System.out.println("orgname : " + orgName);
+			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+			System.out.println("imgName : " + imgName);
+			// 이미지 파일 확장자만 추출
+			String ext = orgName.substring(orgName.lastIndexOf('.'));
+			System.out.println("subString 확장자 이름 : " + ext);
 			
+			// 이름에 실행되는 시간 넣어주기 
+			long now = System.currentTimeMillis();
+			// 새로운 이름 만들기
+			String newName = imgName+now+ext;
+			System.out.println(newName);
+			
+			// imgPath 다시 만들어주기(newName사용)
+			String imgPath = path + "\\" + newName;
+			System.out.println("newName으로 새로만든 imgPath : " + imgPath);
+			
+			// 저장해주기
+			File file = new File(imgPath);
+			File copyFile = new File(imgPath);
+			
+			mf.transferTo(copyFile);
+			
+			// dto에 세팅까지해주기
+			noBudgetDetailDTO.setImg(newName);
+			budgetDetailDTO.setImg(newName);
+			
+		}else { // 이미지가 없을 땐 default값 넣어주기.
+			noBudgetDetailDTO.setImg("default.gif");
+			budgetDetailDTO.setImg("default.gif");
+		}
+		
 		/*
 		System.out.println("예산 사용 금액 : " +budgetDTO.getAmount());
 		System.out.println("예산안 구분번호 : " +budgetDTO.getBudget_no());
@@ -78,14 +88,14 @@ public class RecordServiceImpl implements RecordService{
 		System.out.println("예산외 타입 : " +noBudgetDTO.getType());
 		*/
 		
-		System.out.println("타입 확인!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1 : " + request.getParameter("type"));
+		System.out.println("타입 확인! : " + request.getParameter("type"));
 		
 		
 		// dto에 세팅 
 		String type = request.getParameter("type");
 		if(type.equals("outcome") || type.equals("income")){ // 예산외 수입/지출 일 떄
 			noBudgetDTO.setDate(date);
-			noBudgetDetailDTO.setImg(newName);
+			
 			System.out.println("예산 외 되냥 " + noBudgetDetailDTO.getImg());
 			System.out.println("예산외 메모 : " + noBudgetDetailDTO.getMemo());
 			System.out.println("예산외 content : " + noBudgetDetailDTO.getContent());
@@ -98,8 +108,7 @@ public class RecordServiceImpl implements RecordService{
 			recordNoBudgetDAO.insertNoBudgetDetailDTO(noBudgetDetailDTO);	
 			
 		}else { // 예산일 때 
-			budgetDTO.setDate(date);
-			budgetDetailDTO.setImg(newName);
+			budgetDTO.setReg(date);
 			System.out.println("되낭 : " + budgetDetailDTO.getImg());
 			System.out.println("예산내 메모 : " + budgetDetailDTO.getMemo());
 			
@@ -113,8 +122,8 @@ public class RecordServiceImpl implements RecordService{
 			recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);
 			
 		}	
+	
+
 	}
-
-
 
 }

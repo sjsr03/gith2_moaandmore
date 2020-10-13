@@ -7,10 +7,10 @@
 <meta charset="UTF-8">
 <title>myGoalList</title>
 <script>
-	function deleteCh(goal_no, public_ch){
+	function deleteCh(goal_no, public_ch, team_no){
 		var ch = true;
 		
-		console.log(public_ch);
+		
 		if(public_ch == '1'){
 			ch = confirm("해당 목표를 삭제하면 참여중인 그룹을 탈퇴하며 그룹목표를 다시 진행할 수 없습니다. 삭제하시겠습니까?");
 			
@@ -18,7 +18,7 @@
 		
 		console.log(ch);
 		if(ch){
-			window.location.href = "/moamore/goals/deleteGoal.moa?goal_no="+goal_no+"&public_ch="+public_ch;
+			window.location.href = "/moamore/goals/deleteGoal.moa?goal_no="+goal_no+"&public_ch="+public_ch+"&team_no="+team_no;
 		}else{
 			return;
 		}
@@ -34,6 +34,15 @@
 
 
 <button onclick="window.location.href='/moamore/goals/insertGoalForm.moa'">+목표</button>
+<select>
+	<option>정렬</option>
+	<option>정렬</option>
+	<option>정렬</option>
+	<option>정렬</option>
+	<option>정렬</option>
+	
+
+</select>
 
 <table border="1">
 	<tr>
@@ -69,7 +78,7 @@
 				</c:if>
 				<td>수정불가</td>				
 			</c:if>
-			<td><button onclick="deleteCh('${goal.goal_no}','${goal.public_ch}')">삭제</button></td>
+			<td><button onclick="deleteCh('${goal.goal_no}','${goal.public_ch}','${goal.team_no}')">삭제</button></td>
 		</tr>	
 	</c:forEach> 
 	

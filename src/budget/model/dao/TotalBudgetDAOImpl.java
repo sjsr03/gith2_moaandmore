@@ -47,6 +47,7 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println("dao에서 버겟 넘  : " +  budgetNum );
 		return budgetNum;
 	}
 	
@@ -56,17 +57,16 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	}
 
 	@Override
-	public List selectBudgetStartDayById(String id) throws SQLException {
-		List startDayList = new ArrayList();
-		startDayList = sqlSession.selectList("totalBudget.selectBudgetStartDayById", "test50");
-		return startDayList;
-	}
-
-	@Override
-	public List selectBudgetEndDayById(String id) throws SQLException {
-		List endDayList = new ArrayList();
-		endDayList = sqlSession.selectList("totalBudget.selectBudgetEndDayById", "test50");
-		return endDayList;
+	public List selectBudgetDate(String id) throws SQLException {
+		List budgetDate = new ArrayList();
+		String start = sqlSession.selectOne("totalBudget.selectBudgetStartDate", id);
+		String end = sqlSession.selectOne("totalBudget.selectBudgetEndDate", id);
+		// List 에 시작날짜, 끝나는날짜로 넣어서 리턴.
+		budgetDate.add(start);
+		budgetDate.add(end);
+		
+		
+		return budgetDate;
 	}
 	
 

@@ -3,7 +3,8 @@ package main.service.bean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import budget.model.dao.ReportDAO;
+import report.model.dao.ReportDAO;
+
 
 @Service
 public class MainServiceImpl implements MainService {
