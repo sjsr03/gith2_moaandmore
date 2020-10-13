@@ -78,7 +78,7 @@ public class MainBean {
 		TotalBudgetDTO totalBudget = budgetService.selectCurrentOne(id);
 		long time = totalBudget.getEnd_day().getTime()-totalBudget.getStart_day().getTime();
 		int period = (new Date(time).getDate())-1;
-		
+		if (period==0) period=1;
 		//해당 카테고리별 세부정보
 		List TBDlist = budgetService.selectAllbyBudgetNum(totalBudget.getBudget_no()) ;
 		

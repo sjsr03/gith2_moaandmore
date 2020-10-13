@@ -42,15 +42,10 @@ public class GoalBean {
 	}
 	
 	@RequestMapping("getMyGoalList.moa")
-	public @ResponseBody List<GoalsDTO> myGoalList(HttpServletRequest request) throws SQLException {
+	public @ResponseBody List<GoalsDTO> myGoalList(HttpServletRequest request, int public_ch, String sorting) throws SQLException {
 		//아이디별 리스트. 세션으로 id받아오기
-		String public_ch_str = request.getParameter("public_ch");
-		int public_ch = 0;
 		
-		if(public_ch_str != null && public_ch_str.equals("1")) {
-			public_ch = 1;
-		}
-		return goalsService.selectAllByPublicCh(public_ch);
+		return goalsService.selectAllByPublicCh(public_ch, sorting);
 	}
 	
 	

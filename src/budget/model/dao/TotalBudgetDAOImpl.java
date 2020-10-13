@@ -70,5 +70,15 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	}
 
 	
+	@Override
+	public TotalBudgetDTO selectLastTB(String id) throws SQLException {
+		return sqlSession.selectOne("totalBudget.selectLastTB", id);
+	}
+	
+	@Override
+	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException {
+		return sqlSession.selectOne("totalBudget.selectOneByNum",budget_no);
+	}
+	
 
 }
