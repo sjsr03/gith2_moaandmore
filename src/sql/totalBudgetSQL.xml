@@ -45,6 +45,16 @@
   		select start_day from TOTAL_BUDGET WHERE id=#{value} and close=1
   	</select>
   	
+  	<!-- 직전 예산 정보 가져오기 -->
+  	<select id="selectLastTB" parameterType="string" resultType="totalBudgetDTO">
+  		select * from total_budget where id=#{value} and close=1
+  	</select>
+  	
+  	<!-- 예산 번호로 전체 정보 가져오기 -->
+  	<select id="selectOneByNum" parameterType="int" resultType="totalBudgetDTO" >
+  		select * from total_budget where budget_no=#{value}
+  	</select>
+  	
   	
   </mapper>
  

@@ -66,7 +66,7 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		if(period == 30) {	//한달일경우
 			int firstOfMonth = Integer.parseInt(request.getParameter("firstOfMonth"));
-			if(date.DATE > firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
+			if(date.DATE >= firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
 				date.add(Calendar.MONTH, 1);
 				date.set(Calendar.DATE, firstOfMonth);
 			} else { //설정한 월 시작일이 아직 안 지난 경우 = 이번달 월 시작일 전날까지
@@ -267,8 +267,16 @@ public class BudgetServiceImpl implements BudgetService {
 		return budgetDate;
 	}
 
-
-	 
+	@Override
+	public TotalBudgetDTO selectLastTB(java.lang.String id) throws SQLException {
+		return totalBudgetDAO.selectLastTB(id);
+	}
+	
+	@Override
+	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException {
+		return totalBudgetDAO.selectOneByNum(budget_no);
+	}
+	
 
 }
 	

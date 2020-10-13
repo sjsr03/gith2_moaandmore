@@ -36,4 +36,11 @@ public interface BudgetService {
 	
 	// 아이디로 진행중인 예산의 끝나는 날짜와 지난 예산의 시작 날짜 가져오기
 	public List selectBudgetDate(String id) throws SQLException;
+	
+	//직전 예산정보 가져오기
+	public TotalBudgetDTO selectLastTB(String id) throws SQLException;
+	
+	//예산 번호로 전체 정보 가져오기
+	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException;
+	
 }
