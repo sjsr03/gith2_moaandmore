@@ -64,7 +64,7 @@ public class ReportBean {
 	@RequestMapping("getBudgetNum.moa")
 	@ResponseBody
 	public int getBudgetNum(String date, String id) throws SQLException {
-		Timestamp dateTime = Timestamp.valueOf(date);
+		Timestamp dateTime = Timestamp.valueOf(date + " 00:00:00");
 		// 예산 번호 뽑아오기
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
 		return budgetNum;

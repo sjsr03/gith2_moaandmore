@@ -135,17 +135,7 @@
 					"date":$(this).val()
 				},
 				success:function(data){
-					$.ajax({
-						url:"reportContent.moa",
-						data:{
-							"id":"${sessionScope.memId}",
-							"budget_no":$(this).val()
-						},
-						success:function(data){
-							$("#reportContent").empty();
-							$("#reportContent").append(data);
-						}
-					});
+					reReport(data)
 				}
 			});
 		});
@@ -153,6 +143,20 @@
 
 		
 	});
+	
+	function reReport(budget_no){
+		$.ajax({
+			url:"reportContent.moa",
+			data:{
+				"id":"${sessionScope.memId}",
+				"budget_no":budget_no
+			},
+			success:function(data){
+				$("#reportContent").empty();
+				$("#reportContent").append(data);
+			}
+		});
+	};
 	
 	
 </script>

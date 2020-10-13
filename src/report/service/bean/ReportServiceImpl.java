@@ -40,17 +40,16 @@ public class ReportServiceImpl implements ReportService {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		long lt = endDay.getTime()-day.getTime();
 		int period = Math.round((lt)/(1000*60*60*24)) + 1;
-		int daily = Math.round(TBdto.getBudget()/period);
+		double daily = Math.round(TBdto.getBudget()/period);
 		
 		String labelList = "[";
 		String dataList = "[";
 		
 		while(day.before(endDay)) {
 			String tmp = "\"" + (day.getMonth()+1) + "/" + day.getDate() + "\", ";
-			int sum = selectOutcomeSumByReg(TBdto.getBudget_no(), sdf.format(day));
-			
+			double sum = selectOutcomeSumByReg(TBdto.getBudget_no(), sdf.format(day));
 			labelList += tmp;
-			dataList += (sum/daily*100) + ", ";
+			dataList += (sum/daily)*100 + ", ";
 			
 			day.setDate(day.getDate()+1);
 		}
