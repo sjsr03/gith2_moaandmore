@@ -1,6 +1,10 @@
 package budget.model.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +43,21 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 	@Override
 	public void insertBudgetDetail(BudgetDetailDTO budgetDetailDTO) throws SQLException {
 		sqlSession.insert("record.insertBudgetDetail", budgetDetailDTO);
+				
+	}
+	
+	@Override
+	public List selectAllBudgetByNum(int budgetNum, int startRow, int endRow) throws SQLException {		
+		List budgetRecordList = new ArrayList();
 		
+		Map para = new HashMap();
+		para.put("budgetNum", budgetNum);
+		para.put("startRow", startRow);
+		para.put("endRow", endRow);
 		
+		budgetRecordList = sqlSession.selectList("record.selectBudgetRecord", para); 
+		return budgetRecordList;
 	}
 
+	
 }

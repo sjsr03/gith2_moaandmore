@@ -9,7 +9,7 @@ public class NoBudgetDTO {
 	private String type;
 	private int category_no;
 	private int amount;
-	private Timestamp date;
+	private Timestamp reg;
 	
 	public int getNobudget_no() {
 		return nobudget_no;
@@ -41,11 +41,11 @@ public class NoBudgetDTO {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	public Timestamp getDate() {
-		return date;
+	public Timestamp getReg() {
+		return reg;
 	}
-	public void setDate(Timestamp date) {
-		this.date = date;
+	public void setReg(Timestamp reg) {
+		this.reg = reg;
 	}
 		
 }

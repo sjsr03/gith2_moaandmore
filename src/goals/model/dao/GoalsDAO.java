@@ -1,6 +1,7 @@
 package goals.model.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import goals.model.dto.GoalsDTO;
@@ -13,6 +14,8 @@ public interface GoalsDAO {
 	public GoalsDTO selectOne(int goal_no) throws SQLException;
 	
 	//아이디로 목표 전체 가져오기
+	public List<GoalsDTO> selectAllByPublicCh(HashMap map) throws SQLException;
+	//타입으로 목표 전체 가져오기
 	public List<GoalsDTO> selectAllById(String id) throws SQLException;
 	
 	//개인 목표 삽입
