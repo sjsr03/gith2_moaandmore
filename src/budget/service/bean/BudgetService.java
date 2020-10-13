@@ -33,7 +33,10 @@ public interface BudgetService {
 	//남은 돈 전환
 	public void LeftMoneyTransfer() throws SQLException;
 
-	
 	// 아이디로 진행중인 예산의 끝나는 날짜와 지난 예산의 시작 날짜 가져오기
 	public List selectBudgetDate(String id) throws SQLException;
+	
+	
+	// 예산 번호로 해당 예산 기록 전부 가져오기
+	public List selectAllBudgetByNum(int budgetNum, String pageNum)throws SQLException;
 }

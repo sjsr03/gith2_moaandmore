@@ -44,7 +44,6 @@
   	<select id="selectBudgetEndDate" parameterType="string" resultType="string">
   		select start_day from TOTAL_BUDGET WHERE id=#{value} and close=1
   	</select>
-  	
-  	
+
   </mapper>
  
