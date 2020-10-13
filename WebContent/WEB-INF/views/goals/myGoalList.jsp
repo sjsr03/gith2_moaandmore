@@ -10,42 +10,30 @@
 <script>
 
 	var list_type = 0; // 개인
+	//컨트롤러에서 넘겨줬을때 
 	if(${public_ch} != null){
 		list_type = ${public_ch};
 	}
-	var sorting = "reg_desc"; //최신순
+	var sorting = ""; //정렬 기준
 	
 	$(document).ready(function(){
+		loadSelectVal(list_type);	
 		loadList(list_type);
 		
+		
 	})
-
-</script>
-</head>
-
-<body>
-<h1> ${sessionScope.memName} 님의 목표리스트 </h1>
-
-
-<button onclick="window.location.href='/moamore/goals/insertGoalForm.moa'">+목표</button>
-
-<button onclick="loadList(0)">개인</button>
-<button onclick="loadList(1)">그룹</button>
-
-<select id="sorting_val">
-</select>
-
-<table border="1" id="goal_list">
-</table>
-
-<script>
+	
 	//ajax로 리스트 가져오기 
 	function loadList(_list_type){
-		list_type = _list_type;
+		list_type = _list_type;	
+		console.log("리스트 로드");
+	//	sorting  = $("#sorting_val option:selected").val();
+		
+		
 		$.ajax({
 			type : "POST",
 			url : "/moamore/goals/getMyGoalList.moa",
-			data : {"public_ch" : list_type },
+			data : {"public_ch" : list_type, "sorting": sorting },
 			success:function(data){
 				$("#goal_list").empty();
 				
@@ -85,28 +73,30 @@
 					addListHtml += "<tr/>";			
 					$("#goal_list").append(addListHtml);
 				}//end for
-				loadSelectVal(list_type);
+				
+				console.log(sorting);
 			},
 			error : function(e){
 				console.log("리스트 로딩 실패");
 			}
 		})
-		
 	}
+	
 
 	//개인/그룹 여부에 따라 셀렉트박스 값 채우기
 	function loadSelectVal(list_type){
+		console.log("셀렉트 박스")
 		var addSelectHtml = "";
 		$("#sorting_val").empty();
 		if(list_type == 0){
-			addSelectHtml += "<option value='startday_desc'>시작일↑</option>";
 			addSelectHtml += "<option value='startday_asc'>시작일↓</option>";
+			addSelectHtml += "<option value='startday_desc' selected>시작일↑</option>";
 			addSelectHtml += "<option value='achievement_asc'>달성률↑</option>";
 			addSelectHtml += "<option value='achievement_desc'>달성률↓</option>";
 			$("#sorting_val").append(addSelectHtml);
 		}else{
+			addSelectHtml += "<option value='startday_desc' selected>시작일↓</option>";
 			addSelectHtml += "<option value='startday_asc'>시작일↑</option>";
-			addSelectHtml += "<option value='startday_desc'>시작일↓</option>";
 			addSelectHtml += "<option value='endday_asc'>마감일↑</option>";
 			addSelectHtml += "<option value='endday_desc'>마감일↓</option>";
 			addSelectHtml += "<option value='achievement_asc'>달성률↑</option>";
@@ -115,8 +105,36 @@
 			addSelectHtml += "<option value='private'>비공개</option>";
 			$("#sorting_val").append(addSelectHtml);
 		}
-		
+		sorting  = $("#sorting_val option:selected").val();
 	}
+	
+	$(document).on('change','#sorting_val',function(){	
+		sorting  = $("#sorting_val option:selected").val();
+		loadList(list_type);
+		
+	})
+	
+	
+</script>
+</head>
+
+<body>
+<h1> ${sessionScope.memName} 님의 목표리스트 </h1>
+
+
+<button onclick="window.location.href='/moamore/goals/insertGoalForm.moa'">+목표</button>
+
+<button onclick="loadList(0)">개인</button>
+<button onclick="loadList(1)">그룹</button>
+
+<select id="sorting_val">
+</select>
+
+<table border="1" id="goal_list">
+</table>
+
+<script>
+	
 	
 	function redir(goal_no){
 		window.location.href="/moamore/goals/myGoalDetail.moa?goal_no="+goal_no;

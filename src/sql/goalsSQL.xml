@@ -13,7 +13,17 @@
 	</select>
 	
 	<select id="selectAllByPublicCh" parameterType="java.util.HashMap" resultType="goalsDTO">
-		select * from goals where id=#{id} and public_ch=#{public_ch}
+		select * from goals where id=#{id} and public_ch=#{public_ch} 
+		<if test='sorting.equals("public")'> and public_type = '1'</if>
+		<if test='sorting.equals("private")'> and public_type = '0'</if>
+		<choose>
+			<when test='sorting.equals("startday_asc")'> order by start_day asc</when>
+			<when test='sorting.equals("startday_desc")'> order by start_day desc</when>
+			<when test='sorting.equals("achievement_asc")'>order by saving/target_money asc</when>
+			<when test='sorting.equals("achievement_desc")'>order by saving/target_money desc</when>
+			<when test='sorting.equals("endday_asc")'>order by end_day asc</when>
+			<when test='sorting.equals("endday_desc")'>order by end_day desc</when>
+		</choose>
 	</select>
 
 	<insert id="insertGoal" parameterType="goalsDTO">
@@ -39,6 +49,8 @@
 		}
 		
 	</delete>
+	
+	
 	
 
 

@@ -28,11 +28,7 @@ public class GoalsDAOImpl implements GoalsDAO{
 	}
 
 	@Override
-	public List<GoalsDTO> selectAllByPublicCh(String id, int public_ch) throws SQLException {
-		
-		HashMap map = new HashMap();
-		map.put("id",id);
-		map.put("public_ch",public_ch);
+	public List<GoalsDTO> selectAllByPublicCh(HashMap map) throws SQLException {
 		
 		List<GoalsDTO> goalList = sqlSession.selectList("goals.selectAllByPublicCh", map);
 		return goalList;

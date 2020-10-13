@@ -2,6 +2,7 @@ package goals.service;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,18 @@ public class GoalsServiceImpl implements GoalsService {
 	}
 
 	@Override
-	public List<GoalsDTO> selectAllByPublicCh(int public_ch) throws SQLException {	
+	public List<GoalsDTO> selectAllByPublicCh(int public_ch, String sorting) throws SQLException {	
 		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-		return goalsDAO.selectAllByPublicCh(id, public_ch);
+		
+		HashMap map = new HashMap();
+		map.put("id",id);
+		map.put("public_ch",public_ch);
+
+				
+		map.put("sorting",sorting);
+		
+		
+		return goalsDAO.selectAllByPublicCh(map);
 	}
 	
 	@Override
