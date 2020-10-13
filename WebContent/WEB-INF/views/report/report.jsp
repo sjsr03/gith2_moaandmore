@@ -60,7 +60,7 @@
                 		</c:forEach>
                 	</select>
                 	<input type="button" value="달력"  />
-                	<input type="date" id="datepick" value="달력" />
+                	<input type="date" id="datepick" />
 
 
                 </div>
@@ -96,17 +96,23 @@
 
 
 	$(document).ready(function(){
-		$.ajax({
-			url:"reportContent.moa",
-			data:{
-				"id":"${sessionScope.memId}",
-				"budget_no":-1
-			},
-			success:function(data){
-				$("#reportContent").append(data);
-			}
-		});
-		$("#selectBudget").on('change', function(){
+		if($("#selectBudget").val() == null) {
+			alert("과거 예산 기록이 없습니다.");
+			history.go(-1);
+		} else {
+			$.ajax({
+				url:"reportContent.moa",
+				data:{
+					"id":"${sessionScope.memId}",
+					"budget_no":-1
+				},
+				success:function(data){
+					$("#reportContent").append(data);
+				}
+			});
+		}
+		
+		$("#selectBudget").on('change', function(){	//예산 선택 바꾸면
 			$.ajax({
 				url:"reportContent.moa",
 				data:{
@@ -119,6 +125,32 @@
 				}
 			});
 		});
+		
+		$("#datepick").on('change', function(){	//날짜를 직접 선택하면
+			//해당 예산번호 먼저 가져옴
+			$.ajax({
+				url:"getBudgetNum.moa",
+				data:{
+					"id":"${sessionScope.memId}",
+					"date":$(this).val()
+				},
+				success:function(data){
+					$.ajax({
+						url:"reportContent.moa",
+						data:{
+							"id":"${sessionScope.memId}",
+							"budget_no":$(this).val()
+						},
+						success:function(data){
+							$("#reportContent").empty();
+							$("#reportContent").append(data);
+						}
+					});
+				}
+			});
+		});
+			
+
 		
 	});
 	

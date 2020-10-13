@@ -1,8 +1,11 @@
 package report.controller.bean;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -46,36 +49,24 @@ public class ReportBean {
 		} else {
 			TBdto = budgetService.selectOneByNum(budget_no);
 		}
-		model.addAttribute("TBdto",TBdto);
+		model.addAttribute("TBdto",TBdto);	//총 예산 정보 전달
 		
-		//예산 시작일~종료일 배열로
-		Date day = new Date(TBdto.getStart_day().getTime());
-		Date endDay = new Date(TBdto.getEnd_day().getTime());
-		System.out.println("startDay : " + day + " / endDay : " + endDay);
-//		List tmpList = new ArrayList();
-//		while(day.before(endDay)) {
-//			tmpList.add(day.getMonth()+1 + "월 " + day.getDate() + "일");
-//			day.setDate(day.getDate()+1);
-//		}
-//		String[] labelList = (String[]) tmpList.toArray(new String[tmpList.size()]);
+		HashMap returnMap = reportService.selectLabelDataList(TBdto);
 		
-		String labelList = "[";
-		while(day.before(endDay)) {
-			String tmp = "\"" + (day.getMonth()+1) + "월 " + day.getDate() + "일" + "\", ";
-			labelList += tmp;
-			day.setDate(day.getDate()+1);
-		}
-		labelList.substring(0, labelList.length()-2);
-		labelList += "]";
+		model.addAttribute("labelList", returnMap.get("labelList"));
+		model.addAttribute("dataList", returnMap.get("dataList"));	//그래프용 데이터 전달
 		
-//		
-//		int[] dataList = new int[labelList.length];
-//		for (int i = 0; i < labelList.length; i++) {
-//			dataList[i] = i;
-//		}
-		model.addAttribute("labelList", labelList);
-//		model.addAttribute("dataList", dataList);
+		
 		
 		return "report/reportContent";
+	}
+	
+	@RequestMapping("getBudgetNum.moa")
+	@ResponseBody
+	public int getBudgetNum(String date, String id) throws SQLException {
+		Timestamp dateTime = Timestamp.valueOf(date);
+		// 예산 번호 뽑아오기
+		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
+		return budgetNum;
 	}
 }

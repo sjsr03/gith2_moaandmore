@@ -46,4 +46,13 @@ public class ReportDAOImpl implements ReportDAO {
 //		}
 		return list;
 	}
+	
+	@Override
+	public int selectOutcomeSumByReg(HashMap map) {
+		if(sqlSession.selectOne("report.selectOutcomeSumByReg",map) == null) {
+			return 0;
+		} else {
+			return sqlSession.selectOne("report.selectOutcomeSumByReg",map);
+		}
+	}
 }

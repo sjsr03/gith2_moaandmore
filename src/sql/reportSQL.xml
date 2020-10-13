@@ -18,5 +18,13 @@
 	<select id="selectAllOrderByReg" parameterType="string" resultType="totalBudgetDTO" >
 		select * from total_budget where id=#{value} and close !=0 order by end_day desc
 	</select>
+	
+	<!-- 날짜와 예산번호로 지출액 합산 -->
+	<select id="selectOutcomeSumByReg" parameterType="hashmap" resultType="int" >
+		<![CDATA[
+			select sum(amount) from budget where budget_no=#{budget_no} and to_char(reg,'yyyy-MM-dd')=#{reg} 
+		]]>
+	</select>
+	
   </mapper>
  
