@@ -35,7 +35,7 @@ public class CalendarServiceImpl implements CalendarService{
 		for(int i=0; i<budget.size(); i++) {
 			BudgetDTO budgetList = (BudgetDTO)budget.get(i);
 			
-			Date indata =budgetList.getDate();
+			Date indata =budgetList.getReg();
 			String budgetDate = yyyymmdd.format(indata);
 			
 		

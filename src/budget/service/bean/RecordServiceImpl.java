@@ -95,7 +95,7 @@ public class RecordServiceImpl implements RecordService{
 			recordNoBudgetDAO.insertNoBudgetDetailDTO(noBudgetDetailDTO);	
 			
 		}else { // 예산일 때 
-			budgetDTO.setDate(date);
+			budgetDTO.setReg(date);
 			budgetDetailDTO.setImg(newName);
 			System.out.println("되낭 : " + budgetDetailDTO.getImg());
 			System.out.println("예산내 메모 : " + budgetDetailDTO.getMemo());
