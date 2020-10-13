@@ -13,6 +13,8 @@ public interface GoalsDAO {
 	public GoalsDTO selectOne(int goal_no) throws SQLException;
 	
 	//아이디로 목표 전체 가져오기
+	public List<GoalsDTO> selectAllByPublicCh(String id, int public_ch) throws SQLException;
+	//타입으로 목표 전체 가져오기
 	public List<GoalsDTO> selectAllById(String id) throws SQLException;
 	
 	//개인 목표 삽입

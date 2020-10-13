@@ -11,6 +11,10 @@
 	<select id="selectAllById" parameterType="String" resultType="goalsDTO">
 		select * from goals where id=#{value}
 	</select>
+	
+	<select id="selectAllByPublicCh" parameterType="java.util.HashMap" resultType="goalsDTO">
+		select * from goals where id=#{id} and public_ch=#{public_ch}
+	</select>
 
 	<insert id="insertGoal" parameterType="goalsDTO">
 		<selectKey keyProperty="goal_no" resultType="int" order="BEFORE">

@@ -28,11 +28,21 @@ public class GoalsDAOImpl implements GoalsDAO{
 	}
 
 	@Override
+	public List<GoalsDTO> selectAllByPublicCh(String id, int public_ch) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("id",id);
+		map.put("public_ch",public_ch);
+		
+		List<GoalsDTO> goalList = sqlSession.selectList("goals.selectAllByPublicCh", map);
+		return goalList;
+	}
+
+	@Override
 	public List<GoalsDTO> selectAllById(String id) throws SQLException {
 		List<GoalsDTO> goalList = sqlSession.selectList("goals.selectAllById", id);
 		return goalList;
 	}
-
 	@Override
 	public boolean insertGoal(GoalsDTO goal) throws SQLException {
 		sqlSession.insert("goals.insertGoal",goal);
@@ -78,6 +88,8 @@ public class GoalsDAOImpl implements GoalsDAO{
 		
 		sqlSession.delete("goals.deleteGoal",map);
 	}
+
+	
 
 	
 

@@ -14,11 +14,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import goals.model.dto.GoalsDTO;
 import goals.service.GoalsServiceImpl;
 
 @Controller
+@EnableWebMvc
 @RequestMapping("/goals/")
 public class GoalBean {
 	
@@ -27,12 +30,27 @@ public class GoalBean {
 	
 	
 	@RequestMapping("myGoalList.moa")
-	public String myGoalList(Model model) throws SQLException {
-		//아이디별 리스트. 세션으로 id받아오기
-		List<GoalsDTO> goalList = goalsService.selectAllById();
-		model.addAttribute("goalList", goalList);
+	public String myGoalsList(HttpServletRequest request,Model model) {
+		int public_ch = 0;
 		
+		String public_ch_str = request.getParameter("public_ch");
+		if(public_ch_str != null && public_ch_str.equals("1")) {
+			public_ch = 1;
+		}
+		model.addAttribute("public_ch", public_ch);
 		return "goals/myGoalList";
+	}
+	
+	@RequestMapping("getMyGoalList.moa")
+	public @ResponseBody List<GoalsDTO> myGoalList(HttpServletRequest request) throws SQLException {
+		//아이디별 리스트. 세션으로 id받아오기
+		String public_ch_str = request.getParameter("public_ch");
+		int public_ch = 0;
+		
+		if(public_ch_str != null && public_ch_str.equals("1")) {
+			public_ch = 1;
+		}
+		return goalsService.selectAllByPublicCh(public_ch);
 	}
 	
 	
