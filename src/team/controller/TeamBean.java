@@ -46,10 +46,12 @@ public class TeamBean {
 		int number = 0;	//게시판 상의 글번호 뿌려줄 변수 미리 선언
 		
 		List articleList = null;
+		List articleAvgList = null;
 		int count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus));
 		
 		if(count>0) {
 			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow);
+			articleAvgList = teamMemService.getTeamAvgArticles(articleList);
 		}
 		
 		number = count-(currPage-1)*pageSize;
@@ -62,6 +64,7 @@ public class TeamBean {
 		model.addAttribute("endRow", new Integer(endRow));
 		model.addAttribute("number", new Integer(number));
 		model.addAttribute("articleList", articleList);
+		model.addAttribute("articleAvgList", articleAvgList);
 		model.addAttribute("count", new Integer(count));
 		
 		return "team/groupList";

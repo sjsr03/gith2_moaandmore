@@ -63,6 +63,8 @@ public class TeamDAOImpl implements TeamDAO{
 		return list;
 	}
 
+	
+	
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
 		if(dto.getPassword() == null)

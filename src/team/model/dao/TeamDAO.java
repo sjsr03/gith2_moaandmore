@@ -8,7 +8,7 @@ import team.model.dto.TeamDTO;
 public interface TeamDAO {
 	//진행중인 공개 그룹 개수 검색
 	public int getTeamArticleCount(int pageStatus) throws SQLException;
-	//진행중인 공개 그룹 범위 지정 가져오기
+	//그룹 범위 지정 가져오기
 	public List getTeamArticles(int pageStatus, int start, int end) throws SQLException;
 	//그룹 신청
 	public void insertTeamArticle(TeamDTO dto) throws SQLException;

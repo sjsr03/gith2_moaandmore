@@ -29,7 +29,7 @@ public class TeamServiceImpl implements TeamService{
 	public List getTeamArticles(int pageStatus, int start, int end) throws SQLException {
 		return dao.getTeamArticles(pageStatus, start, end);
 	}
-
+	
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
 		dto.setStart_day(dto.getStart_day().replaceAll("-", ""));

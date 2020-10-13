@@ -15,5 +15,4 @@
 	<select id="deleteTeamMemberAll" parameterType="int">
 		delete from team_member where team_no = #{value}
 	</select>
-
 </mapper>
