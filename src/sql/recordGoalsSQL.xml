@@ -8,5 +8,11 @@
   	<insert id="insertRecordGoal" parameterType="totalBudgetDTO">
   		insert into record_goals values(record_goals_seq.nextVal, #{goal_no}, #{id}, sysdate, #{amount})
   	</insert>
+  	
+  	<!-- 목표번호로 레코드 가져오기 -->
+  	<select id="selectAll" parameterType="java.util.HashMap" resultType="recordGoalsDTO">
+  		select * from record_goals where id=#{id} and goal_no=#{goals_no} order by reg desc
+  	</select>
+  	
   </mapper>
  

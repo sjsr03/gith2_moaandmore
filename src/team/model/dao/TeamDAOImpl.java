@@ -25,7 +25,7 @@ public class TeamDAOImpl implements TeamDAO{
 		int count = 0;
 		
 		if(pageStatus==2) {
-			//진행중 그룹등
+			//진행중 그룹들
 			count = sqlSession.selectOne("team.countOpenAll");
 		}else if(pageStatus == 1) {
 			//개설예정 그룹들
@@ -80,6 +80,25 @@ public class TeamDAOImpl implements TeamDAO{
 	@Override
 	public void updateTeamStatus(TeamDTO dto) throws SQLException {
 		sqlSession.update("team.updateTeamStatus", dto);
+	}
+
+	@Override
+	public int getTeamMyRequestCount(String nickname) throws SQLException {
+		int count = sqlSession.selectOne("team.countAllTeamMyRequest", nickname);
+		
+		return count;
+	}
+
+	@Override
+	public List getTeamMyRequests(String nickname, int start, int end) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("leader", nickname);
+		
+		List list = sqlSession.selectList("team.selectAllTeamMyRequest", map);
+		
+		return list;
 	}
 	
 }

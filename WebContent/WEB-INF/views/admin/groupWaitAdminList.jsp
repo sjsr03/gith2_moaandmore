@@ -72,7 +72,7 @@
 			</c:if>
 
 			<c:if test="${startPage > pageBlock}">
-				<a href="/moamore/admin/groupWaitAdminList.moa?pageNum=$startPage-pageBlock}"> &lt; </a>
+				<a href="/moamore/admin/groupWaitAdminList.moa?pageNum=${startPage-pageBlock}"> &lt; </a>
 			</c:if>
 			<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
 				<a href="/moamore/admin/groupWaitAdminList.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>

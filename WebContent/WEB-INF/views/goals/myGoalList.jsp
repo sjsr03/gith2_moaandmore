@@ -6,25 +6,19 @@
 <head>
 <meta charset="UTF-8">
 <title>myGoalList</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-	function deleteCh(goal_no, public_ch, team_no){
-		var ch = true;
-		
-		
-		if(public_ch == '1'){
-			ch = confirm("해당 목표를 삭제하면 참여중인 그룹을 탈퇴하며 그룹목표를 다시 진행할 수 없습니다. 삭제하시겠습니까?");
-			
-		}
-		
-		console.log(ch);
-		if(ch){
-			window.location.href = "/moamore/goals/deleteGoal.moa?goal_no="+goal_no+"&public_ch="+public_ch+"&team_no="+team_no;
-		}else{
-			return;
-		}
+
+	var list_type = 0; // 개인
+	if(${public_ch} != null){
+		list_type = ${public_ch};
 	}
+	var sorting = "reg_desc"; //최신순
 	
-	
+	$(document).ready(function(){
+		loadList(list_type);
+		
+	})
 
 </script>
 </head>
@@ -34,56 +28,102 @@
 
 
 <button onclick="window.location.href='/moamore/goals/insertGoalForm.moa'">+목표</button>
-<select>
-	<option>정렬</option>
-	<option>정렬</option>
-	<option>정렬</option>
-	<option>정렬</option>
-	<option>정렬</option>
-	
 
+<button onclick="loadList(0)">개인</button>
+<button onclick="loadList(1)">그룹</button>
+
+<select id="sorting_val">
 </select>
 
-<table border="1">
-	<tr>
-		<td>목표명</td>
-		<td>목표액</td>
-		<td>달성액</td>
-		<td>시작날짜</td>
-		<td>마감날짜</td>
-		<td>유형</td>
-		<td>공개여부</td>
-		<td>수정</td>
-		<td>삭제</td>
-	</tr>
-	<c:forEach var="goal" items="${goalList}">
-		<tr>
-			<td onclick="window.location.href='/moamore/goals/myGoalDetail.moa?goal_no=${goal.goal_no}'">${goal.subject}</td>
-			<td>${goal.target_money}원</td>
-			<td>${goal.saving}원</td>
-			<td>${goal.start_day}</td>
-			<td>${goal.end_day}</td>
-			<c:if test="${goal.public_ch eq '0'.charAt(0)}">
-				<td>개인</td>
-				<td>--</td>
-				<td><button onclick="window.location.href='/moamore/goals/modifyForm.moa?goal_no=${goal.goal_no}'">수정</button></td>
-			</c:if>
-			<c:if test="${goal.public_ch eq '1'.charAt(0)}">
-				<td>그룹</td>
-				<c:if test="${goal.public_type eq '0'.charAt(0)}">
-					<td>비공개</td>
-				</c:if>
-				<c:if test="${goal.public_type eq '1'.charAt(0)}">
-					<td>공개</td>
-				</c:if>
-				<td>수정불가</td>				
-			</c:if>
-			<td><button onclick="deleteCh('${goal.goal_no}','${goal.public_ch}','${goal.team_no}')">삭제</button></td>
-		</tr>	
-	</c:forEach> 
-	
-	
+<table border="1" id="goal_list">
 </table>
 
+<script>
+	//ajax로 리스트 가져오기 
+	function loadList(_list_type){
+		list_type = _list_type;
+		$.ajax({
+			type : "POST",
+			url : "/moamore/goals/getMyGoalList.moa",
+			data : {"public_ch" : list_type },
+			success:function(data){
+				$("#goal_list").empty();
+				
+				//헤더추가
+				var addListHtml = "<tr>";
+				if(list_type == 0){//개인
+					addListHtml += "<td>목표명</td>";
+					addListHtml += "<td>목표액</td>";
+					addListHtml += "<td>달성액</td>";
+				}else{
+					addListHtml += "<td>목표명</td>";
+					addListHtml += "<td>목표액</td>";
+					addListHtml += "<td>달성액</td>";
+					addListHtml += "<td>시작날짜</td>";
+					addListHtml += "<td>마감날짜</td>";
+					addListHtml += "<td>공개여부</td>";
+				}
+				addListHtml += "</tr>";	
+				$("#goal_list").append(addListHtml);
+				
+				for(var i = 0 ; i<data.length; i++){
+					addListHtml = "<tr>";
+					addListHtml += "<td onclick='redir("+data[i].goal_no+")'>" + data[i].subject+"</td>";
+					addListHtml += "<td>" + data[i].target_money+"</td>";
+					addListHtml += "<td>" + data[i].saving+"</td>";
+					if(data[i].public_ch == '1'){
+						addListHtml += "<td>"+data[i].start_day+"</td>";
+						addListHtml += "<td>"+data[i].end_day+"</td>";
+						if(data[i].public_type =='0'){
+							addListHtml += "<td>비공개</td>";
+						}else{
+							addListHtml += "<td>공개</td>";
+						}
+					}
+					if(data[i].public_ch == '0'){
+					}
+					addListHtml += "<tr/>";			
+					$("#goal_list").append(addListHtml);
+				}//end for
+				loadSelectVal(list_type);
+			},
+			error : function(e){
+				console.log("리스트 로딩 실패");
+			}
+		})
+		
+	}
+
+	//개인/그룹 여부에 따라 셀렉트박스 값 채우기
+	function loadSelectVal(list_type){
+		var addSelectHtml = "";
+		$("#sorting_val").empty();
+		if(list_type == 0){
+			addSelectHtml += "<option value='startday_desc'>시작일↑</option>";
+			addSelectHtml += "<option value='startday_asc'>시작일↓</option>";
+			addSelectHtml += "<option value='achievement_asc'>달성률↑</option>";
+			addSelectHtml += "<option value='achievement_desc'>달성률↓</option>";
+			$("#sorting_val").append(addSelectHtml);
+		}else{
+			addSelectHtml += "<option value='startday_asc'>시작일↑</option>";
+			addSelectHtml += "<option value='startday_desc'>시작일↓</option>";
+			addSelectHtml += "<option value='endday_asc'>마감일↑</option>";
+			addSelectHtml += "<option value='endday_desc'>마감일↓</option>";
+			addSelectHtml += "<option value='achievement_asc'>달성률↑</option>";
+			addSelectHtml += "<option value='achievement_desc'>달성률↓</option>";
+			addSelectHtml += "<option value='public'>공개</option>";
+			addSelectHtml += "<option value='private'>비공개</option>";
+			$("#sorting_val").append(addSelectHtml);
+		}
+		
+	}
+	
+	function redir(goal_no){
+		window.location.href="/moamore/goals/myGoalDetail.moa?goal_no="+goal_no;
+	}
+	
+	
+
+</script>
 </body>
 </html>

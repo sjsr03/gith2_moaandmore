@@ -19,55 +19,37 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
 	
 	<!-- Custom styles for this template-->
+	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">  
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-<body>
+<body id="page-top">
+<jsp:include page="sidebar.jsp"/>
 
 
-      </div>
+        <!-- 본문내용 시작 -->
+        <div class="container-fluid">
+
+          <!-- 페이지 이름 -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">대시보드</h1>
+            </div>
+            
+           	<!-- 첫번째 줄 -->
+            <div class="row">
+
+            </div>
+           	<!-- 두번째 줄 -->
+            <div class="row">
+
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
       <!-- End of Main Content -->
 
 		
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Moa & More 2020</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
-
-    </div>
-    <!-- End of Content Wrapper -->
-
-  </div>
-  <!-- End of Page Wrapper -->
-
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">로그아웃하시려면 확인을 눌러주세요</div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-          <a class="btn btn-primary" href="/moamore/member/logout.moa">확인</a>
-        </div>
-      </div>
-    </div>
-  </div>
+<jsp:include page="footer.jsp"/>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/moamore/vendor/jquery/jquery.min.js"></script>
@@ -80,7 +62,5 @@
   <script src="/moamore/js/sb-admin-2.min.js"></script>
 
 		
-		
-
 </body>
 </html>

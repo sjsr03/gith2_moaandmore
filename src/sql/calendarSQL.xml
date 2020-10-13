@@ -11,7 +11,7 @@
   	
   	<select id="selectBudgetAmountBydate" parameterType="map" resultType="int">
   		<foreach collection="budgetAlldate" item="item" separator="UNION ALL">
-  		select sum(amount) from budget where id=#{id} and TO_CHAR("date",'YYYY-MM-DD')= #{item}
+  		select sum(amount) from budget where id=#{id} and TO_CHAR("reg",'YYYY-MM-DD')= #{item}
   		</foreach>
   	</select>
 	

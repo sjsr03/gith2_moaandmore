@@ -42,6 +42,20 @@
 		select * from team where team_no=#{value}
 	</select>
 	
+	
+	
+	<select id="countAllTeamMyRequest" parameterType="string" resultType="int">
+		SELECT count(*) FROM TEAM WHERE leader=#{value}
+	</select>
+	
+	<select id="selectAllTeamMyRequest" parameterType="hashmap" resultType="teamDTO">
+	<![CDATA[
+		select * from (select rownum r,team_no,subject,content,amount,start_day,end_day,people,status,isopen,password from (SELECT team_no,subject,content,amount,start_day,end_day,people,status,isopen,password from team where leader=#{leader} order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+	]]>
+	</select>
+	
+	
+	
 	<insert id="insertTeamArticle" parameterType="teamDTO">
 		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}, #{password})
 		<selectKey keyProperty="team_no" resultType="int" order="AFTER">

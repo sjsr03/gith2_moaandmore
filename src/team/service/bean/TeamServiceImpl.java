@@ -48,4 +48,14 @@ public class TeamServiceImpl implements TeamService{
 		dao.updateTeamStatus(dto);
 	}
 
+	@Override
+	public int getTeamMyRequestCount(String nickname) throws SQLException {
+		return dao.getTeamMyRequestCount(nickname);
+	}
+
+	@Override
+	public List getTeamMyRequests(String nickname, int start, int end) throws SQLException {
+		return dao.getTeamMyRequests(nickname, start, end);
+	}
+
 }

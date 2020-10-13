@@ -38,6 +38,9 @@ public class TeamMemberDAOImpl implements TeamMemberDAO {
 		
 	}
 
-	
+	@Override
+	public void deleteTeamMemberAll(int teamNo) throws SQLException {
+		sqlSession.delete("teamMember.deleteTeamMemberAll", teamNo);
+	}
 
 }

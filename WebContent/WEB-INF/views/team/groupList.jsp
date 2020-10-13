@@ -58,7 +58,9 @@
 		<h1 style="margin-top:0; margin-bottom: 0;">Header</h1>
 	</div>
 	<div class="menu" style="background-color:#FFD6FF;width:200px;height:810px;float:left;">
-	
+		<c:if test="${sessionScope.memName != null}">
+			<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a>
+		</c:if>
 	</div>
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:790px;margin-left: 200px; padding: 10px;">
 		
@@ -113,20 +115,20 @@
 				</c:if>
 				
 				<c:if test="${startPage > pageBlock}">
-					<a href="/moamore/team/groupList.moa?pageNum=${startPage-pageBlock}&pageStatus=${pageStatus}" > &lt; </a>
+					<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage-pageBlock}" > &lt; </a>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1" >
-					<a href="/moamore/team/groupList.moa?pageNum=${i}&pageStatus=${pageStatus}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 				</c:forEach>
 				<c:if test="${endPage < pageCount}">
-					<a href="/moamore/team/groupList.moa?pageNum=${startPage+pageBlock}&pageStatus=${pageStatus}" > &gt; </a>
+					<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage+pageBlock}" > &gt; </a>
 				</c:if>
 			
 			</c:if>
 		</div>
 		<div class="bottom"  style="width: 100%; height: 55px; text-align: center; margin-top: 5px;">
 			<form action="/moamore/team/groupListPro.moa" method="post" style="align-self: center;">
-				<input type="text" class="search_box" placeholder="그룹명 검색"/>
+				<input type="text" name="search_box" placeholder="그룹명 검색"/>
 				<input type="submit" value="검색"/>
 			</form>
 		</div>
