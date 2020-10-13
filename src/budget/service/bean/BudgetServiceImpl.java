@@ -259,12 +259,15 @@ public class BudgetServiceImpl implements BudgetService {
 	public List selectBudgetDate(String id) throws SQLException {
 		List budgetDateTime = new ArrayList();
 		budgetDateTime = totalBudgetDAO.selectBudgetDate(id);
-		
+		System.out.println(budgetDateTime);
 		String start = (String)budgetDateTime.get(0);
 		String end = (String)budgetDateTime.get(1);
 		
 		// budgetDate의 값들에서 시간을 뺴서 날짜만 보내주기
 		List budgetDate = new ArrayList();
+		System.out.println("-----------------");
+		System.out.println(start);
+		System.out.println(end);
 		budgetDate.add(end.substring(0, 10));
 		budgetDate.add(start.substring(0, 10));		
 		return budgetDate;

@@ -60,7 +60,13 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	public List selectBudgetDate(String id) throws SQLException {
 		List budgetDate = new ArrayList();
 		String start = sqlSession.selectOne("totalBudget.selectBudgetStartDate", id);
+		
 		String end = sqlSession.selectOne("totalBudget.selectBudgetEndDate", id);
+		
+		if(start == null) {
+			start = sqlSession.selectOne("totalBudget.selectCurrBudgetStartDate", id);		
+		}
+		
 		// List 에 시작날짜, 끝나는날짜로 넣어서 리턴.
 		budgetDate.add(start);
 		budgetDate.add(end);
@@ -69,7 +75,6 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		return budgetDate;
 	}
 
-	
 	@Override
 	public TotalBudgetDTO selectLastTB(String id) throws SQLException {
 		return sqlSession.selectOne("totalBudget.selectLastTB", id);

@@ -51,11 +51,13 @@
 					console.log("${budgetDate.get(0)}");
 					console.log("${budgetDate.get(1)}");
 					
-					var start = new Date("${budgetDate.get(0)}");
-					var end = new Date("${budgetDate.get(1)}");							
+					var start = new Date("${budgetDate.get(1)}");
+					var end = new Date("${budgetDate.get(0)}");		
+					console.log("시작:::" + start);
+					console.log("R끝:::: " + end);
 					var selectedDay = new Date($("#date").val());
 					
-					if((start <= selectedDay) && (end >= selectedDay)){
+					if((start <=selectedDay) && (end >= selectedDay)){
 						$.ajax({
 							type : "POST",
 							url : "budgetCategory.moa",
