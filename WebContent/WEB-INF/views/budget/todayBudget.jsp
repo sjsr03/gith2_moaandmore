@@ -68,16 +68,52 @@
             </div>
             
            	<!-- 첫번째 줄 -->
-	<div style="border:1px solid black">
-		예산 기간 : ${TBdto.start_day} ~ ${TBdto.end_day} (일) <br/>
-		총 예산 : ${TBdto.budget}원<br/>
-	</div>
-	<br/>
-	오늘의 예산<br/>
-	<div>
-	
-	</div>
-	
+           	<div class="row">
+
+            <!-- 예산기간 -->
+            <div class="col-xl-6 col-md-8 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">예산 기간</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <fmt:formatDate value="${TBdto.start_day}" pattern="yyyy년 MM월 dd일"/> ~ 
+                      <fmt:formatDate value="${TBdto.end_day}" pattern="yyyy년 MM월 dd일"/> (일)</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- 총예산 금액 -->
+            <div class="col-xl-6 col-md-8 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">총예산액</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <fmt:formatNumber value="${TBdto.budget}" pattern="#,###"/>원</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-won-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <!-- 첫줄 끝 -->
+
+
+			<!-- 두번째줄 -->
+			<div class="row">
+				
 	
 	
 	<div style="border:1px solid black; width:300px;">
@@ -97,6 +133,10 @@
 			<button onclick="$('#popup1').css('display','flex')">전환하기</button>
 		</div>
 	</div>
+	
+	
+	</div>
+	<!-- 두번째줄 -->
 	
 	
 	
