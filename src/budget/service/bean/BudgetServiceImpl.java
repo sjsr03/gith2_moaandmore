@@ -21,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import budget.model.dao.TotalBudgetDetailDAO;
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dao.RecordBudgetDAO;
 import budget.model.dao.RecordTransferDAO;
 import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.TotalBudgetDetailDTO;
@@ -43,7 +44,8 @@ public class BudgetServiceImpl implements BudgetService {
 	private LeftMoneyDAO leftMoneyDAO = null;
 	@Autowired
 	private RecordTransferDAO recordTransferDAO = null;
-	
+	@Autowired
+	private RecordBudgetDAO recordBudgetDAO = null;
 	
 	//신규 예산 설정
 	@Override
@@ -267,8 +269,18 @@ public class BudgetServiceImpl implements BudgetService {
 		return budgetDate;
 	}
 
+	// 예산번호로 해당 예산 기록 목록 가져오기
+	@Override
+	public List selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
+		int startRow = 0;
+		int endRow = 0;
+		
+		List budgetRecordList =  recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
+		return budgetRecordList;
+	}
 
-	 
+	
+	
 
 }
 	

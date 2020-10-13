@@ -1,15 +1,19 @@
 package budget.model.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
-public class BudgetDTO {
-	// 예산 지출 내역 DTO
+public class BudgetRecordDTO {
+	// budgetDTO + budget_detailDTO
 	private int budget_outcome_no;
 	private int budget_no;
 	private String id;
 	private int category_no;
 	private int amount;
 	private Timestamp reg;
+	private String content;
+	private String memo;
+	private String img;
 	
 	public int getBudget_outcome_no() {
 		return budget_outcome_no;
@@ -47,7 +51,24 @@ public class BudgetDTO {
 	public void setReg(Timestamp reg) {
 		this.reg = reg;
 	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getMemo() {
+		return memo;
+	}
+	public void setMemo(String memo) {
+		this.memo = memo;
+	}
+	public String getImg() {
+		return img;
+	}
+	public void setImg(String img) {
+		this.img = img;
+	}
 
-	
 	
 }

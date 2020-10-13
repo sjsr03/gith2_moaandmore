@@ -74,27 +74,13 @@ public class RecordServiceImpl implements RecordService{
 			budgetDetailDTO.setImg("default.gif");
 		}
 		
-		/*
-		System.out.println("예산 사용 금액 : " +budgetDTO.getAmount());
-		System.out.println("예산안 구분번호 : " +budgetDTO.getBudget_no());
-		System.out.println("예산 카테고리  구분번호: " +budgetDTO.getCategory_no());
-		System.out.println("아이디  : " +budgetDTO.getId());
-		System.out.println("예산 content : " + budgetDetailDTO.getContent());
-		
-		System.out.println("-----------------------------------");
-		System.out.println("예산외 사용 금액 : " +noBudgetDTO.getAmount());
-		System.out.println("예산외 카테고리 구분번호 : " +noBudgetDTO.getCategory_no());
-		System.out.println("아이디 : " +noBudgetDTO.getId());
-		System.out.println("예산외 타입 : " +noBudgetDTO.getType());
-		*/
-		
 		System.out.println("타입 확인! : " + request.getParameter("type"));
 		
 		
 		// dto에 세팅 
 		String type = request.getParameter("type");
 		if(type.equals("outcome") || type.equals("income")){ // 예산외 수입/지출 일 떄
-			noBudgetDTO.setDate(date);
+			noBudgetDTO.setReg(date);
 			
 			System.out.println("예산 외 되냥 " + noBudgetDetailDTO.getImg());
 			System.out.println("예산외 메모 : " + noBudgetDetailDTO.getMemo());
@@ -108,7 +94,7 @@ public class RecordServiceImpl implements RecordService{
 			recordNoBudgetDAO.insertNoBudgetDetailDTO(noBudgetDetailDTO);	
 			
 		}else { // 예산일 때 
-			budgetDTO.setDate(date);
+			budgetDTO.setReg(date);
 			System.out.println("되낭 : " + budgetDetailDTO.getImg());
 			System.out.println("예산내 메모 : " + budgetDetailDTO.getMemo());
 			
