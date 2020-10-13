@@ -8,7 +8,9 @@
 </head>
 <body>
 <h2 align="center"> 입출력 내역 </h2>
+
 <div align="center">
+<button onclick="location.href='/moamore/record/recordForm.moa'">입출력 입력</button><br />
 	<select>
 		<option>예산내역</option>
 		<option>수입내역(예산외)</option>
