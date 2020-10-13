@@ -5,17 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
-<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <script>
-//달력기능
-	$(function(){
-		$("#reg").datepicker({
-			dateFormat:"yy-mm-dd"
-			
-		});
-	});
+
 </script>
 <title>moneyLog</title>
 </head>
@@ -24,13 +15,14 @@
 
 <div align="center">
 <button onclick="location.href='/moamore/record/recordForm.moa'">입출력 입력</button><br />
+<h2> ${recordPage.count}</h2>
 	<select>
 		<option>예산내역</option>
 		<option>수입내역(예산외)</option>
 		<option>지출내역(예산외)</option>
 	</select>
 	<div>
-		<input type="text" id="reg" name="reg" />
+		<input type="date" id="date" name="date" />
 	</div>
 	
 	<table>	

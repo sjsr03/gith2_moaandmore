@@ -1,10 +1,10 @@
 package budget.model.dto;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class BudgetRecordDTO {
 	// budgetDTO + budget_detailDTO
+	
 	private int budget_outcome_no;
 	private int budget_no;
 	private String id;
@@ -69,6 +69,7 @@ public class BudgetRecordDTO {
 	public void setImg(String img) {
 		this.img = img;
 	}
-
+	
+	
 	
 }

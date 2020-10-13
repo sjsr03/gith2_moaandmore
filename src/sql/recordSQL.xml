@@ -21,10 +21,14 @@
   	<insert id="insertNoBudgetDetail" parameterType="noBudgetDetailDTO">
   		insert into nobudget_detail values(${nobudget_no}, #{content}, #{memo}, #{img})
   	</insert>
-  	<!-- 
-  	SELECT t2.* from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT * FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=21) ORDER BY reg DESC)t1)t2 WHERE r >=1 AND r <=10
-  	 -->
+ 
+ 	<!-- 예산번호로 예산 지출 내역 리스트 가져오기 -->
   	<select id="selectBudgetRecord" parameterType="hashmap" resultType="budgetRecordDTO">
-  		select * from budget
+  		<![CDATA[SELECT t2.* from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT * FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
+  	</select>
+  	
+  	<!-- 에산번호로 예산지출 내역 총 개수 가져오기 -->
+  	<select id="countBudgetRecord" parameterType="int" resultType="int">
+  		select count(*) from budget where budget_no=#{value}
   	</select>
   </mapper>
