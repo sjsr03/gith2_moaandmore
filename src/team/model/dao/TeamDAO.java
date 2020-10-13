@@ -18,4 +18,10 @@ public interface TeamDAO {
 	
 	//그룹 하나
 	public TeamDTO selectOne(int team_no) throws SQLException;
+	
+	//닉네임으로 해당 닉네임이 개설 요청한 그룹 목록들 개수 가져오기
+	public int getTeamMyRequestCount(String nickname) throws SQLException;
+			
+	//닉네임으로 해당 닉네임이 개설 요청한 그룹 목록들 가져오기
+	public List getTeamMyRequests(String nickname, int start, int end) throws SQLException;
 }

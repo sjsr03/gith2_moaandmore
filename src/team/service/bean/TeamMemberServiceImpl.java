@@ -59,4 +59,9 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 		}
 		
 	}
+
+	@Override
+	public void deleteTeamMemberAll(int teamNo) throws SQLException {
+		teamMemDao.deleteTeamMemberAll(teamNo);
+	}
 }

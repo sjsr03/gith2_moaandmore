@@ -35,12 +35,53 @@
 				mem_area.style.display = '';
 			}
 		}
+		
+		function check(){
+			var inputs = document.inputForm;
+			
+			if(!inputs.subject.value){	//false일때, 값이 없을때
+				alert("목표명을 입력하세요.");
+				return false;
+			}
+			
+			if(!inputs.content.value){	//false일때, 값이 없을때
+				alert("목표 내용을 입력하세요.");
+				return false;
+			}
+			
+			if(!inputs.amount.value){	//false일때, 값이 없을때
+				alert("목표 금액을 입력하세요.");
+				return false;
+			}
+			
+			if(!inputs.start_day.value){	//false일때, 값이 없을때
+				alert("시작일을 입력하세요.");
+				return false;
+			}
+			
+			if(!inputs.end_day.value){	//false일때, 값이 없을때
+				alert("종료일을 입력하세요.");
+				return false;
+			}
+			
+			if(!inputs.people.value){	//false일때, 값이 없을때
+				alert("참여자 수를 입력하세요.");
+				return false;
+			}
+			
+			if(inputs.isopen.value=="0"){
+				if(!inputs.password.value){	//false일때, 값이 없을때
+					alert("비밀번호를 입력하세요.");
+					return false;
+				}
+			}
+		}
 	</script>
 </head>
 <body>
 	<br />
 	<h1> 그룹 개설 신청폼 </h1>
-	<form action="/moamore/team/groupOpenPro.moa" method="post">
+	<form action="/moamore/team/groupOpenPro.moa" method="post" name="inputForm" onsubmit="return check()">
 		<input type="hidden" name="status" value=0 />
 		<table>
 			<tr>
