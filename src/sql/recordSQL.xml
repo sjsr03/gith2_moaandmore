@@ -7,7 +7,7 @@
   <mapper namespace="record">
   	<!-- 예산 내역 입력하기 -->
   	<insert id="insertBudget" parameterType="budgetDTO" useGeneratedKeys="true" keyProperty="budget_outcome_no" keyColumn="budget_outcome_no">	
-  		insert into budget values(budget_outcome_no_seq.nextval, #{budget_no}, #{id}, #{category_no}, #{amount}, #{date})
+  		insert into budget values(budget_outcome_no_seq.nextval, #{budget_no}, #{id}, #{category_no}, #{amount}, #{reg})
   	</insert>
   	<!-- 예산 세부내역 입력하기 -->
   	<insert id="insertBudgetDetail" parameterType="budgetDetailDTO">
@@ -15,10 +15,20 @@
   	</insert>
   	<!-- 예산 외 내역 입력하기(noBudget) -->
   	<insert id="insertNoBudget" parameterType="noBudgetDTO" useGeneratedKeys="true" keyProperty="nobudget_no" keyColumn="nobudget_no">
-  		insert into nobudget values(nobudget_no_seq.nextVal, #{id}, #{type}, #{category_no}, #{amount}, #{date})
+  		insert into nobudget values(nobudget_no_seq.nextVal, #{id}, #{type}, #{category_no}, #{amount}, #{reg})
   	</insert>
   	<!-- 예산 외 세부내역 입력하기 -->
   	<insert id="insertNoBudgetDetail" parameterType="noBudgetDetailDTO">
   		insert into nobudget_detail values(${nobudget_no}, #{content}, #{memo}, #{img})
   	</insert>
+ 
+ 	<!-- 예산번호로 예산 지출 내역 리스트 가져오기 -->
+  	<select id="selectBudgetRecord" parameterType="hashmap" resultType="budgetRecordDTO">
+  		<![CDATA[SELECT t2.* from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT * FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
+  	</select>
+  	
+  	<!-- 에산번호로 예산지출 내역 총 개수 가져오기 -->
+  	<select id="countBudgetRecord" parameterType="int" resultType="int">
+  		select count(*) from budget where budget_no=#{value}
+  	</select>
   </mapper>

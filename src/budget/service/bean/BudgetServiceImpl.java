@@ -21,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import budget.model.dao.TotalBudgetDetailDAO;
 import budget.model.dao.LeftMoneyDAO;
+import budget.model.dao.RecordBudgetDAO;
 import budget.model.dao.RecordTransferDAO;
 import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.TotalBudgetDetailDTO;
@@ -43,7 +44,8 @@ public class BudgetServiceImpl implements BudgetService {
 	private LeftMoneyDAO leftMoneyDAO = null;
 	@Autowired
 	private RecordTransferDAO recordTransferDAO = null;
-	
+	@Autowired
+	private RecordBudgetDAO recordBudgetDAO = null;
 	
 	//신규 예산 설정
 	@Override
@@ -66,7 +68,7 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		if(period == 30) {	//한달일경우
 			int firstOfMonth = Integer.parseInt(request.getParameter("firstOfMonth"));
-			if(date.DATE > firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
+			if(date.DATE >= firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
 				date.add(Calendar.MONTH, 1);
 				date.set(Calendar.DATE, firstOfMonth);
 			} else { //설정한 월 시작일이 아직 안 지난 경우 = 이번달 월 시작일 전날까지
@@ -170,6 +172,7 @@ public class BudgetServiceImpl implements BudgetService {
 	@Override
 	public int selectBudgetNum(String id, Timestamp dateTime) throws SQLException {
 		HashMap map = new HashMap();
+		System.out.println("확인확인 : " + dateTime);
 		map.put("id", id);
 		map.put("dateTime", dateTime);
 		
@@ -256,19 +259,42 @@ public class BudgetServiceImpl implements BudgetService {
 	public List selectBudgetDate(String id) throws SQLException {
 		List budgetDateTime = new ArrayList();
 		budgetDateTime = totalBudgetDAO.selectBudgetDate(id);
-		
+		System.out.println(budgetDateTime);
 		String start = (String)budgetDateTime.get(0);
 		String end = (String)budgetDateTime.get(1);
 		
 		// budgetDate의 값들에서 시간을 뺴서 날짜만 보내주기
 		List budgetDate = new ArrayList();
+		System.out.println("-----------------");
+		System.out.println(start);
+		System.out.println(end);
 		budgetDate.add(end.substring(0, 10));
 		budgetDate.add(start.substring(0, 10));		
 		return budgetDate;
 	}
 
 
-	 
+	@Override
+	public TotalBudgetDTO selectLastTB(java.lang.String id) throws SQLException {
+		return totalBudgetDAO.selectLastTB(id);
+	}
+	
+	@Override
+	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException {
+		return totalBudgetDAO.selectOneByNum(budget_no);
+	}
+	
+	// 예산번호로 해당 예산 기록 목록 가져오기
+	@Override
+	public List selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
+		int startRow = 0;
+		int endRow = 0;
+		
+		List budgetRecordList =  recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
+		return budgetRecordList;
+	}
+
+
 
 }
 	

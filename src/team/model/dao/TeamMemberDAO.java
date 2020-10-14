@@ -20,5 +20,6 @@ public interface TeamMemberDAO {
 	//team_no 팀원리스트 가져오기
 	public List<TeamMemberDTO> selectAllByTeam(int team_no) throws SQLException;
 	
-
+	//그룹 개설 신청 거절시 해당 그룹의 팀원들 전체 삭제
+	public void deleteTeamMemberAll(int teamNo) throws SQLException;
 }

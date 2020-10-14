@@ -59,4 +59,46 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 		}
 		
 	}
+
+	@Override
+	public void deleteTeamMemberAll(int teamNo) throws SQLException {
+		teamMemDao.deleteTeamMemberAll(teamNo);
+	}
+
+	@Override
+	public List<List> getTeamAvgArticles(List<TeamDTO> teamList) throws SQLException {
+		List<List<TeamMemberDTO>> member_list = new ArrayList<List<TeamMemberDTO>>();
+		List<Integer> avg_list = new ArrayList<Integer>();
+		
+		for(int i=0;i<teamList.size();i++)
+			member_list.add(teamMemDao.selectAllByTeam(teamList.get(i).getTeam_no()));
+		
+		
+		if(member_list != null) {
+			for(int i=0;i<member_list.size();i++) {
+				int avg = 0;
+				if(member_list.get(i) == null) {
+					avg_list.add(0);
+				} else {
+					for(int j=0;j<member_list.get(i).size();j++) {
+						avg += (member_list.get(i).get(j).getSaving()*100/teamList.get(i).getAmount());
+					}
+					
+					if(member_list.get(i).size() == 0)
+						avg_list.add(0);
+					else
+						avg_list.add(avg/member_list.get(i).size());
+				}
+			}
+		}else {
+			for(int i=0;i<teamList.size();i++)
+				avg_list.add(0);
+		}
+		
+		List tmp = new ArrayList<>();
+		tmp.add(member_list);
+		tmp.add(avg_list);
+		
+		return tmp;
+	}
 }

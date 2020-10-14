@@ -48,7 +48,7 @@
 							<td>${article.password}</td>
 							<td>
 								<select name="status">
-									<option value='1'>승인</option>
+									<option value='2'>승인</option>
 									<option value='-1'>거절</option>
 								</select>
 								<input type="submit" value="확인"/>
@@ -72,7 +72,7 @@
 			</c:if>
 
 			<c:if test="${startPage > pageBlock}">
-				<a href="/moamore/admin/groupWaitAdminList.moa?pageNum=$startPage-pageBlock}"> &lt; </a>
+				<a href="/moamore/admin/groupWaitAdminList.moa?pageNum=${startPage-pageBlock}"> &lt; </a>
 			</c:if>
 			<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
 				<a href="/moamore/admin/groupWaitAdminList.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>

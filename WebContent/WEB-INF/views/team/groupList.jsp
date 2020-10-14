@@ -58,7 +58,9 @@
 		<h1 style="margin-top:0; margin-bottom: 0;">Header</h1>
 	</div>
 	<div class="menu" style="background-color:#FFD6FF;width:200px;height:810px;float:left;">
-	
+		<c:if test="${sessionScope.memName != null}">
+			<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a>
+		</c:if>
 	</div>
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:790px;margin-left: 200px; padding: 10px;">
 		
@@ -77,12 +79,16 @@
 			</c:if>
 		
 			<c:if test="${articleList != null}">
-				<c:forEach var="article" items="${articleList}">
+				<c:forEach var="article" items="${articleList}" varStatus="stat">
 					<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
 							<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-								<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+								<c:forEach var="mem" items="${articleMemberAvgList[0][stat.index]}">
+									<c:if test="${sessionScope.memName == mem.nickname}">
+										<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+									</c:if>
+								</c:forEach>
 								<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>
-								<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% 80%, #BDBDBD 80% 100%);"><span class="center"></span><span class="big">80%</span><span class="mini">평균달성률</span></span></div>
+								<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% ${articleMemberAvgList[1][stat.index]}%, #BDBDBD ${articleMemberAvgList[1][stat.index]}% 100%);"><span class="center"></span><span class="big">${articleMemberAvgList[1][stat.index]}%</span><span class="mini">평균달성률</span></span></div>
 							</div>
 							<table style="width:380px; height:130px;">
 								<tr>
@@ -113,20 +119,35 @@
 				</c:if>
 				
 				<c:if test="${startPage > pageBlock}">
-					<a href="/moamore/team/groupList.moa?pageNum=${startPage-pageBlock}&pageStatus=${pageStatus}" > &lt; </a>
+					<c:if test="${isSearch==0}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage-pageBlock}" > &lt; </a>
+					</c:if>
+					<c:if test="${isSearch==1}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage-pageBlock}" > &lt; </a>
+					</c:if>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1" >
-					<a href="/moamore/team/groupList.moa?pageNum=${i}&pageStatus=${pageStatus}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<c:if test="${isSearch==0}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					</c:if>
+					<c:if test="${isSearch==1}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					</c:if>
 				</c:forEach>
 				<c:if test="${endPage < pageCount}">
-					<a href="/moamore/team/groupList.moa?pageNum=${startPage+pageBlock}&pageStatus=${pageStatus}" > &gt; </a>
+					<c:if test="${isSearch==0}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage+pageBlock}" > &gt; </a>
+					</c:if>
+					<c:if test="${isSearch==1}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage+pageBlock}" > &gt; </a>
+					</c:if>
 				</c:if>
 			
 			</c:if>
 		</div>
 		<div class="bottom"  style="width: 100%; height: 55px; text-align: center; margin-top: 5px;">
-			<form action="/moamore/team/groupListPro.moa" method="post" style="align-self: center;">
-				<input type="text" class="search_box" placeholder="그룹명 검색"/>
+			<form action="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1" method="post" style="align-self: center;">
+				<input type="text" name="search" placeholder="그룹명 검색"/>
 				<input type="submit" value="검색"/>
 			</form>
 		</div>

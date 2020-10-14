@@ -1,6 +1,10 @@
 package budget.model.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +27,7 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		System.out.println("예산안 구분번호 : " +budgetDTO.getBudget_no());
 		System.out.println("예산 카테고리  구분번호: " +budgetDTO.getCategory_no());
 		System.out.println("아이디  : " +budgetDTO.getId());
-		
+
 		
 		
 		sqlSession.insert("record.insertBudget", budgetDTO);
@@ -37,8 +41,29 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 	@Override
 	public void insertBudgetDetail(BudgetDetailDTO budgetDetailDTO) throws SQLException {
 		sqlSession.insert("record.insertBudgetDetail", budgetDetailDTO);
-		
-		
+				
 	}
+	
+	@Override
+	public List selectAllBudgetByNum(int budgetNum, int startRow, int endRow) throws SQLException {		
+		List budgetRecordList = new ArrayList();
+		
+		Map para = new HashMap();
+		para.put("budgetNum", budgetNum);
+		para.put("startRow", startRow);
+		para.put("endRow", endRow);
+		
+		budgetRecordList = sqlSession.selectList("record.selectBudgetRecord", para); 
+		return budgetRecordList;
+	}
+	@Override
+	public int countAllBudgetByNum(int budgetNum) throws SQLException {
+		int count = 0;
+		count = sqlSession.selectOne("record.countBudgetRecord", budgetNum);
+		return count;
+	}
+	
+	
 
+	
 }

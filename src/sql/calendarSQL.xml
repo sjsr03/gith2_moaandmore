@@ -23,13 +23,13 @@
 			
 	<select id="selectNoBudgetIncomeAmountBydate" parameterType="map" resultType="int">
   		<foreach collection="nobudgetAlldate" item="item" separator="UNION ALL">
-  		select sum(amount) from nobudget where id=#{id} and type= 'income' and TO_CHAR("date",'YYYY-MM-DD')= #{item}
+  		select sum(amount) from nobudget where id=#{id} and type= 'income' and TO_CHAR("REG",'YYYY-MM-DD')= #{item}
   		</foreach>
   	</select>
 	
 	<select id="selectNoBudgetExpenseAmountBydate" parameterType="map" resultType="int">
   		<foreach collection="nobudgetAlldate" item="item" separator="UNION ALL">
-  		select sum(amount) from nobudget where id=#{id} and type= 'outcome' and TO_CHAR("date",'YYYY-MM-DD')= #{item}
+  		select sum(amount) from nobudget where id=#{id} and type= 'outcome' and TO_CHAR("REG",'YYYY-MM-DD')= #{item}
   		</foreach>
   	</select>
 	

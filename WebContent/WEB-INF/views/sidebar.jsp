@@ -19,22 +19,33 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
 	
 	<!-- Custom styles for this template-->
+	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">  
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
+<script>
+$(document).ready(function(){
+	$.ajax({
+		url:"/moamore/getBudgetState.moa",
+		type:"post",
+		data:{
+			id:"${memId}"
+		},
+		success:function(data){
+			var totalBudget = data['totalBudget'];
+			var outcomeSum = data['outcomeSum'];
+			var rate = (outcomeSum/totalBudget*100).toFixed(1);
+			
+			if(totalBudget== null) {	//설정된 현재예산이 없다면
+				$("#BudgetState").text("설정된 예산이 없습니다.");
+			} else {
+				$("#BudgetState").append('<div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">총 예산액 : ' + totalBudget + '원</h6></div><div class="card-body"><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + rate + '%" aria-valuenow="' + rate + '" aria-valuemin="0" aria-valuemax="100">' + rate + '%</div></div></div>');
+			}
+		}
+	});
+});
+</script>
+
 <body id="page-top">
-	<c:if test="${sessionScope.memId==null }" >
-		비회원 임시 메인페이지
-		<button onclick="window.location='/moamore/member/loginForm.moa'">로그인</button>
-		<button onclick="window.location='/moamore/member/signupForm.moa'">회원가입</button>
-	</c:if>
-	<c:if test="${sessionScope.memId!=null }" >
-		
-		<!-- 
-		회원 임시 메인페이지
-		<button onclick="window.location='/moamore/member/logout.moa'">로그아웃</button>
-		<button onclick="window.location='/moamore/budget/setBudget.moa'">예산설정</button>
-		 -->
-		
 		
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -55,14 +66,8 @@
       
       
       <!-- 예산 사용액 그래프 -->
-      <div class="card border-left-info shadow h-10 py-2">
-   		<div class="card-header py-3">
-      		<h6 class="m-0 font-weight-bold text-primary">총 예산액 : ${totalBudget.budget}원</h6></div>
-      	<div class="card-body">
-      		<div class="progress">
-			 <div class="progress-bar" role="progressbar" style="width: ${outcomeSum/totalBudget.budget*100}%" aria-valuenow="${outcomeSum/totalBudget.budget*100}" aria-valuemin="0" aria-valuemax="100"><fmt:formatNumber pattern=".0" value="${outcomeSum/totalBudget.budget*100}"/>% 사용</div>
-			</div>
-      	</div>
+      <div class="card border-left-info shadow h-10 py-2" id="BudgetState">
+   		
       </div>
       
       
@@ -115,9 +120,9 @@
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/report/report.moa">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>보고서</span></a>
+          <span>예산 보고서</span></a>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
@@ -206,10 +211,15 @@
         <!-- End of Topbar -->
 
 
-      </div>
-      <!-- End of Main Content -->
+  <!-- Bootstrap core JavaScript-->
+  <script src="/moamore/vendor/jquery/jquery.min.js"></script>
+  <script src="/moamore/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-		
-	</c:if>
+  <!-- Core plugin JavaScript-->
+  <script src="/moamore/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/moamore/js/sb-admin-2.min.js"></script>
 </body>
+
 </html>

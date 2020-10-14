@@ -36,6 +36,7 @@ public class CalendarServiceImpl implements CalendarService{
 		List budgetalldate = new ArrayList();
 		
 		
+
 			for(int i=0; i<budget.size(); i++) {
 				BudgetDTO budgetList = (BudgetDTO)budget.get(i);
 				
@@ -47,6 +48,7 @@ public class CalendarServiceImpl implements CalendarService{
 			       budgetalldate.add(budgetDate);
 				}
 				
+
 			}
 		
 		//System.out.println(budgetalldate);
@@ -99,8 +101,8 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		for(int i=0; i<noBudget.size(); i++) {
 			NoBudgetDTO noBudgetList = (NoBudgetDTO)noBudget.get(i);
+			Date indata =noBudgetList.getReg();
 			
-			Date indata =noBudgetList.getDate();
 			String noBudgetDate = yyyymmdd.format(indata);
 			
 			if(!noBudgetalldate.contains(noBudgetDate)){

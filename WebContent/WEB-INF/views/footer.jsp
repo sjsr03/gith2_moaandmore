@@ -22,6 +22,13 @@
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <body>
+
+
+      </div>
+      <!-- End of Main Content -->
+
+		
+
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
@@ -72,13 +79,6 @@
   <!-- Custom scripts for all pages-->
   <script src="/moamore/js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="/moamore/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="/moamore/js/demo/chart-area-demo.js"></script>
-  <script src="/moamore/js/demo/chart-pie-demo.js"></script>
-		
 		
 		
 

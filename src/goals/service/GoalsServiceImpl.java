@@ -2,6 +2,7 @@ package goals.service;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import budget.model.RecordGoalsDAOImpl;
+import budget.model.dto.RecordGoalsDTO;
 import goals.model.dao.GoalsDAOImpl;
 import goals.model.dto.GoalsDTO;
 import team.model.dao.TeamMemberDAOImpl;
@@ -25,6 +28,10 @@ public class GoalsServiceImpl implements GoalsService {
 	private TeamMemberDAOImpl teamMemberDAO = null;
 	
 	@Autowired
+	private RecordGoalsDAOImpl recordGoalsDAO = null;
+	
+	
+	@Autowired
 	public Date date = null;// util.Date
 
 	@Override
@@ -33,7 +40,22 @@ public class GoalsServiceImpl implements GoalsService {
 	}
 
 	@Override
-	public List<GoalsDTO> selectAllById() throws SQLException {	
+	public List<GoalsDTO> selectAllByPublicCh(int public_ch, String sorting) throws SQLException {	
+		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		
+		HashMap map = new HashMap();
+		map.put("id",id);
+		map.put("public_ch",public_ch);
+
+				
+		map.put("sorting",sorting);
+		
+		
+		return goalsDAO.selectAllByPublicCh(map);
+	}
+	
+	@Override
+	public List<GoalsDTO> selectAllById() throws SQLException {
 		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		return goalsDAO.selectAllById(id);
 	}
@@ -67,9 +89,13 @@ public class GoalsServiceImpl implements GoalsService {
 	public void myGoalDetail(int goal_no) throws SQLException {
 		//목표 정보
 		GoalsDTO goal = goalsDAO.selectOne(goal_no);
-		RequestContextHolder.getRequestAttributes().setAttribute("goal", goal, RequestAttributes.SCOPE_REQUEST);
 		
 		//목표액 관련 세부내역
+		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		List<RecordGoalsDTO> recordList = recordGoalsDAO.selectAll(goal_no, id);
+		
+		RequestContextHolder.getRequestAttributes().setAttribute("goal", goal, RequestAttributes.SCOPE_REQUEST);
+		RequestContextHolder.getRequestAttributes().setAttribute("recordList", recordList, RequestAttributes.SCOPE_REQUEST);
 		
 	}
 
@@ -94,5 +120,7 @@ public class GoalsServiceImpl implements GoalsService {
 		
 			
 	}
+
+	
 
 }

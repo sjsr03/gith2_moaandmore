@@ -12,18 +12,23 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+import budget.model.dao.RecordBudgetDAO;
+import budget.model.dao.RecordBudgetDAOImpl;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
+import budget.model.dto.RecordPageDTO;
 import budget.service.bean.BudgetService;
 import budget.service.bean.RecordService;
 import category.service.bean.CategoryService;
@@ -64,8 +69,6 @@ public class RecordBean {
 		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
-		
-		// 일단 test50 값 임의로 넣어줘서 처리
 		List outcomeCategories = categoryService.selectAllById(id);
 		List incomeCategories = categoryService.selectAllIncomeCategoryById(id);
 		
@@ -99,11 +102,13 @@ public class RecordBean {
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
+		
 		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		
 		// categories에 예산 번호 추가해주기   
 		categories.put("budgetNum", budgetNum);	
+	
 		
 		return categories;	
 	}
@@ -112,18 +117,8 @@ public class RecordBean {
 	
 	@RequestMapping(value="recordPro.moa", method=RequestMethod.POST)
 	public String recordPro(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO) throws Exception{
-		/*
-		System.out.println("빈임빈임빈임~~");
-		System.out.println("category  :" +request.getParameter("category"));
-		System.out.println("내역 : "  + request.getParameter("subject"));
-		System.out.println("금액 : " + request.getParameter("money"));
-		System.out.println("날짜 : " + request.getParameter("date"));
-		System.out.println("시간 : " + request.getParameter("time"));
-		System.out.println("메모 : " + request.getParameter("memo"));
-		System.out.println("뚜두두두두두두둥!!타입 나와라!!!!: " + request.getParameter("type"));
-		*/
-		
-		
+
+		System.out.println("날짜~" + budgetDTO.getReg());
 		String id = (String)request.getSession().getAttribute("memId");
 		budgetDTO.setId(id);
 		noBudgetDTO.setId(id);
@@ -133,10 +128,9 @@ public class RecordBean {
 		budgetDTO.setCategory_no(category_no);
 		noBudgetDTO.setCategory_no(category_no);
 		
-		String oldDate = request.getParameter("reg") + " "+ request.getParameter("time")+":00";
+		String oldDate = request.getParameter("date") + " "+ request.getParameter("time")+":00";
 		System.out.println(oldDate);
 		Timestamp date = Timestamp.valueOf(oldDate);
-		System.out.println(date);
 		
 		System.out.println("버겟 넘버!!! : " + request.getParameter("budget_no"));
 		
@@ -145,5 +139,27 @@ public class RecordBean {
 		return "budget/moneyLog";
 	}
 	
+	// 수입지출목록 보여주기
+	@RequestMapping("moneyLog.moa")
+	public String moneyLog(HttpServletRequest request, Model model, String pageNum)throws SQLException {
+		String id = (String)request.getSession().getAttribute("memId");
+		System.out.println("아이디? : " + id);
+		
+		// 현재 날짜+시간 받아오기(기본으로 현재 진행중인 예산의 지출 목록 보여줄 것임)
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date currTime = new Date();
+		String now = sdf.format(currTime);
+		System.out.println(now);
+		Timestamp dateTime = Timestamp.valueOf(now);
+		
+		// 날짜랑 아이디로 해당 예산 번호 가져오기
+		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
+		System.out.println("예산번호는??? : " + budgetNum);
+		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum);
+		
+		System.out.println("잘 나오니? : " +  recordPage.getRecordList().size());
+		model.addAttribute("recordPage", recordPage);
+		return "budget/moneyLog";
+	}
 
 }

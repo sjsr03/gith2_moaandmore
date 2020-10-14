@@ -31,18 +31,35 @@
   	</update>
  	
  	
-  	<!-- 날짜랑 아이디로 해당 예산 번호 꺼내오기  -->
+  	<!-- 날짜랑 아이디로 해당 예산 번호 꺼내오기 
+  	  		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= TO_DATE('#{dateTime}', 'YYYY-MM-DD HH24:MI:SS')  and end_day >= TO_DATE('#{dateTime}', 'YYYY-MM-DD HH24:MI:SS')]]>		 
+  	
+  	 -->
   	<select id="selectBudgetNum" parameterType="hashmap" resultType="int">
-  		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= #{dateTime} and end_day >= #{dateTime}]]>	 
+  		<![CDATA[select budget_no from total_budget where id=#{id} and start_day <= #{dateTime} and end_day >= #{dateTime}]]>		 
   	</select>
 
-  	<!-- 지난 예산 시작 날짜 가져오기 -->
+  	<!-- 지난 예산 시작 날짜 가져오기 현재 예산 밖에 없으면 이 부분을 close =0 으로 바꿔줘야하는데~... -->
   	<select id="selectBudgetStartDate" parameterType="string" resultType="string">
-  		select end_day from TOTAL_BUDGET WHERE id=#{value} and close=0
+  		select start_day from TOTAL_BUDGET WHERE id=#{value} and close=1
+  	</select>
+  	<!-- 가진 예산이 현재 에산 뿐이면 현재 예산에서 시작날짜 가져오기 -->
+  	<select id="selectCurrBudgetStartDate" parameterType="string" resultType="string">
+  		select start_day from TOTAL_BUDGET WHERE id=#{value} and close=0
   	</select>
   	<!-- 현재 예산 끝나는 날짜 가져오기 -->
   	<select id="selectBudgetEndDate" parameterType="string" resultType="string">
-  		select start_day from TOTAL_BUDGET WHERE id=#{value} and close=1
+  		select end_day from TOTAL_BUDGET WHERE id=#{value} and close=0
+  	</select>
+  	
+  	<!-- 직전 예산 정보 가져오기 -->
+  	<select id="selectLastTB" parameterType="string" resultType="totalBudgetDTO">
+  		select * from total_budget where id=#{value} and close=1
+  	</select>
+  	
+  	<!-- 예산 번호로 전체 정보 가져오기 -->
+  	<select id="selectOneByNum" parameterType="int" resultType="totalBudgetDTO" >
+  		select * from total_budget where budget_no=#{value}
   	</select>
   	
   	

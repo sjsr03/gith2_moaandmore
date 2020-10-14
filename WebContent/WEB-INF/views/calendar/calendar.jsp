@@ -30,9 +30,9 @@
 <body>
 
 
-<input class="checkbox a" id="a"  type="checkbox" value="1"/> 지출
+<input class="checkbox" id="a"  type="checkbox" value="1"/> 지출
 <input class="checkbox" id="checkboxb"  type="checkbox" value="2"/> 수입
-<input class="checkbox" id="checkboxc"  type="checkbox" value="3"/> 예산 외  </br>
+<input class="checkbox" id="checkboxc"  type="checkbox" value="3"/> 예산 외 지출  </br>
 <div id='calendar'></div>
 
 </body>
@@ -55,8 +55,7 @@ var all=[];
 		        right: 'prev,next today'
 		      },
 		      events:
-		    	  
-		    	  function(start,callback){
+		    	  function(){
 		    	  $(".checkbox").each(function(){
 		    		 	$(this).on('change',function(){
 		    				if($(this).hasClass('a')){

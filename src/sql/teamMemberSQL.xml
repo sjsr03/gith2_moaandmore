@@ -12,6 +12,7 @@
 	<select id="selectAllByTeamNo" parameterType="int" resultType="teamMemberDTO">
 		select * from team_member where team_no = #{value} ORDER BY saving DESC	
 	</select>
-
-
+	<select id="deleteTeamMemberAll" parameterType="int">
+		delete from team_member where team_no = #{value}
+	</select>
 </mapper>

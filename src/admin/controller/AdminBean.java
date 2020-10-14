@@ -13,6 +13,7 @@ import admin.model.dto.ModelDTO;
 import admin.service.bean.AdminServiceImpl;
 import member.service.bean.MemberServiceImpl;
 import team.model.dto.TeamDTO;
+import team.service.bean.TeamMemberServiceImpl;
 import team.service.bean.TeamServiceImpl;
 
 @Controller
@@ -27,6 +28,9 @@ public class AdminBean {
 	
 	@Autowired
 	private TeamServiceImpl teamService = null;
+	
+	@Autowired
+	private TeamMemberServiceImpl teamMemberService = null;
 	
 	
 	@RequestMapping("memberList.moa")
@@ -56,6 +60,9 @@ public class AdminBean {
 	@RequestMapping("groupWaitAdminPro.moa")
 	public String groupWaitAdminPro(TeamDTO dto) throws SQLException {
 		teamService.updateTeamStatus(dto);
+		
+		if(dto.getStatus() == -1)
+			teamMemberService.deleteTeamMemberAll(dto.getTeam_no());
 		
 		return "admin/groupWaitAdminPro";
 	}

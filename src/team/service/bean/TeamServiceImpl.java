@@ -21,15 +21,15 @@ public class TeamServiceImpl implements TeamService{
 	}
 	
 	@Override
-	public int getTeamArticleCount(int pageStatus) throws SQLException {
-		return dao.getTeamArticleCount(pageStatus);
+	public int getTeamArticleCount(int pageStatus,int isSearch,String search) throws SQLException {
+		return dao.getTeamArticleCount(pageStatus,isSearch,search);
 	}
 
 	@Override
-	public List getTeamArticles(int pageStatus, int start, int end) throws SQLException {
-		return dao.getTeamArticles(pageStatus, start, end);
+	public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search) throws SQLException {
+		return dao.getTeamArticles(pageStatus, start, end,isSearch,search);
 	}
-
+	
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
 		dto.setStart_day(dto.getStart_day().replaceAll("-", ""));
@@ -46,6 +46,16 @@ public class TeamServiceImpl implements TeamService{
 	@Override
 	public void updateTeamStatus(TeamDTO dto) throws SQLException {
 		dao.updateTeamStatus(dto);
+	}
+
+	@Override
+	public int getTeamMyRequestCount(String nickname) throws SQLException {
+		return dao.getTeamMyRequestCount(nickname);
+	}
+
+	@Override
+	public List getTeamMyRequests(String nickname, int start, int end) throws SQLException {
+		return dao.getTeamMyRequests(nickname, start, end);
 	}
 
 }

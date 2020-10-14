@@ -21,6 +21,8 @@
  		<typeAlias type="budget.model.dto.BudgetDetailDTO" alias="budgetDetailDTO"/>
  		<typeAlias type="budget.model.dto.NoBudgetDTO" alias="noBudgetDTO"/>
  		<typeAlias type="budget.model.dto.NoBudgetDetailDTO" alias="noBudgetDetailDTO"/>
+ 		<typeAlias type="budget.model.dto.RecordPageDTO" alias="recordPageDTO"/>
+ 		<typeAlias type="budget.model.dto.BudgetRecordDTO" alias="budgetRecordDTO"/>
 
  	</typeAliases>
  	
