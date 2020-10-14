@@ -115,20 +115,35 @@
 				</c:if>
 				
 				<c:if test="${startPage > pageBlock}">
-					<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage-pageBlock}" > &lt; </a>
+					<c:if test="${isSearch==0}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage-pageBlock}" > &lt; </a>
+					</c:if>
+					<c:if test="${isSearch==1}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage-pageBlock}" > &lt; </a>
+					</c:if>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1" >
-					<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<c:if test="${isSearch==0}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					</c:if>
+					<c:if test="${isSearch==1}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					</c:if>
 				</c:forEach>
 				<c:if test="${endPage < pageCount}">
-					<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage+pageBlock}" > &gt; </a>
+					<c:if test="${isSearch==0}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage+pageBlock}" > &gt; </a>
+					</c:if>
+					<c:if test="${isSearch==1}">
+						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage+pageBlock}" > &gt; </a>
+					</c:if>
 				</c:if>
 			
 			</c:if>
 		</div>
 		<div class="bottom"  style="width: 100%; height: 55px; text-align: center; margin-top: 5px;">
-			<form action="/moamore/team/groupListPro.moa" method="post" style="align-self: center;">
-				<input type="text" name="search_box" placeholder="그룹명 검색"/>
+			<form action="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1" method="post" style="align-self: center;">
+				<input type="text" name="search" placeholder="그룹명 검색"/>
 				<input type="submit" value="검색"/>
 			</form>
 		</div>

@@ -21,18 +21,22 @@ public class TeamDAOImpl implements TeamDAO{
 	}
 	
 	@Override
-	public int getTeamArticleCount(int pageStatus) throws SQLException {
+	public int getTeamArticleCount(int pageStatus,int isSearch,String search) throws SQLException {
 		int count = 0;
+		
+		HashMap map = new HashMap();
+		map.put("isSearch", isSearch);
+		map.put("search", search);
 		
 		if(pageStatus==2) {
 			//진행중 그룹들
-			count = sqlSession.selectOne("team.countOpenAll");
+			count = sqlSession.selectOne("team.countOpenAll", map);
 		}else if(pageStatus == 1) {
 			//개설예정 그룹들
-			count = sqlSession.selectOne("team.countOpenApAll");
+			count = sqlSession.selectOne("team.countOpenApAll", map);
 		}else if(pageStatus == 3) {
 			//종료된 그룹들
-			count = sqlSession.selectOne("team.countEndAll");
+			count = sqlSession.selectOne("team.countEndAll", map);
 		}
 			
 		
@@ -40,10 +44,12 @@ public class TeamDAOImpl implements TeamDAO{
 	}
 	
 	@Override
-	public List getTeamArticles(int pageStatus, int start, int end) throws SQLException {
+	public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search) throws SQLException {
 		HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
+		map.put("isSearch", isSearch);
+		map.put("search", search);
 		
 		List list = null;
 		
