@@ -26,8 +26,8 @@ public class TeamServiceImpl implements TeamService{
 	}
 
 	@Override
-	public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search) throws SQLException {
-		return dao.getTeamArticles(pageStatus, start, end,isSearch,search);
+	public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException {
+		return dao.getTeamArticles(pageStatus, start, end,isSearch,search,range);
 	}
 	
 	@Override

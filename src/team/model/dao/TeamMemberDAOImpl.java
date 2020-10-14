@@ -17,7 +17,6 @@ public class TeamMemberDAOImpl implements TeamMemberDAO {
 
 	@Override
 	public void insertOne(TeamMemberDTO member) throws SQLException {
-		System.out.println(member.toString());
 		sqlSession.insert("teamMember.insertOne", member);
 		
 	}
