@@ -28,6 +28,7 @@ import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
+import budget.model.dto.RecordPageDTO;
 import budget.service.bean.BudgetService;
 import budget.service.bean.RecordService;
 import category.service.bean.CategoryService;
@@ -154,15 +155,11 @@ public class RecordBean {
 		// 날짜랑 아이디로 해당 예산 번호 가져오기
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
 		System.out.println("예산번호는??? : " + budgetNum);
+		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum);
 		
-		List budgetRecordList = budgetService.selectAllBudgetByNum(budgetNum, pageNum);
-		
-		System.out.println("잘 나오니? : " +  budgetRecordList.size());
-		model.addAttribute("budgetRecordList", budgetRecordList);
+		System.out.println("잘 나오니? : " +  recordPage.getRecordList().size());
+		model.addAttribute("recordPage", recordPage);
 		return "budget/moneyLog";
 	}
-	
-	
-	
 
 }

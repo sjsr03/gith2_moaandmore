@@ -59,10 +59,10 @@
   
   	
   	<!-- 회원 아이디와 카테고리 num 으로 카테고리 이름 가져오기 -->
-  	<select id="selectBudgetCategoryNames" resultType="string">
-  		select category_name from outcome_category where category_no in
-  		<foreach collection='list' index='index' item='num' open='(' close=')' separator=','>
-  		#{num}
+  	<select id="selectBudgetCategoryNames" parameterType="java.util.List" resultType="string">
+  		select category_name from outcome_category where category_no in 
+  		<foreach collection='list' index='index' item='item' open='(' close=')' separator=','>
+  		#{item}
   		</foreach>
   	</select>
   	

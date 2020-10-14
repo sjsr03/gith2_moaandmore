@@ -45,6 +45,7 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
 		List categoryList = new ArrayList();
 		//리스트처리
+		
 		categoryList = sqlSession.selectList("totalBudgetDetail.selectBudgetCategoryNums", budgetNum);
 		return categoryList;
 	}

@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,6 +23,7 @@ import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
+import budget.model.dto.RecordPageDTO;
 
 @Service
 public class RecordServiceImpl implements RecordService{
@@ -105,11 +107,42 @@ public class RecordServiceImpl implements RecordService{
 			
 			//System.out.println("구분번호 ㅣ: " + budget_outcome_no);
 			
-			recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);
-			
+			recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);			
 		}	
-	
-
 	}
-
+	// 예산번호로 해당 예산 기록 목록 가져오기
+	@Override
+	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
+		
+		RecordPageDTO recordPage = new RecordPageDTO();
+		
+		if(pageNum == null) {
+			pageNum = "1";
+		}
+		// 페이지 정보 담기
+		int pageSize = 10;
+		int currPage = Integer.parseInt(pageNum);
+		int startRow = (currPage - 1) * pageSize + 1;
+		int endRow = currPage * pageSize + 1;
+		int count = 0;
+		
+		List recordList = null;
+		
+		// 전체 목록 수 가져오기 
+		count = recordBudgetDAO.countAllBudgetByNum(budgetNum);
+		if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
+			recordList = recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
+			System.out.println("예산번호로 예산기록목록 가져오기  : " + recordList.size());
+		}
+		
+		recordPage.setCount(count);
+		recordPage.setCurrPage(currPage);
+		recordPage.setEndRow(endRow);
+		recordPage.setPageNum(pageNum);
+		recordPage.setPageSize(pageSize);
+		recordPage.setRecordList(recordList);
+		recordPage.setStartRow(startRow);
+		
+		return recordPage;
+	}
 }

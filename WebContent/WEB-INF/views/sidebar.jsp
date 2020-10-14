@@ -120,9 +120,9 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/report/report.moa">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>보고서</span></a>
+          <span>예산 보고서</span></a>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
