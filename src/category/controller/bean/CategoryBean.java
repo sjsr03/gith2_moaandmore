@@ -163,7 +163,6 @@ public class CategoryBean {
 		List income = categoryService.selectAllIncomeCategoryById(id);
 		List outcome = categoryService.selectAllById(id);
 		
-		System.out.println(already);
 		model.addAttribute("income",income);
 		model.addAttribute("outcome", outcome);
 		model.addAttribute("already", already);

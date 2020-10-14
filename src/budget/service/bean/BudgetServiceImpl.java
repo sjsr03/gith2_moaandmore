@@ -74,7 +74,6 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		if(period == 30) {	//한달일경우
 			int firstOfMonth = Integer.parseInt(request.getParameter("firstOfMonth"));
-			System.out.println("date.DATE : " + date.DATE + " / firstOfMonth : " + firstOfMonth);
 			if(date.get(date.DATE) >= firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
 				date.add(Calendar.MONTH, 1);
 				date.set(Calendar.DATE, firstOfMonth);
@@ -230,12 +229,10 @@ public class BudgetServiceImpl implements BudgetService {
 	@Override
 	public int selectBudgetNum(String id, Timestamp dateTime) throws SQLException {
 		HashMap map = new HashMap();
-		System.out.println("확인확인 : " + dateTime);
 		map.put("id", id);
 		map.put("dateTime", dateTime);
 		
 		int budgetNum = totalBudgetDAO.selectBudgetNum(map);
-		System.out.println("서비스에서 버겟넘 : " + budgetNum);
 		return budgetNum;
 	}
 	
@@ -331,15 +328,11 @@ public class BudgetServiceImpl implements BudgetService {
 	public List selectBudgetDate(String id) throws SQLException {
 		List budgetDateTime = new ArrayList();
 		budgetDateTime = totalBudgetDAO.selectBudgetDate(id);
-		System.out.println(budgetDateTime);
 		String start = (String)budgetDateTime.get(0);
 		String end = (String)budgetDateTime.get(1);
 		
 		// budgetDate의 값들에서 시간을 뺴서 날짜만 보내주기
 		List budgetDate = new ArrayList();
-		System.out.println("-----------------");
-		System.out.println(start);
-		System.out.println(end);
 		budgetDate.add(end.substring(0, 10));
 		budgetDate.add(start.substring(0, 10));		
 		return budgetDate;
@@ -378,7 +371,6 @@ public class BudgetServiceImpl implements BudgetService {
 		if(lastD == null) {
 			return;
 		}
-		System.out.println(lastD);
 		Date lastDate = new Date(Timestamp.valueOf(lastD).getTime());
 		lastDate.setHours(0);
 		lastDate.setMinutes(0);
@@ -391,8 +383,6 @@ public class BudgetServiceImpl implements BudgetService {
 		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		System.out.println("lastDate : " + sdf.format(lastDate) + " // today : " + sdf.format(today));
-		System.out.println(lastDate.compareTo(today));
 		
 		if(sdf.format(lastDate).equals(sdf.format(today))) {
 			return;

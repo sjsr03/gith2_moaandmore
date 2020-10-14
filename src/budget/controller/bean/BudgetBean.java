@@ -86,7 +86,6 @@ public class BudgetBean {
 			categoryNums.add(dto.getCategory_no());
 		}
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
-		System.out.println(categories);
 		
 		//회원의 목표 리스트 가져오기
 		List<GoalsDTO> goals = goalsService.selectAllById();
@@ -124,9 +123,6 @@ public class BudgetBean {
 //		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
 //		message += sdf.format(today.getTime()) + "부터 ";
 //		
-//		System.out.println(today.getTime());
-//		System.out.println(today.;
-//		System.out.println(firstOfMonth);
 //		if(today.DATE > firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
 //			today.add(Calendar.MONTH, 1);
 //		} 
