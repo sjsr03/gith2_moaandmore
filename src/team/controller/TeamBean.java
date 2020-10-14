@@ -3,6 +3,8 @@ package team.controller;
 import java.sql.SQLException;
 import java.util.List;
 
+import javax.tools.DocumentationTool.Location;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
@@ -28,9 +30,8 @@ public class TeamBean {
 	@Autowired
 	private TeamMemberServiceImpl teamMemService = null;
 	
-
 	@RequestMapping("groupList.moa")
-	public String viewList(String pageNum, String pageStatus, Model model) throws SQLException {
+	public String viewList(String pageNum, String pageStatus, String isSearch, String search, String range, Model model) throws SQLException {
 		if(pageNum == null) {
 			pageNum = "1";
 		}
@@ -39,6 +40,16 @@ public class TeamBean {
 			pageStatus = "2";
 		}
 		
+		if(isSearch == null)
+			isSearch="0";
+		
+		if(search == null || search == "")
+			search = "검색어를 입력하세요.";
+		
+		if(range == null)
+			range = "0";
+		
+		
 		int pageSize = 6;
 		int currPage = Integer.parseInt(pageNum);	//페이지 계산을 위해 숫자로 형변환
 		int startRow = (currPage-1)*pageSize+1;
@@ -46,22 +57,28 @@ public class TeamBean {
 		int number = 0;	//게시판 상의 글번호 뿌려줄 변수 미리 선언
 		
 		List articleList = null;
-		int count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus));
+		List articleMemberAvgList = null;
+		int count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus),Integer.parseInt(isSearch),search);
 		
 		if(count>0) {
-			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow);
+			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow,Integer.parseInt(isSearch),search,Integer.parseInt(range));
+			articleMemberAvgList = teamMemService.getTeamAvgArticles(articleList);
 		}
 		
 		number = count-(currPage-1)*pageSize;
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("pageStatus", pageStatus);
+		model.addAttribute("isSearch", isSearch);
+		model.addAttribute("search", search);
+		model.addAttribute("range", Integer.parseInt(range));
 		model.addAttribute("pageSize", new Integer(pageSize));
 		model.addAttribute("currPage", new Integer(currPage));
 		model.addAttribute("startRow", new Integer(startRow));
 		model.addAttribute("endRow", new Integer(endRow));
 		model.addAttribute("number", new Integer(number));
 		model.addAttribute("articleList", articleList);
+		model.addAttribute("articleMemberAvgList", articleMemberAvgList);
 		model.addAttribute("count", new Integer(count));
 		
 		return "team/groupList";

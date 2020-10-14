@@ -83,5 +83,8 @@
 			</c:if>
 		</c:if>
 	</div>
+	<div align="center">
+		<button type="button" onclick="location.href='/moamore/team/groupList.moa'">돌아가기</button>
+	</div>
 </body>
 </html>
