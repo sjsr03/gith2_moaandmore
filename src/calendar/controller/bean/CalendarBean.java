@@ -33,14 +33,31 @@ public class CalendarBean {
 		//budget의 날짜와 총 지출액 map 형태로 받아오기 
 		Map budgetDateAndAmount = calendarService.selectBudgetDateAndAmount(id);
 		
+		//nobudget의 날짜와 총 지출액 map 형태로 받아오기
+		Map noBudgetExpenseDateAndAmount = calendarService.selectNobudgetExpenseDateAndAmount(id);
+		
+		//nobudget의 날짜와 총 수입액 map 형태로 받아오기
+		Map noBudgetIncomeDateAndAmount = calendarService.selectNobudgetIncomeDateAndAmount(id);
+		
 		
 		model.addAttribute("budgetDateAndAmount", budgetDateAndAmount);
-	
+		model.addAttribute("nobudgetExpense", noBudgetExpenseDateAndAmount);
+		model.addAttribute("nobudgetIncome", noBudgetIncomeDateAndAmount);
+		
+		
 		
 		return "calendar/calendar";
 	}
 	
-	
+	@RequestMapping("getCalendarDetail.moa")
+	public String getCalendarDetail(String reg)throws SQLException{
+		
+		System.out.println(reg);
+		
+		
+		
+		return "";
+	}
 	
 	
 	

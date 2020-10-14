@@ -36,19 +36,19 @@ public class CalendarServiceImpl implements CalendarService{
 		List budgetalldate = new ArrayList();
 		
 		
-		for(int i=0; i<budget.size(); i++) {
-			BudgetDTO budgetList = (BudgetDTO)budget.get(i);
-			
-			Date indata =budgetList.getDate();
-			String budgetDate = yyyymmdd.format(indata);
-			
-		
-			if(!budgetalldate.contains(budgetDate)){
-		       budgetalldate.add(budgetDate);
+			for(int i=0; i<budget.size(); i++) {
+				BudgetDTO budgetList = (BudgetDTO)budget.get(i);
+				
+				Date indata =budgetList.getReg();
+				
+				String budgetDate = yyyymmdd.format(indata);
+				
+				if(!budgetalldate.contains(budgetDate)){
+			       budgetalldate.add(budgetDate);
+				}
+				
 			}
-			
-		}
-	
+		
 		//System.out.println(budgetalldate);
 		return budgetalldate;
 	}
@@ -75,7 +75,7 @@ public class CalendarServiceImpl implements CalendarService{
 				List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
 				//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
 				List<Integer> allbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
-			
+												
 				//리턴해줄 날짜랑 지출액
 				Map selectBudgetDateAndAmount = new HashMap();
 				
@@ -109,7 +109,7 @@ public class CalendarServiceImpl implements CalendarService{
 			
 		}
 	
-		System.out.println(noBudgetalldate);
+		  
 		return noBudgetalldate;
 		
 	}
@@ -147,13 +147,13 @@ public class CalendarServiceImpl implements CalendarService{
 		List<Integer> allnoBudgetExpenseAmount = calendarService.selectNobudgetExpenseAmount(id, noBudgetAlldate);
 	
 		//리턴해줄 날짜랑 지출액
-		Map selectNoBudgetDateAndAmount = new HashMap();
+		Map noBudgetExpenseDateAndAmount = new HashMap();
 		
 		for(int i = 0; i<noBudgetAlldate.size(); i++) {
-			selectNoBudgetDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetExpenseAmount.get(i));
+			noBudgetExpenseDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetExpenseAmount.get(i));
 		}				
 		
-		return selectNoBudgetDateAndAmount;
+		return noBudgetExpenseDateAndAmount;
 	}
 
 	//nobudget 테이블 날짜랑 수입총액 맵으로 같이 보내줄 메서드 
@@ -164,16 +164,19 @@ public class CalendarServiceImpl implements CalendarService{
 		List<String> noBudgetAlldate = calendarService.selectNobudgetDatebyId(id);
 		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
 		List<Integer> allnoBudgetAmount = calendarService.selectNobudgetExpenseAmount(id, noBudgetAlldate);
-	
+		
 		//리턴해줄 날짜랑 지출액
-		Map selectNoBudgetDateAndAmount = new HashMap();
+		Map noBudgetIncomeDateAndAmount = new HashMap();
 		
 		for(int i = 0; i<noBudgetAlldate.size(); i++) {
-			selectNoBudgetDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetAmount.get(i));
+			noBudgetIncomeDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetAmount.get(i));
 		}				
 		
-		return selectNoBudgetDateAndAmount;
+		return noBudgetIncomeDateAndAmount;
 	}
+
+
+	
 	
 	
 

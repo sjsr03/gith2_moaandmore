@@ -23,9 +23,7 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		System.out.println("예산안 구분번호 : " +budgetDTO.getBudget_no());
 		System.out.println("예산 카테고리  구분번호: " +budgetDTO.getCategory_no());
 		System.out.println("아이디  : " +budgetDTO.getId());
-		System.out.println("날짜 ㅣ " + budgetDTO.getDate() );
 		
-		System.out.println("타입먼데 : " + budgetDTO.getDate().getClass().getName());
 		
 		
 		sqlSession.insert("record.insertBudget", budgetDTO);
