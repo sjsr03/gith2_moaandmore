@@ -37,11 +37,10 @@
 
 </body>
 <script>
-	
         	
 var checkVal = [];
 
- 
+
 	document.addEventListener('DOMContentLoaded', function() {
 		
 		var calendarEl = document.getElementById('calendar');	
