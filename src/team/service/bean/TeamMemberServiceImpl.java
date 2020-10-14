@@ -53,7 +53,6 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 		
 		
 		for(int i=0;i<realNickList.size();i++) {
-			System.out.println(i+" : "+teamDTO.getTeam_no()+" "+realIdList.get(i)+" "+ realNickList.get(i));
 			TeamMemberDTO tmp = new TeamMemberDTO(teamDTO.getTeam_no(), realIdList.get(i), realNickList.get(i), 0);
 			teamMemDao.insertOne(tmp);
 		}

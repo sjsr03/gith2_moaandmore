@@ -18,7 +18,7 @@ public interface BudgetService {
 	//현재 총예산 정보 가져오기
 	public TotalBudgetDTO selectCurrentOne(String id) throws SQLException;
 	
-	//현재 총예산 정보 가져오기
+	//현재 총예산 세부정보 가져오기
 	public List selectAllbyBudgetNum(int num) throws SQLException;
 	
 	//회원의 남은 예산 정보 가져오기
@@ -42,8 +42,17 @@ public interface BudgetService {
 	//예산 번호로 전체 정보 가져오기
 	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException;
 	
-	
 	// 예산 번호로 해당 예산 기록 전부 가져오기
 	public List selectAllBudgetByNum(int budgetNum, String pageNum)throws SQLException;
 
+	//현재 예산이 종료일이 지났는지 확인
+	public TotalBudgetDTO selectOutClose(String id) throws SQLException;
+
+	//현재 예산이 종료일이 지났는지 확인 후 새로운 예산으로 갱신
+	public void updateNewTB(String id) throws SQLException;
+	
+	//남은 돈 계산하기
+	public void calLeftMoney(String id) throws SQLException;
+	
+	
 }

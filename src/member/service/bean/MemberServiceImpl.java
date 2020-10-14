@@ -174,4 +174,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.selectOneByNick(nickname);
 	}
 	
+	
+	@Override
+	public void updateClose(String id) throws SQLException {
+		
+	}
 }

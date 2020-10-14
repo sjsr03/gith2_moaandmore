@@ -10,7 +10,7 @@ public interface TeamService {
 		public int getTeamArticleCount(int pageStatus,int isSearch,String search) throws SQLException;
 		
 		//그룹 범위 지정 가져오기
-		public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search) throws SQLException;
+		public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException;
 		
 		//그룹 하나 가져오기
 		public TeamDTO selectOne(int team_no) throws SQLException;

@@ -6,7 +6,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -53,10 +55,13 @@ public class ReportBean {
 		
 		HashMap returnMap = reportService.selectLabelDataList(TBdto);
 		
-		model.addAttribute("labelList", returnMap.get("labelList"));
-		model.addAttribute("dataList", returnMap.get("dataList"));	//그래프용 데이터 전달
+		Set keySet = returnMap.keySet();
+		Iterator it = keySet.iterator();
 		
-		
+		while(it.hasNext()) {
+			String key = (String)it.next();
+			model.addAttribute(key, returnMap.get(key));
+		}
 		
 		return "report/reportContent";
 	}

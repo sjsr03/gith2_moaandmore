@@ -24,7 +24,6 @@ public class TeamMemberBean {
 	@RequestMapping("selectAllByTeamNo.moa")
 	public @ResponseBody List<TeamMemberDTO> selectAllByTeamNO(String team_no) throws SQLException {
 		
-		System.out.println(team_no);
 		int	parse_team_no = Integer.parseInt(team_no);
 		return teamMemberService.selectAllbyTeamNo(parse_team_no);
 	}

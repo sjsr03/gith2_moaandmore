@@ -31,7 +31,7 @@ public class TeamBean {
 	private TeamMemberServiceImpl teamMemService = null;
 	
 	@RequestMapping("groupList.moa")
-	public String viewList(String pageNum, String pageStatus, String isSearch, String search, Model model) throws SQLException {
+	public String viewList(String pageNum, String pageStatus, String isSearch, String search, String range, Model model) throws SQLException {
 		if(pageNum == null) {
 			pageNum = "1";
 		}
@@ -46,6 +46,9 @@ public class TeamBean {
 		if(search == null || search == "")
 			search = "검색어를 입력하세요.";
 		
+		if(range == null)
+			range = "0";
+		
 		
 		int pageSize = 6;
 		int currPage = Integer.parseInt(pageNum);	//페이지 계산을 위해 숫자로 형변환
@@ -58,7 +61,7 @@ public class TeamBean {
 		int count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus),Integer.parseInt(isSearch),search);
 		
 		if(count>0) {
-			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow,Integer.parseInt(isSearch),search);
+			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow,Integer.parseInt(isSearch),search,Integer.parseInt(range));
 			articleMemberAvgList = teamMemService.getTeamAvgArticles(articleList);
 		}
 		
@@ -68,6 +71,7 @@ public class TeamBean {
 		model.addAttribute("pageStatus", pageStatus);
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("search", search);
+		model.addAttribute("range", Integer.parseInt(range));
 		model.addAttribute("pageSize", new Integer(pageSize));
 		model.addAttribute("currPage", new Integer(currPage));
 		model.addAttribute("startRow", new Integer(startRow));
