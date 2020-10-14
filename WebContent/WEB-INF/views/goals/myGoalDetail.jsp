@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,15 +10,18 @@
 </head>
 <body>
 	<h1>${goal.subject}</h1>
+	<button onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${goal.team_no}'">그룹 페이지로</button>
 	<h3>목표액 : ${goal.target_money}원</h3>
 	<h3>달성액: ${goal.saving}원</h3>
-	<h3>시작날짜: ${goal.start_day}</h3>
+	<h3>시작날짜:<fmt:formatDate  value="${goal.start_day}" pattern="yyyy.MM.dd"/></h3>
 	<c:if test="${goal.public_ch eq'0'.charAt(0)}">
 		<h3>유형 : 개인</h3> 
 		<button onclick="redir('/moamore/goals/modifyForm.moa?goal_no=','${goal.goal_no}')">수정</button>
 		
 	</c:if>
 	<c:if test="${goal.public_ch eq'1'.charAt(0)}">
+		<h3>마감날짜:<fmt:formatDate  value="${goal.end_day}" pattern="yyyy.MM.dd"/></h3>
+	
 		<h3>유형 : 그룹</h3>
 		<c:if test="${goal.public_type eq '0'.charAt(0)}">
 			<h3>공개여부 : 비공개</h3>
@@ -45,7 +49,7 @@
 	</c:forEach>
 	</table>
 	
-	<button onclick="redir('/moamore/goals/myGoalList.moa?public_ch=','${goal.public_ch}')">목록으로</button>
+	<button onclick="redir('/moamore/goals/myGoalList.moa?','public_ch=${goal.public_ch}')">목록으로</button>
 	
 	
 <script>

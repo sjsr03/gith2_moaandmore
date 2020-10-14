@@ -132,7 +132,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/goals/myGoalList.moa">
           <i class="fas fa-fw fa-crosshairs"></i>
           <span>목표</span></a>
       </li>
@@ -171,7 +171,7 @@ $(document).ready(function(){
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
 			<div>
 				<button class="btn btn-secondary btn-icon-split"><span class="text">예산</span></button>
-				<button class="btn btn-secondary btn-icon-split"><span class="text">커뮤니티</span></button>
+				<button class="btn btn-secondary btn-icon-split" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>
 			</div>
 			
           <!-- Topbar Navbar -->

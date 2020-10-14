@@ -166,7 +166,7 @@
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
 			<div>
 				<button class="btn btn-secondary btn-icon-split"><span class="text">예산</span></button>
-				<button class="btn btn-secondary btn-icon-split"><span class="text">커뮤니티</span></button>
+				<button class="btn btn-secondary btn-icon-split" ><span class="text">커뮤니티</span></button>
 			</div>
 			
           <!-- Topbar Navbar -->
