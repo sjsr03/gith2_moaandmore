@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,9 +14,10 @@
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <body>
-	<!-- 보고서 첫줄 -->
-            <div class="container-fluid row">
-            	<!-- 일별 예산 소진율 -->
+	 <div class="container-fluid">
+		<!-- 보고서 첫줄 -->
+			<div class="row">
+	           	<!-- 일별 예산 소진율 -->
 				<div class="col-xl-8 col-lg-7">
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Dropdown -->
@@ -29,7 +32,34 @@
 	                </div>
 	              </div>
 	            </div>
+	           	<!-- 일별 예산 소진율 -->
+				<div class="col-xl-3 col-lg-7">
+	              <div class="card shadow mb-4">
+	                <!-- Card Body -->
+	                <div class="card-body">
+	                	예산 기간 : <br/>
+	             		<fmt:formatDate pattern="yyyy.MM.dd" value="${TBdto.start_day}"/> ~ 
+		                <fmt:formatDate pattern="yyyy.MM.dd" value="${TBdto.end_day}"/>
+	                	<br/>
+	                	<hr/>
+	                	총 예산 : <br/><Strong><fmt:formatNumber value="${TBdto.budget }" pattern="#,###" />원 </Strong><br/>
+	                	실제 총 예산 지출 : <br/><Strong><fmt:formatNumber value="${Tsum}" pattern="#,###" />원 </Strong><br/>
+	                	<br/>
+	                	하루 권장 지출 : <br/><Strong><fmt:formatNumber value="${daily}" pattern="#,###" />원 </Strong><br/>
+	                	실제 평균 지출 : <br/><Strong><fmt:formatNumber value="${dailyAvg}" pattern="#,###" />원</Strong><br/>
+	                	<br/>
+	                	평균 예산 소진율 : <br/><Strong><fmt:formatNumber value="${(dailyAvg/daily)*100}" pattern="#,###" />%</Strong>
+	                </div>
+	              </div>
+	            </div>
             </div>
+            <!-- 첫줄 끝 -->
+            
+            <!-- 두번째 줄 -->
+            <div class="row">
+            
+            </div>
+   </div>
 </body>
  <!-- Bootstrap core JavaScript -->
   <script src="/moamore/vendor/jquery/jquery.min.js"></script>

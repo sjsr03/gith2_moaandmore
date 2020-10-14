@@ -14,4 +14,10 @@ public interface ReportDAO {
 	
 	//날짜와 예산번호로 지출액 합산
 	public int selectOutcomeSumByReg(HashMap map);
+	
+	//지출 Top3 (예산번호가 주어짐)
+	public List selectTop3(int budget_no);
+	
+	//날짜와 카테고리와 예산번호로 지출액 합산
+	public int selectOutcomeSumByCatAndReg(HashMap map);
 }

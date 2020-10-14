@@ -1,8 +1,10 @@
 package report.model.dao;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,27 @@ public class ReportDAOImpl implements ReportDAO {
 			return 0;
 		} else {
 			return sqlSession.selectOne("report.selectOutcomeSumByReg",map);
+		}
+	}
+	
+	@Override
+	public List selectTop3(int budget_no) {
+		List list = new ArrayList();
+		
+		List countMap = sqlSession.selectList("report.selectTop3Count", budget_no);
+		
+		System.out.println(countMap);
+		
+		
+		return list;
+	}
+	
+	@Override
+	public int selectOutcomeSumByCatAndReg(HashMap map) {
+		if(sqlSession.selectOne("report.selectOutcomeSumByCatAndReg",map) == null) {
+			return 0;
+		} else {
+			return sqlSession.selectOne("report.selectOutcomeSumByCatAndReg",map);
 		}
 	}
 }

@@ -135,7 +135,8 @@
 					"date":$(this).val()
 				},
 				success:function(data){
-					reReport(data)
+					$("option[value="+data+"]").prop("selected", "true");
+					reReport(data);
 				}
 			});
 		});

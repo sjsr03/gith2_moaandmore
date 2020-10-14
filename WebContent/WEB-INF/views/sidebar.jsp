@@ -22,6 +22,11 @@
 	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">  
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
+<style>
+	ul.toggled > #BudgetState {
+		display:none;
+	}
+</style>
 <script>
 $(document).ready(function(){
 	$.ajax({
@@ -32,13 +37,15 @@ $(document).ready(function(){
 		},
 		success:function(data){
 			var totalBudget = data['totalBudget'];
+			var TBString = totalBudget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			
 			var outcomeSum = data['outcomeSum'];
 			var rate = (outcomeSum/totalBudget*100).toFixed(1);
 			
 			if(totalBudget== null) {	//설정된 현재예산이 없다면
 				$("#BudgetState").text("설정된 예산이 없습니다.");
 			} else {
-				$("#BudgetState").append('<div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">총 예산액 : ' + totalBudget + '원</h6></div><div class="card-body"><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + rate + '%" aria-valuenow="' + rate + '" aria-valuemin="0" aria-valuemax="100">' + rate + '%</div></div></div>');
+				$("#BudgetState").append('<div class="card-header"><h6 class="m-0 font-weight-bold text-primary">총 예산액 : ' + TBString + '원</h6></div><div class="card-body"><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + rate + '%" aria-valuenow="' + rate + '" aria-valuemin="0" aria-valuemax="100">' + rate + '%</div></div></div>');
 			}
 		}
 	});
@@ -66,7 +73,7 @@ $(document).ready(function(){
       
       
       <!-- 예산 사용액 그래프 -->
-      <div class="card border-left-info shadow h-10 py-2" id="BudgetState">
+      <div class="card" id="BudgetState">
    		
       </div>
       
