@@ -30,9 +30,9 @@
 <body>
 
 
-<input class="checkbox" id="checkbox"  type="checkbox" value="1"/> 지출
-<input class="checkbox" id="checkbox"  type="checkbox" value="2"/> 수입
-<input class="checkbox" id="checkbox"  type="checkbox" value="3"/> 예산 외 지출  </br>
+<input class="checkbox" id="a"  type="checkbox" value="1"/> 지출
+<input class="checkbox" id="checkboxb"  type="checkbox" value="2"/> 수입
+<input class="checkbox" id="checkboxc"  type="checkbox" value="3"/> 예산 외 지출  </br>
 <div id='calendar'></div>
 
 </body>
@@ -58,15 +58,38 @@ var checkVal = [];
 		    	  function(){
 		    	  $(".checkbox").each(function(){
 		    		 	$(this).on('change',function(){
-		   
-		    	 		 console.log($(this).val());
-							checkVal.push($(this).val());
-		    	 			console.log(checkVal);
+		    					if($(this).is(":checked")){
+		    						
+		    						/*
+		    						$.ajax({
+		    				   			url: "calendar.moa", 
+		    				   			error : function(){
+		    								console.log("error");
+		    							},
+		    				   			success: function(budgetDateAndAmount) {
+		    				   				console.log("success");
+		    				   				var events = [];
+		    		
+		    				   				$.each(budgetDateAndAmount,function(){
+		    				   					events.push({title:'-${i.value}',start:' ${i.key}',"color": "red"})
+		    				   					
+		    				   				});
+		    				   				console.log("---",budgetDateAndAmount);
+		    				   				//console.log(budgetDateAndAmount.budgetDateAndAmount[0].budgetDateAndAmount);//여기도 잘 나옵니다.
+//		    			 	   				var events = eval(plan.jsonTxt); 
+		    				   				//callback(events); //여기서 오류 나더라구요
+		    				   				} 
+		    				   		}); 
+		    						*/
+		    					}else{
+		    						console.log(2);
+		    					}
+		    		 	 
+		    		 	});	
+		    	 	});   
 		    	
 		      
-		    		 	});
-		    	  });	 	
-		    	} 
+		      } 
 		      
 		   
 		
