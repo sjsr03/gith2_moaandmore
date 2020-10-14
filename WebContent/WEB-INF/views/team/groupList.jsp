@@ -82,9 +82,13 @@
 				<c:forEach var="article" items="${articleList}" varStatus="stat">
 					<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
 							<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
-								<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+								<c:forEach var="mem" items="${articleMemberAvgList[0][stat.index]}">
+									<c:if test="${sessionScope.memName == mem.nickname}">
+										<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+									</c:if>
+								</c:forEach>
 								<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>
-								<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% ${articleAvgList[stat.index]}%, #BDBDBD ${articleAvgList[stat.index]}% 100%);"><span class="center"></span><span class="big">${articleAvgList[stat.index]}%</span><span class="mini">평균달성률</span></span></div>
+								<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% ${articleMemberAvgList[1][stat.index]}%, #BDBDBD ${articleMemberAvgList[1][stat.index]}% 100%);"><span class="center"></span><span class="big">${articleMemberAvgList[1][stat.index]}%</span><span class="mini">평균달성률</span></span></div>
 							</div>
 							<table style="width:380px; height:130px;">
 								<tr>

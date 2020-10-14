@@ -13,5 +13,5 @@ public interface TeamMemberService {
 	//그룹 개설 신청 거절시 해당 그룹의 팀원들 전체 삭제
 	public void deleteTeamMemberAll(int teamNo) throws SQLException;
 	//그룹 평균 모은 금액 가져오기
-	public List<Integer> getTeamAvgArticles(List<TeamDTO> teamList) throws SQLException;
+	public List<List> getTeamAvgArticles(List<TeamDTO> teamList) throws SQLException;
 }

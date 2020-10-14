@@ -66,7 +66,7 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 	}
 
 	@Override
-	public List<Integer> getTeamAvgArticles(List<TeamDTO> teamList) throws SQLException {
+	public List<List> getTeamAvgArticles(List<TeamDTO> teamList) throws SQLException {
 		List<List<TeamMemberDTO>> member_list = new ArrayList<List<TeamMemberDTO>>();
 		List<Integer> avg_list = new ArrayList<Integer>();
 		
@@ -95,6 +95,10 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 				avg_list.add(0);
 		}
 		
-		return avg_list;
+		List tmp = new ArrayList<>();
+		tmp.add(member_list);
+		tmp.add(avg_list);
+		
+		return tmp;
 	}
 }
