@@ -10,6 +10,7 @@ public class TotalBudgetDTO {
 	private Timestamp start_day;
 	private Timestamp end_day;
 	private int close;
+	private int current;
 	public int getBudget_no() {
 		return budget_no;
 	}
@@ -52,6 +53,13 @@ public class TotalBudgetDTO {
 	public void setClose(int close) {
 		this.close = close;
 	}
+	public int getCurrent() {
+		return current;
+	}
+	public void setCurrent(int current) {
+		this.current = current;
+	}
+	
 	
 	
 }

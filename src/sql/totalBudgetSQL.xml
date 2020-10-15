@@ -6,7 +6,7 @@
   <mapper namespace="totalBudget">
   	<!-- 총예산 새로 생성 -->
   	<insert id="insertTotalBudget" parameterType="totalBudgetDTO">
-  		insert into total_budget values(total_budget_seq.nextVal, #{id}, #{budget}, #{period}, #{start_day}, #{end_day}, 0)
+  		insert into total_budget values(total_budget_seq.nextVal, #{id}, #{budget}, #{period}, #{start_day}, #{end_day}, 0, #{current})
   	</insert>
   	
   	<!-- 현재 진행중인 예산의 종료일을 (오늘날짜-1초)로, close=1로 변경 -->
@@ -27,7 +27,7 @@
   	
   	<!-- 총예산금액 수정 -->
   	<update id="updateTotalBudget" parameterType="totalBudgetDTO">
-  		update total_budget set budget=#{budget} where budget_no=#{budget_no}
+  		update total_budget set current=(current+(#{budget}-budget)), budget=#{budget} where budget_no=#{budget_no}
   	</update>
  	
  	
@@ -61,6 +61,20 @@
   	<select id="selectOneByNum" parameterType="int" resultType="totalBudgetDTO" >
   		select * from total_budget where budget_no=#{value}
   	</select>
+  	
+  	<!-- 현재 총예산이 종료일 지난 총예산이면 close=1 -->
+	<update id="updateClose" parameterType="string">
+		<![CDATA[
+	 		update total_budget set close=1 where id=#{value} and close=0 and to_char(end_day,'yyyy-MM-dd') < to_char(sysdate, 'yyyy-MM-dd')
+		]]>
+ 	</update>
+ 	
+  	<!-- 현재 총예산이 종료일 지난 것인지? -->
+	<select id="selectOutClose" parameterType="string" resultType="totalBudgetDTO">
+		<![CDATA[
+	 		select * from total_budget where id=#{value} and close=0 and to_char(end_day,'yyyy-MM-dd') < to_char(sysdate, 'yyyy-MM-dd')
+		]]>
+ 	</select>
   	
   	
   </mapper>

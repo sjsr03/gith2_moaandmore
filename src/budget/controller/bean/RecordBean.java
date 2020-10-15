@@ -69,7 +69,6 @@ public class RecordBean {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date currTime = new Date();
 		String now = sdf.format(currTime);
-		System.out.println(now);
 		Timestamp dateTime = Timestamp.valueOf(now);
 		String today = now.substring(0, 10);
 		System.out.println("today >>>" + today);
@@ -85,13 +84,10 @@ public class RecordBean {
 		List outcomeCategories = categoryService.selectAllById(id);
 		List incomeCategories = categoryService.selectAllIncomeCategoryById(id);
 		
-		System.out.println("예산 카테고리 :" + categories.size());
 		
 		
 		// 현재 진행중인 예산의 끝나는 날짜와 지난 예산의 시작 날짜를 가져오기
 		List budgetDate = budgetService.selectBudgetDate(id);
-		System.out.println(budgetDate.size());
-		System.out.println("리스트리스트 날짜리스트 " + budgetDate.get(0) + "," + budgetDate.get(1));
 		model.addAttribute("budgetDate", budgetDate);
 		model.addAttribute("outcomeCategories", outcomeCategories);
 		model.addAttribute("incomeCategories", incomeCategories);
@@ -110,10 +106,8 @@ public class RecordBean {
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
 		Timestamp dateTime = Timestamp.valueOf(newDate);
-		System.out.println("컨트롤러에서 id" + id);
 		// 예산 번호 뽑아오기
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
-		System.out.println("컨트롤러 버겟 넘 : "+budgetNum);
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
 		
@@ -133,21 +127,17 @@ public class RecordBean {
 	@RequestMapping(value="recordPro.moa", method=RequestMethod.POST)
 	public String recordPro(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO) throws Exception{
 
-		System.out.println("날짜~" + budgetDTO.getReg());
 		String id = (String)request.getSession().getAttribute("memId");
 		budgetDTO.setId(id);
 		noBudgetDTO.setId(id);
 	
-		System.out.println(request.getParameter("category_no"));
 		int category_no = Integer.parseInt(request.getParameter("category_no"));
 		budgetDTO.setCategory_no(category_no);
 		noBudgetDTO.setCategory_no(category_no);
 		
 		String oldDate = request.getParameter("date") + " "+ request.getParameter("time")+":00";
-		System.out.println(oldDate);
 		Timestamp date = Timestamp.valueOf(oldDate);
 		
-		System.out.println("버겟 넘버!!! : " + request.getParameter("budget_no"));
 		
 		recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBudgetDetailDTO, date);
 		
@@ -158,21 +148,17 @@ public class RecordBean {
 	@RequestMapping("moneyLog.moa")
 	public String moneyLog(HttpServletRequest request, Model model, String pageNum)throws SQLException {
 		String id = (String)request.getSession().getAttribute("memId");
-		System.out.println("아이디? : " + id);
 		
 		// 현재 날짜+시간 받아오기(기본으로 현재 진행중인 예산의 지출 목록 보여줄 것임)
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date currTime = new Date();
 		String now = sdf.format(currTime);
-		System.out.println(now);
 		Timestamp dateTime = Timestamp.valueOf(now);
 		
 		// 날짜랑 아이디로 해당 예산 번호 가져오기
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
-		//System.out.println("예산번호는??? : " + budgetNum);
 		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum);
-		
-		//System.out.println("잘 나오니? : " +  recordPage.getRecordList().size());
+
 		model.addAttribute("recordPage", recordPage);
 		return "budget/moneyLog";
 	}

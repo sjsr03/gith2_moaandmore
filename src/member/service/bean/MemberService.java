@@ -25,7 +25,8 @@ public interface MemberService {
 	//닉네임으로 아이디 가져오기
 	public String selectOneByNick(String nickname) throws SQLException;
 
-
+	//close=0인것 종료일 지났으면 종료
+	public void updateClose(String id) throws SQLException;
 
 
 

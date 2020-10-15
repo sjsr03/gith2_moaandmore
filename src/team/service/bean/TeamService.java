@@ -7,10 +7,11 @@ import team.model.dto.TeamDTO;
 
 public interface TeamService {
 		//진행중인 공개 그룹 개수 검색
-		public int getTeamArticleCount(int pageStatus) throws SQLException;
-		
-		//진행중인 공개 그룹 범위 지정 가져오기
-		public List getTeamArticles(int pageStatus, int start, int end) throws SQLException;
+		public int getTeamArticleCount(int pageStatus,int isSearch,String search) throws SQLException;
+		//승인된 그룹 전체 가져오기
+		public List<TeamDTO> getTeamAll() throws SQLException;
+		//그룹 범위 지정 가져오기
+		public List<TeamDTO> getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException;
 		
 		//그룹 하나 가져오기
 		public TeamDTO selectOne(int team_no) throws SQLException;

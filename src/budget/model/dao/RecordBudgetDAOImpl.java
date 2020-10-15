@@ -23,20 +23,13 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 	// 예산지출 내역 입력
 	@Override
 	public int insertBudget(BudgetDTO budgetDTO) throws SQLException {
-		System.out.println("예산 사용 금액 : " +budgetDTO.getAmount());
-		System.out.println("예산안 구분번호 : " +budgetDTO.getBudget_no());
-		System.out.println("예산 카테고리  구분번호: " +budgetDTO.getCategory_no());
-		System.out.println("아이디  : " +budgetDTO.getId());
-		System.out.println("날짜 ㅣ " + budgetDTO.getReg() );
+
 		
-		System.out.println("타입먼데 : " + budgetDTO.getReg().getClass().getName());
-		
-		
+		sqlSession.update("record.updateCurrentBudget", budgetDTO);	//총예산 현재값에서 차감
+
 		sqlSession.insert("record.insertBudget", budgetDTO);
-		System.out.println("시퀀스값111111111 : " + budgetDTO.getBudget_outcome_no());
 		// budget 테이블의 예산 구분번호 리턴(방금 +1된 시퀀스값)
 		int budget_outcome_no = budgetDTO.getBudget_outcome_no();
-		System.out.println("시퀀스값 : " + budget_outcome_no);
 		return budget_outcome_no;
 	}
 	// 예산 지출 세부내역 입력

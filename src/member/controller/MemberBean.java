@@ -2,6 +2,10 @@ package member.controller;
 
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +26,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import budget.model.dto.BudgetDTO;
+import budget.model.dto.TotalBudgetDTO;
+import budget.service.bean.BudgetService;
 import category.service.bean.CategoryService;
 import member.model.dto.MemberDTO;
 
@@ -38,13 +44,14 @@ public class MemberBean {
 	
 	@Autowired
 	private MemberService memberService = null;
+	@Autowired
+	private BudgetService budgetService = null;
 	
 
 
 
 	@RequestMapping("loginForm.moa")
 	public String NLCloginForm() {
-		
 
 		
 		return "member/loginForm"; 		
@@ -77,6 +84,11 @@ public class MemberBean {
 		}
 		model.addAttribute("result",result);
 
+		//예산 만료되었는지 확인
+		budgetService.updateNewTB(id);
+		//남은돈 계산
+		budgetService.calLeftMoney(id);
+		
 		return "member/loginPro";
 	}
 	
@@ -121,6 +133,7 @@ public class MemberBean {
 	public String LClogout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
+		session.removeAttribute("memName");	//세션 삭제
 		Cookie[] coo = request.getCookies();
 		for(Cookie c : coo) {
 			if(c.getName().equals("autoId")) c.setMaxAge(0);

@@ -146,7 +146,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 	@Override
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
 		Collections.sort(categoryNums);
-		System.out.println("아아~!"+categoryNums.get(0));
 		List categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
 		HashMap categories = new HashMap();
 		for(int i = 0; i < categoryNames.size(); i++) {
@@ -206,7 +205,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 		map.put("id", id);
 		
 		int count=sqlSession.selectOne("category.selectBudgetInfo", map);
-		//System.out.println(count);
 		return count;
 	}
 	
@@ -219,7 +217,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 		map.put("id", id);
 		
 		int count=sqlSession.selectOne("category.selectNoBudgetInfo", map);
-		System.out.println(count);
 		return count;
 	}
 

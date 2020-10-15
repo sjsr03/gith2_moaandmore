@@ -8,11 +8,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<title>모아 & More</title>
 	<!-- Custom fonts for this template-->
 	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -22,6 +19,11 @@
 	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">  
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
+<style>
+	ul.toggled > #BudgetState {
+		display:none;
+	}
+</style>
 <script>
 $(document).ready(function(){
 	$.ajax({
@@ -32,13 +34,15 @@ $(document).ready(function(){
 		},
 		success:function(data){
 			var totalBudget = data['totalBudget'];
+			var TBString = totalBudget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			
 			var outcomeSum = data['outcomeSum'];
 			var rate = (outcomeSum/totalBudget*100).toFixed(1);
 			
 			if(totalBudget== null) {	//설정된 현재예산이 없다면
 				$("#BudgetState").text("설정된 예산이 없습니다.");
 			} else {
-				$("#BudgetState").append('<div class="card-header py-3"><h6 class="m-0 font-weight-bold text-primary">총 예산액 : ' + totalBudget + '원</h6></div><div class="card-body"><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + rate + '%" aria-valuenow="' + rate + '" aria-valuemin="0" aria-valuemax="100">' + rate + '%</div></div></div>');
+				$("#BudgetState").append('<div class="card-header"><h6 class="m-0 font-weight-bold text-primary">총 예산액 : ' + TBString + '원</h6></div><div class="card-body"><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + rate + '%" aria-valuenow="' + rate + '" aria-valuemin="0" aria-valuemax="100">' + rate + '%</div></div></div>');
 			}
 		}
 	});
@@ -66,7 +70,7 @@ $(document).ready(function(){
       
       
       <!-- 예산 사용액 그래프 -->
-      <div class="card border-left-info shadow h-10 py-2" id="BudgetState">
+      <div class="card" id="BudgetState">
    		
       </div>
       
@@ -114,7 +118,7 @@ $(document).ready(function(){
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/calendar/calendar.moa">
           <i class="fas fa-fw fa-calendar-alt"></i>
           <span>달력</span></a>
       </li>
@@ -132,7 +136,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/goals/myGoalList.moa">
           <i class="fas fa-fw fa-crosshairs"></i>
           <span>목표</span></a>
       </li>
@@ -209,17 +213,3 @@ $(document).ready(function(){
 
         </nav>
         <!-- End of Topbar -->
-
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="/moamore/vendor/jquery/jquery.min.js"></script>
-  <script src="/moamore/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="/moamore/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="/moamore/js/sb-admin-2.min.js"></script>
-</body>
-
-</html>

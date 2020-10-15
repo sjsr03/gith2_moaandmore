@@ -21,7 +21,7 @@
 	
 	<!-- 총예산 고유번호에 해당하는 세부정보 수정 -->
 	<update id="updateTotalBudgetDetail" parameterType="totalBudgetDetailDTO">
-		update total_budget_detail set category_budget=#{category_budget} where category_no=#{category_no} and budget_no=#{budget_no}
+		update total_budget_detail set category_current=(category_current+(#{category_budget}-category_budget)), category_budget=#{category_budget} where category_no=#{category_no} and budget_no=#{budget_no}
 	</update>
 	
 	<!-- 남은 돈 전환받았을 때 설정 수정 -->

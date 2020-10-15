@@ -44,27 +44,41 @@ public class MemberServiceImpl implements MemberService {
 		
 				MultipartFile mf = null;
 				String newName = null;
-				try {
+				try { 
 					
 				mf = request.getFile("image");
-				String path = request.getRealPath("save");
-				String orgName = mf.getOriginalFilename(); 
-				String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
-				String ext = orgName.substring(orgName.lastIndexOf('.'));
-				long date = System.currentTimeMillis();
-				 newName = imgName+date+ext; 
-			
-				String imgPath = path + "\\" + newName;
-				File copyFile = new File(imgPath);
-				mf.transferTo(copyFile);
-			
+				if(mf.getSize() >0) {
+					String path = request.getRealPath("save");
+					String orgName = mf.getOriginalFilename(); 
+					String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+					String ext = orgName.substring(orgName.lastIndexOf('.'));
+					long date = System.currentTimeMillis();
+					 newName = imgName+date+ext; 
+				
+					String imgPath = path + "\\" + newName;
+					File copyFile = new File(imgPath);
+					mf.transferTo(copyFile);
+				
+					dto.setProfile_img(newName);
+					dto.setId(dto.getId());
+					dto.setPw(dto.getPw());
+					dto.setNickname(dto.getNickname());
+				//이미지가 안들어 왔으면 
+				}else {
+					System.out.println(1);
+					//String path = request.getRealPath("save");
+		
+					//String imgPath = path + "\\" +"";
+					///File copyFile = new File(imgPath);
+					//mf.transferTo(copyFile);
+					
+					dto.setProfile_img("defaultImg.gif");
+				}
+				
 			}catch(Exception e) {
 				e.printStackTrace();
 			}
-			dto.setProfile_img(newName);
-			dto.setId(dto.getId());
-			dto.setPw(dto.getPw());
-			dto.setNickname(dto.getNickname());
+			
 			
 			
 			
@@ -160,4 +174,9 @@ public class MemberServiceImpl implements MemberService {
 		return memberDAO.selectOneByNick(nickname);
 	}
 	
+	
+	@Override
+	public void updateClose(String id) throws SQLException {
+		
+	}
 }

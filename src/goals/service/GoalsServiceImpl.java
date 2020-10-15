@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import budget.model.RecordGoalsDAOImpl;
+import budget.model.dao.RecordGoalsDAOImpl;
 import budget.model.dto.RecordGoalsDTO;
 import goals.model.dao.GoalsDAOImpl;
 import goals.model.dto.GoalsDTO;

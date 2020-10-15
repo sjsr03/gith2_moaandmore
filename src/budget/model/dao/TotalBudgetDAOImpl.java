@@ -47,7 +47,6 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("dao에서 버겟 넘  : " +  budgetNum );
 		return budgetNum;
 	}
 	

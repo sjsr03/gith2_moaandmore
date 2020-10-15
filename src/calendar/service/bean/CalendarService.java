@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import budget.model.dto.BudgetDTO;
+import calendar.model.dto.CalendarDTO;
 
 public interface CalendarService {
 
@@ -32,4 +33,7 @@ public interface CalendarService {
 	
 	//nobudget에서 날짜랑 해당날짜 수입액 가져오기
 	public Map selectNobudgetIncomeDateAndAmount(String id) throws SQLException;
+
+	public Map findByCheckVal(String id,List<String> checkVal) throws SQLException;
+
 }

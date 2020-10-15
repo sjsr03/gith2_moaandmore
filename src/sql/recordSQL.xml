@@ -41,4 +41,8 @@
   	<select id="countNoBudgetRecord" parameterType="searchForRecordDTO" resultType="int">
   		SELECT count(*) FROM NOBUDGET WHERE id=#{id} and type=#{type} AND EXTRACT(MONTH FROM reg)=EXTRACT(MONTH FROM #{serachDate});
   	</select>
+  	<!-- 예산지출시 총예산 current값에서 차감 -->
+  	<update id="updateCurrentBudget" parameterType="budgetDTO">
+  		update total_budget set current=(current-#{amount}) where budget_no=#{budget_no}
+  	</update>
   </mapper>
