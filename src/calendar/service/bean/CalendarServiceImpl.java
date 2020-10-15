@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.NoBudgetDTO;
 import calendar.model.dao.CalendarDAO;
+import calendar.model.dto.CalendarDTO;
 
 
 public class CalendarServiceImpl implements CalendarService{
@@ -36,19 +37,22 @@ public class CalendarServiceImpl implements CalendarService{
 		List budgetalldate = new ArrayList();
 		
 		
-		for(int i=0; i<budget.size(); i++) {
-			BudgetDTO budgetList = (BudgetDTO)budget.get(i);
-			
-			Date indata =budgetList.getReg();
-			String budgetDate = yyyymmdd.format(indata);
-			
-		
-			if(!budgetalldate.contains(budgetDate)){
-		       budgetalldate.add(budgetDate);
+
+			for(int i=0; i<budget.size(); i++) {
+				BudgetDTO budgetList = (BudgetDTO)budget.get(i);
+				
+				Date indata =budgetList.getReg();
+				
+				String budgetDate = yyyymmdd.format(indata);
+				
+				if(!budgetalldate.contains(budgetDate)){
+			       budgetalldate.add(budgetDate);
+				}
+				
+
 			}
+
 			
-		}
-	
 		return budgetalldate;
 	}
 
@@ -70,18 +74,19 @@ public class CalendarServiceImpl implements CalendarService{
 	@Override
 	public Map selectBudgetDateAndAmount(String id) throws SQLException {
 		
-				//id로 budget테이블에서 데이터가 있는 날짜 가져오기
-				List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
-				//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-				List<Integer> allbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
 			
-				//리턴해줄 날짜랑 지출액
-				Map selectBudgetDateAndAmount = new HashMap();
-				
-				for(int i = 0; i<budgetAlldate.size(); i++) {
-					selectBudgetDateAndAmount.put(budgetAlldate.get(i), allbudgetAmount.get(i));
-				}				
-				
+		//id로 budget테이블에서 데이터가 있는 날짜 가져오기
+		List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
+		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
+		List<Integer> allbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
+	
+		//리턴해줄 날짜랑 지출액
+		Map selectBudgetDateAndAmount = new HashMap();
+		
+		for(int i = 0; i<budgetAlldate.size(); i++) {
+			selectBudgetDateAndAmount.put(budgetAlldate.get(i), allbudgetAmount.get(i));
+		}				
+		
 		return selectBudgetDateAndAmount;
 	}
 
@@ -98,8 +103,8 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		for(int i=0; i<noBudget.size(); i++) {
 			NoBudgetDTO noBudgetList = (NoBudgetDTO)noBudget.get(i);
-			
 			Date indata =noBudgetList.getReg();
+			
 			String noBudgetDate = yyyymmdd.format(indata);
 			
 			if(!noBudgetalldate.contains(noBudgetDate)){
@@ -107,7 +112,7 @@ public class CalendarServiceImpl implements CalendarService{
 			}
 			
 		}
-	
+
 		return noBudgetalldate;
 		
 	}
@@ -145,13 +150,13 @@ public class CalendarServiceImpl implements CalendarService{
 		List<Integer> allnoBudgetExpenseAmount = calendarService.selectNobudgetExpenseAmount(id, noBudgetAlldate);
 	
 		//리턴해줄 날짜랑 지출액
-		Map selectNoBudgetDateAndAmount = new HashMap();
+		Map noBudgetExpenseDateAndAmount = new HashMap();
 		
 		for(int i = 0; i<noBudgetAlldate.size(); i++) {
-			selectNoBudgetDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetExpenseAmount.get(i));
+			noBudgetExpenseDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetExpenseAmount.get(i));
 		}				
 		
-		return selectNoBudgetDateAndAmount;
+		return noBudgetExpenseDateAndAmount;
 	}
 
 	//nobudget 테이블 날짜랑 수입총액 맵으로 같이 보내줄 메서드 
@@ -161,17 +166,57 @@ public class CalendarServiceImpl implements CalendarService{
 		//id로 nobudget테이블에서 데이터가 있는 날짜 가져오기
 		List<String> noBudgetAlldate = calendarService.selectNobudgetDatebyId(id);
 		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allnoBudgetAmount = calendarService.selectNobudgetExpenseAmount(id, noBudgetAlldate);
-	
+		List<Integer> allnoBudgetAmount = calendarService.selectNobudgetIncomeAmount(id, noBudgetAlldate);
+		
 		//리턴해줄 날짜랑 지출액
-		Map selectNoBudgetDateAndAmount = new HashMap();
+		Map noBudgetIncomeDateAndAmount = new HashMap();
 		
 		for(int i = 0; i<noBudgetAlldate.size(); i++) {
-			selectNoBudgetDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetAmount.get(i));
+			noBudgetIncomeDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetAmount.get(i));
 		}				
 		
-		return selectNoBudgetDateAndAmount;
+		return noBudgetIncomeDateAndAmount;
 	}
+
+
+	@Override
+	public Map findByCheckVal(String id,List<String> checkVal) throws SQLException {
+		
+		//id로 budget테이블에서 데이터가 있는 날짜 가져오기
+		List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
+		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
+		List<Integer> allbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
+		
+		//id로 nobudget테이블에서 데이터가 있는 날짜 가져오기
+		List<String> noBudgetAlldate = calendarService.selectNobudgetDatebyId(id);
+		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
+		List<Integer> allnoBudgetExpenseAmount = calendarService.selectNobudgetExpenseAmount(id, noBudgetAlldate);
+		
+		
+		if(checkVal.contains("1")) {
+			Map map = new HashMap();
+			
+			for(int i = 0; i<budgetAlldate.size(); i++) {
+				CalendarDTO BudgetDateAndAmount = new CalendarDTO();
+				
+				System.out.println(budgetAlldate.get(i));
+				BudgetDateAndAmount.setStart(budgetAlldate.get(i));
+				BudgetDateAndAmount.setTitle(allbudgetAmount.get(i));
+				BudgetDateAndAmount.setColor("white");
+				BudgetDateAndAmount.setColor("red");
+				map.put(i, BudgetDateAndAmount);
+			
+			}	
+			
+		}
+		
+		
+		
+		return null;
+	}
+
+
+	
 	
 	
 

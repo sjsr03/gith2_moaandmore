@@ -105,6 +105,8 @@ public class BudgetServiceImpl implements BudgetService {
 		TBdto.setClose(0);
 		TBdto.setStart_day(start_day);
 		TBdto.setEnd_day(end_day);
+		int actualPeriod = (int)Math.ceil((end_day.getTime()-start_day.getTime())/(24*60*60*1000));
+		TBdto.setCurrent(totalBudget*(actualPeriod-1)/actualPeriod);
 		
 		//DB에 총예산설정 넣은 후 해당 총예산의 고유번호 리턴
 		int budget_no = totalBudgetDAO.setBudget(TBdto);
@@ -122,6 +124,7 @@ public class BudgetServiceImpl implements BudgetService {
 			BDdto.setBudget_no(budget_no);
 			BDdto.setCategory_budget(Integer.parseInt(amount[i]));
 			BDdto.setCategory_no(categoryDAO.selectNumByName(category_name[i], id));
+			BDdto.setCategory_current(BDdto.getCategory_budget()*(actualPeriod-1)/actualPeriod);
 			
 			total_budget_detail.add(BDdto);
 			leftMoneyDAO.insertZero(budget_no, BDdto.getCategory_no(), id);
@@ -160,6 +163,8 @@ public class BudgetServiceImpl implements BudgetService {
 				}
 				newTB.setEnd_day(Timestamp.valueOf(sdf.format(startday.getTime())));
 				
+				int actualPeriod = (int)Math.ceil((newTB.getEnd_day().getTime()-newTB.getStart_day().getTime())/(24*60*60*1000));
+				newTB.setCurrent(newTB.getBudget()*(actualPeriod-1)/actualPeriod);
 				newTB.setId(id);
 				newTB.setPeriod(period);
 				
@@ -172,7 +177,9 @@ public class BudgetServiceImpl implements BudgetService {
 				List TBDList = totalBudgetDetailDAO.selectAllbyBudgetNum(outDate.getBudget_no());
 				
 				for(Object obj : TBDList) {
-					((TotalBudgetDetailDTO) obj).setBudget_no(budget_no);
+					TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) obj;
+					dto.setBudget_no(budget_no);
+					dto.setCategory_current(dto.getCategory_budget()*(actualPeriod-1)/actualPeriod);
 				}
 				
 				totalBudgetDetailDAO.insertTotalBudgetDetail(TBDList);
@@ -189,8 +196,6 @@ public class BudgetServiceImpl implements BudgetService {
 		int budget_no = Integer.parseInt(request.getParameter("budget_no"));
 		int budget = Integer.parseInt(request.getParameter("totalBudget"));
 		String id = (String) request.getSession().getAttribute("memId");
-		
-		
 		
 		TotalBudgetDTO TBdto = new TotalBudgetDTO();
 		TBdto.setBudget_no(budget_no);

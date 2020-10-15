@@ -71,8 +71,12 @@ public class ReportServiceImpl implements ReportService {
 		
 		
 		//top3 가져오기
-		reportDAO.selectTop3(TBdto.getBudget_no());
+		HashMap top3Map = reportDAO.selectTop3(TBdto.getBudget_no());
+		List countList = (List) top3Map.get("countMap");
+		List amountList = (List) top3Map.get("amountMap");
 		
+		map.put("countList", countList);
+		map.put("amountList", amountList);
 		
 		
 		

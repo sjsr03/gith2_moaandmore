@@ -46,8 +46,9 @@ public class ReportBean {
 	@RequestMapping("reportContent.moa")
 	public String reportContent(String id, int budget_no, Model model) throws SQLException {
 		TotalBudgetDTO TBdto = null;
-		if(budget_no == -1) {	//가장 최근 총예산정보 (close=1)
-			TBdto = budgetService.selectLastTB(id);
+		if(budget_no == -1) {	
+//			TBdto = budgetService.selectLastTB(id); //가장 최근 총예산정보 (close=1)
+			TBdto = budgetService.selectCurrentOne(id); //현재 총예산정보 (close=0)
 		} else {
 			TBdto = budgetService.selectOneByNum(budget_no);
 		}

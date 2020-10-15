@@ -8,8 +8,6 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <title>모아 & More</title>
@@ -121,7 +119,7 @@ $(document).ready(function(){
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/calendar/calendar.moa">
           <i class="fas fa-fw fa-calendar-alt"></i>
           <span>달력</span></a>
       </li>

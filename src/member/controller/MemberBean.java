@@ -133,6 +133,7 @@ public class MemberBean {
 	public String LClogout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
+		session.removeAttribute("memName");	//세션 삭제
 		Cookie[] coo = request.getCookies();
 		for(Cookie c : coo) {
 			if(c.getName().equals("autoId")) c.setMaxAge(0);
