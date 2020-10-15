@@ -41,8 +41,8 @@
 <script>
 
 var checkVal = [];	
-
-
+var color=[{1:'red'},{2:'blue'},{3:'gray'}];
+console.log(color);
 $(document).ready(function () {
 
 	$('#calendar').fullCalendar({ 
@@ -67,6 +67,7 @@ $(document).ready(function () {
 	    					$.ajax({
 					   			url: "getCalendarEvent.moa", 
 					   			type :"POST",
+					   			async: false,
 					   			data:{
 					   	       	 checkVal:checkVal
 					   	   		},
@@ -80,18 +81,26 @@ $(document).ready(function () {
 					   				console.log(finalByCheckVal);
 					   				for(var i in finalByCheckVal){
 					   					console.log("i",i);
+					   					if(i===1){
+					   						var col='red';
+					   					}else if(i===2){
+					   						var col='blue';
+					   					}else if(i===3){
+					   						var col='gray';            
+					   					}
 					   					for(var j in finalByCheckVal[i]){
 					   						console.log(j);
 					   						console.log(finalByCheckVal[i][j]);
 	    				    	    		 	events.push({
 	    				    	    		 		title:finalByCheckVal[i][j],
 	    				    	    		 		start:j
-	    				    	    		 		
+	    				    	    		 		color:col
 	    				    	    		 	});
 			    	    		 		}   		
 					   				}
 					   				console.log("events",events);
 					   			 	callback(events);	
+					   			 	console.log("callback");
 					   			}
 	    		 		});
 	    		 	});	
