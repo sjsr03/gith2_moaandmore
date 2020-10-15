@@ -59,15 +59,15 @@ public class ReportDAOImpl implements ReportDAO {
 	}
 	
 	@Override
-	public List selectTop3(int budget_no) {
-		List list = new ArrayList();
+	public HashMap selectTop3(int budget_no) {
+		HashMap map = new HashMap();
 		
 		List countMap = sqlSession.selectList("report.selectTop3Count", budget_no);
+		List amountMap = sqlSession.selectList("report.selectTop3Amount", budget_no);
 		
-		System.out.println(countMap);
-		
-		
-		return list;
+		map.put("countMap", countMap);
+		map.put("amountMap", amountMap);
+		return map;
 	}
 	
 	@Override
