@@ -5,8 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>calendar</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.css" />
+<link rel='stylesheet' href='https://fullcalendar.io/js/fullcalendar-3.1.0/fullcalendar.min.css' />
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.3.2/main.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+
 </head>							
  <style>
     .fc-day-content {height: 130px;}
@@ -25,80 +27,84 @@
     .fc-event-container > .fc-event-more {display: none;}
 </style>
 <body>
-
-
-${map["2020-10-08"]}
+<input class="checkbox" id="checkbox"  type="checkbox" value="1"/> 지출
+<input class="checkbox" id="checkbox"  type="checkbox" value="2"/> 수입
+<input class="checkbox" id="checkbox"  type="checkbox" value="3"/> 예산 외 지출  </br>
 
 <div id='calendar'></div>
+<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/moment.min.js'></script>
+<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery.min.js'></script>
+<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery-ui.min.js'></script>
+<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/fullcalendar.min.js'></script>
 
 </body>
 <script>
 
+var checkVal = [];	
+
+
+$(document).ready(function () {
+
+	$('#calendar').fullCalendar({ 
+		
+	      initialView: 'dayGridMonth',
+	      initialDate: '2020-10-01',
+	      headerToolbar: {
+	        left: '',
+	        center: 'title',
+	        right: 'prev,next today'
+	      },
+	      events:
+	    	  function(start,end,timezone,callback){
+	    	  $(".checkbox").each(function(){
+	    		 	$(this).on('change',function(){
+	    					if($(this).is(":checked")){
+	    					   checkVal.push($(this).val());
+	    					}else{
+								checkVal.splice(checkVal.indexOf($(this).val()),1);
+	    					}
+	    					console.log("최종",checkVal);
+	    					$.ajax({
+					   			url: "getCalendarEvent.moa", 
+					   			type :"POST",
+					   			data:{
+					   	       	 checkVal:checkVal
+					   	   		},
+					   	  	 	dataType : "json",
+					   			error : function(){
+									console.log("error");
+								},
+					   			success: function(finalByCheckVal) {
+					   				var events = [];
+					   				console.log("success");
+					   				console.log(finalByCheckVal);
+					   				for(var i in finalByCheckVal){
+					   					console.log("i",i);
+					   					for(var j in finalByCheckVal[i]){
+					   						console.log(j);
+					   						console.log(finalByCheckVal[i][j]);
+	    				    	    		 	events.push({
+	    				    	    		 		title:finalByCheckVal[i][j],
+	    				    	    		 		start:j
+	    				    	    		 		
+	    				    	    		 	});
+			    	    		 		}   		
+					   				}
+					   				console.log("events",events);
+					   			 	callback(events);	
+					   			}
+	    		 		});
+	    		 	});	
+	    	 	}); //checkbox 
+	    	
+	    	 
+	      }//events 
+	      
+	   
 	
-	 document.addEventListener('DOMContentLoaded', function() {
-    	    var calendarEl = document.getElementById('calendar');
-
-    	    var calendar = new FullCalendar.Calendar(calendarEl, {
-    	      initialView: 'dayGridMonth',
-    	      initialDate: '2020-09-07',
-    	      headerToolbar: {
-    	        left: 'prev,next today',
-    	        center: 'title',
-    	        right: ''
-    	      },
-    	      events:[
-    	        {
-    	          title: 'All Day Event',
-    	          start: '2020-09-01'
-    	        },
-    	        {
-    	          title: 'Long Event',
-    	          start: '2020-09-07',
-    	          end: '2020-09-10'
-    	        },
-    	        {
-    	          groupId: '999',
-    	          title: 'Repeating Event',
-    	          start: '2020-09-09T16:00:00'
-    	        },
-    	        {
-    	          groupId: '999',
-    	          title: 'Repeating Event',
-    	          start: '2020-09-16T16:00:00'
-    	        },
-    	        {
-    	          title: 'Conference',
-    	          start: '2020-09-11',
-    	          end: '2020-09-13'
-    	        },
-    	        {
-    	          title: 'Meeting',
-    	          start: '2020-09-12T10:30:00',
-    	          end: '2020-09-12T12:30:00'
-    	        },
-    	        {
-    	          title: 'Lunch',
-    	          start: '2020-09-12T12:00:00'
-    	        },
-    	        {
-    	          title: 'Meeting',
-    	          start: '2020-09-12T14:30:00'
-    	        },
-    	        {
-    	          title: 'Birthday Party',
-    	          start: '2020-09-13T07:00:00'
-    	        },
-    	        {
-    	          title: 'Click for Google',
-    	          url: 'http://google.com/',
-    	          start: '2020-09-28'
-    	        }
-    	      ]
-    	    	
-    	    });
-
-    	    calendar.render();
-    	  });
+	});
+	   // calendar.render();	
+ 	});
     
     </script>
 

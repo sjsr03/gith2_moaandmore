@@ -62,7 +62,7 @@
 							type : "POST",
 							url : "budgetCategory.moa",
 							data : {date:$("#date").val(), id:"${id}"},
-							dataType : "json",
+							dataType : "json", 
 							async: false,
 							error : function(request,status,error){
 								alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);

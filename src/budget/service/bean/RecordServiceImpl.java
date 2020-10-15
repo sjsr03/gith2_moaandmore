@@ -86,7 +86,12 @@ public class RecordServiceImpl implements RecordService{
 			recordNoBudgetDAO.insertNoBudgetDetailDTO(noBudgetDetailDTO);	
 			
 		}else { // 예산일 때 
+
+			//budgetDTO.setDate(date);
+			
+
 			budgetDTO.setReg(date);
+
 			
 			// 예산 내역 insert해준 후  구분번호 예산세부내역dto에 다시 세팅해주기 
 			recordBudgetDAO.insertBudget(budgetDTO);
