@@ -126,6 +126,7 @@ public class TeamBean {
 	public String groupOpenPro(TeamDTO dto, String join_mem_nick) throws SQLException{
 		teamService.insertTeamArticle(dto);
 		
+		//비공개
 		if(join_mem_nick!=null) {
 			if(!join_mem_nick.equalsIgnoreCase("")) {
 				teamMemService.insertAll(dto, join_mem_nick);

@@ -43,15 +43,17 @@
 		begin
 			delete from goals where goal_no=#{goal_no};
 			<if test="public_ch = '1'">
-				delete from team_member where team_no =#{team_no} and id=#{id};
+				delete from team_member where team_no =#{team_no} and id=#{id}
 			</if>
 		end
 		}
 		
 	</delete>
 	
+	<update id="updateSaving" parameterType="java.util.HashMap">
+		update goals set saving = saving+#{sum} where goal_no = #{goal_no}
+	</update>
 	
 	
-
 
 </mapper>

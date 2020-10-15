@@ -41,7 +41,7 @@
 		</tr>
 	<c:forEach var="record" items="${recordList}">
 		<tr>
-			<td>${record.reg}</td>
+			<td><fmt:formatDate  value="${record.reg}" pattern="yyyy.MM.dd"/></td>
 			<td>${record.amount}</td>		
 		</tr>
 	

@@ -29,6 +29,7 @@ import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.RecordTransferDTO;
 import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
+import goals.model.dao.GoalsDAOImpl;
 import member.model.dao.MemberDAO;
 import report.model.dao.ReportDAO;
 
@@ -52,6 +53,8 @@ public class BudgetServiceImpl implements BudgetService {
 	private RecordBudgetDAO recordBudgetDAO = null;
 	@Autowired
 	private ReportDAO reportDAO = null;
+	@Autowired
+	private GoalsDAOImpl goalsDAO = null;
 	
 	//신규 예산 설정
 	@Override
@@ -286,8 +289,7 @@ public class BudgetServiceImpl implements BudgetService {
 		}
 		
 		recordTransferDAO.insertRecordTransfer(recordList);
-		
-		
+			
 		/////////////////// 기록 삽입 끝///////////////////
 		
 		if(target_table.equals("budget")) {
@@ -318,6 +320,9 @@ public class BudgetServiceImpl implements BudgetService {
 			dto.setId(id);
 			
 			recordTransferDAO.insertRecordGoals(dto);
+			
+			//////sojin. goals테이블의 saving에 합산값 더하기
+			goalsDAO.updateSaving(Integer.parseInt(subSel), sum);
 		}
 		
 		

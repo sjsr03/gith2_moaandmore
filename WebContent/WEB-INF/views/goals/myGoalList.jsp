@@ -10,6 +10,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 
+
 	var list_type = 0; // 개인
 	var sorting = ""; //정렬 기준
 	//컨트롤러에서 넘겨줬을때 
@@ -17,25 +18,7 @@
 	if(${public_ch} != null){
 		list_type = ${public_ch};
 	}
-
-	
-	$(document).ready(function(){
-		loadSelectVal(list_type);	
-		loadList(list_type);
 		
-		
-	})
-	
-	function getFormatDate(str){
-		var date = new Date(str);
-		var year = date.getFullYear();
-		var month = (1 + date.getMonth());
-		month = month >= 10 ? month : '0'+month;
-		var day = date.getDate();
-		day= day>=10 ? day : '0'+day;
-		return year + '.' +month + '.' + day;
-	}
-	
 	//ajax로 리스트 가져오기 
 	function loadList(_list_type){
 		list_type = _list_type;	
@@ -52,12 +35,14 @@
 				if(list_type == 0){//개인
 					addListHtml += "<td>목표명</td>";
 					addListHtml += "<td>목표액</td>";
-					addListHtml += "<td>시작날짜</td>";
 					addListHtml += "<td>달성액</td>";
+					addListHtml += "<td>달성률</td>";
+					addListHtml += "<td>시작날짜</td>";
 				}else{
 					addListHtml += "<td>목표명</td>";
 					addListHtml += "<td>목표액</td>";
 					addListHtml += "<td>달성액</td>";
+					addListHtml += "<td>달성률</td>";
 					addListHtml += "<td>시작날짜</td>";
 					addListHtml += "<td>마감날짜</td>";
 					addListHtml += "<td>공개여부</td>";
@@ -68,9 +53,13 @@
 				for(var i = 0 ; i<data.length; i++){
 					addListHtml = "<tr>";
 					addListHtml += "<td onclick='redir("+data[i].goal_no+")'>" + data[i].subject+"</td>";
-					addListHtml += "<td>" + data[i].target_money+"</td>";
-					addListHtml += "<td>" + data[i].saving+"</td>";
+					
+					
+					addListHtml += "<td>" + data[i].target_money.format() + "</td>";
+					addListHtml += "<td>" + data[i].saving.format()+"</td>";
+					addListHtml += "<td><progress value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress>"+((data[i].saving/data[i].target_money)*100).toFixed(2)+"%</td>";
 					addListHtml += "<td>"+getFormatDate(data[i].start_day)+"</td>";
+					
 					if(data[i].public_ch == '1'){//마감날짜, 공개여부 
 						addListHtml += "<td>"+getFormatDate(data[i].end_day)+"</td>";
 						if(data[i].public_type =='0'){
@@ -118,22 +107,11 @@
 		sorting  = $("#sorting_val option:selected").val();
 	}
 	
-	
-	
-	
-	$(document).on('change','#sorting_val',function(){	
-		sorting  = $("#sorting_val option:selected").val();
-		loadList(list_type);
-		
+	$(document).ready(function(){
+		loadSelectVal(list_type);	
+		loadList(list_type);		
 	})
-	
-	function chageType(_list_type){
-		loadSelectVal(_list_type);	
-		loadList(_list_type);
 		
-	}
-	
-	
 </script>
 </head>
 
@@ -152,15 +130,57 @@
 <table border="1" id="goal_list">
 </table>
 
+
 <script>
+//페이지 이동 
+function redir(goal_no){
+	window.location.href="/moamore/goals/myGoalDetail.moa?goal_no="+goal_no;
+}
+
+//숫자 자릿수 포맷(3자리수마다 ,) 
+Number.prototype.format = function(){
+	if(this ==0) return 0;
 	
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	var n = (this +'');
 	
-	function redir(goal_no){
-		window.location.href="/moamore/goals/myGoalDetail.moa?goal_no="+goal_no;
+	while(reg.test(n)) n = n.replace(reg, '$1'+','+'$2');
+	
+	return n;
+}
+
+//문자 자릿수 포맷(3자리수마다 ,) 
+String.prototype.format = function(){
+	var num = parseFloat(this);
+	if(isNan(num)) return "0";
+	
+	return num.format();
+	
+
+}
+
+$(document).on('change','#sorting_val',function(){	
+	sorting  = $("#sorting_val option:selected").val();
+	loadList(list_type);
+	
+})
+
+function chageType(_list_type){
+	loadSelectVal(_list_type);	
+	loadList(_list_type);
+	
 	}
-	
-	
-	
+
+//데이트 포맷바꾸기 
+function getFormatDate(str){
+	var date = new Date(str);
+	var year = date.getFullYear();
+	var month = (1 + date.getMonth());
+	month = month >= 10 ? month : '0'+month;
+	var day = date.getDate();
+	day= day>=10 ? day : '0'+day;
+	return year + '.' +month + '.' + day;
+}
 
 </script>
 </body>
