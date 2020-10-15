@@ -101,6 +101,7 @@
 	  	var ctx = document.getElementById("myBarChart");
 		var labelList = ${labelList};
 		var dataList = ${dataList};
+		var max = ${max};
  </script>
   <script src="/moamore/js/report/dailyBar.js"></script>
  

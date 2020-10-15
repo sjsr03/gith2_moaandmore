@@ -34,7 +34,7 @@ var myBarChart = new Chart(ctx, {
 	  data: {
 	    labels: labelList,
 	    datasets: [{
-	      label: "소진율",
+	      label: "지출액",
 	      backgroundColor: "#4e73df",
 	      hoverBackgroundColor: "#2e59d9",
 	      borderColor: "#4e73df",
@@ -68,12 +68,12 @@ var myBarChart = new Chart(ctx, {
 	      yAxes: [{
 	        ticks: {
 	          min: 0,
-	          max: 200,
+	          max: max,
 	          maxTicksLimit: 10,
 	          padding: 10,
 	          // Include a dollar sign in the ticks
 	          callback: function(value, index, values) {
-	            return number_format(value) + "%";
+	            return number_format(value) + "원";
 	          }
 	        },
 	        gridLines: {
@@ -103,7 +103,7 @@ var myBarChart = new Chart(ctx, {
 	      callbacks: {
 	        label: function(tooltipItem, chart) {
 	          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-	          return datasetLabel + ' : ' + number_format(tooltipItem.yLabel) + "%";
+	          return datasetLabel + ' : ' + number_format(tooltipItem.yLabel) + "원";
 	        }
 	      }
 	    },
