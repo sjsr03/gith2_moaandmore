@@ -48,7 +48,7 @@
 							<td>${article.password}</td>
 							<td>
 								<select name="status">
-									<option value='2'>승인</option>
+									<option value='1'>승인</option>
 									<option value='-1'>거절</option>
 								</select>
 								<input type="submit" value="확인"/>

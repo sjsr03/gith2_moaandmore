@@ -56,7 +56,12 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 			TeamMemberDTO tmp = new TeamMemberDTO(teamDTO.getTeam_no(), realIdList.get(i), realNickList.get(i), 0);
 			teamMemDao.insertOne(tmp);
 		}
-		
+	}
+	
+	@Override
+	public void insertOne(TeamDTO teamDTO) throws SQLException {
+		TeamMemberDTO tmp = new TeamMemberDTO(teamDTO.getTeam_no(), memDao.selectOneByNick(teamDTO.getLeader()), teamDTO.getLeader(), 0);
+		teamMemDao.insertOne(tmp);
 	}
 
 	@Override

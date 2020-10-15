@@ -4,6 +4,10 @@
 <html>
 <head>
 	<meta charset="UTF-8">
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
+	<script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 	<title>그룹 개설 신청</title>
 	<style type="text/css">
 		table, th, td {
@@ -16,6 +20,68 @@
 		}
 	</style>
 	<script>
+		$(document).ready(function(){
+			var today = new Date();
+			var dd = today.getDate()+1;
+			var mm = today.getMonth()+1; //January is 0!
+			var yyyy = today.getFullYear();
+			
+			if(mm==1 || mm==3 || mm==5 || mm==7 || mm==8 || mm==10 || mm==12){
+				if(dd>31){
+					dd=1;
+					mm=mm++;
+					
+					if(mm>12){
+						mm=1;
+						yyyy++;
+					}
+				}
+			}else if(mm==4 || mm==6 || mm==9 || mm==11){
+				if(dd>30){
+					dd=1;
+					mm=mm++;
+					
+					if(mm>12){
+						mm=1;
+						yyyy++;
+					}
+				}
+			}else{
+				if(dd>28){
+					dd=1;
+					mm=mm++;
+					
+					if(mm>12){
+						mm=1;
+						yyyy++;
+					}
+				}
+			}
+			
+			if(dd<10){
+				dd='0'+dd
+			} 
+			if(mm<10){
+			    mm='0'+mm
+			} 
+		
+			today = yyyy+'-'+mm+'-'+dd;
+			
+		    var input = document.getElementById("start_day");
+		    input.setAttribute("min", today);
+		    
+
+			
+			
+			$('#start_day').on('change', function(){
+				var input = document.getElementById("end_day");
+			    input.setAttribute("min", this.value);
+			});
+		});
+	</script>
+	<script>
+		
+		
 		function setDisplay(value){
 			if(value=="1"){
 				var input_pw = document.getElementsByName('password');
@@ -102,11 +168,11 @@
 			</tr>
 			<tr>
 				<td> 시 작 일 </td>
-				<td><input type="date" name="start_day"  /></td>
+				<td><input type="date" id="start_day" name="start_day" min="2020-10-20" /></td>
 			</tr>
 			<tr>
 				<td> 종 료 일 </td>
-				<td><input type="date" name="end_day"  /></td>
+				<td><input type="date" id="end_day" name="end_day"  /></td>
 			</tr>
 			<tr>
 				<td> 참여자 수 </td>
