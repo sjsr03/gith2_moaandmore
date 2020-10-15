@@ -17,6 +17,9 @@
 <script>
 	// 체크박스 상태 확인(체크된 상태면 nobudget 아니면 budget)
 	$(document).ready(function(){
+		// input 태그 중 date 에도 기본값으로 오늘 날짜 넣어주기 
+		$("#date").val("${today}");
+		
 		var budget_no = 0;
 		// 처음엔 수입 지출 카테고리/수입지출 버튼 숨기기 (예산지출이 기본)
 		$("#incomecategory").css("display", "none"); 
@@ -47,10 +50,6 @@
 
 				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax				
 				$(document).ready(function(){
-					
-					console.log("${budgetDate.get(0)}");
-					console.log("${budgetDate.get(1)}");
-					
 					var start = new Date("${budgetDate.get(1)}");
 					var end = new Date("${budgetDate.get(0)}");		
 					console.log("시작:::" + start);
@@ -166,6 +165,16 @@
 		</div>
 		<div class="content">
 			<ul>
+				<li>
+				<!-- 날짜 시간  -->
+					<div>
+						<input type="date" id="date" name="date" />
+					</div>
+				<!-- 시간 -->			
+					<div>
+						<input type="time" id="time" name="time" />
+					</div>
+				</li>
 				<li class="category-section">
 					<%-- 지출 카테고리 --%>
 					<div class="input-area">
@@ -202,17 +211,7 @@
 					<div>
 						<input type="number" placeholder="금액을 입력하세요" id="amount" name="amount" />
 					</div>
-				</li>
-				<!-- 날짜 시간  -->
-				<li>
-					<div>
-						<input type="date" id="date" name="date" />
-					</div>
-				<!-- 시간 -->			
-					<div>
-						<input type="time" id="time" name="time" />
-					</div>
-				</li>
+				</li>			
 				<li>
 					<div>
 						<input type="text" placeholder="메모(최대140자)" id="memo" name="memo" maxlength="140"  />

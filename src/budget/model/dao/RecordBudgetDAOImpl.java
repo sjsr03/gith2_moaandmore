@@ -51,6 +51,8 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		List budgetRecordList = new ArrayList();
 		
 		Map para = new HashMap();
+		System.out.println("DAO에서 startRow : " + startRow);
+		System.out.println("DAO에서 endRow : " + endRow);
 		para.put("budgetNum", budgetNum);
 		para.put("startRow", startRow);
 		para.put("endRow", endRow);
@@ -64,6 +66,15 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		count = sqlSession.selectOne("record.countBudgetRecord", budgetNum);
 		return count;
 	}
+	
+	@Override
+	public int budgetRecordDelete(String budget_outcome_no) throws SQLException {
+		int result = 0;
+		result = sqlSession.delete("record.deleteBudgetRecord", budget_outcome_no);
+		return result;
+	}
+	
+	
 	
 	
 

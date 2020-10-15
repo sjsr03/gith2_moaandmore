@@ -19,4 +19,9 @@ public interface RecordBudgetDAO {
 	
 	// 예산번호로 지출 기록 총 개수 가져오기
 	public int countAllBudgetByNum(int budgetNum)throws SQLException;
+	
+	// 예산 번호로 예산 기록 삭제하기(budget 테이블만 삭제 -> detail도 알아서삭제됨)
+	public int budgetRecordDelete(String budget_outcome_no)throws SQLException;
+	
+	
 }
