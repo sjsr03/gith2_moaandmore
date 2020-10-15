@@ -1,6 +1,8 @@
 package team.controller;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.tools.DocumentationTool.Location;
@@ -49,6 +51,37 @@ public class TeamBean {
 		if(range == null)
 			range = "0";
 		
+
+		List<TeamDTO> autoChangeList = null;
+		
+		autoChangeList = teamService.getTeamAll();
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyyMMdd");
+		
+		Date tmpToday = new Date();
+				
+		int today = Integer.parseInt(dateFormat.format(tmpToday));
+		
+		if(autoChangeList != null) {
+			for(int i=0;i<autoChangeList.size();i++) {
+				int startDate = Integer.parseInt(autoChangeList.get(i).getStart_day().substring(0, 10).replaceAll("-", ""));
+				int endDate = Integer.parseInt(autoChangeList.get(i).getEnd_day().substring(0, 10).replaceAll("-", ""));
+				
+				int tmpStatus=autoChangeList.get(i).getStatus();
+				
+				if(today<startDate)
+					tmpStatus = 1;
+				else if(today>endDate)
+					tmpStatus = 3;
+				else
+					tmpStatus = 2;
+				
+				if(tmpStatus != autoChangeList.get(i).getStatus()) {
+					autoChangeList.get(i).setStatus(tmpStatus);
+					teamService.updateTeamStatus(autoChangeList.get(i));
+				}
+			}
+		}
 		
 		int pageSize = 6;
 		int currPage = Integer.parseInt(pageNum);	//페이지 계산을 위해 숫자로 형변환
@@ -129,7 +162,11 @@ public class TeamBean {
 		if(join_mem_nick!=null) {
 			if(!join_mem_nick.equalsIgnoreCase("")) {
 				teamMemService.insertAll(dto, join_mem_nick);
+			}else {
+				teamMemService.insertOne(dto);
 			}
+		}else {
+			teamMemService.insertOne(dto);
 		}
 		
 		return "team/groupOpenPro";
