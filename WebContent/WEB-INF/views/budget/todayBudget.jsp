@@ -265,6 +265,11 @@
 			}
 			var ans = confirm("총 " + $('#transSum').text() + "원을 " + subSelect + "로 전환합니다");			
 			if(ans == true) {
+				$('.chk').each(function(){
+					if($(this).is(':checked')==false) {
+						$(this).parent().next().next().next().children('.inputAmount').prop('name', '');
+					}
+				});
 				$('#trans').attr('type', 'submit');
 			}
 		});

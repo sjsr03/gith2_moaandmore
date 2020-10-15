@@ -258,6 +258,7 @@ public class BudgetServiceImpl implements BudgetService {
 		String[] categories = request.getParameterValues("category");
 		String[] inputAmount = request.getParameterValues("inputAmount");
 		
+		
 		String target_table = request.getParameter("target_table");
 		String subSel = null;
 		String[] subSels = request.getParameterValues("subSel");
