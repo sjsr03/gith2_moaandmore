@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
 		
 				MultipartFile mf = null;
 				String newName = null;
-				try {
+				try { 
 					
 				mf = request.getFile("image");
 				if(mf.getSize() >0) {

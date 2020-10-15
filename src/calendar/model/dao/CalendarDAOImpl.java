@@ -21,7 +21,7 @@ public class CalendarDAOImpl implements CalendarDAO{
 	public List selectBudgetDatebyId(String id) throws SQLException {
 		
 		List budget = sqlSession.selectList("calendar.selectBudgetDatebyId",id);
-	
+		
 		return budget;
 	}
 
@@ -78,7 +78,7 @@ public class CalendarDAOImpl implements CalendarDAO{
 		
 		
 		List AllNobudgetIncomeAmount = sqlSession.selectList("calendar.selectNoBudgetIncomeAmountBydate",map);
-		System.out.println(AllNobudgetIncomeAmount);
+		
 		
 		return AllNobudgetIncomeAmount;
 	}
