@@ -19,6 +19,7 @@
 	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
 	
 	<!-- Custom styles for this template-->
+	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> 
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <style>
@@ -57,7 +58,7 @@
 </style>
 
 
-<body>
+<body id="page-top">
 <jsp:include page="../sidebar.jsp"/>
  <!-- Begin Page Content -->
         <div class="container-fluid">
@@ -203,6 +204,11 @@
 	
 	<jsp:include page="../footer.jsp" />
 	
+	<!-- Bootstrap core JavaScript-->
+	  <script src="/moamore/vendor/jquery/jquery.min.js"></script>
+	  <script src="/moamore/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
+  
 </body>
 <script>
 	$(document).ready(function(){

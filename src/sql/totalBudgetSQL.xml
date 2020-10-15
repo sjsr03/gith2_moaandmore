@@ -62,6 +62,20 @@
   		select * from total_budget where budget_no=#{value}
   	</select>
   	
+  	<!-- 현재 총예산이 종료일 지난 총예산이면 close=1 -->
+	<update id="updateClose" parameterType="string">
+		<![CDATA[
+	 		update total_budget set close=1 where id=#{value} and close=0 and to_char(end_day,'yyyy-MM-dd') < to_char(sysdate, 'yyyy-MM-dd')
+		]]>
+ 	</update>
+ 	
+  	<!-- 현재 총예산이 종료일 지난 것인지? -->
+	<select id="selectOutClose" parameterType="string" resultType="totalBudgetDTO">
+		<![CDATA[
+	 		select * from total_budget where id=#{value} and close=0 and to_char(end_day,'yyyy-MM-dd') < to_char(sysdate, 'yyyy-MM-dd')
+		]]>
+ 	</select>
+  	
   	
   </mapper>
  

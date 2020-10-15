@@ -49,7 +49,6 @@ public class CalendarServiceImpl implements CalendarService{
 			
 		}
 	
-		//System.out.println(budgetalldate);
 		return budgetalldate;
 	}
 
@@ -109,7 +108,6 @@ public class CalendarServiceImpl implements CalendarService{
 			
 		}
 	
-		System.out.println(noBudgetalldate);
 		return noBudgetalldate;
 		
 	}

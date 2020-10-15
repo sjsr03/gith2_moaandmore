@@ -41,6 +41,7 @@ public class ReportServiceImpl implements ReportService {
 		long lt = endDay.getTime()-day.getTime();
 		int period = Math.round((lt)/(1000*60*60*24)) + 1;
 		double daily = Math.round(TBdto.getBudget()/period);
+		double Tsum = 0;
 		
 		String labelList = "[";
 		String dataList = "[";
@@ -48,6 +49,8 @@ public class ReportServiceImpl implements ReportService {
 		while(day.before(endDay)) {
 			String tmp = "\"" + (day.getMonth()+1) + "/" + day.getDate() + "\", ";
 			double sum = selectOutcomeSumByReg(TBdto.getBudget_no(), sdf.format(day));
+			Tsum += sum;
+					
 			labelList += tmp;
 			dataList += (sum/daily)*100 + ", ";
 			
@@ -62,6 +65,15 @@ public class ReportServiceImpl implements ReportService {
 		
 		map.put("labelList", labelList);
 		map.put("dataList", dataList);
+		map.put("daily", (int)daily);
+		map.put("dailyAvg", Tsum/period);
+		map.put("Tsum", Tsum);
+		
+		
+		//top3 가져오기
+		reportDAO.selectTop3(TBdto.getBudget_no());
+		
+		
 		
 		
 		return map;

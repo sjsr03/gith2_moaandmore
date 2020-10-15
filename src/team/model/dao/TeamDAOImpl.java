@@ -21,48 +21,40 @@ public class TeamDAOImpl implements TeamDAO{
 	}
 	
 	@Override
-	public int getTeamArticleCount(int pageStatus) throws SQLException {
+	public int getTeamArticleCount(int pageStatus,int isSearch,String search) throws SQLException {
 		int count = 0;
 		
-		if(pageStatus==2) {
-			//진행중 그룹들
-			count = sqlSession.selectOne("team.countOpenAll");
-		}else if(pageStatus == 1) {
-			//개설예정 그룹들
-			count = sqlSession.selectOne("team.countOpenApAll");
-		}else if(pageStatus == 3) {
-			//종료된 그룹들
-			count = sqlSession.selectOne("team.countEndAll");
-		}
-			
+		HashMap map = new HashMap();
+		map.put("isSearch", isSearch);
+		map.put("search", search);
+		map.put("pageStatus", pageStatus);
+		
+		count = sqlSession.selectOne("team.countTeamAll", map);
 		
 		return count;
 	}
 	
 	@Override
-	public List getTeamArticles(int pageStatus, int start, int end) throws SQLException {
+	public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException {
 		HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
+		map.put("isSearch", isSearch);
+		map.put("search", search);
+		map.put("range", range);
+		map.put("pageStatus", pageStatus);
 		
 		List list = null;
 		
-		if(pageStatus==2) {
-			//진행중 그룹등
-			list = sqlSession.selectList("team.selectOpenAll", map);
-		}else if(pageStatus == 1) {
-			//개설예정 그룹들
-			list = sqlSession.selectList("team.selectOpenApAll", map);
-		}else if(pageStatus == 3) {
-			//종료된 그룹들
-			list = sqlSession.selectList("team.selectEndAll", map);
-		}
+		list = sqlSession.selectList("team.selectTeamAll", map);
 		
 		
 		
 		return list;
 	}
 
+	
+	
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
 		if(dto.getPassword() == null)

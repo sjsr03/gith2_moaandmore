@@ -27,7 +27,6 @@
 	<select id="selectOneByNick" parameterType="string" resultType="string" >
  		select id from member where nickname=#{value}
  	</select>
-
-
+ 	
 	
  </mapper>

@@ -78,7 +78,6 @@ public class CalendarDAOImpl implements CalendarDAO{
 		
 		
 		List AllNobudgetIncomeAmount = sqlSession.selectList("calendar.selectNoBudgetIncomeAmountBydate",map);
-		System.out.println(AllNobudgetIncomeAmount);
 		
 		return AllNobudgetIncomeAmount;
 	}
