@@ -41,9 +41,58 @@
 <script>
 
 var checkVal = [];	
+var events = [];	
 
 
 $(document).ready(function () {
+	 $(".checkbox").each(function(){
+		 	$(this).on('change',function(){
+	 		
+				if($(this).is(":checked")){
+				   checkVal.push($(this).val());
+				}else{
+					checkVal.splice(checkVal.indexOf($(this).val()),1);
+				}
+				console.log("최종",checkVal);
+				
+		    	 
+				$.ajax({
+		   			url: "getCalendarEvent.moa", 
+		   			type :"POST",
+		   			data:{
+		   	       	 checkVal:checkVal
+		   	   		},
+		   	  	 	dataType : "json",
+		   			error : function(){
+						console.log("error");
+						$('#calendar').fullCalendar('removeEventSource', events);
+					},
+		   			success: function(finalByCheckVal) {
+		   				var events = [];
+		   				console.log("success");
+		   				console.log(finalByCheckVal);
+		   				for(var i in finalByCheckVal){
+		   					console.log("i",i);
+		   					for(var j in finalByCheckVal[i]){
+		   						console.log(j);
+		   						console.log(finalByCheckVal[i][j]);
+			    	    		 	events.push({
+			    	    		 		title:finalByCheckVal[i][j],
+			    	    		 		start:j
+			    	    		 		
+			    	    		 	});
+    	    		 		}   		
+		   				}
+		   				console.log("events"+events);
+		   			}
+				});
+		   			 	
+				$('#calendar').fullCalendar('removeEventSource', events);
+			    $('#calendar').fullCalendar('addEventSource', events);
+			    $('#calendar').fullCalendar('refetchEvents');
+		 	});
+	 });
+	 
 
 	$('#calendar').fullCalendar({ 
 		
@@ -56,14 +105,7 @@ $(document).ready(function () {
 	      },
 	      events:
 	    	  function(start,end,timezone,callback){
-	    	  $(".checkbox").each(function(){
-	    		 	$(this).on('change',function(){
-	    					if($(this).is(":checked")){
-	    					   checkVal.push($(this).val());
-	    					}else{
-								checkVal.splice(checkVal.indexOf($(this).val()),1);
-	    					}
-	    					console.log("최종",checkVal);
+	    	 
 	    					$.ajax({
 					   			url: "getCalendarEvent.moa", 
 					   			type :"POST",
@@ -90,12 +132,10 @@ $(document).ready(function () {
 	    				    	    		 	});
 			    	    		 		}   		
 					   				}
-					   				console.log("events",events);
+					   				console.log("events"+events);
 					   			 	callback(events);	
 					   			}
 	    		 		});
-	    		 	});	
-	    	 	}); //checkbox 
 	    	
 	    	 
 	      }//events 
@@ -106,6 +146,7 @@ $(document).ready(function () {
 	   // calendar.render();	
  	});
     
+ 	
     </script>
 
 
