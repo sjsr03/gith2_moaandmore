@@ -1,12 +1,26 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>예산 설정</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<title>예산 설정</title>
+	<!-- Custom fonts for this template-->
+	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
+	
+	<!-- Custom styles for this template-->
+	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">  
+	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <style>
 	#popup1 {
@@ -34,10 +48,20 @@
 		color:red;
 	}
 	input[type=number] {
-		width:70px;
+		width:100px;
 	}
 </style>
-<body>
+<body id="page-top">
+<jsp:include page="../sidebar.jsp"/>
+	
+        <!-- 본문내용 시작 -->
+        <div class="container-fluid">
+
+          <!-- 페이지 이름 -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">예산 설정</h1>
+            </div>
+            
 
 	<!-- 예산 재설정 경고 안내 -->
 	<div id="popup1">
@@ -52,72 +76,80 @@
 	</div>
 
 	
+	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
+           	<!-- 첫번째 줄 -->
+            <div class="row" style="overflow:hidden;">
+            	
 	
 	<!-- 폼 시작 -->
-	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
-	
-	<div style="width:600px;height:1000px;overflow:hidden;position:absolute;left:0px;top:20px;">
-		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;top:20px;" id="firstStep">
-			<ul>
-				<li>
-					총 예산 : <input type="number" name="totalBudget" id="totalBudget" value="${currentTBudget.budget }"/>원
-				</li>
-				<li>
-					기간 단위 : 
-					<select name="period" id="period">
-						<option value="7" >7일</option>
-						<option value="14" <c:if test="${currentTBudget.period==14}">selected</c:if>>14일</option>
-						<option value="30" <c:if test="${currentTBudget.period==30}">selected</c:if>>한달</option>
-					</select>
-				</li>
-				<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
-				</li>
-			</ul>
-			<input type="button" value="세부설정 >" onclick="nextStep()"/>
-		</div>
-		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:600px;top:20px;" id="secondStep">
-			<input type="button" value="<이전단계" onclick="preStep()"/>
-			<input type="button" value="추가" id="insertLine"/>
-			
-			<table id="detailBudget">
-				<tr>
-					<td>카테고리</td>
-					<td>금액</td>
-					<td>비율</td>
-					<td>하루 예산</td>
-					<td>&nbsp;</td>
-				</tr>
-				
-				<c:forEach var="k" items="${detailList}">
-					<tr>
-					<td>
-						<select name="category_name" class="category_name" required>
-							<option class="none" disabled>==카테고리 선택==</option>
-							<c:forEach items="${categoryList}" var="i">
-								<option value="${i.category_name }" <c:if test="${i.category_no == k.category_no }">selected</c:if>>${i.category_name }</option>
-							</c:forEach>
+		<div class="col-lg-12" style="transition: .5s;" id="firstStep">
+		<div class="card shadow lg-12" >
+            <div class="card-body">
+				<ul>
+					<li>
+						총 예산 : <input type="number" name="totalBudget" id="totalBudget" value="${currentTBudget.budget }"/>원
+					</li>
+					<li>
+						기간 단위 : 
+						<select name="period" id="period">
+							<option value="7" >7일</option>
+							<option value="14" <c:if test="${currentTBudget.period==14}">selected</c:if>>14일</option>
+							<option value="30" <c:if test="${currentTBudget.period==30}">selected</c:if>>한달</option>
 						</select>
-					</td>
-					<td>
-						<input type="number" name="amount" min="0" required class="amount" value="${k.category_budget}"/>
-					</td>
-					<td>
-						<input type="number" readonly class="rate"/>%
-					</td>
-					<td>
-						<input type="number" readonly class="dayAmount"/>원
-					</td>
-					<c:if test="${i != 1 }">
-						<td>
-							<input type="button" class="deleteBtn" value="삭제"/>
-						</td>
-					</c:if>
+					</li>
+					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
+					</li>
+				</ul>
+				<input type="button" value="세부설정 >" onclick="nextStep()"/>
+			</div>
+		</div>
+		</div>
+		<div class="col-lg-12" style="transition: .5s;" id="secondStep">
+		<div class="card shadow lg-12" >
+        	<div class="card-body" >
+		
+				<input type="button" value="<이전단계" onclick="preStep()"/>
+				<input type="button" value="추가" id="insertLine"/>
+				
+				<table id="detailBudget">
+					<tr>
+						<td>카테고리</td>
+						<td>금액</td>
+						<td>비율</td>
+						<td>하루 예산</td>
+						<td>&nbsp;</td>
+					</tr>
 					
-				</tr>
-				</c:forEach>
-				
-				
-			</table>
+					<c:forEach var="k" items="${detailList}">
+						<tr>
+						<td>
+							<select name="category_name" class="category_name" required>
+								<option class="none" disabled>==카테고리 선택==</option>
+								<c:forEach items="${categoryList}" var="i">
+									<option value="${i.category_name }" <c:if test="${i.category_no == k.category_no }">selected</c:if>>${i.category_name }</option>
+								</c:forEach>
+							</select>
+						</td>
+						<td>
+							<input type="number" name="amount" min="0" required class="amount" value="${k.category_budget}"/>
+						</td>
+						<td>
+							<input type="number" readonly class="rate"/>%
+						</td>
+						<td>
+							<input type="number" readonly class="dayAmount"/>원
+						</td>
+						<c:if test="${i != 1 }">
+							<td>
+								<input type="button" class="deleteBtn" value="삭제"/>
+							</td>
+						</c:if>
+						
+					</tr>
+					</c:forEach>
+					
+					
+				</table>
 			<hr>
 			카테고리별 예산 합계 : <strong id="amountSum"></strong>원<br/>
 			총 예산 : <strong id="TbudgetPrint"></strong>원
@@ -126,14 +158,39 @@
 			<br/>
 			<input type="hidden" value="예산 설정 수정" id="createBudget" />
 		</div>
-	</div>
 	<input type="hidden" name="budget_no" value="${currentTBudget.budget_no }" />
 	<input type="hidden" name="isNewBudget" id="isNewBudget" value="0" />
-	</form>
 	
 	<div><span id="warn" style="color:red; display:none">주기를 변경하셨습니다. 새로운 예산이 생성됩니다.</span></div>
-	<div style="position:absolute; top:500px;"><h1>예산 수정하면 기존 기록 반영해서 상태 보여주는 부분 아직 안함 <br/>(수입지출 기록 완료되면 수정할 것)</h1></div>
+	</div>
+	
+	</div>
+	</div>
+	
+	</form>
+	<div style="display:none;"><h1>예산 수정하면 기존 기록 반영해서 상태 보여주는 부분 아직 안함 <br/>(수입지출 기록 완료되면 수정할 것)</h1></div>
+	</div>
+	
+	<jsp:include page="../footer.jsp"/>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/moamore/vendor/jquery/jquery.min.js"></script>
+  <script src="/moamore/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/moamore/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/moamore/js/sb-admin-2.min.js"></script>
+	
+	
+	
+	
+	
+	
+	
 </body>
+
 
 <script>
 	
@@ -193,7 +250,7 @@
 		
 		
 		$('#insertLine').on('click', function(){ //라인 추가
-			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
+			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
 			
 			//삭제버튼 기능
