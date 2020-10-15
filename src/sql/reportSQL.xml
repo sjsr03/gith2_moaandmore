@@ -19,9 +19,9 @@
   		select sum(amount) from budget where budget_no=#{budget_no} and category_no=#{category_no} and To_Char(reg,'yyyy-MM-dd')=#{reg}
   	</select>
   	
-  	<!-- 회원의 지난 모든 예산정보를 날짜 내림차순으로 정렬해서 가져오기-->
+  	<!-- 회원의 모든 예산정보를 날짜 내림차순으로 정렬해서 가져오기-->
 	<select id="selectAllOrderByReg" parameterType="string" resultType="totalBudgetDTO" >
-		select * from total_budget where id=#{value} and close !=0 order by end_day desc
+		select * from total_budget where id=#{value} order by end_day desc
 	</select>
 	
 	<!-- 날짜와 예산번호로 지출액 합산 -->
@@ -32,13 +32,17 @@
 	</select>
 	
 	<!-- 지출횟수로 Top3 -->
-	<select id="selectTop3Amount" parameterType="int" resultType="hashmap" >
-		SELECT content, sum(amount) AS tsum, count(content) AS cnt FROM (SELECT bd.CONTENT, b.AMOUNT FROM BUDGET b join BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE b.BUDGET_NO=#{value}) t1 GROUP BY content ORDER BY cnt desc
+	<select id="selectTop3Count" parameterType="int" resultType="hashmap" >
+		<![CDATA[
+			select * from (SELECT content, sum(amount) AS tsum, count(content) AS cnt FROM (SELECT bd.CONTENT, b.AMOUNT FROM BUDGET b join BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE b.BUDGET_NO=#{value}) t1 GROUP BY content ORDER BY cnt desc) where rownum <= 3
+		]]>
 	</select>
 	
 	<!-- 지출금액으로 Top3 -->
-	<select id="selectTop3Count" parameterType="int" resultType="hashmap" >
-		SELECT content, sum(amount) AS tsum, count(content) AS cnt FROM (SELECT bd.CONTENT, b.AMOUNT FROM BUDGET b join BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE b.BUDGET_NO=#{value}) t1 GROUP BY content ORDER BY tsum desc
+	<select id="selectTop3Amount" parameterType="int" resultType="hashmap" >
+		<![CDATA[
+			select * from (SELECT content, sum(amount) AS tsum, count(content) AS cnt FROM (SELECT bd.CONTENT, b.AMOUNT FROM BUDGET b join BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE b.BUDGET_NO=#{value}) t1 GROUP BY content ORDER BY tsum desc) where rownum <= 3
+		]]>
 	</select>
   </mapper>
  

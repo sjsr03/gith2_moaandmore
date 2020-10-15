@@ -91,7 +91,7 @@
             </div>
             
             <!-- 총예산 금액 -->
-            <div class="col-xl-6 col-md-8 mb-4">
+            <div class="col-xl-3 col-md-8 mb-4">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -108,37 +108,69 @@
               </div>
             </div>
             
+            <!-- 현재 사용 예산 -->
+            <div class="col-xl-3 col-md-8 mb-4">
+              <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">현재 사용 예산</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <fmt:formatNumber value="${TBdto.budget-TBdto.current}" pattern="#,###"/>원</div>
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-won-sign fa-2x text-gray-300"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
           <!-- 첫줄 끝 -->
 
 
 			<!-- 두번째줄 -->
 			<div class="row">
-				
-	
-	
-	<div style="border:1px solid black; width:300px;">
-		예산에서 남은 돈<br/>
-		<div>
-			총액 : <span id="totalLeftMoney"></span>원
-		</div>
-		<hr>
-		<div>
-			<c:forEach items="${leftMoney}" var="i" >
-				<div>
-					<span>${categories[i.category_no] }</span> : <span class="amount">${i.amount }</span>원
+				<!-- 두번째줄 왼쪽컬럼 -->
+				<div class="col-lg-6">
+					<div class="card shadow mb-4">
+		                <div class="card-header py-3">
+		                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
+		                </div>
+		                <div class="card-body">
+		                	총예산 (${TBdto.budget-TBdto.current }/${TBdto.budget })
+		                	<div class="progress mb-4">
+		                    	<div class="progress-bar" role="progressbar" style="width: ${((TBdto.budget-TBdto.current)/TBdto.budget)*100 }%" aria-valuenow="${TBdto.budget-TBdto.current }" aria-valuemin="0" aria-valuemax="${TBdto.budget }">${((TBdto.budget-TBdto.current)/TBdto.budget)*100 }%</div>
+		                 	</div>
+		                 	<hr>
+		                 	
+		                </div>
+	               </div>
+              </div>
+              <!-- 두번째줄 오른쪽컬럼 -->
+				<div class="col-lg-6">
+					<div class="card shadow mb-4">
+		                <div class="card-header py-3">
+		                  <h6 class="m-0 font-weight-bold text-primary">예산에서 남은 돈<br/></h6>
+							총액 : <span id="totalLeftMoney"></span>원
+		                </div>
+		                <div class="card-body">
+		                	<c:forEach items="${leftMoney}" var="i" >
+								<div>
+									<span>${categories[i.category_no] }</span> : <span class="amount">${i.amount }</span>원
+								</div>
+							</c:forEach>
+		                 	<hr>
+							 <div>
+								<button onclick="$('#popup1').css('display','flex')">전환하기</button>
+							</div>
+		                </div>
+	               </div>
+
 				</div>
-			</c:forEach>
-		</div>
-		<div>
-			<button onclick="$('#popup1').css('display','flex')">전환하기</button>
-		</div>
-	</div>
-	
-	
-	</div>
 	<!-- 두번째줄 -->
-	
+	</div>	
 	
 	
 	<!-- 남은돈 전환 창 -->
@@ -186,6 +218,9 @@
 						<div id="subGoal" style="display:none;">
 							목표 선택
 							<select id="targetGoal" name="subSel">
+								<c:if test="${goals==null }" >
+									<option disabled>목표가 없습니다</option>
+								</c:if>
 								<c:forEach items="${goals }" var="j">
 									<option value=${j.goal_no } class="${j.subject }">${j.subject }</option>
 								</c:forEach>
@@ -265,6 +300,11 @@
 			}
 			var ans = confirm("총 " + $('#transSum').text() + "원을 " + subSelect + "로 전환합니다");			
 			if(ans == true) {
+				$('.chk').each(function(){
+					if($(this).is(':checked')==false) {
+						$(this).parent().next().next().next().children('.inputAmount').prop('name', '');
+					}
+				});
 				$('#trans').attr('type', 'submit');
 			}
 		});

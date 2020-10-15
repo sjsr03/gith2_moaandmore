@@ -6,28 +6,32 @@
   <mapper namespace="calendar">
   	
   <select id="selectBudgetDatebyId" parameterType="string" resultType="budgetDTO">
-  	select * from budget where id=#{value}
+  	select * from budget where id=#{id}
   </select>
   	
   	<select id="selectBudgetAmountBydate" parameterType="map" resultType="int">
   		<foreach collection="budgetAlldate" item="item" separator="UNION ALL">
-  		select sum(amount) from budget where id=#{id} and TO_CHAR("reg",'YYYY-MM-DD')= #{item}
+  		select sum(amount) from budget where id=#{id} and TO_CHAR("REG",'YYYY-MM-DD')= #{item}
   		</foreach>
   	</select>
 	
 	
 	 <select id="selectNoBudgetDatebyId" parameterType="string" resultType="nobudgetDTO">
-  		select * from nobudget where id=#{value}
+  		select * from nobudget where id=#{id}
   	</select>
 	
-	
-	
+			
 	<select id="selectNoBudgetIncomeAmountBydate" parameterType="map" resultType="int">
-  		<foreach collection="budgetAlldate" item="item" separator="UNION ALL">
-  		select sum(amount) from budget where id=#{id} and type='income' and TO_CHAR("date",'YYYY-MM-DD')= #{item}
+  		<foreach collection="nobudgetAlldate" item="item" separator="UNION ALL">
+  		select sum(amount) from nobudget where id=#{id} and type= 'income' and TO_CHAR("REG",'YYYY-MM-DD')= #{item}
   		</foreach>
   	</select>
 	
+	<select id="selectNoBudgetExpenseAmountBydate" parameterType="map" resultType="int">
+  		<foreach collection="nobudgetAlldate" item="item" separator="UNION ALL">
+  		select sum(amount) from nobudget where id=#{id} and type= 'outcome' and TO_CHAR("REG",'YYYY-MM-DD')= #{item}
+  		</foreach>
+  	</select>
 	
   </mapper>
  

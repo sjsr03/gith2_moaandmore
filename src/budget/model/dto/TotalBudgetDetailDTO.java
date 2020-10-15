@@ -4,6 +4,7 @@ public class TotalBudgetDetailDTO {
 	private int category_no;
 	private int budget_no;
 	private int category_budget;
+	private int category_current;
 	public int getCategory_no() {
 		return category_no;
 	}
@@ -22,5 +23,12 @@ public class TotalBudgetDetailDTO {
 	public void setCategory_budget(int category_budget) {
 		this.category_budget = category_budget;
 	}
+	public int getCategory_current() {
+		return category_current;
+	}
+	public void setCategory_current(int category_current) {
+		this.category_current = category_current;
+	}
+	
 	
 }
