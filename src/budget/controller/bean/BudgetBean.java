@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -78,6 +80,9 @@ public class BudgetBean {
 		//현재 진행중인 예산 정보 가져오기
 		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
 		List BDdtoList = budgetService.selectAllbyBudgetNum(TBdto.getBudget_no());
+		long lt = TBdto.getEnd_day().getTime()-TBdto.getStart_day().getTime();
+		int period = Math.round((lt)/(1000*60*60*24)) + 1;
+		
 		
 		//현재 예산의 카테고리정보 가져오기
 		List categoryNums = new ArrayList();
@@ -86,6 +91,8 @@ public class BudgetBean {
 			categoryNums.add(dto.getCategory_no());
 		}
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
+		categories.put(0, "총예산");
+		
 		
 		//회원의 목표 리스트 가져오기
 		List<GoalsDTO> goals = goalsService.selectAllById();
@@ -101,6 +108,12 @@ public class BudgetBean {
 		model.addAttribute("TBdto", TBdto);
 		model.addAttribute("BDdtoList", BDdtoList);
 		model.addAttribute("goals", goals);
+		model.addAttribute("period", period);
+		
+		List todayData = budgetService.selectTodayBudget(id);
+		
+		model.addAttribute("todayData", todayData);
+		
 		
 		return "budget/todayBudget";
 	}

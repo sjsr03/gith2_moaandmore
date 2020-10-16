@@ -44,6 +44,7 @@
 
 
 <jsp:include page="../sidebar.jsp"/>
+ <script src="/moamore/vendor/chart.js/Chart.min.js"></script>
  <!-- Begin Page Content -->
         <div class="container-fluid">
 
@@ -100,7 +101,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">현재 사용 예산</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                      <fmt:formatNumber value="${TBdto.budget-TBdto.current}" pattern="#,###"/>원</div>
+                      <fmt:formatNumber value="${TBdto.budget-TBdto.total_budget_current}" pattern="#,###"/>원</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-won-sign fa-2x text-gray-300"></i>
@@ -123,14 +124,72 @@
 		                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
 		                </div>
 		                <div class="card-body">
-		                	총예산 (${TBdto.budget-TBdto.current }/${TBdto.budget })
+		                <!-- 
+		                	총예산 (${TBdto.budget-TBdto.total_budget_current }/${TBdto.budget })
 		                	<div class="progress mb-4">
-		                    	<div class="progress-bar" role="progressbar" style="width: ${((TBdto.budget-TBdto.current)/TBdto.budget)*100 }%" aria-valuenow="${TBdto.budget-TBdto.current }" aria-valuemin="0" aria-valuemax="${TBdto.budget }">${((TBdto.budget-TBdto.current)/TBdto.budget)*100 }%</div>
+		                    	<div class="progress-bar" role="progressbar" style="width: ${((TBdto.budget-TBdto.total_budget_current)/TBdto.budget)*100 }%" aria-valuenow="" aria-valuemin="0" aria-valuemax="">${((TBdto.budget-TBdto.total_budget_current)/TBdto.budget)*100 }%</div>
 		                 	</div>
-		                 	<hr>
+	                	<hr/>
+						 -->				                 	
+	                
+                 	<c:forEach items="${todayData}" var="i" varStatus="st">
+                 		<div class="card shadow mb-4">
+			                <div class="card-header py-3">
+			                  <h6 class="m-0 font-weight-bold text-primary">${categories[i.category_no] }
+			                  	<c:if test="${i.recommend < i.actual }">
+			                  		<span style="color:red;">(초과!)</span>
+			                  	</c:if>
+		                  	</h6>
+			                </div>
+			                <div class="card-body">
+		                 		
+		                 		<!-- 왼쪽컬럼(그래프) -->
+		                 		<div class="row" >
+			                 		<div class="col-lg-8">
+				                 		<div class="chart-bar" style="height:8em"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+						                    <canvas id="myBarChart${i.category_no }" width="657" height="200" class="chartjs-render-monitor" style="display: block; width: 657px; height: 200px;"></canvas>
+					                    </div>
+				                    </div>
+				                    
+				                    <div class="col-lg-4">
+				                 		하루 권장 지출액 : <br/><strong><fmt:formatNumber value="${i.recommend }" pattern="#,###" /></strong>원 <br/>
+				                 		현재 지출액 : <br/><strong><fmt:formatNumber value="${i.actual }" pattern="#,###" /></strong>원 <br/>
+				                 		사용 비율 : <br/><strong><fmt:formatNumber value="${i.actual / i.recommend * 100}" pattern="#,###" /></strong>%<br/>
+			                 		 </div>
+		                    	</div>
+	                    	</div>
+                 		
+                 		<script type="text/javascript">
+                 			var ctx = $("#myBarChart${i.category_no}");
+							var labelList = ["${categories[i.category_no] }"];
+							var dataList = [${i.actual }];
+							
+							if(${i.recommend} > ${i.actual }) {	//권장액 미만일 시 파란색
+								var max = ${i.recommend};
+								var backgroundColor="#4e73df";
+							    var hoverBackgroundColor= "#2e59d9";
+							    var borderColor= "#4e73df";
+							} else {	//권장액 초과시 빨간색
+								var max = ${i.actual};
+								var backgroundColor="#df4e4e";
+							    var hoverBackgroundColor= "#d92e2e";
+							    var borderColor= "#df4e4e";
+							}
+						</script>
+						<script src="/moamore/js/todayBudgetBar/todayBudgetBar.js"></script>
+                 		
+                 		</div>
+                 		
+                 		
+                 		
+                 		<c:if test="${i.category_no == 0 }" >
+                 			<hr/>
+                 		</c:if>
+                 		
+                 	</c:forEach>
 		                 	
 		                </div>
-	               </div>
+	                </div>
               </div>
               <!-- 두번째줄 오른쪽컬럼 -->
 				<div class="col-lg-6">
@@ -153,6 +212,7 @@
 	               </div>
 
 				</div>
+			</div>
 	<!-- 두번째줄 -->
 	</div>	
 	
@@ -219,7 +279,6 @@
 		</div>
 	</div>
 	
-	</div>
 	
 	<jsp:include page="../footer.jsp" />
   
@@ -360,4 +419,5 @@
 		}
 		inputAmount.parent().next().children('.LeftAfterTrans').val(rest);
 	}
+	
 </script>

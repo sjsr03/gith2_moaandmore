@@ -143,8 +143,7 @@ $(document).ready(function () {
              	var date = new Date(event.start);
              	 date = getFormatDate(date);
              	 console.log(date);
-	    	 	//$('#test').addClass('show');
-	    	 	//$('#test').append( '<span>&raquo; My Text</span>' );
+	    	 	
 	    	 	$.ajax({
 			   			url: "getCalendarEventDetail.moa", 
 			   			type :"POST",
@@ -153,9 +152,10 @@ $(document).ready(function () {
 			   			error : function(){
 							console.log("error");
 						},
-			   			success: function(ttest) {
-			   				
-			   				
+			   			success: function(alldata) {
+			   				console.log(alldata);
+			   				$('#test').addClass('show');
+				    	 	$('#test').append( '<span></span>' );
 			   				
 			   			
 			   			}

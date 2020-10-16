@@ -93,13 +93,12 @@ public class CalendarDAOImpl implements CalendarDAO{
 	}
 
 	@Override
-	public List getBudgetDetail(String id, String wantDate) throws SQLException {
+	public List getBudgetDetail(String id, String date) throws SQLException {
 		
 		Map map = new HashMap();
 		map.put("id", id);
-		map.put("wantDate",wantDate); 
+		map.put("date",date); 
 		List budgetDetail = sqlSession.selectList("calendar.selectBudgetDetail",map);
-		System.out.println(budgetDetail);
 		
 		
 		return budgetDetail;
@@ -110,9 +109,8 @@ public class CalendarDAOImpl implements CalendarDAO{
 		
 		Map map = new HashMap();
 		map.put("id", id);
-		map.put("wantDate",date); 
-		List budgetDetail = sqlSession.selectList("calendar.selectNoBudgetExpenseDetail",map);
-		
+		map.put("date",date); 
+		List noBudgetExpenseDetail = sqlSession.selectList("calendar.selectNobudgetExpenseDetail",map);
 		return null;
 	}
 
@@ -121,8 +119,8 @@ public class CalendarDAOImpl implements CalendarDAO{
 	
 		Map map = new HashMap();
 		map.put("id", id);
-		map.put("wantDate",date); 
-		List budgetDetail = sqlSession.selectList("calendar.selectNoBudgetIncomeDetail",map);
+		map.put("date",date); 
+		List nobudgetIncomeDetail = sqlSession.selectList("calendar.selectNobudgetIncomeDetail",map);
 		
 		return null;
 	}

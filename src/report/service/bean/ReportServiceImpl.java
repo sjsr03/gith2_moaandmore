@@ -42,6 +42,7 @@ public class ReportServiceImpl implements ReportService {
 		int period = Math.round((lt)/(1000*60*60*24)) + 1;
 		double daily = Math.round(TBdto.getBudget()/period);
 		double Tsum = 0;
+		double max = 0;
 		
 		String labelList = "[";
 		String dataList = "[";
@@ -52,7 +53,11 @@ public class ReportServiceImpl implements ReportService {
 			Tsum += sum;
 					
 			labelList += tmp;
-			dataList += (sum/daily)*100 + ", ";
+//			int amount = (sum/daily)*100;
+			if(sum > max) {
+				max = sum;
+			}
+			dataList += sum + ", ";
 			
 			day.setDate(day.getDate()+1);
 		}
@@ -68,6 +73,7 @@ public class ReportServiceImpl implements ReportService {
 		map.put("daily", (int)daily);
 		map.put("dailyAvg", Tsum/period);
 		map.put("Tsum", Tsum);
+		map.put("max", ((int)(max/10000)+1)*10000);
 		
 		
 		//top3 가져오기
@@ -77,6 +83,8 @@ public class ReportServiceImpl implements ReportService {
 		
 		map.put("countList", countList);
 		map.put("amountList", amountList);
+		
+		
 		
 		
 		

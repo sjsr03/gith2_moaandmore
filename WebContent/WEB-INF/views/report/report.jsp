@@ -6,8 +6,6 @@
 <title>예산 보고서</title>
 </head>
 <jsp:include page="../sidebar.jsp"/>
-
-
         <!-- 본문내용 시작 -->
         <div class="container-fluid">
 
@@ -25,15 +23,15 @@
                 </div>
                  -->
                 <div class="card-body">
-                	<select id="selectBudget">
+                	예산기간 선택 <select id="selectBudget">
                 		<c:forEach items="${TBList}" var="TB">
 	                		<option value="${TB.budget_no}">
 	                			<fmt:formatDate pattern="yyyy.MM.dd" value="${TB.start_day}"/> ~ 
 	                			<fmt:formatDate pattern="yyyy.MM.dd" value="${TB.end_day}"/>
 	                		</option>
                 		</c:forEach>
-                	</select>
-                	<input type="button" value="달력"  />
+                	</select><br/>
+                	날짜 선택
                 	<input type="date" id="datepick" />
 
 
@@ -53,9 +51,9 @@
 		
 <jsp:include page="../footer.jsp"/>
 <script>
-
-
 	$(document).ready(function(){
+		
+		
 		if($("#selectBudget").val() == null) {
 			alert("과거 예산 기록이 없습니다.");
 			history.go(-1);

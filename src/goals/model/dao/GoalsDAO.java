@@ -30,5 +30,8 @@ public interface GoalsDAO {
 	//삭제
 	public void deleteGoal(int goal_no,int public_ch, int team_no) throws SQLException;
 	
+	//saving(달성액) 업데이트
+	public void updateSaving(int goa_no, int sum) throws SQLException;
+	
 	
 }

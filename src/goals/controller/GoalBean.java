@@ -37,12 +37,15 @@ public class GoalBean {
 		if(public_ch_str != null && public_ch_str.equals("1")) {
 			public_ch = 1;
 		}
+		
+		
+	
 		model.addAttribute("public_ch", public_ch);
 		return "goals/myGoalList";
 	}
 	
 	@RequestMapping("getMyGoalList.moa")
-	public @ResponseBody List<GoalsDTO> myGoalList(HttpServletRequest request, int public_ch, String sorting) throws SQLException {
+	public @ResponseBody List<GoalsDTO> myGoalList (int public_ch, String sorting) throws SQLException {
 		//아이디별 리스트. 세션으로 id받아오기
 		
 		return goalsService.selectAllByPublicCh(public_ch, sorting);
@@ -92,8 +95,9 @@ public class GoalBean {
 	}
 	
 	@RequestMapping(value="myGoalDetail.moa")
-	public String myGoalDetail(int goal_no) throws SQLException {
+	public String myGoalDetail(int goal_no,String sorting, Model model) throws SQLException {
 		goalsService.myGoalDetail(goal_no);
+		model.addAttribute("sorting", sorting);//뒤로가기 시 필요 
 		return "goals/myGoalDetail";
 	}
 	

@@ -16,4 +16,6 @@ public interface TeamMemberService {
 	public void deleteTeamMemberAll(int teamNo) throws SQLException;
 	//그룹 평균 모은 금액 가져오기
 	public List<List> getTeamAvgArticles(List<TeamDTO> teamList) throws SQLException;
+	//실제 그룹 가입 상태(is_join) 가입(1)으로 변경
+	public void updateTeamMemJoin(int team_no, String nickname) throws SQLException;
 }

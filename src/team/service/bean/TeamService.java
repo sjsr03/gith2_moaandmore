@@ -13,6 +13,9 @@ public interface TeamService {
 		//그룹 범위 지정 가져오기
 		public List<TeamDTO> getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException;
 		
+		//그룹 비밀번호가 맞는지 체크
+		public int checkPw(int team_no, String pw) throws SQLException;
+		
 		//그룹 하나 가져오기
 		public TeamDTO selectOne(int team_no) throws SQLException;
 		
@@ -27,4 +30,9 @@ public interface TeamService {
 		
 		//닉네임으로 해당 닉네임이 개설 요청한 그룹 목록들 가져오기
 		public List getTeamMyRequests(String nickname, int start, int end) throws SQLException;
+		
+		//팀 상태 최종 업데이트 시간 가져오기
+		public String getTeamUpdateTime() throws SQLException;
+		//팀 상태 최종 업데이트 시간 수정
+		public void updateTeamUpdateTime(String day) throws SQLException; 
 }

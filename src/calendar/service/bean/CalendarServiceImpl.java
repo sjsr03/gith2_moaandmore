@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import budget.model.dto.AllRecordDTO;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.NoBudgetDTO;
 import calendar.model.dao.CalendarDAO;
@@ -180,15 +181,45 @@ public class CalendarServiceImpl implements CalendarService{
 	public List getAlldata(String date) throws SQLException {
 
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		
+		List alldata = new ArrayList();
 		List budgetDetail = calendarDAO.getBudgetDetail(id,date);
+		List budgetList = new ArrayList();
 		for(int i = 0; i<budgetDetail.size(); i++) {
+		AllRecordDTO budget = (AllRecordDTO)budgetDetail.get(i);
+		
+			budgetList.add("지출");
+			budgetList.add(budget.getAmount());
+			budgetList.add(budget.getContent());
+			budgetList.add(budget.getMemo());
 			
 		}
+		System.out.println("budgetList"+budgetList);
 		
-							calendarDAO.getNobudgetExpenseDetail(id,date);
 		
-							calendarDAO.getNobudgetIncomeDetail(id,date);
-		return null;
+		List nobudgetExpenseDetail= calendarDAO.getNobudgetExpenseDetail(id,date);
+		List nobudgetExpenseList = new ArrayList();
+			for(int i=0; i<nobudgetExpenseList.size(); i++) {
+				AllRecordDTO nobudget = (AllRecordDTO)nobudgetExpenseDetail.get(i);
+				nobudgetExpenseList.add("지출");
+				nobudgetExpenseList.add(nobudget.getAmount());
+				nobudgetExpenseList.add(nobudget.getContent());
+				nobudgetExpenseList.add(nobudget.getMemo());
+			}
+		//System.out.println(nobudgetExpenseList);
+		if(budgetList.size()>0) {alldata.add(budgetList);}
+		if(nobudgetExpenseList.size()>0) {alldata.add(nobudgetExpenseList);}
+		
+			
+			
+			
+		calendarDAO.getNobudgetIncomeDetail(id,date);
+		
+		
+		
+		System.out.println("alldata"+alldata);
+		
+		return alldata;
 	}
 
 

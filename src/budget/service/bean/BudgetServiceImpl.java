@@ -29,6 +29,7 @@ import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.RecordTransferDTO;
 import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
+import goals.model.dao.GoalsDAOImpl;
 import member.model.dao.MemberDAO;
 import report.model.dao.ReportDAO;
 
@@ -52,6 +53,8 @@ public class BudgetServiceImpl implements BudgetService {
 	private RecordBudgetDAO recordBudgetDAO = null;
 	@Autowired
 	private ReportDAO reportDAO = null;
+	@Autowired
+	private GoalsDAOImpl goalsDAO = null;
 	
 	//신규 예산 설정
 	@Override
@@ -103,7 +106,7 @@ public class BudgetServiceImpl implements BudgetService {
 		TBdto.setStart_day(start_day);
 		TBdto.setEnd_day(end_day);
 		int actualPeriod = (int)Math.ceil((end_day.getTime()-start_day.getTime())/(24*60*60*1000));
-		TBdto.setCurrent(totalBudget*(actualPeriod-1)/actualPeriod);
+		TBdto.setTotal_budget_current(totalBudget*(actualPeriod-1)/actualPeriod);
 		
 		//DB에 총예산설정 넣은 후 해당 총예산의 고유번호 리턴
 		int budget_no = totalBudgetDAO.setBudget(TBdto);
@@ -161,7 +164,7 @@ public class BudgetServiceImpl implements BudgetService {
 				newTB.setEnd_day(Timestamp.valueOf(sdf.format(startday.getTime())));
 				
 				int actualPeriod = (int)Math.ceil((newTB.getEnd_day().getTime()-newTB.getStart_day().getTime())/(24*60*60*1000));
-				newTB.setCurrent(newTB.getBudget()*(actualPeriod-1)/actualPeriod);
+				newTB.setTotal_budget_current(newTB.getBudget()*(actualPeriod-1)/actualPeriod);
 				newTB.setId(id);
 				newTB.setPeriod(period);
 				
@@ -291,8 +294,7 @@ public class BudgetServiceImpl implements BudgetService {
 		}
 		
 		recordTransferDAO.insertRecordTransfer(recordList);
-		
-		
+			
 		/////////////////// 기록 삽입 끝///////////////////
 		
 		if(target_table.equals("budget")) {
@@ -323,6 +325,9 @@ public class BudgetServiceImpl implements BudgetService {
 			dto.setId(id);
 			
 			recordTransferDAO.insertRecordGoals(dto);
+			
+			//////sojin. goals테이블의 saving에 합산값 더하기
+			goalsDAO.updateSaving(Integer.parseInt(subSel), sum);
 		}
 		
 		
@@ -431,6 +436,57 @@ public class BudgetServiceImpl implements BudgetService {
 			lastDate.setDate(lastDate.getDate()+1);
 		}
 		
+	}
+	@Override
+	public List selectTodayBudget(String id) throws SQLException {
+		TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(id);
+		long lt = TBdto.getEnd_day().getTime()-TBdto.getStart_day().getTime();
+		int period = Math.round((lt)/(1000*60*60*24)) + 1;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List TBDList = totalBudgetDetailDAO.selectAllbyBudgetNum(TBdto.getBudget_no());
+		//현재 예산의 카테고리 리스트 불러오기
+		
+		List returnList = new ArrayList();
+		int TRsum = 0;
+		int TAsum = 0;
+		
+		for(Object obj:TBDList) {
+			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) obj;
+			
+			int category_no = dto.getCategory_no();
+			
+			//카테고리번호의 오늘하루 권장 예산
+			double recommend = dto.getCategory_current() / period;
+			
+			HashMap map = new HashMap();
+			map.put("budget_no", TBdto.getBudget_no());
+			map.put("category_no", category_no);
+			map.put("reg", sdf.format(new Date()));
+			
+			int actual = reportDAO.selectOutcomeSumByCatAndReg(map);
+			
+			HashMap returnMap = new HashMap();
+			returnMap.put("category_no", category_no);
+			returnMap.put("recommend", recommend);
+			returnMap.put("actual", actual);
+			
+			returnList.add(returnMap);
+			
+			TRsum += recommend;
+			TAsum += actual;
+			
+		}
+		
+		//총예산값 넣기
+		HashMap total = new HashMap();
+		total.put("category_no", 0);
+		total.put("recommend", TRsum);
+		total.put("actual", TAsum);
+		
+		returnList.add(0, total);
+		
+		return returnList;
 	}
 
 }
