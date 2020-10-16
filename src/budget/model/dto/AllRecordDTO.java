@@ -2,9 +2,7 @@ package budget.model.dto;
 
 import java.sql.Timestamp;
 
-public class BudgetRecordDTO {
-	// budgetDTO + budget_detailDTO
-	
+public class AllRecordDTO {
 	private int budget_outcome_no;
 	private int budget_no;
 	private String id;
@@ -14,6 +12,8 @@ public class BudgetRecordDTO {
 	private String content;
 	private String memo;
 	private String img;
+	private int nobudget_no;
+	private String type;
 	
 	public int getBudget_outcome_no() {
 		return budget_outcome_no;
@@ -69,7 +69,19 @@ public class BudgetRecordDTO {
 	public void setImg(String img) {
 		this.img = img;
 	}
+	public int getNobudget_no() {
+		return nobudget_no;
+	}
+	public void setNobudget_no(int nobudget_no) {
+		this.nobudget_no = nobudget_no;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 	
-	
+
 }

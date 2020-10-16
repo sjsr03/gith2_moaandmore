@@ -143,12 +143,8 @@ public class RecordServiceImpl implements RecordService{
 	public int budgetRecordDelete(String budget_outcome_no) throws SQLException {
 		int result = 0;
 		result = recordBudgetDAO.budgetRecordDelete(budget_outcome_no);
-		return result;
-		
-
+		return result;	
 	}
-	
-	
 	@Override
 	public RecordPageDTO selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)
 			throws SQLException {
@@ -183,8 +179,78 @@ public class RecordServiceImpl implements RecordService{
 		recordPage.setRecordList(recordList);
 		recordPage.setStartRow(startRow);
 		
-		return recordPage;
+		return recordPage;	
+	}
+	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 
+	@Override
+	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		RecordPageDTO recordPage = new RecordPageDTO();
 		
+		if(searchForRecordDTO.getPageNum() == null) {
+			searchForRecordDTO.setPageNum("1");
+		}
+		// 페이지 정보 담기
+		int pageSize = 10;
+		int currPage = Integer.parseInt(searchForRecordDTO.getPageNum());
+		int startRow = (currPage - 1) * pageSize + 1;
+		int endRow = currPage*pageSize;
+		int count = 0;
+		
+		List recordList = null;
+		searchForRecordDTO.setStartRow(startRow);
+		searchForRecordDTO.setEndRow(endRow);
+		
+		System.out.println("11111111111111");
+		// 여기서 타입 체크 후 dao 각각 불러줘야함!
+		String type=searchForRecordDTO.getType();
+		if(type.equals("budgetincome")) {
+			System.out.println("222222222222");
+			System.out.println("타입타입타입@@@"+type);
+			searchForRecordDTO.setType("income");
+			//예산+수입 or 예산+지출이면
+			count = recordNoBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
+			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
+			
+			if(count >0) { // 내역이 하나라도 있으면 
+				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
+			}
+		}else if(type.equals("budgetoutcome")){
+			searchForRecordDTO.setType("outcome");
+			//예산+수입 or 예산+지출이면
+			count = recordNoBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
+			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
+			
+			if(count >0) { // 내역이 하나라도 있으면 
+				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
+			}
+		}else if(type.equals("all")){ //예산+수입+지출이면
+			System.out.println("33333333333333");
+			count = recordNoBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
+			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
+			if(count>0) {
+				recordList = recordNoBudgetDAO.selectNobudgetRecord(searchForRecordDTO);
+			}
+		}else{ //수입+지출이면
+			System.out.println("4444444");
+			count = recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
+			
+			if(count>0) {
+				recordList = recordNoBudgetDAO.selectNobudgetRecord(searchForRecordDTO);
+			}
+		}
+		System.out.println("결과는???  : " + recordList.size());
+		System.out.println("결과 count ??  : " + count);
+		
+		
+		recordPage.setCount(count);
+		recordPage.setCurrPage(currPage);
+		recordPage.setEndRow(endRow);
+		recordPage.setPageNum(searchForRecordDTO.getPageNum());
+		recordPage.setPageSize(pageSize);
+		recordPage.setRecordList(recordList);
+		recordPage.setStartRow(startRow);
+		
+		return recordPage;	
 	}
 	// 날짜비교 
 	@Override
@@ -194,7 +260,7 @@ public class RecordServiceImpl implements RecordService{
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date startDay = format.parse((String) budgetDate.get(1));
 		Date endDay = format.parse((String)budgetDate.get(0));
-		Date comparedDay = format.parse(searchForRecordDTO.getSerachDate());
+		Date comparedDay = format.parse(searchForRecordDTO.getSearchDate());
 		
 		//System.out.println("startDay : " +startDay);
 		//System.out.println("endDay : " +endDay);
@@ -207,4 +273,5 @@ public class RecordServiceImpl implements RecordService{
 		}
 		return result;
 	}
+	
 }

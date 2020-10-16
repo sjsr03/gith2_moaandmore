@@ -27,9 +27,12 @@ public interface RecordService {
 	// 예산 번호로 예산 기록 삭제하기(budget 테이블만 삭제 -> detail도 알아서삭제됨)
 	public int budgetRecordDelete(String budget_outcome_no)throws SQLException;
 	
-	// 아이디, 날짜, pageNum, type, startday, endday로 nobudget 가져오기
+	// 아이디, 날짜, pageNum, type, startday, endday로 예산외 기록 가져오기
 	public RecordPageDTO selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 
 	// 날짜비교
 	public Boolean compareDate(SearchForRecordDTO searchForRecordDTO, List budgetDate )throws SQLException, ParseException;
+
+	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 
+	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 }
