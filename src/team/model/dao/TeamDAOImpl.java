@@ -107,5 +107,28 @@ public class TeamDAOImpl implements TeamDAO{
 		
 		return list;
 	}
+
+	@Override
+	public String getTeamUpdateTime() throws SQLException {
+		String time = sqlSession.selectOne("team.selectTeamUpdateTime");
+		
+		return time;
+	}
+
+	@Override
+	public void updateTeamUpdateTime(String day) throws SQLException {
+		sqlSession.update("team.updateTeamUpdateTime", day);
+	}
+
+	@Override
+	public int checkPw(int team_no, String pw) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("team_no", team_no);
+		map.put("pw", Integer.parseInt(pw));
+		
+		int result = sqlSession.selectOne("team.checkPw", map);
+		
+		return result;
+	}
 	
 }

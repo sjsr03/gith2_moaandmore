@@ -7,11 +7,14 @@ public class TeamMemberDTO {
 	private int saving;
 	private int final_rank;
 	private int tmp_rank; //db에는 없는 컬럼. 임시 등수용
+	private int is_join;
 	
 	
+	
+
 	public TeamMemberDTO() {};
 
-	public TeamMemberDTO(int team_no, String id, String nickname, int saving, int final_rank, int tmp_rank) {
+	public TeamMemberDTO(int team_no, String id, String nickname, int saving, int final_rank, int tmp_rank, int is_join) {
 		super();
 		this.team_no = team_no;
 		this.id = id;
@@ -19,6 +22,15 @@ public class TeamMemberDTO {
 		this.saving = saving;
 		this.final_rank = final_rank;
 		this.tmp_rank = tmp_rank;
+		this.is_join = is_join;
+	}
+	
+	public int getIs_join() {
+		return is_join;
+	}
+
+	public void setIs_join(int is_join) {
+		this.is_join = is_join;
 	}
 
 	public int getTmp_rank() {
@@ -65,7 +77,7 @@ public class TeamMemberDTO {
 	@Override
 	public String toString() {
 		return "TeamMemberDTO [team_no=" + team_no + ", id=" + id + ", nickname=" + nickname + ", saving=" + saving
-				+ ", final_rank=" + final_rank + ", tmp_rank=" + tmp_rank + "]";
+				+ ", final_rank=" + final_rank + ", tmp_rank=" + tmp_rank + ", is_join=" + is_join + "]";
 	}
 
 }
