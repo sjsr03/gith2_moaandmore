@@ -1,6 +1,7 @@
 package team.model.dao;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -40,6 +41,15 @@ public class TeamMemberDAOImpl implements TeamMemberDAO {
 	@Override
 	public void deleteTeamMemberAll(int teamNo) throws SQLException {
 		sqlSession.delete("teamMember.deleteTeamMemberAll", teamNo);
+	}
+
+	@Override
+	public void updateTeamMemJoin(int team_no, String nickname) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("team_no", team_no);
+		map.put("nickname", nickname);
+		
+		sqlSession.update("teamMember.updateTeamMemJoin", map);		
 	}
 
 }

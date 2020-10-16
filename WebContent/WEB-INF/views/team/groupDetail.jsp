@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -37,7 +38,7 @@
 						
 					}
 					
-					$("#team_memList").append("<li>"+ (i+1)+"등."+memList[i].nickname+"님. 달성액:"+memList[i].saving+"원</li>")
+					$("#team_memList").append("<li>"+ memList[i].tmp_rank+"등."+memList[i].nickname+"님. 달성액:"+memList[i].saving+"원</li>")
 				}
 				
 				if(btnCh == true){
@@ -79,8 +80,12 @@
 	<h2>${team.content}</h2>
 	<h3>${team.amount}</h3>
 	<span></span>
-	<h3>시작날짜 : ${team.start_day}</h3>
-	<h3>마감날짜 : ${team.end_day}</h3>
+	<fmt:parseDate var="stFmt" pattern="yyyy-MM-dd HH:mm:ss.SSS" value="${team.start_day}"/>
+	<fmt:parseDate var="edFmt" pattern="yyyy-MM-dd HH:mm:ss.SSS" value="${team.end_day}"/>
+	
+	
+	<h3>시작날짜: <fmt:formatDate value="${stFmt}" pattern="yyyy.MM.dd" /></h3>
+	<h3>마감날짜: <fmt:formatDate value="${edFmt}" pattern="yyyy.MM.dd" /></h3>
 	<h3>개설자 : ${team.leader}</h3>
 	<h3>참가인원수 :${team.people} </h3>
 	<h3>그룹상태 :  ${team.status}</h3>

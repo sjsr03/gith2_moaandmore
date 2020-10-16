@@ -85,6 +85,17 @@ public class GoalsDAOImpl implements GoalsDAO{
 		sqlSession.delete("goals.deleteGoal",map);
 	}
 
+	@Override
+	public void updateSaving(int goal_no, int sum) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("goal_no",goal_no);
+		map.put("sum", sum);
+		
+		sqlSession.update("goals.updateSaving",map);
+		
+	}
+
 	
 
 	

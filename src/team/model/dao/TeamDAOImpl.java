@@ -61,8 +61,6 @@ public class TeamDAOImpl implements TeamDAO{
 		
 		return list;
 	}
-
-	
 	
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
@@ -78,6 +76,15 @@ public class TeamDAOImpl implements TeamDAO{
 	@Override
 	public void updateTeamStatus(TeamDTO dto) throws SQLException {
 		sqlSession.update("team.updateTeamStatus", dto);
+		
+		 System.out.println("update스테이터스");
+		 
+		
+		//소진
+		if(dto.getStatus() == 3) {// status가 3 ; 종료일때 rank기록
+			System.out.println("3");
+			sqlSession.update("teamMember.updateFinalRank", dto.getTeam_no());		
+		}
 	}
 
 	@Override
@@ -102,6 +109,7 @@ public class TeamDAOImpl implements TeamDAO{
 	@Override
 	public String getTeamUpdateTime() throws SQLException {
 		String time = sqlSession.selectOne("team.selectTeamUpdateTime");
+		
 		return time;
 	}
 

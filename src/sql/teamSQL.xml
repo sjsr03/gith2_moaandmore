@@ -5,7 +5,7 @@
 
 
 	<select id="selectTeamUpdateTime" resultType="string">
-		select lastdate from update_table_reg
+		select lastdate from update_table_reg where table_name='team'
 	</select>
 	
 	<update id="updateTeamUpdateTime" parameterType="string">

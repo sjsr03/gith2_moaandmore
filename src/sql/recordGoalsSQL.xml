@@ -14,5 +14,10 @@
   		select * from record_goals where id=#{id} and goal_no=#{goals_no} order by reg desc
   	</select>
   	
+  	<!-- 그룹목표 달성액 추가 -->
+  	<update id="updateTeamMemberSaving" parameterType="teamMemberDTO">
+  		update team_member set saving=(saving+#{saving}) where id=#{id} and team_no=#{team_no}
+  	</update>
+  	
   </mapper>
  

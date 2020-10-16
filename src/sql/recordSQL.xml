@@ -26,14 +26,30 @@
   	<select id="selectBudgetRecord" parameterType="hashmap" resultType="budgetRecordDTO">
   		<![CDATA[SELECT t2.* from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT * FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
   	</select>
-  	
-  	<!-- 에산번호로 예산지출 내역 총 개수 가져오기 -->
+  	  	
+  	<!-- 예산번호로 예산지출 내역 총 개수 가져오기 -->
   	<select id="countBudgetRecord" parameterType="int" resultType="int">
   		select count(*) from budget where budget_no=#{value}
   	</select>
   	
+  	<!-- 예산 지출 고유 번호로 해당 예산 내역 삭제 -->
+  	<delete id="deleteBudgetRecord" parameterType="string" >
+  		delete from budget where budget_outcome_no=#{value}
+  	</delete>
+  	
+  	<!-- 예산 외 수입or지출 내역 총 개수 가져오기 -->
+  	<select id="countNoBudgetRecord" parameterType="searchForRecordDTO" resultType="int">
+  		SELECT count(*) FROM NOBUDGET WHERE id=#{id} and type=#{type} AND TO_CHAR(reg,'YYYY-MM')=#{serachDate}
+  	</select>
+  	
+  	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기 -->
+  	<select id="selectNoBudgetRecord" parameterType="searchForRecordDTO" resultType="NoBudgetRecordDTO">  	
+		<![CDATA[SELECT t2.* from(SELECT rownum r, t1.* FROM(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]> 
+  	</select>
+  	
   	<!-- 예산지출시 총예산 current값에서 차감 -->
   	<update id="updateCurrentBudget" parameterType="budgetDTO">
-  		update total_budget set current=(current-#{amount}) where budget_no=#{budget_no}
+  		update total_budget set total_budget_current=(total_budget_current-#{amount}) where budget_no=#{budget_no}
   	</update>
+  	
   </mapper>

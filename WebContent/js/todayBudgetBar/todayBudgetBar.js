@@ -28,13 +28,12 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 }
 
 // Bar Chart Example
-var ctx = document.getElementById("myBarChart");
 var myBarChart = new Chart(ctx, {
-	  type: 'bar',
+	  type: 'horizontalBar',
 	  data: {
 	    labels: labelList,
 	    datasets: [{
-	      label: "지출액",
+	      label: "현재까지 지출액",
 	      backgroundColor: "#4e73df",
 	      hoverBackgroundColor: "#2e59d9",
 	      borderColor: "#4e73df",
@@ -52,7 +51,7 @@ var myBarChart = new Chart(ctx, {
 	      }
 	    },
 	    scales: {
-	      xAxes: [{
+	      yAxes: [{
 	        time: {
 	          unit: 'month'
 	        },
@@ -61,11 +60,11 @@ var myBarChart = new Chart(ctx, {
 	          drawBorder: false
 	        },
 	        ticks: {
-	          maxTicksLimit: 31
+	          maxTicksLimit: 1
 	        },
 	        maxBarThickness: 25,
 	      }],
-	      yAxes: [{
+	      xAxes: [{
 	        ticks: {
 	          min: 0,
 	          max: max,

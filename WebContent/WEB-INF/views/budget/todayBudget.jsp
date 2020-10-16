@@ -5,22 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="">
-<meta name="author" content="">
-<!-- 제이쿼리 -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <title>오늘의 예산</title>
-	<!-- Custom fonts for this template-->
-	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
-	
-	<!-- Custom styles for this template-->
-	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"> 
-	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 <style>
 	#popup1 {
@@ -48,7 +33,7 @@
 		box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
 	}
 	input[type=number] {
-		width:70px;
+		width:100px;
 	}
 	#leftMoneyList, tr, td {
 		border:1px solid #ccc;
@@ -58,8 +43,8 @@
 </style>
 
 
-<body id="page-top">
 <jsp:include page="../sidebar.jsp"/>
+ <script src="/moamore/vendor/chart.js/Chart.min.js"></script>
  <!-- Begin Page Content -->
         <div class="container-fluid">
 
@@ -116,7 +101,7 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">현재 사용 예산</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                      <fmt:formatNumber value="${TBdto.budget-TBdto.current}" pattern="#,###"/>원</div>
+                      <fmt:formatNumber value="${TBdto.budget-TBdto.total_budget_current}" pattern="#,###"/>원</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-won-sign fa-2x text-gray-300"></i>
@@ -139,11 +124,37 @@
 		                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
 		                </div>
 		                <div class="card-body">
-		                	총예산 (${TBdto.budget-TBdto.current }/${TBdto.budget })
+		                	총예산 (${TBdto.budget-TBdto.total_budget_current }/${TBdto.budget })
 		                	<div class="progress mb-4">
-		                    	<div class="progress-bar" role="progressbar" style="width: ${((TBdto.budget-TBdto.current)/TBdto.budget)*100 }%" aria-valuenow="${TBdto.budget-TBdto.current }" aria-valuemin="0" aria-valuemax="${TBdto.budget }">${((TBdto.budget-TBdto.current)/TBdto.budget)*100 }%</div>
+		                    	<div class="progress-bar" role="progressbar" style="width: ${((TBdto.budget-TBdto.total_budget_current)/TBdto.budget)*100 }%" aria-valuenow="${TBdto.budget-TBdto.total_budget_current }" aria-valuemin="0" aria-valuemax="${TBdto.budget }">${((TBdto.budget-TBdto.total_budget_current)/TBdto.budget)*100 }%</div>
 		                 	</div>
 		                 	<hr>
+		                 	
+		                 	<c:forEach items="${todayData}" var="i" varStatus="st">
+		                 		${categories[i.category_no] } <br/>
+		                 		오늘하루 권장 지출액 : ${i.recommend }원 <br/>
+		                 		현재까지 지출액 : ${i.actual }원 <br/>
+		                 		비율 : ${i.actual / i.recommend }%<br/>
+		                 		
+		                 		<div class="chart-bar"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+				                    <canvas id="myBarChart${i.category_no }" width="657" height="320" class="chartjs-render-monitor" style="display: block; width: 657px; height: 320px;"></canvas>
+			                    </div>
+		                 		
+		                 		<script type="text/javascript">
+								  	var ctx = document.getElementById("myBarChart${i.category_no }");
+									var labelList = "${categories[i.category_no] }";
+									var dataList = "${i.actual }";
+									var max = ${i.recommend};
+								</script>
+								<script src="/moamore/js/todayBudgetBar/todayBudgetBar.js"></script>
+		                 		
+		                 		
+		                 		
+		                 		
+		                 		
+		                 		
+		                 		
+		                 	</c:forEach>
 		                 	
 		                </div>
 	               </div>
@@ -238,13 +249,7 @@
 	</div>
 	
 	<jsp:include page="../footer.jsp" />
-	
-	<!-- Bootstrap core JavaScript-->
-	  <script src="/moamore/vendor/jquery/jquery.min.js"></script>
-	  <script src="/moamore/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   
-  
-</body>
 <script>
 	$(document).ready(function(){
 		//남은 돈 총합 계산
@@ -382,5 +387,5 @@
 		}
 		inputAmount.parent().next().children('.LeftAfterTrans').val(rest);
 	}
+	
 </script>
-</html>

@@ -11,4 +11,5 @@
 	<context:component-scan base-package="goals"/>
 	
 	<bean id="date" class="java.util.Date"/>
+	
 </beans>
