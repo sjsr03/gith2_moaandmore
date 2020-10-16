@@ -103,7 +103,7 @@ public class BudgetServiceImpl implements BudgetService {
 		TBdto.setStart_day(start_day);
 		TBdto.setEnd_day(end_day);
 		int actualPeriod = (int)Math.ceil((end_day.getTime()-start_day.getTime())/(24*60*60*1000));
-		TBdto.setCurrent(totalBudget*(actualPeriod-1)/actualPeriod);
+		TBdto.setTotal_budget_current(totalBudget*(actualPeriod-1)/actualPeriod);
 		
 		//DB에 총예산설정 넣은 후 해당 총예산의 고유번호 리턴
 		int budget_no = totalBudgetDAO.setBudget(TBdto);
@@ -161,7 +161,7 @@ public class BudgetServiceImpl implements BudgetService {
 				newTB.setEnd_day(Timestamp.valueOf(sdf.format(startday.getTime())));
 				
 				int actualPeriod = (int)Math.ceil((newTB.getEnd_day().getTime()-newTB.getStart_day().getTime())/(24*60*60*1000));
-				newTB.setCurrent(newTB.getBudget()*(actualPeriod-1)/actualPeriod);
+				newTB.setTotal_budget_current(newTB.getBudget()*(actualPeriod-1)/actualPeriod);
 				newTB.setId(id);
 				newTB.setPeriod(period);
 				
@@ -431,6 +431,47 @@ public class BudgetServiceImpl implements BudgetService {
 			lastDate.setDate(lastDate.getDate()+1);
 		}
 		
+	}
+	@Override
+	public List selectTodayBudget(String id) throws SQLException {
+		TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(id);
+		long lt = TBdto.getEnd_day().getTime()-TBdto.getStart_day().getTime();
+		int period = Math.round((lt)/(1000*60*60*24)) + 1;
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List TBDList = totalBudgetDetailDAO.selectAllbyBudgetNum(TBdto.getBudget_no());
+		//현재 예산의 카테고리 리스트 불러오기
+		
+		List returnList = new ArrayList();
+		
+		for(Object obj:TBDList) {
+			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) obj;
+			
+			int category_no = dto.getCategory_no();
+			
+			//카테고리번호의 오늘하루 권장 예산
+			double recommend = dto.getCategory_current() / period;
+			
+			HashMap map = new HashMap();
+			map.put("budget_no", TBdto.getBudget_no());
+			map.put("category_no", category_no);
+			map.put("reg", sdf.format(new Date()));
+			
+			int actual = reportDAO.selectOutcomeSumByCatAndReg(map);
+			
+			HashMap returnMap = new HashMap();
+			returnMap.put("category_no", category_no);
+			returnMap.put("recommend", recommend);
+			returnMap.put("actual", actual);
+			
+			returnList.add(returnMap);
+			
+			
+			System.out.println("category_no : " + category_no + " / recommend : " + recommend + " / actual : " + actual);
+			
+		}
+		
+		return returnList;
 	}
 
 }

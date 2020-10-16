@@ -65,7 +65,7 @@ public class MainBean {
 			//현재 예산에서 총 소비액 불러오기
 			int outcomeSum = mainService.selectOutcomeSumByBudgetId(totalBudget.getBudget_no());
 			map.put("totalBudget", totalBudget.getBudget());
-			map.put("outcomeSum", totalBudget.getBudget()-totalBudget.getCurrent());
+			map.put("outcomeSum", totalBudget.getBudget()-totalBudget.getTotal_budget_current());
 			
 			return map;
 		}
