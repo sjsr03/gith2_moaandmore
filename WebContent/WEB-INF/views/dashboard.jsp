@@ -127,14 +127,14 @@
 	                					<c:if test="${MTgoal != null }">
 	                					<h6 class="m-0 font-weight-bold">${MTgoal.SUBJECT}</h6>
 	                					<div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-						                    <canvas id="MPgoal" width="150" height="100" class="chartjs-render-monitor" style="display: block; width: 8vw; height: 8vh;"></canvas>
+						                    <canvas id="MTgoal" width="150" height="100" class="chartjs-render-monitor" style="display: block; width: 8vw; height: 8vh;"></canvas>
 					                    </div>
 					                    달성액 : <span class="font-weight-bold text-primary"><fmt:formatNumber value="${MTgoal.SAVING }" pattern="#,###" /></span>원
 					                    <BR/>
 					                    목표액 : <span class="font-weight-bold text-primary"><fmt:formatNumber value="${MTgoal.TARGET_MONEY }" pattern="#,###" /></span>원
 					                    
 					                    <script type="text/javascript">
-					                   	 	var ctx = $("#MPgoal");
+					                   	 	var ctx = $("#MTgoal");
 					                    	var dataSet = [ ${MTgoal.SAVING} , ${MTgoal.TARGET_MONEY - MTgoal.SAVING} ];
 					                    	var ratio = ${MTgoal.RATE} ;
 					                    </script>
