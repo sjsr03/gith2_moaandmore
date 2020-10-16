@@ -47,4 +47,13 @@ public class LeftMoneyDAOImpl implements LeftMoneyDAO {
 		
 		sqlSession.update("leftMoney.updateLeftMoney", map);
 	}
+	
+	@Override
+	public int selectCurrentLeftMoneySum(String id) {
+		if (sqlSession.selectOne("leftMoney.selectCurrentLeftMoneySum", id) == null ) {
+			return 0; 
+		} else {
+			return sqlSession.selectOne("leftMoney.selectCurrentLeftMoneySum", id);
+		}
+	}
 }

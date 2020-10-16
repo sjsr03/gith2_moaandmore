@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import budget.model.dto.AllRecordDTO;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.NoBudgetDTO;
 import calendar.model.dao.CalendarDAO;
-import calendar.model.dto.CalendarDTO;
+
 
 
 public class CalendarServiceImpl implements CalendarService{
@@ -56,18 +59,7 @@ public class CalendarServiceImpl implements CalendarService{
 		return budgetalldate;
 	}
 
-
-	@Override
-	public List selectBudgetAmount(String id, List budgetAlldate) throws SQLException {
-		
-		//budget 테이블 지출 총금액
-		List AllBudgetamount = calendarDAO.selectBudgetAmount(id,budgetAlldate);
-		
-		
-		return AllBudgetamount;
-		
-		
-	}
+	
 
 
 	//budget 테이블 날짜랑 지출총액 맵으로 같이 보내줄 메서드 
@@ -78,7 +70,7 @@ public class CalendarServiceImpl implements CalendarService{
 		//id로 budget테이블에서 데이터가 있는 날짜 가져오기
 		List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
 		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
+		List<Integer> allbudgetAmount = calendarDAO.selectBudgetAmount(id,budgetAlldate);
 	
 		//리턴해줄 날짜랑 지출액
 		Map selectBudgetDateAndAmount = new HashMap();
@@ -90,16 +82,42 @@ public class CalendarServiceImpl implements CalendarService{
 		return selectBudgetDateAndAmount;
 	}
 
-	//nobudget테이블에서 데이터가 있는 날짜 가져오기
+	//nobudget테이블에서 지출 데이터가 있는 날짜 가져오기
 	@Override
-	public List selectNobudgetDatebyId(String id) throws SQLException {
+	public List selectNobudgetExpenseDatebyId(String id) throws SQLException {
 	
 		SimpleDateFormat yyyymmdd = new SimpleDateFormat("yyyy-MM-dd");
 		
-		List noBudget = calendarDAO.selectNoBudgetDatebyId(id);
+		List noBudgetExpense = calendarDAO.selectNoBudgetExpenseDatebyId(id);
 		
 		//return 해줄 중복값 제거된 budget 테이블 총 날짜
-		List noBudgetalldate = new ArrayList();
+		List noBudgetExpensealldate = new ArrayList();
+		
+		for(int i=0; i<noBudgetExpense.size(); i++) {
+			NoBudgetDTO noBudgetList = (NoBudgetDTO)noBudgetExpense.get(i);
+			Date indata =noBudgetList.getReg();
+			
+			String noBudgetDate = yyyymmdd.format(indata);
+			
+			if(!noBudgetExpensealldate.contains(noBudgetDate)){
+				noBudgetExpensealldate.add(noBudgetDate);
+			}
+			
+		}
+
+		return noBudgetExpensealldate;
+		
+	}
+
+	@Override
+	public List selectNobudgetIncomeDatebyId(String id) throws SQLException {
+	
+		SimpleDateFormat yyyymmdd = new SimpleDateFormat("yyyy-MM-dd");
+		
+		List noBudget = calendarDAO.selectNoBudgetIncomeDatebyId(id);
+		
+		//return 해줄 중복값 제거된 budget 테이블 총 날짜
+		List noBudgeIncometalldate = new ArrayList();
 		
 		for(int i=0; i<noBudget.size(); i++) {
 			NoBudgetDTO noBudgetList = (NoBudgetDTO)noBudget.get(i);
@@ -107,47 +125,25 @@ public class CalendarServiceImpl implements CalendarService{
 			
 			String noBudgetDate = yyyymmdd.format(indata);
 			
-			if(!noBudgetalldate.contains(noBudgetDate)){
-		       noBudgetalldate.add(noBudgetDate);
+			if(!noBudgeIncometalldate.contains(noBudgetDate)){
+				noBudgeIncometalldate.add(noBudgetDate);
 			}
 			
 		}
 
-		return noBudgetalldate;
+		return noBudgeIncometalldate;
 		
 	}
-
-	//nobudget테이블에서 예산외 총 지출액 가져오기
-	@Override
-	public List selectNobudgetExpenseAmount(String id, List nobudgetAlldate) throws SQLException {
-
-		//nobudget 테이블 지출 총금액
-		List allNoBudgetExpenseAmount = calendarDAO.selectNoBudgetExpenseAmount(id,nobudgetAlldate);
-				
-				
-		return allNoBudgetExpenseAmount;
-		
-	}
-
-	//nobudget테이블에서 예산외 총 수입액 가져오기
-	@Override
-	public List selectNobudgetIncomeAmount(String id, List nobudgetAlldate) throws SQLException {
-
-		//nobudget 테이블 수입 총금액
-		List allBudgetamount = calendarDAO.selectNoBudgetIncomeAmount(id,nobudgetAlldate);
-						
-						
-		return allBudgetamount;
-	}
+	
 
 	//nobudget 테이블 날짜랑 지출총액 맵으로 같이 보내줄 메서드 
 	@Override
 	public Map selectNobudgetExpenseDateAndAmount(String id) throws SQLException {
 		
 		//id로 nobudget테이블에서 데이터가 있는 날짜 가져오기
-		List<String> noBudgetAlldate = calendarService.selectNobudgetDatebyId(id);
+		List<String> noBudgetAlldate = calendarService.selectNobudgetExpenseDatebyId(id);
 		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allnoBudgetExpenseAmount = calendarService.selectNobudgetExpenseAmount(id, noBudgetAlldate);
+		List<Integer> allnoBudgetExpenseAmount = calendarDAO.selectNoBudgetExpenseAmount(id, noBudgetAlldate);
 	
 		//리턴해줄 날짜랑 지출액
 		Map noBudgetExpenseDateAndAmount = new HashMap();
@@ -164,9 +160,9 @@ public class CalendarServiceImpl implements CalendarService{
 	public Map selectNobudgetIncomeDateAndAmount(String id) throws SQLException {
 		
 		//id로 nobudget테이블에서 데이터가 있는 날짜 가져오기
-		List<String> noBudgetAlldate = calendarService.selectNobudgetDatebyId(id);
+		List<String> noBudgetAlldate = calendarService.selectNobudgetIncomeDatebyId(id);
 		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allnoBudgetAmount = calendarService.selectNobudgetIncomeAmount(id, noBudgetAlldate);
+		List<Integer> allnoBudgetAmount = calendarDAO.selectNoBudgetIncomeAmount(id, noBudgetAlldate);
 		
 		//리턴해줄 날짜랑 지출액
 		Map noBudgetIncomeDateAndAmount = new HashMap();
@@ -179,41 +175,54 @@ public class CalendarServiceImpl implements CalendarService{
 	}
 
 
+
 	@Override
-	public Map findByCheckVal(String id,List<String> checkVal) throws SQLException {
+	public List getAlldata(String date) throws SQLException {
+
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		
-		//id로 budget테이블에서 데이터가 있는 날짜 가져오기
-		List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
-		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
+		List alldata = new ArrayList();
+		List budgetDetail = calendarDAO.getBudgetDetail(id,date);
+		List budgetList = new ArrayList();
+		for(int i = 0; i<budgetDetail.size(); i++) {
+		AllRecordDTO budget = (AllRecordDTO)budgetDetail.get(i);
 		
-		//id로 nobudget테이블에서 데이터가 있는 날짜 가져오기
-		List<String> noBudgetAlldate = calendarService.selectNobudgetDatebyId(id);
-		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allnoBudgetExpenseAmount = calendarService.selectNobudgetExpenseAmount(id, noBudgetAlldate);
-		
-		
-		if(checkVal.contains("1")) {
-			Map map = new HashMap();
-			
-			for(int i = 0; i<budgetAlldate.size(); i++) {
-				CalendarDTO BudgetDateAndAmount = new CalendarDTO();
-				
-				System.out.println(budgetAlldate.get(i));
-				BudgetDateAndAmount.setStart(budgetAlldate.get(i));
-				BudgetDateAndAmount.setTitle(allbudgetAmount.get(i));
-				BudgetDateAndAmount.setColor("white");
-				BudgetDateAndAmount.setColor("red");
-				map.put(i, BudgetDateAndAmount);
-			
-			}	
+			budgetList.add("지출");
+			budgetList.add(budget.getAmount());
+			budgetList.add(budget.getContent());
+			budgetList.add(budget.getMemo());
 			
 		}
+		System.out.println("budgetList"+budgetList);
+		
+		
+		List nobudgetExpenseDetail= calendarDAO.getNobudgetExpenseDetail(id,date);
+		List nobudgetExpenseList = new ArrayList();
+			for(int i=0; i<nobudgetExpenseList.size(); i++) {
+				AllRecordDTO nobudget = (AllRecordDTO)nobudgetExpenseDetail.get(i);
+				nobudgetExpenseList.add("지출");
+				nobudgetExpenseList.add(nobudget.getAmount());
+				nobudgetExpenseList.add(nobudget.getContent());
+				nobudgetExpenseList.add(nobudget.getMemo());
+			}
+		//System.out.println(nobudgetExpenseList);
+		if(budgetList.size()>0) {alldata.add(budgetList);}
+		if(nobudgetExpenseList.size()>0) {alldata.add(nobudgetExpenseList);}
+		
+			
+			
+			
+		calendarDAO.getNobudgetIncomeDetail(id,date);
 		
 		
 		
-		return null;
+		System.out.println("alldata"+alldata);
+		
+		return alldata;
 	}
+
+
+	
 
 
 	

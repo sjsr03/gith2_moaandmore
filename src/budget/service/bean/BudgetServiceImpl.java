@@ -489,6 +489,12 @@ public class BudgetServiceImpl implements BudgetService {
 		return returnList;
 	}
 
+	
+	@Override
+	public int selectLeftMoneySum(java.lang.String id) throws SQLException {
+		int LMsum = leftMoneyDAO.selectCurrentLeftMoneySum(id) + recordTransferDAO.selectLeftMoneySum(id);
+		return LMsum;
+	}
 }
 	
 

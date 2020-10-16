@@ -27,99 +27,6 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
-/*
-// Bar Chart Example
-var myBarChart = new Chart(ctx, {
-	  type: 'horizontalBar',
-	  data: {
-	    labels: labelList,
-	    datasets: [{
-	      label: "현재까지 지출액",
-	      backgroundColor: "#4e73df",
-	      hoverBackgroundColor: "#2e59d9",
-	      borderColor: "#4e73df",
-	      data: dataList,
-	    }],
-	  },
-	  options: {
-	    maintainAspectRatio: false,
-	    layout: {
-	      padding: {
-	        left: 10,
-	        right: 25,
-	        top: 25,
-	        bottom: 0
-	      }
-	    },
-	    scales: {
-	      yAxes: [{
-	        time: {
-	          unit: 'month'
-	        },
-	        gridLines: {
-	          display: false,
-	          drawBorder: false
-	        },
-	        ticks: {
-	          maxTicksLimit: 1
-	        },
-	        maxBarThickness: 25,
-	      }],
-	      xAxes: [{
-	        ticks: {
-	          min: 0,
-	          max: max,
-	          maxTicksLimit: 5,
-	          padding: 10,
-	          beginAtZero: true,
-
-	          // Include a dollar sign in the ticks
-	          callback: function(value, index, values) {
-	            return number_format(value) + "원";
-	          }
-	        },
-	        gridLines: {
-	          color: "rgb(234, 236, 244)",
-	          zeroLineColor: "rgb(234, 236, 244)",
-	          drawBorder: false,
-	          borderDash: [2],
-	          zeroLineBorderDash: [2]
-	        }
-	      }],
-	    },
-	    legend: {
-	      display: false
-	    },
-	    tooltips: {
-	      titleMarginBottom: 10,
-	      titleFontColor: '#6e707e',
-	      titleFontSize: 14,
-	      backgroundColor: "rgb(255,255,255)",
-	      bodyFontColor: "#858796",
-	      borderColor: '#dddfeb',
-	      borderWidth: 1,
-	      xPadding: 15,
-	      yPadding: 15,
-	      displayColors: false,
-	      caretPadding: 10,
-	      callbacks: {
-	        label: function(tooltipItem, chart) {
-	          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-	          return datasetLabel + ' : ' + number_format(tooltipItem.yLabel) + "원";
-	        }
-	      }
-	    },
-	  }
-});
-
-*/
-
-
-
-
-
-
-
 
 
 
@@ -129,7 +36,7 @@ var myBarChart = new Chart(ctx, {
 	data: {
 	    labels: labelList,
 	    datasets: [{
-	      label: "현재까지 지출액",
+	      label: "현재 지출액",
 	      backgroundColor: backgroundColor,
 	      hoverBackgroundColor: hoverBackgroundColor,
 	      borderColor: borderColor,

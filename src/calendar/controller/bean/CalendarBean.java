@@ -1,6 +1,7 @@
 package calendar.controller.bean;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
-import calendar.model.dto.CalendarDTO;
+
 import calendar.service.bean.CalendarService;
 
 
@@ -32,19 +33,12 @@ public class CalendarBean {
 	private CalendarService calendarService = null;
 	
 	
-	
-	
+
 	
 	@RequestMapping("calendar.moa")
 	public String calendar(Model model) throws SQLException{
 		
-		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 
-		//budget의 날짜와 총 지출액 map 형태로 받아오기 
-		
-		
-		
-	
 		
 		return "calendar/calendar2";
 	}
@@ -56,24 +50,22 @@ public class CalendarBean {
 	public @ResponseBody Map getCalendarEvent(@RequestParam(value="checkVal[]") List<String> checkVal) throws SQLException{
 		
 		
-		System.out.println(checkVal);
-		
-		
-		
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		
-		//Map budgetDateAndAmount = calendarService.selectBudgetDateAndAmount(id);
 		
-		//nobudget의 날짜와 총 지출액 map 형태로 받아오기
-		Map noBudgetExpenseDateAndAmount = calendarService.selectNobudgetExpenseDateAndAmount(id);
-		
-		//nobudget의 날짜와 총 수입액 map 형태로 받아오기
-		Map noBudgetIncomeDateAndAmount = calendarService.selectNobudgetIncomeDateAndAmount(id);
-		
+		//budget의 날짜와 총 지출액 받아오기(1)
 		Map BudgetDateAndAmount = calendarService.selectBudgetDateAndAmount(id);
 		
+		//nobudget의 날짜와 총 지출액 map 형태로 받아오기(2)
+		Map noBudgetExpenseDateAndAmount = calendarService.selectNobudgetExpenseDateAndAmount(id);
+		
+		//nobudget의 날짜와 총 수입액 map 형태로 받아오기(3)
+		Map noBudgetIncomeDateAndAmount = calendarService.selectNobudgetIncomeDateAndAmount(id);
+		
+		//페이지에 넘겨줄 map
 		Map finalByCheckVal = new HashMap();
-		//checkVal로 해당하는 값 맵으로 넘어서 출력
+		
+		//checkVal로 체크해서 뿌려줄값 map에 담아주기
 		if(checkVal.contains("1")) {
 			finalByCheckVal.put(1, BudgetDateAndAmount);
 		}
@@ -84,9 +76,7 @@ public class CalendarBean {
 			finalByCheckVal.put(3, noBudgetIncomeDateAndAmount);
 		}
 		
-		//System.out.println(finalByCheckVal.get(1).get("2020-10-06"));
-		System.out.println(finalByCheckVal);
-		
+
 		
 		return finalByCheckVal;
 	}
@@ -94,8 +84,18 @@ public class CalendarBean {
 	
 	
 	
-	
-	
+	@RequestMapping(value="getCalendarEventDetail.moa", method= {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody List getCalendarEventDetail(String date) throws SQLException{
+		
+		System.out.println(date);
+		
+		List alldata= calendarService.getAlldata(date);
+		
+		
+		
+		//전체 list들 list에 담아주기
+		return alldata;
+	}
 	
 	
 }
