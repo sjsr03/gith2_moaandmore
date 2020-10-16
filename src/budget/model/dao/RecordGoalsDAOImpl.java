@@ -1,4 +1,4 @@
-package budget.model;
+package budget.model.dao;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -8,7 +8,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import budget.model.dao.RecordGoalsDAO;
 import budget.model.dto.RecordGoalsDTO;
 
 

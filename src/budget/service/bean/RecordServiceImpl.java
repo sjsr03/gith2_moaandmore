@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +25,7 @@ import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
 import budget.model.dto.RecordPageDTO;
+import budget.model.dto.SearchForRecordDTO;
 
 @Service
 public class RecordServiceImpl implements RecordService{
@@ -114,7 +116,7 @@ public class RecordServiceImpl implements RecordService{
 		int pageSize = 10;
 		int currPage = Integer.parseInt(pageNum);
 		int startRow = (currPage - 1) * pageSize + 1;
-		int endRow = currPage * pageSize + 1;
+		int endRow = currPage*pageSize;
 		int count = 0;
 		
 		List recordList = null;
@@ -134,5 +136,73 @@ public class RecordServiceImpl implements RecordService{
 		recordPage.setStartRow(startRow);
 		
 		return recordPage;
+	}
+	
+	// 내역 삭제
+	@Override
+	public int budgetRecordDelete(String budget_outcome_no) throws SQLException {
+		int result = 0;
+		result = recordBudgetDAO.budgetRecordDelete(budget_outcome_no);
+		return result;
+		
+
+	}
+	
+	
+	@Override
+	public RecordPageDTO selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)
+			throws SQLException {
+		RecordPageDTO recordPage = new RecordPageDTO();
+		
+		if(searchForRecordDTO.getPageNum() == null) {
+			searchForRecordDTO.setPageNum("1");
+		}
+		// 페이지 정보 담기
+		int pageSize = 10;
+		int currPage = Integer.parseInt(searchForRecordDTO.getPageNum());
+		int startRow = (currPage - 1) * pageSize + 1;
+		int endRow = currPage*pageSize;
+		int count = 0;
+		
+		List recordList = null;
+		
+		// 전체 목록 수 가져오기 (타입별로) 
+		count = recordNoBudgetDAO.CountAllNoBudgetById(searchForRecordDTO);
+		if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
+			recordList = recordNoBudgetDAO.selectAllNoBudget(searchForRecordDTO);
+			System.out.println("예산번호로 예산기록목록 가져오기  : " + recordList.size());
+		}
+		
+		recordPage.setCount(count);
+		recordPage.setCurrPage(currPage);
+		recordPage.setEndRow(endRow);
+		recordPage.setPageNum(searchForRecordDTO.getPageNum());
+		recordPage.setPageSize(pageSize);
+		recordPage.setRecordList(recordList);
+		recordPage.setStartRow(startRow);
+		
+		return recordPage;
+		
+	}
+	// 날짜비교 
+	@Override
+	public Boolean compareDate(SearchForRecordDTO searchForRecordDTO, List budgetDate) throws SQLException, ParseException{
+		Boolean result = false;
+		
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDay = format.parse((String) budgetDate.get(1));
+		Date endDay = format.parse((String)budgetDate.get(0));
+		Date comparedDay = format.parse(searchForRecordDTO.getSerachDate());
+		
+		//System.out.println("startDay : " +startDay);
+		//System.out.println("endDay : " +endDay);
+		//System.out.println("comparedDay : " +comparedDay);
+		int compareS = comparedDay.compareTo(startDay);
+		int compareE = comparedDay.compareTo(endDay);
+		//System.out.println("시작날짜랑 비교 : " + compareS + "    끝나는 날짜랑 비교 : " + compareE );
+		if((compareS >= 0) && (compareE <= 0)) {
+			result = true;
+		}
+		return result;
 	}
 }
