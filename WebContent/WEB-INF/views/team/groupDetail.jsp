@@ -38,7 +38,7 @@
 						
 					}
 					
-					$("#team_memList").append("<li>"+ (i+1)+"등."+memList[i].nickname+"님. 달성액:"+memList[i].saving+"원</li>")
+					$("#team_memList").append("<li>"+ memList[i].tmp_rank+"등."+memList[i].nickname+"님. 달성액:"+memList[i].saving+"원</li>")
 				}
 				
 				if(btnCh == true){

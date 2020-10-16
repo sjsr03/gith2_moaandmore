@@ -1,6 +1,7 @@
 package budget.model.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,15 +41,21 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 	@Override
 	public int CountAllNoBudgetById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		int count = 0;
+		System.out.println("디에이오에서~~");
+		System.out.println("아이디"+searchForRecordDTO.getId());	
+		System.out.println("날짜"+searchForRecordDTO.getSerachDate());
+		System.out.println("타입"+searchForRecordDTO.getType());
 		count = sqlSession.selectOne("record.countNoBudgetRecord", searchForRecordDTO);
 		System.out.println("count ::: " + count);
 		
 		return count;
 	}
 	@Override
-	public List selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)
-			throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+	public List selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)throws SQLException {
+		List noBudgetRocordList = new ArrayList();
+		
+		noBudgetRocordList = sqlSession.selectList("record.selectNoBudgetRecord", searchForRecordDTO);
+		//System.out.println("노버겟~리스트~~ : " + noBudgetRocordList.size());
+		return noBudgetRocordList;
 	}
 }

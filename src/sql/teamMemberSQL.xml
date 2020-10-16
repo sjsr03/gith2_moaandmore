@@ -10,9 +10,19 @@
 		insert into team_member values(#{team_no},#{id},#{nickname},#{saving},#{fianl_rank})	
 	</insert>
 	<select id="selectAllByTeamNo" parameterType="int" resultType="teamMemberDTO">
-		select * from team_member where team_no = #{value} ORDER BY saving DESC	
+		select tm.*, RANK() OVER(ORDER BY saving DESC) AS tmp_rank from team_member tm where team_no = #{value}
 	</select>
 	<select id="deleteTeamMemberAll" parameterType="int">
 		delete from team_member where team_no = #{value}
 	</select>
+	
+	<update id="updateFinalRank" parameterType="int">
+		UPDATE team_member a SET a.final_rank = (SELECT b.ranking FROM(SELECT team_member.*, RANK() OVER (ORDER BY saving DESC) AS ranking FROM team_member WHERE team_no= #{value} )b WHERE a.team_no = b.team_no AND a.id=b.id) 
+	</update>
+	
+	
+ 	
+ 	<update id="updateTeamMemJoin" parameterType="hashmap">
+		update team_member set is_join='1' where team_no=#{team_no} and nickname=#{nickname}
+	</update>
 </mapper>

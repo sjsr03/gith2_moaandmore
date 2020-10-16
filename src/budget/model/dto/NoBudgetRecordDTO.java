@@ -2,7 +2,7 @@ package budget.model.dto;
 
 import java.sql.Timestamp;
 
-public class NoBudgetRocordDTO {
+public class NoBudgetRecordDTO {
 	// 예산 제외 지출/수입 내역 DTO+DetailDTO
 	private int nobudget_no;
 	private String id;
@@ -68,6 +68,4 @@ public class NoBudgetRocordDTO {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	
-	
 }

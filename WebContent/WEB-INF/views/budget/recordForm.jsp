@@ -129,11 +129,12 @@
 			
 			console.log("버겟 넘~~~ : " + budget_no);
 			// budgetNum도 hidden으로 보내주기
-			var intBudget_no = Number(budget_no);
-			//console.log(typeof intBudget_no);
+			if(budget_no != 0){
+				var intBudget_no = Number(budget_no);
+				//console.log(typeof intBudget_no);
+				$("#budget_no").val(intBudget_no);
+			}
 			
-			$("#budget_no").val(intBudget_no);
-	
 			// category_no 예산일 때 카테고리 넘버 보내주기 
 			var selectedOption = $("#category option:selected").val(); 
 			var numberOption = Number(selectedOption);
@@ -152,7 +153,7 @@
 <form id="recordForm" action="/moamore/record/recordPro.moa" method="post" enctype="multipart/form-data">
 <%-- 데이터 넘어갈 때 수입인지 지출인지 예산내 지출인지도 보내줘야한다. --%>
 <input type="hidden" id="type" name="type" value="type"/>
-<input type="hidden" id="budget_no" name="budget_no" value="0"/>
+<input type="hidden" id="budget_no" name="budget_no" value="${budgetNum}"/>
 <input type="hidden" id="category_no" name="category_no" value="0"/> 
 
 	<div>
