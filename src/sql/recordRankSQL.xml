@@ -3,10 +3,28 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
-  
-  
- <mapper namespace="record_rank">
- 	
- 
- 
+ <mapper namespace="recordRank">
+ 	<update id="updateAll" parameterType="java.util.List">
+ 		<selectKey keyProperty="res"  resultType="int" order="BEFORE">
+ 			select count(*) AS res from record_rank where id= #{id}
+ 		</selectKey>
+ 		<if test="res == 0">
+ 			<foreach collection="list" item="item" index="index" separator=" " open="INSET ALL" close="select * from dual">
+ 				INTO record_rank (
+ 					id,
+ 					cnt,
+ 					rank_sum
+ 				) values{
+ 					#{item.id},
+ 					1,
+ 					#{item.final_rank}
+ 				}
+ 			</foreach>
+ 		</if>	
+ 		<if test="res == 1">
+ 			<foreach collection="list" item="item" index="index" separator=";" open="DECLARE BEGIN" close="; END;">
+ 				UPDATE record_rank set cnt = cnt+1, rank_sum = rank_sum +#{item.final_rank} WHERE id=#{item.id}
+ 			</foreach>
+ 		</if>
+ 	</update>
  </mapper>

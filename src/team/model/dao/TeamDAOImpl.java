@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import team.model.dto.TeamDTO;
+import team.model.dto.TeamMemberDTO;
 
 
 @Repository
@@ -76,14 +77,15 @@ public class TeamDAOImpl implements TeamDAO{
 	@Override
 	public void updateTeamStatus(TeamDTO dto) throws SQLException {
 		sqlSession.update("team.updateTeamStatus", dto);
-		
-		 System.out.println("update스테이터스");
-		 
-		
 		//소진
 		if(dto.getStatus() == 3) {// status가 3 ; 종료일때 rank기록
-			System.out.println("3");
+			//최종랭크 final_rank에 기록
 			sqlSession.update("teamMember.updateFinalRank", dto.getTeam_no());		
+			
+			//record_rank테이블에 누적 랭킹정보 업데이트
+			List<TeamMemberDTO> list = sqlSession.selectList("teamMember.selectAllByTeamNo",dto.getTeam_no());
+			sqlSession.update("recordRank.updateAll", list);
+			
 		}
 	}
 
