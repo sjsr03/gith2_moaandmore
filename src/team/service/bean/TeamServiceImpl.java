@@ -63,4 +63,19 @@ public class TeamServiceImpl implements TeamService{
 		return dao.getTeamMyRequests(nickname, start, end);
 	}
 
+	@Override
+	public String getTeamUpdateTime() throws SQLException {
+		return dao.getTeamUpdateTime();
+	}
+
+	@Override
+	public void updateTeamUpdateTime(String day) throws SQLException {
+		dao.updateTeamUpdateTime(day);
+	}
+
+	@Override
+	public int checkPw(int team_no, String pw) throws SQLException {
+		return dao.checkPw(team_no, pw);
+	}
+
 }
