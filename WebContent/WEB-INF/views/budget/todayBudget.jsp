@@ -124,12 +124,13 @@
 		                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
 		                </div>
 		                <div class="card-body">
+		                <!-- 
 		                	총예산 (${TBdto.budget-TBdto.total_budget_current }/${TBdto.budget })
 		                	<div class="progress mb-4">
 		                    	<div class="progress-bar" role="progressbar" style="width: ${((TBdto.budget-TBdto.total_budget_current)/TBdto.budget)*100 }%" aria-valuenow="" aria-valuemin="0" aria-valuemax="">${((TBdto.budget-TBdto.total_budget_current)/TBdto.budget)*100 }%</div>
 		                 	</div>
 	                	<hr/>
-				                 	
+						 -->				                 	
 	                
                  	<c:forEach items="${todayData}" var="i" varStatus="st">
                  		<div class="card shadow mb-4">
@@ -181,11 +182,14 @@
                  		
                  		
                  		
-                 		
+                 		<c:if test="${i.category_no == 0 }" >
+                 			<hr/>
+                 		</c:if>
                  		
                  	</c:forEach>
 		                 	
 		                </div>
+	                </div>
               </div>
               <!-- 두번째줄 오른쪽컬럼 -->
 				<div class="col-lg-6">
@@ -275,7 +279,6 @@
 		</div>
 	</div>
 	
-	</div>
 	
 	<jsp:include page="../footer.jsp" />
   
