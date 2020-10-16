@@ -254,7 +254,6 @@ public class RecordBean {
 	
 	// 예산외
 	// 아이디랑 pageNum, type, 시작날짜 끝나는날짜로 가져오기.................
-	//recordPage = recordService.selectAllNoBudget(id, type, pageNum, startDay, endDay)
 	// 아이디로 예산외 수입/지출 카테고리 정보 DTO 담은 리스트 가져오기
 	@RequestMapping(value="selectNoBudgetRecord.moa")
 	public String selectNoBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{
@@ -263,7 +262,7 @@ public class RecordBean {
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
-		
+		model.addAttribute("recordPage", recordPage);
 		return "budget/moneyLog";
 	}
 	
