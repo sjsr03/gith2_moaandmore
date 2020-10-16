@@ -10,7 +10,7 @@
 		insert into team_member values(#{team_no},#{id},#{nickname},#{saving},#{fianl_rank})	
 	</insert>
 	<select id="selectAllByTeamNo" parameterType="int" resultType="teamMemberDTO">
-		select * from team_member where team_no = #{value} ORDER BY saving DESC	
+		select tm.*, RANK() OVER(ORDER BY saving DESC) AS tmp_rank from team_member tm where team_no = #{value}
 	</select>
 	<select id="deleteTeamMemberAll" parameterType="int">
 		delete from team_member where team_no = #{value}
