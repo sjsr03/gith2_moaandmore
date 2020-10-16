@@ -15,4 +15,7 @@ public interface LeftMoneyDAO {
 	
 	//해당 카테고리에 남은돈 추가
 	public void updateLeftMoney(int amount, int category_no, String id);
+	
+	//회원의 현재 남은 돈 합산 
+	public int selectCurrentLeftMoneySum(String id);
 }

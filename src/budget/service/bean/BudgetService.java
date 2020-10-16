@@ -55,6 +55,9 @@ public interface BudgetService {
 	//남은 돈 계산하기
 	public void calLeftMoney(String id) throws SQLException;
 	
+	//남은 돈 전체 합산 가져오기
+	public int selectLeftMoneySum(String id) throws SQLException;
+	
 	//오늘의 예산 데이터 가져오기
 	public List selectTodayBudget(String id) throws SQLException;
 }
