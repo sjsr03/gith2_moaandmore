@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +26,27 @@
         .fc-day-content {height: 35px !important;}
     }
     .fc-event-container > .fc-event-more {display: none;}
+    .test { 
+         position: absolute; 
+         top: 50%; 
+         left: 50%; 
+         transform: translate(-50%, -50%); 
+         background-color: white; 
+         padding: 1rem 1.5rem; 
+         width: 500px; 
+         height: 350px; 
+         border-radius: 0.5rem; 
+         visibility: hidden; 
+     }  
+    
+    .show{ 
+         opacity: 1; 
+         visibility: visible; 
+         transform: scale(1.0); 
+         transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; 
+     }  
+    
+    
 </style>
 <body>
 <input class="checkbox" id="checkbox"  type="checkbox" value="1"/> 지출
@@ -37,13 +59,36 @@
 <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery-ui.min.js'></script>
 <script src='https://fullcalendar.io/js/fullcalendar-3.1.0/fullcalendar.min.js'></script>
 
+
+<div id="test" class="test">
+	gggggg
+</div>
+
+
+
 </body>
 <script>
 
-var checkVal = [];	
-var color=[{1:'red'},{2:'blue'},{3:'gray'}];
-console.log(color);
+var checkVal = [""];	
+
+var col='';
+var pm='';
+var events = [];	
+
 $(document).ready(function () {
+	$(".checkbox").each(function(){
+		 	$(this).on('change',function(){
+	 			//체크된값 checkVal에 넣어주기
+				if($(this).is(":checked")){
+				   checkVal.push($(this).val());
+				}else{
+					checkVal.splice(checkVal.indexOf($(this).val()),1);
+				}	 	
+				$('#calendar').fullCalendar('removeEventSource', events);
+			    $('#calendar').fullCalendar('addEventSource', events);
+			    $('#calendar').fullCalendar('refetchEvents');
+		 	});
+	 });
 
 	$('#calendar').fullCalendar({ 
 		
@@ -56,15 +101,7 @@ $(document).ready(function () {
 	      },
 	      events:
 	    	  function(start,end,timezone,callback){
-	    	  $(".checkbox").each(function(){
-	    		 	$(this).on('change',function(){
-	    					if($(this).is(":checked")){
-	    					   checkVal.push($(this).val());
-	    					}else{
-								checkVal.splice(checkVal.indexOf($(this).val()),1);
-	    					}
-	    					console.log("최종",checkVal);
-	    					$.ajax({
+	    	  			$.ajax({
 					   			url: "getCalendarEvent.moa", 
 					   			type :"POST",
 					   			async: false,
@@ -77,44 +114,75 @@ $(document).ready(function () {
 								},
 					   			success: function(finalByCheckVal) {
 					   				var events = [];
-					   				console.log("success");
-					   				console.log(finalByCheckVal);
 					   				for(var i in finalByCheckVal){
-					   					console.log("i",i);
-					   					if(i===1){
-					   						var col='red';
-					   					}else if(i===2){
-					   						var col='blue';
-					   					}else if(i===3){
-					   						var col='gray';            
+					   					if(i==1){
+					   						col = 'red';
+					   						pm = '-';
+					   					}else if(i==2){
+					   						col = 'blue';
+					   						pm = '+';
+					   					}else if(i==3){
+					   						col='gray';
+					   						pm = '-';
 					   					}
 					   					for(var j in finalByCheckVal[i]){
-					   						console.log(j);
-					   						console.log(finalByCheckVal[i][j]);
 	    				    	    		 	events.push({
-	    				    	    		 		title:finalByCheckVal[i][j],
-	    				    	    		 		start:j
-	    				    	    		 		color:col
+	    				    	    		 		title:pm+finalByCheckVal[i][j],
+	    				    	    		 		start:j,
+	    				    	    		 		color: 'white',
+	    				    	    		 	    textColor: col
 	    				    	    		 	});
 			    	    		 		}   		
 					   				}
-					   				console.log("events",events);
 					   			 	callback(events);	
-					   			 	console.log("callback");
 					   			}
-	    		 		});
-	    		 	});	
-	    	 	}); //checkbox 
+	    		 		});//ajax
+	      },//events
+	      eventClick: function(event) {
+             	alert(event.start);
+             	var date = new Date(event.start);
+             	 date = getFormatDate(date);
+             	 console.log(date);
+	    	 	//$('#test').addClass('show');
+	    	 	//$('#test').append( '<span>&raquo; My Text</span>' );
+	    	 	$.ajax({
+			   			url: "getCalendarEventDetail.moa", 
+			   			type :"POST",
+			   			data:{date:date},
+			   	  	 	dataType : "json",
+			   			error : function(){
+							console.log("error");
+						},
+			   			success: function(ttest) {
+			   				
+			   				
+			   				
+			   			
+			   			}
 	    	
-	    	 
-	      }//events 
+              	});
 	      
+	      		//$(this).find('.div').hasClass('on')){
+        		//console.log(1);
+        		//$(this).find('.my_sub').removeClass('on');
+	  			
+		}//eventClick
+	  });
 	   
-	
-	});
-	   // calendar.render();	
- 	});
+});
+//yyyy-mm-dd
+function getFormatDate(date){
+    var year = date.getFullYear();
+    var month = (1 + date.getMonth());
+    month = month >= 10 ? month : '0' + month;
+    var day = date.getDate();
+    day = day >= 10 ? day : '0' + day;
+    return year + '-' + month + '-' + day;
+}
     
+    
+    
+ 	
     </script>
 
 

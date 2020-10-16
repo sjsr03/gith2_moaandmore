@@ -35,7 +35,7 @@ public class TeamDAOImpl implements TeamDAO{
 	}
 	
 	@Override
-	public List getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException {
+	public List<TeamDTO> getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException {
 		HashMap map = new HashMap();
 		map.put("start", start);
 		map.put("end", end);
@@ -46,9 +46,18 @@ public class TeamDAOImpl implements TeamDAO{
 		
 		List list = null;
 		
-		list = sqlSession.selectList("team.selectTeamAll", map);
+		list = sqlSession.selectList("team.selectTeamAllCon", map);
 		
 		
+		
+		return list;
+	}
+	
+	@Override
+	public List<TeamDTO> getTeamAll() throws SQLException{
+		List list = null;
+		
+		list = sqlSession.selectList("team.selectTeamAll");
 		
 		return list;
 	}
@@ -57,10 +66,7 @@ public class TeamDAOImpl implements TeamDAO{
 	
 	@Override
 	public void insertTeamArticle(TeamDTO dto) throws SQLException {
-		if(dto.getPassword() == null)
-			sqlSession.insert("team.insertTeamArticleNoPw", dto);
-		else
-			sqlSession.insert("team.insertTeamArticle", dto);
+		sqlSession.insert("team.insertTeamArticle", dto);
 	}
 
 	@Override

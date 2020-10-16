@@ -16,10 +16,13 @@
   	</select>
 	
 	
-	 <select id="selectNoBudgetDatebyId" parameterType="string" resultType="nobudgetDTO">
-  		select * from nobudget where id=#{id}
+	 <select id="selectNoBudgetExpenseDatebyId" parameterType="string" resultType="nobudgetDTO">
+  		select * from nobudget where id=#{id} and type='outcome'
   	</select>
 	
+	 <select id="selectNoBudgetIncomeDatebyId" parameterType="string" resultType="nobudgetDTO">
+  		select * from nobudget where id=#{id} and type='income'
+  	</select>
 			
 	<select id="selectNoBudgetIncomeAmountBydate" parameterType="map" resultType="int">
   		<foreach collection="nobudgetAlldate" item="item" separator="UNION ALL">
@@ -32,6 +35,11 @@
   		select sum(amount) from nobudget where id=#{id} and type= 'outcome' and TO_CHAR("REG",'YYYY-MM-DD')= #{item}
   		</foreach>
   	</select>
+	
+	<select id="selectBudgetDetail" parameterType="map" resultType="budgetRecordDTO">
+		SELECT * FROM (SELECT * FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE id='test50' and TO_CHAR("REG",'YYYY-MM-DD')='2020-10-17') ORDER BY reg DESC	 
+	</select>
+		
 	
   </mapper>
  

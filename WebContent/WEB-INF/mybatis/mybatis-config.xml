@@ -23,7 +23,6 @@
  		<typeAlias type="budget.model.dto.NoBudgetDetailDTO" alias="noBudgetDetailDTO"/>
  		<typeAlias type="budget.model.dto.RecordPageDTO" alias="recordPageDTO"/>
  		<typeAlias type="budget.model.dto.BudgetRecordDTO" alias="budgetRecordDTO"/>
- 		<typeAlias type="calendar.model.dto.CalendarDTO" alias="CalendarDTO"/>
 
  	</typeAliases>
  	

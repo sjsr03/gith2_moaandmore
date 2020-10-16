@@ -83,7 +83,12 @@
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:820px;margin-left: 200px; padding: 10px;">
 		
 		<div class="top" style="width: 100%; height: 40px; padding-top: 5px;">
-			<button onclick="window.location='/moamore/team/groupOpenForm.moa'">개설 신청</button>			
+			<c:if test="${sessionScope.memName != null}">
+				<button onclick="window.location='/moamore/team/groupOpenForm.moa'">개설 신청</button>	
+			</c:if>
+			<c:if test="${sessionScope.memName == null}">
+			<button onclick="alert('로그인을 해주세요.');document.location.href='/moamore/member/loginForm.moa'">개설 신청</button>
+			</c:if>
 			<div style="float:right">
 				<button onclick="location='/moamore/team/groupList.moa?pageStatus=2&range=${range}'">진행중</button>
 				<button onclick="location='/moamore/team/groupList.moa?pageStatus=3&range=${range}'">종료</button>
