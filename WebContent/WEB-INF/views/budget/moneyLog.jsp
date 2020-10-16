@@ -35,6 +35,7 @@
 					console.log(num);
 					
 					// 댓글 삭제 Ajax
+					/*
 					$.ajax({
 						type:"POST",
 						url:"budgetRecordDelete.moa",
@@ -51,6 +52,7 @@
 							}
 						}				
 					});
+					*/
 				}else{// check가 false면 
 					alert("삭제를 취소합니다.");
 				}
@@ -99,10 +101,16 @@
 					<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
 				</td>
 				<td>
-				 <%--
-					<input type="hidden" value="${records.budget_outcome_no}" name="currentRecord${status.index}">
-					--%>
-					<input type="hidden" value="${records.budget_outcome_no}" class="budgetNum">
+					<c:set var="budget_outcome_no" value="${records.budget_outcome_no}" />
+					<c:set var="nobudget_no" value="${records.nobudget_no}" />
+					<c:choose>
+					<c:when test="${not empty budget_outcome_no}">
+						<input type="hidden" value="${records.budget_outcome_no}" class="num">
+					</c:when>
+					<c:otherwise>
+						<input type="hidden" value="${records.nobudget_no}" class="num">
+					</c:otherwise>
+					</c:choose>
 					<button class="btn" id="btn_modify" name="btn_modify">수정</button>
 					
 					<button class="btn" id="btn_delete" name="btn_delete">삭제</button>

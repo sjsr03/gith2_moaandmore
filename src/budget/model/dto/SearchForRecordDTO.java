@@ -8,6 +8,8 @@ public class SearchForRecordDTO {
 	private String id;
 	private String type;
 	private Timestamp timeStampDate;
+	private int startRow;
+	private int endRow;
 	
 	public Timestamp getTimeStampDate() {
 		return timeStampDate;
@@ -39,6 +41,18 @@ public class SearchForRecordDTO {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public int getStartRow() {
+		return startRow;
+	}
+	public void setStartRow(int startRow) {
+		this.startRow = startRow;
+	}
+	public int getEndRow() {
+		return endRow;
+	}
+	public void setEndRow(int endRow) {
+		this.endRow = endRow;
 	}
 	
 	

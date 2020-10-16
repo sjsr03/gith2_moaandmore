@@ -165,6 +165,8 @@ public class RecordServiceImpl implements RecordService{
 		int count = 0;
 		
 		List recordList = null;
+		searchForRecordDTO.setStartRow(startRow);
+		searchForRecordDTO.setEndRow(endRow);
 		
 		// 전체 목록 수 가져오기 (타입별로) 
 		count = recordNoBudgetDAO.CountAllNoBudgetById(searchForRecordDTO);

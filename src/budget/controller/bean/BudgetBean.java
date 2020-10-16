@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -101,6 +103,11 @@ public class BudgetBean {
 		model.addAttribute("TBdto", TBdto);
 		model.addAttribute("BDdtoList", BDdtoList);
 		model.addAttribute("goals", goals);
+		
+		List todayData = budgetService.selectTodayBudget(id);
+		
+		model.addAttribute("todayData", todayData);
+		
 		
 		return "budget/todayBudget";
 	}
