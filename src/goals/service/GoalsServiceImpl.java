@@ -108,7 +108,7 @@ public class GoalsServiceImpl implements GoalsService {
 		String nickname = (String)RequestContextHolder.getRequestAttributes().getAttribute("memName", RequestAttributes.SCOPE_SESSION);
 		
 		//teamMember
-		TeamMemberDTO member = new TeamMemberDTO(team_no, id, nickname, 0, 0);		
+		TeamMemberDTO member = new TeamMemberDTO(team_no, id, nickname, 0, 0, 0);		
 		teamMemberDAO.insertOne(member);
 		
 		//goals테이블에 팀 목표추가
