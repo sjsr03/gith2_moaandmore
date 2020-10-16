@@ -16,7 +16,13 @@ public interface TeamDAO {
 	public void insertTeamArticle(TeamDTO dto) throws SQLException;
 	//그룹 상태 수정
 	public void updateTeamStatus(TeamDTO dto) throws SQLException;
+	//팀 상태 최종 업데이트 시간 가져오기
+	public String getTeamUpdateTime() throws SQLException;
+	//팀 상태 최종 업데이트 시간 수정
+	public void updateTeamUpdateTime(String day) throws SQLException; 
 	
+	//그룹 비밀번호가 맞는지 체크
+	public int checkPw(int team_no, String pw) throws SQLException;
 	
 	//그룹 하나
 	public TeamDTO selectOne(int team_no) throws SQLException;

@@ -24,7 +24,8 @@
  		<typeAlias type="budget.model.dto.RecordPageDTO" alias="recordPageDTO"/>
  		<typeAlias type="budget.model.dto.SearchForRecordDTO" alias="searchForRecordDTO"/>
  		<typeAlias type="budget.model.dto.AllRecordDTO" alias="allRecordDTO"/>
- 		
+		<typeAlias type="ranking.model.dto.RecordRankDTO" alias="recordRankDTO"/>
+ 		<typeAlias type="ranking.model.dto.TotalRankDTO" alias="totalRankDTO"/>
 
  	</typeAliases>
  	
@@ -43,6 +44,8 @@
  		<mapper resource="/sql/recordSQL.xml"/>
  		<mapper resource="/sql/reportSQL.xml"/>
  		<mapper resource="/sql/calendarSQL.xml" />
+ 		<mapper resource="/sql/recordRankSQL.xml" />
+ 		<mapper resource="/sql/totalRankSQL.xml" />
   	</mappers>
 
  </configuration>

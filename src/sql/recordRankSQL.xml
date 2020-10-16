@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <mapper namespace="recordRank">
+ 
+ 	<select id="checkRecord" parameterType="String" resultType="int">
+ 		select count(*) AS res from record_rank where id= #{value} 	
+ 	</select>
+ 	<insert id="insertOne" parameterType="recordRankDTO">
+	 	insert into record_rank values(#{id},1,#{final_rank})	
+ 	</insert>
+	<update id="updateOne" parameterType="recordRankDTO">
+ 		update record_rank set cnt = cnt+1, rank_sum = rank_sum+#{final_rank} where id =#{id}
+ 	</update>
+ </mapper>
