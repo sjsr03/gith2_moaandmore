@@ -176,7 +176,6 @@ public class CalendarServiceImpl implements CalendarService{
 
 
 
-
 	@Override
 	public List getAlldata(String date) throws SQLException {
 
