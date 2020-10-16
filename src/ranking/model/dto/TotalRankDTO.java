@@ -3,7 +3,7 @@ package ranking.model.dto;
 public class TotalRankDTO {
 
 	private int total_rank; // 10등까지 
-	private String nickname;
+	private String nickname; // fk(member테이블의 nickname)
 	
 	
 	public TotalRankDTO() {}
