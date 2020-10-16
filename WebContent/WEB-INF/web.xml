@@ -38,4 +38,5 @@
 	 	<servlet-name>moamore</servlet-name>
 	 	<url-pattern>*.moa</url-pattern>
 	</servlet-mapping>
+	
 </web-app>

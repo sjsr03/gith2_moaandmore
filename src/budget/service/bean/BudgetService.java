@@ -2,6 +2,7 @@ package budget.service.bean;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,5 +55,6 @@ public interface BudgetService {
 	//남은 돈 계산하기
 	public void calLeftMoney(String id) throws SQLException;
 	
-	
+	//오늘의 예산 데이터 가져오기
+	public List selectTodayBudget(String id) throws SQLException;
 }

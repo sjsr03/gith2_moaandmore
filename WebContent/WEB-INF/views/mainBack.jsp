@@ -8,48 +8,33 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="">
+<meta name="author" content="">
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<title>모아 & More</title>
 	<!-- Custom fonts for this template-->
 	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
 	
 	<!-- Custom styles for this template-->
-	<link rel="stylesheet"	href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">  
 	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 </head>
-<style>
-	ul.toggled > #BudgetState {
-		display:none;
-	}
-</style>
-<script>
-$(document).ready(function(){
-	$.ajax({
-		url:"/moamore/getBudgetState.moa",
-		type:"post",
-		data:{
-			id:"${memId}"
-		},
-		success:function(data){
-			var totalBudget = data['totalBudget'];
-			var TBString = totalBudget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-			
-			var outcomeSum = data['outcomeSum'];
-			var rate = (outcomeSum/totalBudget*100).toFixed(1);
-			
-			if(totalBudget== null) {	//설정된 현재예산이 없다면
-				$("#BudgetState").text("설정된 예산이 없습니다.");
-			} else {
-				$("#BudgetState").append('<div class="card-header"><h6 class="m-0 font-weight-bold text-primary">총 예산액 : ' + TBString + '원</h6></div><div class="card-body"><div class="progress"><div class="progress-bar" role="progressbar" style="width: ' + rate + '%" aria-valuenow="' + rate + '" aria-valuemin="0" aria-valuemax="100">' + rate + '%</div></div></div>');
-			}
-		}
-	});
-});
-</script>
-
 <body id="page-top">
+	<c:if test="${sessionScope.memId==null }" >
+		비회원 임시 메인페이지
+		<button onclick="window.location='/moamore/member/loginForm.moa'">로그인</button>
+		<button onclick="window.location='/moamore/member/signupForm.moa'">회원가입</button>
+	</c:if>
+	<c:if test="${sessionScope.memId!=null }" >
+		
+		<!-- 
+		회원 임시 메인페이지
+		<button onclick="window.location='/moamore/member/logout.moa'">로그아웃</button>
+		<button onclick="window.location='/moamore/budget/setBudget.moa'">예산설정</button>
+		 -->
+		
 		
   <!-- Page Wrapper -->
   <div id="wrapper">
@@ -70,8 +55,14 @@ $(document).ready(function(){
       
       
       <!-- 예산 사용액 그래프 -->
-      <div class="card" id="BudgetState">
-   		
+      <div class="card border-left-info shadow h-10 py-2">
+   		<div class="card-header py-3">
+      		<h6 class="m-0 font-weight-bold text-primary">총 예산액 : ${totalBudget.budget}원</h6></div>
+      	<div class="card-body">
+      		<div class="progress">
+			 <div class="progress-bar" role="progressbar" style="width: ${outcomeSum/totalBudget.budget*100}%" aria-valuenow="${outcomeSum/totalBudget.budget*100}" aria-valuemin="0" aria-valuemax="100"><fmt:formatNumber pattern=".0" value="${outcomeSum/totalBudget.budget*100}"/>% 사용</div>
+			</div>
+      	</div>
       </div>
       
       
@@ -118,15 +109,15 @@ $(document).ready(function(){
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/calendar/calendar.moa">
+        <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-calendar-alt"></i>
           <span>달력</span></a>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/report/report.moa">
+        <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>예산 보고서</span></a>
+          <span>보고서</span></a>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
@@ -136,7 +127,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/goals/myGoalList.moa">
+        <a class="nav-link" href="tables.html">
           <i class="fas fa-fw fa-crosshairs"></i>
           <span>목표</span></a>
       </li>
@@ -175,7 +166,7 @@ $(document).ready(function(){
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
 			<div>
 				<button class="btn btn-secondary btn-icon-split"><span class="text">예산</span></button>
-				<button class="btn btn-secondary btn-icon-split" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>
+				<button class="btn btn-secondary btn-icon-split" ><span class="text">커뮤니티</span></button>
 			</div>
 			
           <!-- Topbar Navbar -->
@@ -213,3 +204,140 @@ $(document).ready(function(){
 
         </nav>
         <!-- End of Topbar -->
+
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+
+          <!-- Page Heading -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">대시보드</h1>
+            </div>
+            
+           	<!-- 첫번째 줄 -->
+            <div class="row">
+            
+            	<!-- 오늘의 예산 -->
+            	<div class="col-xl-5 col-lg-5">
+	              <div class="card shadow mb-4">
+	                <!-- Card Header - Dropdown -->
+	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
+	                  <div class="dropdown no-arrow">
+	                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+	                    </a>
+	                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+	                      <a class="dropdown-item" href="/moamore/budget/todayBudget.moa">오늘의 예산</a>
+	                    </div>
+	                  </div>
+	                </div>
+	                <!-- Card Body -->
+	                <div class="card-body">
+	                	<div>
+	                		
+	                	</div>
+	                	
+	                </div>
+	              </div>
+	            </div>
+	            
+	            
+            	<!-- 목표 -->
+            	<div class="col-xl-5 col-lg-5">
+	              <div class="card shadow mb-4">
+	                <!-- Card Header - Dropdown -->
+	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+	                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
+	                  <div class="dropdown no-arrow">
+	                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+	                    </a>
+	                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+	                      <a class="dropdown-item" href="/moamore/budget/todayBudget.moa">오늘의 예산</a>
+	                    </div>
+	                  </div>
+	                </div>
+	                <!-- Card Body -->
+	                <div class="card-body">
+	                	<div>
+	                		
+	                	</div>
+	                	
+	                </div>
+	              </div>
+	            </div>
+            
+            
+            
+
+          </div>
+
+        </div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Your Website 2020</span>
+          </div>
+        </div>
+      </footer>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+  <!-- Logout Modal-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">로그아웃하시려면 확인을 눌러주세요</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="/moamore/member/logout.moa">확인</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript-->
+  <script src="/moamore/vendor/jquery/jquery.min.js"></script>
+  <script src="/moamore/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="/moamore/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="/moamore/js/sb-admin-2.min.js"></script>
+
+  <!-- Page level plugins -->
+  <script src="/moamore/vendor/chart.js/Chart.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="/moamore/js/demo/chart-area-demo.js"></script>
+  <script src="/moamore/js/demo/chart-pie-demo.js"></script>
+		
+		
+		
+		
+	</c:if>
+</body>
+</html>

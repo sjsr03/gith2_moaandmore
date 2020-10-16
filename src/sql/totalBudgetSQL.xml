@@ -6,7 +6,7 @@
   <mapper namespace="totalBudget">
   	<!-- 총예산 새로 생성 -->
   	<insert id="insertTotalBudget" parameterType="totalBudgetDTO">
-  		insert into total_budget values(total_budget_seq.nextVal, #{id}, #{budget}, #{period}, #{start_day}, #{end_day}, 0, #{current})
+  		insert into total_budget values(total_budget_seq.nextVal, #{id}, #{budget}, #{period}, #{start_day}, #{end_day}, 0, #{total_budget_current})
   	</insert>
   	
   	<!-- 현재 진행중인 예산의 종료일을 (오늘날짜-1초)로, close=1로 변경 -->
@@ -27,7 +27,7 @@
   	
   	<!-- 총예산금액 수정 -->
   	<update id="updateTotalBudget" parameterType="totalBudgetDTO">
-  		update total_budget set current=(current+(#{budget}-budget)), budget=#{budget} where budget_no=#{budget_no}
+  		update total_budget set total_budget_current=(total_budget_current+(#{budget}-budget)), budget=#{budget} where budget_no=#{budget_no}
   	</update>
  	
  	
