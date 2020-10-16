@@ -94,7 +94,8 @@ public class RecordBean {
 		model.addAttribute("categories", categories);
 		model.addAttribute("id", id);
 		model.addAttribute("today", today);
-		
+		model.addAttribute("budgetNum", budgetNum);
+		System.out.println("레코드빈 버짓넘~~ : " + budgetNum);
 		return "budget/recordForm";
 	}
 	
