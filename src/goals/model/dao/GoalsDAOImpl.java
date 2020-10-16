@@ -95,6 +95,20 @@ public class GoalsDAOImpl implements GoalsDAO{
 		sqlSession.update("goals.updateSaving",map);
 		
 	}
+	
+	@Override
+	public HashMap selectMostPersonalGoal(String id) throws SQLException {
+		HashMap map = sqlSession.selectOne("goals.selectMostPersonalGoal", id);
+		System.out.println("MPGoal : " + map);
+		return map;
+	}
+	
+	@Override
+	public HashMap selectMostTeamGoal(String id) throws SQLException {
+		HashMap map = sqlSession.selectOne("goals.selectMostTeamGoal", id);
+		System.out.println("MTGoal : " + map);
+		return map;
+	}
 
 	
 

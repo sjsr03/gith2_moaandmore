@@ -4,6 +4,8 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSessionException;
+
 import goals.model.dto.GoalsDTO;
 
 public interface GoalsDAO {
@@ -33,5 +35,10 @@ public interface GoalsDAO {
 	//saving(달성액) 업데이트
 	public void updateSaving(int goa_no, int sum) throws SQLException;
 	
+	//회원의 가장 달성도가 높은 개인목표 가져오기
+	public HashMap selectMostPersonalGoal(String id) throws SQLException;
+	
+	//회원의 가장 달성도가 높은 그룹목표 가져오기
+	public HashMap selectMostTeamGoal(String id) throws SQLException;
 	
 }
