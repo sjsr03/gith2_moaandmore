@@ -184,32 +184,53 @@ public class CalendarServiceImpl implements CalendarService{
 		List alldata = new ArrayList();
 		List budgetDetail = calendarDAO.getBudgetDetail(id,date);
 		List budgetList = new ArrayList();
-		for(int i = 0; i<budgetDetail.size(); i++) {
-		AllRecordDTO budget = (AllRecordDTO)budgetDetail.get(i);
+
 		
+		for(int i = 0; i<budgetDetail.size(); i++) {
+			AllRecordDTO budget = (AllRecordDTO)budgetDetail.get(i);
+			 
+			
 			budgetList.add("지출");
 			budgetList.add(budget.getAmount());
 			budgetList.add(budget.getContent());
 			budgetList.add(budget.getMemo());
 			
+			alldata.add("지출");
+			alldata.add(budget.getAmount());
+			alldata.add(budget.getContent());
+			alldata.add(budget.getMemo());
+			
+			
+			
+		
 		}
 		System.out.println("budgetList"+budgetList);
 		
 		
 		List nobudgetExpenseDetail= calendarDAO.getNobudgetExpenseDetail(id,date);
+		
 		List nobudgetExpenseList = new ArrayList();
-			for(int i=0; i<nobudgetExpenseList.size(); i++) {
+			for(int i=0; i<nobudgetExpenseDetail.size(); i++) {
 				AllRecordDTO nobudget = (AllRecordDTO)nobudgetExpenseDetail.get(i);
 				nobudgetExpenseList.add("지출");
 				nobudgetExpenseList.add(nobudget.getAmount());
 				nobudgetExpenseList.add(nobudget.getContent());
 				nobudgetExpenseList.add(nobudget.getMemo());
-			}
-		//System.out.println(nobudgetExpenseList);
-		if(budgetList.size()>0) {alldata.add(budgetList);}
-		if(nobudgetExpenseList.size()>0) {alldata.add(nobudgetExpenseList);}
-		
 			
+				alldata.add("지출");
+				alldata.add(nobudget.getAmount());
+				alldata.add(nobudget.getContent());
+				alldata.add(nobudget.getMemo());
+			
+				
+				
+			}
+			
+		System.out.println("nobudgetExpenseList"+nobudgetExpenseList);
+		//if(budgetList.size()>0) {alldata.add(budgetList);}
+		//if(nobudgetExpenseList.size()>0) {alldata.add(nobudgetExpenseList);}
+	
+		
 			
 			
 		calendarDAO.getNobudgetIncomeDetail(id,date);

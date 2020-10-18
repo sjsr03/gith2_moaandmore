@@ -61,7 +61,7 @@
 
 
 <div id="test" class="test">
-	gggggg
+	
 </div>
 
 
@@ -142,7 +142,7 @@ $(document).ready(function () {
              	alert(event.start);
              	var date = new Date(event.start);
              	 date = getFormatDate(date);
-             	 console.log(date);
+             	 //console.log(date);
 	    	 	
 	    	 	$.ajax({
 			   			url: "getCalendarEventDetail.moa", 
@@ -153,9 +153,13 @@ $(document).ready(function () {
 							console.log("error");
 						},
 			   			success: function(alldata) {
-			   				console.log(alldata);
-			   				$('#test').addClass('show');
-				    	 	$('#test').append( '<span></span>' );
+			   				//console.log(alldata);
+							$('#test').append("<tr><td>" +'유형' + "</td><td>" +'금액'+ "</td><td>"+'제목'+"</td><td>"+'메모'+"</td></tr>");
+			   				for (var i = 0; i < alldata.length; i+=4) {
+    							console.log(alldata[i]);
+			   					$('#test').addClass('show');
+					    	 	$('#test').append("<tr><td>" +alldata[i] + "</td><td>" +alldata[i+1] + "</td><td>"+alldata[i+2]+"</td><td>"+alldata[i+3]+"</td></tr>");
+			   			  	}	
 			   				
 			   			
 			   			}
@@ -170,6 +174,8 @@ $(document).ready(function () {
 	  });
 	   
 });
+
+
 //yyyy-mm-dd
 function getFormatDate(date){
     var year = date.getFullYear();
