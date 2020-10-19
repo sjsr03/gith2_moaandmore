@@ -39,4 +39,8 @@ public interface TeamService {
 		public String getTeamUpdateTime() throws SQLException;
 		//팀 상태 최종 업데이트 시간 수정
 		public void updateTeamUpdateTime(String day) throws SQLException; 
+		//닉네임을 초대한 승인 완료된 그룹 목록들 개수 가져오기
+		public int getTeamComeInviteCount(String nickname) throws SQLException;
+		//닉네임을 초대한 승인 완료된 그룹 목록들 가져오기
+		public List getTeamComeInvites(String nickname, int start, int end) throws SQLException;
 }

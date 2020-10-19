@@ -36,4 +36,10 @@ public interface TeamDAO {
 			
 	//닉네임으로 해당 닉네임이 개설 요청한 그룹 목록들 가져오기
 	public List getTeamMyRequests(String nickname, int start, int end) throws SQLException;
+	
+	
+	//닉네임을 초대한 승인 완료된 그룹 목록들 개수 가져오기
+	public int getTeamComeInviteCount(String nickname) throws SQLException;
+	//닉네임을 초대한 승인 완료된 그룹 목록들 가져오기
+	public List getTeamComeInvites(String nickname, int start, int end) throws SQLException;
 }

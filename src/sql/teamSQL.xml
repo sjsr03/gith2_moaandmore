@@ -13,12 +13,21 @@
 	</update>
 	
 	
+	<select id="countMyComeInviteTeamAll" parameterType="string" resultType="int">
+		SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{value} AND A.ISOPEN=0 AND b.IS_JOIN=0 AND a.STATUS!=-1 and a.status!=0
+	</select>
+	
+	<select id="selectAllComeInviteTeam" parameterType="hashmap" resultType="teamDTO">
+	<![CDATA[
+		select * from (select rownum r,team_no,subject,content,amount,start_day,end_day,people from (SELECT a.team_no,a.subject,a.content,a.amount,a.start_day,a.end_day,a.people FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND A.ISOPEN=0 AND b.IS_JOIN=0 AND a.STATUS!=-1 and a.status!=0 order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+	]]>
+	</select>
+	
+	
 	
 	<select id="countMyOkTeamAll" parameterType="hashmap" resultType="int">
-		<![CDATA[
-			SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND (A.ISOPEN=1 OR (A.ISOPEN=0 AND b.IS_JOIN=1)) AND a.STATUS=#{pageStatus}
-		]]>
-	
+		SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND (A.ISOPEN=1 OR (A.ISOPEN=0 AND b.IS_JOIN=1)) AND a.STATUS=#{pageStatus}
+
 		<if test="isSearch == 1">
 			and A.subject like '%'||#{search}||'%'
 		</if>
@@ -89,9 +98,7 @@
 
 
 	<select id="countTeamAll" parameterType="hashmap" resultType="int">
-		<![CDATA[
-			SELECT count(*) FROM TEAM WHERE STATUS=#{pageStatus} AND ISOPEN=1
-		]]>
+		SELECT count(*) FROM TEAM WHERE STATUS=#{pageStatus} AND ISOPEN=1
 	
 		<if test="isSearch == 1">
 			and subject like '%'||#{search}||'%'
