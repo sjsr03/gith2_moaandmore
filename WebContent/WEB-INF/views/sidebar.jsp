@@ -176,18 +176,17 @@ $(document).ready(function(){
           </button>
           
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
-			<div class="row">
-				<div class="col-lg-2">
-					<button class="btn btn-secondary btn-icon-split"><span class="text">예산</span></button>
-					<button class="btn btn-secondary btn-icon-split" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
-				</div>
-				<div class="col-lg-5">
-					<jsp:include page="./realTimeRanking.jsp"/>
-				</div>
+			<div class="input-group" style="width:100%">
+				<button class="btn btn-secondary btn-icon-split"><span class="text">예산</span></button>
+				<button class="btn btn-secondary btn-icon-split" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
 			</div>
 			
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
+          <li class="nav-item mx-5">
+                <jsp:include page="./realTimeRanking.jsp"/>
+            </li>
+            
 			<!-- 로그인 상태일 때 -->
 			<c:if test="${sessionScope.memId != null }" >
 	            <!-- Nav Item - User Information -->

@@ -23,8 +23,9 @@
 	width:100%;
 }
 .ranking-container {
-	width:900px;
+	width:800px;
 	margin:0 auto;
+	margin-top:10px;
 }
 #ranking-body a,#ranking-body img {
 	border:0px;
@@ -34,6 +35,9 @@
 	list-style:none;
 	padding:0px;
 	margin:0px;
+}
+#ranking-body li:nth-child(2) {
+	margin-top:15px;
 }
 #ranking-body h1 {
 	color:#525252;
