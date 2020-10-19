@@ -33,7 +33,7 @@ public class ReportBean {
 	
 	
 	@RequestMapping("report.moa")
-	public String report(HttpServletRequest request, Model model) throws SQLException {
+	public String LCreport(HttpServletRequest request, Model model) throws SQLException {
 		String id = (String) request.getSession().getAttribute("memId");
 		//모든 예산정보를 날짜 내림차순으로 정렬해서 가져오기
 		List TBList = reportService.selectAllOrderByReg(id);

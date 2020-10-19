@@ -37,6 +37,7 @@ public class MainBean {
 	public String main(HttpServletRequest request, Model model) throws SQLException {
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("memId");
+		
 		//로그인했다면
 		if (id != null) {
 			//현재 총예산 불러오기
@@ -76,7 +77,7 @@ public class MainBean {
 	}
 	
 	@RequestMapping("dashboard.moa")
-	public String dashboard(HttpServletRequest request, Model model) throws SQLException {
+	public String LCdashboard(HttpServletRequest request, Model model) throws SQLException {
 		String id = (String) request.getSession().getAttribute("memId");
 		//현재 진행중인 예산 정보 가져오기
 		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
@@ -102,8 +103,6 @@ public class MainBean {
 		
 		//회원의 목표 중 달성도가 가장 높은 것
 		List goalsList = mainService.selectMostGoals(id);
-		System.out.println("GL.0 : " + goalsList.get(0));
-		System.out.println("GL.1 : " + goalsList.get(1));
 		
 		
 		

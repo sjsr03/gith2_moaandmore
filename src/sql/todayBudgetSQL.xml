@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- namespace -->
+  <mapper namespace="todayBudget">
+  	<!-- 오늘의 예산 레코드 삽입(예산 설정시 최초 1번) -->
+  	<insert id="insertTodayBudget" parameterType="todayBudgetDTO">
+  		insert into today_budget values(#{id}, #{category_no}, #{category_today}, sysdate, #{budget_no})
+  	</insert>
+  	
+  	<!-- 오늘의 예산 업데이트 -->
+  	<update id="updateTodayBudget" parameterType="todayBudgetDTO">
+  		update today_budget set category_today=#{category_today}, reg=sysdate where category_no=#{category_no} and budget_no=#{budget_no}
+  	</update>
+  	
+  	<!-- 마지막 로그인 가져오기 -->
+  	<select id="selectLastLoginReg" parameterType="string" resultType="string">
+  		select max(reg) from today_budget where id=#{value}
+  	</select>
+  </mapper>
+ 

@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import admin.model.dto.ModelDTO;
 import team.model.dto.TeamDTO;
 import team.model.dto.TeamMemberDTO;
 import team.service.bean.TeamMemberServiceImpl;
@@ -32,7 +35,10 @@ public class TeamBean {
 	private TeamMemberServiceImpl teamMemService = null;
 	
 	@RequestMapping("groupList.moa")
-	public String viewList(String pageNum, String pageStatus, String isSearch, String search, String range, Model model) throws SQLException {
+	public String viewList(HttpServletRequest request, String isMyTeam, String pageNum, String pageStatus, String isSearch, String search, String range, Model model) throws SQLException {
+		if(isMyTeam == null)
+			isMyTeam = "0";
+		
 		if(pageNum == null) {
 			pageNum = "1";
 		}
@@ -50,6 +56,8 @@ public class TeamBean {
 		if(range == null)
 			range = "0";
 		
+		HttpSession session = request.getSession();
+		String nickname = (String) session.getAttribute("memName");
 
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyyMMdd");
@@ -100,10 +108,21 @@ public class TeamBean {
 		
 		List articleList = null;
 		List articleMemberAvgList = null;
-		int count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus),Integer.parseInt(isSearch),search);
+		int count = 0;
+		
+		if(Integer.parseInt(isMyTeam) == 0) {
+			count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus),Integer.parseInt(isSearch),search);
+		}else if(Integer.parseInt(isMyTeam) == 1) {
+			//TODO 내가 가입된 개설 승인된 그룹들
+			count = teamService.getMyOkTeamArticleCount(nickname, Integer.parseInt(pageStatus), Integer.parseInt(isSearch), search);
+		}
 		
 		if(count>0) {
-			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow,Integer.parseInt(isSearch),search,Integer.parseInt(range));
+			if(Integer.parseInt(isMyTeam) == 0) {
+				articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow,Integer.parseInt(isSearch),search,Integer.parseInt(range));
+			}else if(Integer.parseInt(isMyTeam) == 1) {
+				articleList = teamService.getMyOkTeamArticles(nickname, Integer.parseInt(pageStatus), startRow, endRow, Integer.parseInt(isSearch), search, Integer.parseInt(range));
+			}
 			articleMemberAvgList = teamMemService.getTeamAvgArticles(articleList);
 		}
 		
@@ -111,6 +130,7 @@ public class TeamBean {
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("pageStatus", pageStatus);
+		model.addAttribute("isMyTeam", isMyTeam);
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("search", search);
 		model.addAttribute("range", Integer.parseInt(range));
@@ -158,6 +178,43 @@ public class TeamBean {
 		
 		return "team/groupMyRequestList";
 	}
+	
+	@RequestMapping("groupComeInviteList.moa")
+	public String teamComeInviteList(HttpServletRequest request, String pageNum, Model model) throws SQLException {
+		if(pageNum == null) {
+			pageNum = "1";
+		}
+		
+		HttpSession session = request.getSession();
+		String nickname = (String) session.getAttribute("memName");
+		
+		int pageSize = 10;
+		int currPage = Integer.parseInt(pageNum);	//페이지 계산을 위해 숫자로 형변환
+		int startRow = (currPage-1)*pageSize+1;
+		int endRow = currPage*pageSize;
+		int number = 0;	//게시판 상의 글번호 뿌려줄 변수 미리 선언
+		
+		List articleList = null;
+		int count = teamService.getTeamComeInviteCount(nickname);
+		
+		if(count>0) {
+			articleList = teamService.getTeamComeInvites(nickname,startRow, endRow);
+		}
+		
+		number = count-(currPage-1)*pageSize;
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("pageSize", new Integer(pageSize));
+		model.addAttribute("currPage", new Integer(currPage));
+		model.addAttribute("startRow", new Integer(startRow));
+		model.addAttribute("endRow", new Integer(endRow));
+		model.addAttribute("number", new Integer(number));
+		model.addAttribute("articleList", articleList);
+		model.addAttribute("count", new Integer(count));
+		
+		return "team/groupComeInviteList";
+	}
+	
 	
 	@RequestMapping("groupOpenForm.moa")
 	public String groupOpenForm(@ModelAttribute("dto") TeamDTO dto) {
@@ -217,14 +274,14 @@ public class TeamBean {
 	}
 	
 	@RequestMapping("teamDetailSecurity.moa")
-	public String teamDetail(int team_no, Model model) throws SQLException{
+	public String teamDetailSecurity(int team_no, Model model) throws SQLException{
 		model.addAttribute("team_no", team_no);
 		
 		return "team/groupDetailSecurity";
 	}
 	
 	@RequestMapping("teamDetailSecurityPro.moa")
-	public String teamDetailPro(int team_no, String nickname, String pw, Model model) throws SQLException{
+	public String teamDetailSecurityPro(int team_no, String nickname, String pw, Model model) throws SQLException{
 		
 		int result = teamService.checkPw(team_no, pw);
 		

@@ -64,7 +64,7 @@ public class BudgetBean {
 	}
 	
 	@RequestMapping("setBudgetPro.moa")
-	public String setBudgetForm(HttpServletRequest request) throws SQLException {
+	public String setBudgetPro(HttpServletRequest request) throws SQLException {
 		String isNewBudget = request.getParameter("isNewBudget");
 		if(isNewBudget.equals("1")) { //새로운 예산 생성이면
 			budgetService.setBudget();
@@ -121,7 +121,7 @@ public class BudgetBean {
 	
 	
 	@RequestMapping("LeftMoneyTransfer.moa")
-	public String LeftMoneyTransfer() throws SQLException {
+	public String LCeftMoneyTransfer() throws SQLException {
 		budgetService.LeftMoneyTransfer();
 		
 		
@@ -131,19 +131,6 @@ public class BudgetBean {
 	@RequestMapping(value = "getWarnMessage.moa", produces = "application/text; charset=utf-8")
 	@ResponseBody
 	public String getWarnMessage(int firstOfMonth) {
-//		String message = "이번 예산 주기는 ";
-//		Calendar today = Calendar.getInstance();
-//		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");
-//		message += sdf.format(today.getTime()) + "부터 ";
-//		
-//		if(today.DATE > firstOfMonth) {	//설정한 월 시작일이 이번달 기준 이미 지난 경우 = 다음달 월 시작일 전날까지
-//			today.add(Calendar.MONTH, 1);
-//		} 
-//		
-//		today.set(Calendar.DATE, firstOfMonth-1);
-//		
-//		message += sdf.format(today.getTime()) + "까지입니다.";
-		
 		String message = "이번 예산 주기는 ";
 		Date today = new Date();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM월 dd일");

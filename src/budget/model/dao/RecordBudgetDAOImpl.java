@@ -67,6 +67,15 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		return result;
 	}
 	
+	@Override
+	public int selectSumFromDateAndCatNo(HashMap map) throws SQLException {
+		if(sqlSession.selectOne("record.selectSumFromDateAndCatNo", map)==null) {
+			return 0;
+		} else {
+			return sqlSession.selectOne("record.selectSumFromDateAndCatNo", map);
+		}
+	}
+	
 	
 	
 	
