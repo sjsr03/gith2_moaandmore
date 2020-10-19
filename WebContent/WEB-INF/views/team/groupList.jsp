@@ -79,7 +79,8 @@
 		<a href="/moamore/team/groupList.moa?isMyTeam=0">전체 그룹 보기</a><br/>
 		<c:if test="${sessionScope.memName != null}">
 			<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a><br/>
-			<a href="/moamore/team/groupList.moa?isMyTeam=1">내가 가입한 그룹 보기</a>
+			<a href="/moamore/team/groupList.moa?isMyTeam=1">내가 가입한 그룹 보기</a><br/>
+			<a href="/moamore/team/groupComeInviteList.moa">나를 초대한 그룹 보기</a>
 		</c:if>
 	</div>
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:820px;margin-left: 200px; padding: 10px;">
