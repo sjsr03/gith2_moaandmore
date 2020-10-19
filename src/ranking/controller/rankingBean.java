@@ -1,10 +1,16 @@
 package ranking.controller;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import ranking.model.dto.TotalRankDTO;
 
 @EnableWebMvc
 @Controller
@@ -16,15 +22,29 @@ public class rankingBean {
 	
 	
 	@RequestMapping("getRealTimeRanking.moa")
-	public String getRealTimeRanking() {
-		int res = sqlSession.selectOne("totalRank.checkUpdateReg");
+	public String getRealTimeRanking(Model model) {
+	
 		
-		if(res == 0) {//업데이트 안된 상태
+		return "realTimeRanking";
+		
+	}
+	@RequestMapping("getRealTimeRankingPro.moa")
+	public @ResponseBody List<TotalRankDTO> getRealTimeRankingPro(Model model) {
+		
+		//1이면 어제날짜, 0이면 오늘날짜
+		int res = sqlSession.selectOne("totalRank.checkUpdateReg");
+	
+		if(res == 1) {//업데이트 안된 상태. total_rank테이블 지우고, 새로 insert
+			sqlSession.delete("totalRank.deleteAll");
+			sqlSession.insert("totalRank.insertAll");
 			
+			sqlSession.update("totalRank.updateReg"); 
 		}
 		
 		
-		return "realTimeRanking";
+		List<TotalRankDTO> list= sqlSession.selectList("totalRank.selectAll");	
+		
+		return list;
 	}
 	
 }
