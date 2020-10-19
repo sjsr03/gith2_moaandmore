@@ -14,11 +14,4 @@ public class TodayBudgetDAOImpl implements TodayBudgetDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession = null;
 	
-	
-	
-	@Override
-	public int calLeftDaysCurrentTB(String id) {
-		Date today = new Date();
-		return 0;
-	}
 }
