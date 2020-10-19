@@ -39,6 +39,7 @@
  		<mapper resource="/sql/recordGoalsSQL.xml" />
  		<mapper resource="/sql/teamSQL.xml" />
  		<mapper resource="/sql/totalBudgetSQL.xml" />
+ 		<mapper resource="/sql/todayBudgetSQL.xml" />
  	 	<mapper resource="/sql/totalBudgetDetailSQL.xml" />
  		<mapper resource="/sql/teamMemberSQL.xml"/>
  		<mapper resource="/sql/recordTransferSQL.xml"/>

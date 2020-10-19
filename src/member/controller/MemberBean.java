@@ -84,12 +84,16 @@ public class MemberBean {
 		}
 		model.addAttribute("result",result);
 
-		//예산 만료되었는지 확인
-		budgetService.updateNewTB(id);
-		//남은돈 계산
-		budgetService.calLeftMoney(id);
-		//오늘의 예산 계산하기
-		budgetService.calTodayBudget(id);
+		//현재 진행중인 예산이 있다면
+		if(budgetService.selectCurrentOne(id)!=null) {
+			//예산 만료되었는지 확인
+			budgetService.updateNewTB(id);
+			//남은돈 계산
+			budgetService.calLeftMoney(id);
+			//오늘의 예산 계산하기
+			budgetService.calTodayBudget(id);
+			
+		}
 		
 		return "member/loginPro";
 	}

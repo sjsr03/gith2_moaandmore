@@ -1,9 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
 <head>
-<meta charset="UTF-8">
 <title>Realtime Ranking List</title>
 <style>
 @import url(https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css);
@@ -166,7 +163,6 @@ $(function(){
 
 </script>
 </head>
-<body>
 	<div id="wrap">
 		<div class="container">
 			<ul id="best_search">
@@ -185,5 +181,3 @@ $(function(){
 		</div>
    </div>
 	
-</body>
-</html>

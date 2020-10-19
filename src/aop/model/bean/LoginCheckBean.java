@@ -42,6 +42,8 @@ public class LoginCheckBean {
 		} else {	//로그인 상태인데
 			TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(id);
 			if(TBdto == null) {	//현재 설정된 예산이 없으면
+				response.setCharacterEncoding("UTF-8"); 
+				response.setContentType("text/html; charset=UTF-8");
 				PrintWriter out = response.getWriter();
 	            out.println("<script>alert('현재 설정된 예산이 없습니다.\n예산설정 페이지로 이동합니다');</script>");
 	            out.flush();
