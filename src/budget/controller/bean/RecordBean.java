@@ -7,8 +7,10 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -266,13 +268,22 @@ public class RecordBean {
 		model.addAttribute("recordPage", recordPage);
 		return "budget/moneyLog";
 	}
+	// 여러개 가져올 때 
 	@RequestMapping(value="selectRecords.moa")
 	public String selectRecords(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model)throws SQLException{
-		// 여러개 가져올 때
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
-		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
-		model.addAttribute("recordPage", recordPage);
+		Map allRecord = recordService.selectAllRecord(searchForRecordDTO);
+		
+		
+		Set keys = allRecord.keySet();
+		Iterator it = keys.iterator();
+		while(it.hasNext()) {
+			String key = (String)it.next();
+			allRecord.get(key);
+			
+			model.addAttribute(key, allRecord.get(key));
+		}
 		return "budget/moneyLog";
 	}
 	

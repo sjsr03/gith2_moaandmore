@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -34,5 +35,5 @@ public interface RecordService {
 	public Boolean compareDate(SearchForRecordDTO searchForRecordDTO, List budgetDate )throws SQLException, ParseException;
 
 	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 
-	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+	public Map selectAllRecord(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 }

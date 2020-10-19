@@ -54,6 +54,43 @@ public class TeamDAOImpl implements TeamDAO{
 		return list;
 	}
 	
+
+	
+	@Override
+	public int getMyOkTeamArticleCount(String nickname, int pageStatus,int isSearch,String search) throws SQLException {
+		int count = 0;
+		
+		HashMap map = new HashMap();
+		map.put("nickname", nickname);
+		map.put("isSearch", isSearch);
+		map.put("search", search);
+		map.put("pageStatus", pageStatus);
+		
+		count = sqlSession.selectOne("team.countMyOkTeamAll", map);
+		
+		return count;
+	}
+	
+	@Override
+	public List<TeamDTO> getMyOkTeamArticles(String nickname, int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("nickname", nickname);
+		map.put("start", start);
+		map.put("end", end);
+		map.put("isSearch", isSearch);
+		map.put("search", search);
+		map.put("range", range);
+		map.put("pageStatus", pageStatus);
+		
+		List list = null;
+		
+		list = sqlSession.selectList("team.selectMyOkTeamAll", map);
+		
+		return list;
+	}
+	
+	
+	
 	@Override
 	public List<TeamDTO> getTeamAll() throws SQLException{
 		List list = null;

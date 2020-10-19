@@ -23,6 +23,9 @@
 	ul.toggled > #BudgetState {
 		display:none;
 	}
+	
+	#ranking{
+	}
 </style>
 <script>
 $(document).ready(function(){
@@ -175,13 +178,14 @@ $(document).ready(function(){
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
 			<div>
 				<button class="btn btn-secondary btn-icon-split"><span class="text">예산</span></button>
-				<button class="btn btn-secondary btn-icon-split" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>
+				<button class="btn btn-secondary btn-icon-split" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+			</div>
+			<div>
+				<jsp:include page="./realTimeRanking.jsp"/>
 			</div>
 			
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
-
-
 			<!-- 로그인 상태일 때 -->
 			<c:if test="${sessionScope.memId != null }" >
 	            <!-- Nav Item - User Information -->

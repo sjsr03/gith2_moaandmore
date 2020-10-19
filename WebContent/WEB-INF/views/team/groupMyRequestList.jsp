@@ -53,7 +53,7 @@
 					<c:if test="${article.status == 0 }">
 						<td>대기중</td>
 					</c:if>
-					<c:if test="${article.status == 2 }">
+					<c:if test="${article.status == 2 || article.status == 1 || article.status == 3}">
 						<td>승인</td>
 					</c:if>
 			</c:forEach>

@@ -55,7 +55,7 @@
   	<!-- 예산+예산외 내역들 리스트로 가져오기(type으로 체크) -->
   	<select id="selectRecord" parameterType="searchForRecordDTO" resultType="allRecordDTO">
 	  	SELECT t2.* FROM(SELECT rownum r, t1.* FROM(SELECT * FROM(
-		SELECT n.NOBUDGET_NO, n.CATEGORY_NO, n.AMOUNT, n.reg, nd.CONTENT, nd.MEMO, nd.IMG, n."TYPE" 
+		SELECT n.NOBUDGET_NO, n.CATEGORY_NO, n.AMOUNT, n.reg, nd.CONTENT, nd.MEMO, nd.IMG, n."TYPE"  
 		FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} 
 		<choose>
 			<when test="type.equals('all')">

@@ -12,6 +12,10 @@ public interface TeamService {
 		public List<TeamDTO> getTeamAll() throws SQLException;
 		//그룹 범위 지정 가져오기
 		public List<TeamDTO> getTeamArticles(int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException;
+		//내가 가입된 그룹 중 특정 상태의 그룹 전체 개수 가져오기
+		public int getMyOkTeamArticleCount(String nickname, int pageStatus,int isSearch,String search) throws SQLException;
+		//내가 가입된 그룹 범위 지정 가져오기
+		public List<TeamDTO> getMyOkTeamArticles(String nickname, int pageStatus, int start, int end,int isSearch,String search,int range) throws SQLException;
 		
 		//그룹 비밀번호가 맞는지 체크
 		public int checkPw(int team_no, String pw) throws SQLException;

@@ -2,28 +2,21 @@ package ranking.model.dto;
 
 public class TotalRankDTO {
 
-	private int total_rank; // 10등까지 
-	private String nickname; // fk(member테이블의 nickname)
+	private String id; // fk(member테이블의 nickname)
 	
 	
 	public TotalRankDTO() {}
 	
-	public TotalRankDTO(int total_rank, String nickname) {
+	public TotalRankDTO(int total_rank, String id) {
 		super();
-		this.total_rank = total_rank;
-		this.nickname = nickname;
+		this.id = id;
 	}
-	public int getTotal_rank() {
-		return total_rank;
-	}
-	public void setTotal_rank(int total_rank) {
-		this.total_rank = total_rank;
-	}
+	
 	public String getNickname() {
-		return nickname;
+		return id;
 	}
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
+	public void setNickname(String id) {
+		this.id = id;
 	}
 	
 }
