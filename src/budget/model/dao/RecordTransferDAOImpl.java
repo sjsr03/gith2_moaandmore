@@ -51,4 +51,13 @@ public class RecordTransferDAOImpl implements RecordTransferDAO {
 			sqlSession.update("recordTransfer.updateMinusRecordTBD", dto);
 		}
 	}
+	
+	@Override
+	public int selectLeftMoneySum(String id) {
+		if(sqlSession.selectOne("recordTransfer.selectLeftMoneySum", id) == null) {
+			return 0;
+		} else {
+			return sqlSession.selectOne("recordTransfer.selectLeftMoneySum", id);
+		}
+	}
 }

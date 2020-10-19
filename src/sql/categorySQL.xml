@@ -8,7 +8,7 @@
   	<select id="selectAllById" resultType="outcome_categoryDTO" parameterType="string">
   		select * from outcome_category where id=#{value} order by category_no
   	</select>
-  	
+  	<!-- 회원 아이디로 수입 카테고리 전체 가져오기-->
   	<select id="selectAllIncomeCategoryById" resultType="income_categoryDTO" parameterType="string">
   		select * from income_category where id=#{value} order by category_no
   	</select>

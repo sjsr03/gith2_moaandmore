@@ -2,6 +2,7 @@ package main.controller.bean;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import budget.model.dto.TotalBudgetDTO;
 import budget.model.dto.TotalBudgetDetailDTO;
 import budget.service.bean.BudgetService;
+import category.service.bean.CategoryService;
 import main.service.bean.MainService;
 
 @Controller
@@ -27,6 +29,8 @@ public class MainBean {
 	private BudgetService budgetService = null;
 	@Autowired
 	private MainService mainService = null;
+	@Autowired
+	private CategoryService categoryService = null;
 	
 	
 	@RequestMapping("main.moa")
@@ -72,24 +76,47 @@ public class MainBean {
 	}
 	
 	@RequestMapping("dashboard.moa")
-	public String dashboard(HttpServletRequest request) throws SQLException {
+	public String dashboard(HttpServletRequest request, Model model) throws SQLException {
 		String id = (String) request.getSession().getAttribute("memId");
-		//현재 진행중인 총예산 정보
-		TotalBudgetDTO totalBudget = budgetService.selectCurrentOne(id);
-		long time = totalBudget.getEnd_day().getTime()-totalBudget.getStart_day().getTime();
-		int period = (new Date(time).getDate())-1;
-		if (period==0) period=1;
-		//해당 카테고리별 세부정보
-		List TBDlist = budgetService.selectAllbyBudgetNum(totalBudget.getBudget_no()) ;
+		//현재 진행중인 예산 정보 가져오기
+		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
+		List BDdtoList = budgetService.selectAllbyBudgetNum(TBdto.getBudget_no());
+		long lt = TBdto.getEnd_day().getTime()-TBdto.getStart_day().getTime();
+		int period = Math.round((lt)/(1000*60*60*24)) + 1;
 		
-		
-		for (Object obj:TBDlist) {
-			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) obj;
-			dto.setCategory_budget(dto.getCategory_budget()/period);
-			//TBDlist에는 하루치 예산이 담기게 된다!
+		//현재 예산의 카테고리정보 가져오기
+		List categoryNums = new ArrayList();
+		for (Object obj:BDdtoList) {
+			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO)obj;
+			categoryNums.add(dto.getCategory_no());
 		}
+		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
+		categories.put(0, "총예산");
+				
 		
 		//오늘 소비량
+		List todayData = budgetService.selectTodayBudget(id);
+		
+		//회원의 총 leftmoney 합산
+		int LMsum = budgetService.selectLeftMoneySum(id);
+		
+		//회원의 목표 중 달성도가 가장 높은 것
+		List goalsList = mainService.selectMostGoals(id);
+		System.out.println("GL.0 : " + goalsList.get(0));
+		System.out.println("GL.1 : " + goalsList.get(1));
+		
+		
+		
+		
+		
+		
+		
+		model.addAttribute("TBdto", TBdto);
+		model.addAttribute("categories", categories);
+		model.addAttribute("todayData", todayData);
+		model.addAttribute("LMsum", LMsum);
+		model.addAttribute("MPgoal", (HashMap)goalsList.get(0));
+		model.addAttribute("MTgoal", (HashMap)goalsList.get(1));
 		
 		
 		

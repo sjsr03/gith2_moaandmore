@@ -23,4 +23,8 @@
  	<update id="updateTeamMemJoin" parameterType="hashmap">
 		update team_member set is_join='1' where team_no=#{team_no} and nickname=#{nickname}
 	</update>
+	
+	<select id="selectMyTeamAll" parameterType="string" resultType="int">
+		SELECT team_no FROM team_member WHERE nickname=#{value}
+	</select>
 </mapper>
