@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
+import goals.model.dao.GoalsDAOImpl;
 import member.model.dao.MemberDAO;
 import team.model.dao.TeamMemberDAO;
 import team.model.dto.TeamDTO;
@@ -19,6 +22,9 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 	
 	@Autowired
 	private TeamMemberDAO teamMemDao = null; 
+	
+	@Autowired
+	private GoalsDAOImpl goalsDAO = null;
 	
 	@Override
 	public List<TeamMemberDTO> selectAllbyTeamNo(int team_no) throws SQLException {
@@ -108,6 +114,11 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 	@Override
 	public void updateTeamMemJoin(int team_no, String nickname) throws SQLException {
 		teamMemDao.updateTeamMemJoin(team_no, nickname);
+		
+		//goals테이블에 목표추가
+		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		goalsDAO.insertGoalByTeam(id, team_no);
+		
 	}
 
 }
