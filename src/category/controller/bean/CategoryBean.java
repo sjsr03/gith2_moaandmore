@@ -96,6 +96,7 @@ public class CategoryBean {
 
 					
 					
+					
 					already = true;
 					model.addAttribute("already",already);
 					break;
