@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +34,10 @@ public class TeamBean {
 	private TeamMemberServiceImpl teamMemService = null;
 	
 	@RequestMapping("groupList.moa")
-	public String viewList(String pageNum, String pageStatus, String isSearch, String search, String range, Model model) throws SQLException {
+	public String viewList(HttpServletRequest request, String isMyTeam, String pageNum, String pageStatus, String isSearch, String search, String range, Model model) throws SQLException {
+		if(isMyTeam == null)
+			isMyTeam = "0";
+		
 		if(pageNum == null) {
 			pageNum = "1";
 		}
@@ -50,6 +55,8 @@ public class TeamBean {
 		if(range == null)
 			range = "0";
 		
+		HttpSession session = request.getSession();
+		String nickname = (String) session.getAttribute("memName");
 
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyyMMdd");
@@ -100,10 +107,21 @@ public class TeamBean {
 		
 		List articleList = null;
 		List articleMemberAvgList = null;
-		int count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus),Integer.parseInt(isSearch),search);
+		int count = 0;
+		
+		if(Integer.parseInt(isMyTeam) == 0) {
+			count = teamService.getTeamArticleCount(Integer.parseInt(pageStatus),Integer.parseInt(isSearch),search);
+		}else if(Integer.parseInt(isMyTeam) == 1) {
+			//TODO 내가 가입된 개설 승인된 그룹들
+			count = teamService.getMyOkTeamArticleCount(nickname, Integer.parseInt(pageStatus), Integer.parseInt(isSearch), search);
+		}
 		
 		if(count>0) {
-			articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow,Integer.parseInt(isSearch),search,Integer.parseInt(range));
+			if(Integer.parseInt(isMyTeam) == 0) {
+				articleList = teamService.getTeamArticles(Integer.parseInt(pageStatus),startRow, endRow,Integer.parseInt(isSearch),search,Integer.parseInt(range));
+			}else if(Integer.parseInt(isMyTeam) == 1) {
+				articleList = teamService.getMyOkTeamArticles(nickname, Integer.parseInt(pageStatus), startRow, endRow, Integer.parseInt(isSearch), search, Integer.parseInt(range));
+			}
 			articleMemberAvgList = teamMemService.getTeamAvgArticles(articleList);
 		}
 		
@@ -111,6 +129,7 @@ public class TeamBean {
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("pageStatus", pageStatus);
+		model.addAttribute("isMyTeam", isMyTeam);
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("search", search);
 		model.addAttribute("range", Integer.parseInt(range));

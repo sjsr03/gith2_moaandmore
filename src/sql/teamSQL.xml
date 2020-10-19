@@ -11,6 +11,81 @@
 	<update id="updateTeamUpdateTime" parameterType="string">
 		update update_table_reg set lastdate=#{value}
 	</update>
+	
+	
+	
+	<select id="countMyOkTeamAll" parameterType="hashmap" resultType="int">
+		<![CDATA[
+			SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND A.STATUS=#{pageStatus}
+		]]>
+	
+		<if test="isSearch == 1">
+			and A.subject like '%'||#{search}||'%'
+		</if>
+	</select>
+	
+	<select id="selectMyOkTeamAll" parameterType="hashmap" resultType="teamDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people,ISOPEN FROM (SELECT A.TEAM_NO, A.SUBJECT, A.AMOUNT, A.START_DAY, A.END_DAY, A.PEOPLE, A.ISOPEN FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND A.STATUS=#{pageStatus}
+		]]>
+		
+		<if test="isSearch == 1">
+			and subject like '%'||#{search}||'%'
+		</if>
+		<if test="range == 0">
+			<![CDATA[
+				order by a.team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 1">
+			<![CDATA[
+				order by a.team_no asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 2">
+			<![CDATA[
+				order by a.amount desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 3">
+			<![CDATA[
+				order by a.amount asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 4">
+			<![CDATA[
+				order by a.start_day asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 5">
+			<![CDATA[
+				order by a.start_day desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 6">
+			<![CDATA[
+				order by a.end_day asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 7">
+			<![CDATA[
+				order by a.end_day desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 8">
+			<![CDATA[
+				order by a.people desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 9">
+			<![CDATA[
+				order by a.people asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		
+	</select>
+	
+	
 
 
 	<select id="countTeamAll" parameterType="hashmap" resultType="int">
