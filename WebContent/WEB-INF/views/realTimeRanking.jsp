@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
 <head>
 <meta charset="UTF-8">
 <title>Realtime Ranking List</title>
@@ -28,16 +26,16 @@
 	width:900px;
 	margin:0 auto;
 }
-a,img {
+#ranking-body a,#ranking-body img {
 	border:0px;
 	text-decoration:none;
 }
-ul,li {
+#ranking-body ul,#ranking-body li {
 	list-style:none;
 	padding:0px;
 	margin:0px;
 }
-h1 {
+#ranking-body h1 {
 	color:#525252;
 	font-size:40px;
 	font-weight:100;
@@ -45,7 +43,7 @@ h1 {
 	margin:0px;
 	margin-top:193px;
 }
-h1 > b {
+#ranking-body h1 > b {
 	font-weight:900;
 }
 
@@ -66,10 +64,10 @@ h1 > b {
 	margin:0px;
 	padding-right:30px;
 }
-dd {
+#ranking-body dd {
 	margin:0px;
 }
-dd  a.t{
+#ranking-body dd  a.t{
 	cursor:pointer;
 	margin:0px;
 	color:#4b4b4b;
@@ -84,7 +82,7 @@ dd  a.t{
 	font-weight:700;
 	vertical-align:middle;
 }
-dd .num {
+#ranking-body dd .num {
 	background-color:#4b4b4b;
 	color:#fff;
 	font-size:10px;
@@ -164,7 +162,7 @@ $(function(){
 
 </script>
 </head>
-<body id="ranking-body">
+<div id="ranking-body">
 	<div id="ranking-wrap">
 		<div class="ranking-container">
 			<ul id="best_search">
@@ -183,5 +181,4 @@ $(function(){
 		</div>
    </div>
 	
-</body>
-</html>
+</div>
