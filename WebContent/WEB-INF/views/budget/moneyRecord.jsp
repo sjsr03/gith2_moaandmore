@@ -19,6 +19,45 @@
 		// recordChk 선택에 따라 하위내역 보여주기/숨기기
 		$(".recordChk").change(function(){
 			
+			
+			var checkedList= [];
+			var checkedStr = "";
+			
+			
+			
+			$(".recordChk").each(function(){
+				if($(this).is(":checked")==true) {
+					checkedList.push($(this).val());
+					checkedStr += $(this).val();
+				}
+			});
+			
+			
+			if(checkedList.length > 1) {
+				$("#searchDate").css("display", "none");
+				$("#month").css("display", "none");
+				manycheck();
+				
+				if(checkedList.length == 3) {
+					$("#type").val("all");
+				} else {
+					$("#type").val(checkedStr);
+				}
+			} else {
+				if(checkedList.indexOf("budget") == 0) {
+					$("#searchDate").css("display", "block");
+					$("#month").css("display", "none");
+				} else {
+					$("#searchDate").css("display", "none");
+					$("#month").css("display", "block");
+					$("#month option:eq(0)").prop("selected", true);
+				}
+			}
+			
+			
+			
+			
+			/*
 			if($(".recordChk:checked").length==2){// 2개 선택했을 때
 				// 하위항목 다 숨김
 				$("#searchDate").css("display", "none");
@@ -55,6 +94,7 @@
 					$("#type").val("outcome");
 				}
 			}
+			*/
 		});	
 		
 		// 수입/지출일 떄

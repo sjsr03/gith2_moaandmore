@@ -136,7 +136,7 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String LClogout(HttpServletRequest request){
+	public String logout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		session.removeAttribute("memName");	//세션 삭제

@@ -2,7 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<head>
 <title>예산 설정</title>
+</head>
 <style>
 	input[type="number"] {
 		width:80px;
@@ -18,94 +20,98 @@
             <h1 class="h3 mb-0 text-gray-800">예산 설정</h1>
             </div>
             
+	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
            	<!-- 첫번째 줄 -->
-            <div class="row">
-            	<div class="card shadow mb-4">
-	                <div class="card-body">
-	                	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
-							<input type="hidden" name="isNewBudget" id="isNewBudget" value="1" />
-							<div style="width:600px;height:1000px;overflow:hidden;position:absolute;left:0px;">
-								<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;" id="firstStep">
-									<ul>
-										<li>
-											총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
-										</li>
-										<li>
-											기간 단위 : 
-											<select name="period" id="period">
-												<option value="7">7일</option>
-												<option value="14">14일</option>
-												<option value="30">한달</option>
-											</select>
-										</li>
-										<jsp:useBean id="now" class="java.util.Date" />
-										<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
-										<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
-										<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
-											<br/>
-											<span id="warn"></span>
-										</li>
-									</ul>
-									<input type="button" value="세부설정 >" onclick="nextStep()"/>
-								</div>
-								<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:600px;" id="secondStep">
-									<input type="button" value="<이전단계" onclick="preStep()"/>
-									<input type="button" value="추가" id="insertLine"/>
-									
-									<table id="detailBudget">
-										<tr>
-											<td>카테고리</td>
-											<td>금액</td>
-											<td>비율</td>
-											<td>하루 예산</td>
-											<td>&nbsp;</td>
-										</tr>
-										<tr>
-											<td>
-												<select name="category_name" class="category_name" required>
-													<option class="none" disabled selected>==카테고리 선택==</option>
-													<c:forEach items="${categoryList}" var="i">
-														<option value="${i.category_name }">${i.category_name }</option>
-													</c:forEach>
-												</select>
-											</td>
-											<td>
-												<input type="number" name="amount" min="0" required class="amount"/>
-											</td>
-											<td>
-												<input type="number" readonly class="rate"/>%
-											</td>
-											<td>
-												<input type="number" readonly class="dayAmount"/>원
-											</td>
-											<!-- 맨위라인은 삭제 안되게
-											<td>
-												<input type="button" class="deleteBtn" value="삭제"/>
-											</td>
-											 -->
-											
-										</tr>
-									</table>
-									<hr>
-									카테고리별 예산 합계 : <strong id="amountSum"></strong>원<br/>
-									총 예산 : <strong id="TbudgetPrint"></strong>원
-									<br/>
-									카테고리별 예산 합계와 총 예산이 동일하도록 설정하세요
-									<br/>
-									<input type="hidden" value="새로운 예산 생성" id="createBudget" />
-								</div>
-							</div>
-							</form>
-	                </div>
-	              </div>
+            <div class="row" style="overflow:hidden;">
             	
-            	
+	
+	<!-- 폼 시작 -->
+		<div class="col-lg-12" style="transition: .5s;" id="firstStep">
+		<div class="card shadow lg-12" >
+            <div class="card-body">
+				<ul>
+					<li>
+						총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
+					</li>
+					<li>
+						기간 단위 : 
+						<select name="period" id="period">
+							<option value="7">7일</option>
+							<option value="14">14일</option>
+							<option value="30">한달</option>
+						</select>
+					</li>
+					<jsp:useBean id="now" class="java.util.Date" />
+					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
+					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
+					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
+						<br/>
+						<span id="warn"></span>
+					</li>
+				</ul>
+				<input type="button" value="세부설정 >" onclick="nextStep()"/>
+			</div>
+		</div>
+		</div>
+		<div class="col-lg-12" style="transition: .5s;" id="secondStep">
+		<div class="card shadow lg-12" >
+        	<div class="card-body" >
+		
+				<input type="button" value="<이전단계" onclick="preStep()"/>
+				<input type="button" value="추가" id="insertLine"/>
 				
-            </div>
-            
-          </div>
-<jsp:include page="../footer.jsp"/>
-
+				<table id="detailBudget">
+					<tr>
+						<td>카테고리</td>
+						<td>금액</td>
+						<td>비율</td>
+						<td>하루 예산</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>
+							<select name="category_name" class="category_name" required>
+								<option class="none" disabled selected>==카테고리 선택==</option>
+								<c:forEach items="${categoryList}" var="i">
+									<option value="${i.category_name }">${i.category_name }</option>
+								</c:forEach>
+							</select>
+						</td>
+						<td>
+							<input type="number" name="amount" min="0" required class="amount"/>
+						</td>
+						<td>
+							<input type="number" readonly class="rate"/>%
+						</td>
+						<td>
+							<input type="number" readonly class="dayAmount"/>원
+						</td>
+						<!-- 맨위라인은 삭제 안되게
+						<td>
+							<input type="button" class="deleteBtn" value="삭제"/>
+						</td>
+						 -->
+						
+					</tr>
+				</table>
+			<hr>
+			카테고리별 예산 합계 : <strong id="amountSum"></strong>원<br/>
+			총 예산 : <strong id="TbudgetPrint"></strong>원
+			<br/>
+			카테고리별 예산 합계와 총 예산이 동일하도록 설정하세요
+			<br/>
+			<input type="hidden" value="1" name="isNewBudget" />
+			<input type="hidden" value="새로운 예산 생성" id="createBudget" />
+		</div>
+	
+	</div>
+	</div>
+	</div>
+	</form>
+	</div>
+	
+	<jsp:include page="../footer.jsp"/>
+	
 <script>
 	
 	var x = document.getElementById("firstStep");

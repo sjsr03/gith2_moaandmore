@@ -63,4 +63,7 @@ public interface BudgetService {
 	
 	//하루치 예산 계산하기
 	public void calTodayBudget(String id) throws SQLException;
+	
+	//오늘의 예산 총합
+	public int selectSumTodayBudget(String id) throws SQLException;
 }
