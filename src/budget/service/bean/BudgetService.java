@@ -60,4 +60,7 @@ public interface BudgetService {
 	
 	//오늘의 예산 데이터 가져오기
 	public List selectTodayBudget(String id) throws SQLException;
+	
+	//현재 사용가능한 예산 계산
+	public void calTodayBudget(String id) throws SQLException;
 }

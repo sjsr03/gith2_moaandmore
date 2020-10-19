@@ -50,4 +50,9 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 		return categoryList;
 	}
 	
+	@Override
+	public void updateMinusCurrent(TotalBudgetDetailDTO TBDdto) {
+		sqlSession.update("totalBudgetDetail.updateMinusCurrent", TBDdto);
+	}
+	
 }

@@ -88,6 +88,8 @@ public class MemberBean {
 		budgetService.updateNewTB(id);
 		//남은돈 계산
 		budgetService.calLeftMoney(id);
+		//오늘의 예산 계산하기
+		budgetService.calTodayBudget(id);
 		
 		return "member/loginPro";
 	}
@@ -144,7 +146,7 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("signupForm.moa")
-	public String signupForm() {
+	public String NLCsignupForm() {
 
 		
 		return "member/signupForm";
@@ -168,7 +170,7 @@ public class MemberBean {
 	
 	
 	@RequestMapping("updateMember.moa")
-	public String updateMember(HttpServletRequest request,Model model)throws SQLException{
+	public String LCupdateMember(HttpServletRequest request,Model model)throws SQLException{
 		
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("memId");

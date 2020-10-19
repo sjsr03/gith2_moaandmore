@@ -11,7 +11,7 @@ public interface RecordTransferDAO {
 	//목표에 전환기록 남기기
 	public void insertRecordGoals(RecordGoalsDTO dto);
 	//예산에 전환하기
-	public void updateRecordTBD(TotalBudgetDetailDTO target, List fromList);
+	public void updateRecordTBD(TotalBudgetDetailDTO target);
 	//회원의 남은돈 합산
 	public int selectLeftMoneySum(String id);
 }

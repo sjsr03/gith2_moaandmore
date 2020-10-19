@@ -11,7 +11,7 @@
   	
   	<!-- 예산에 재분배 -->
   	<update id="updatePlusRecordTBD" parameterType="totalBudgetDetailDTO">
-  		update total_budget_detail set category_budget=(category_budget+#{category_budget}) where budget_no=#{budget_no} and category_no=#{category_no}
+  		update total_budget_detail set category_current=(category_current+#{category_current}) where budget_no=#{budget_no} and category_no=#{category_no}
   	</update>
   	
   	<!-- 예산에 재분배 -->

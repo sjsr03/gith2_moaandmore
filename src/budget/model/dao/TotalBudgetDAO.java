@@ -27,4 +27,9 @@ public interface TotalBudgetDAO {
 	//예산 번호로 전체 정보 가져오기
 	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException;
 	
+	//현재 예산 기간이 며칠 남았는지 
+	public int calLeftDaysCurrentTB(String id) throws SQLException;
+	
+	//예산 현재금액 수정
+	public void updateCurrentBudget(int budget_no) throws SQLException;
 }
