@@ -219,8 +219,5 @@ public class CategoryDAOImpl implements CategoryDAO {
 		int count=sqlSession.selectOne("category.selectNoBudgetInfo", map);
 		return count;
 	}
-
-
-
 	
 }

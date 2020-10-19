@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 public class SearchForRecordDTO {
 	private String pageNum;
-	private String serachDate;
+	private String searchDate;
 	private String id;
 	private String type;
 	private Timestamp timeStampDate;
@@ -24,11 +24,11 @@ public class SearchForRecordDTO {
 		this.pageNum = pageNum;
 	}
 	
-	public String getSerachDate() {
-		return serachDate;
+	public String getSearchDate() {
+		return searchDate;
 	}
-	public void setSerachDate(String serachDate) {
-		this.serachDate = serachDate;
+	public void setSearchDate(String serachDate) {
+		this.searchDate = serachDate;
 	}
 	public String getId() {
 		return id;

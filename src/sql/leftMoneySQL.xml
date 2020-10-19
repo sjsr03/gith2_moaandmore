@@ -31,5 +31,9 @@
   		update left_money set amount=(amount+#{amount}), reg=sysdate where category_no=#{category_no} and id=#{id}
   	</update>
   	
+  	<!-- 남은돈 합산 -->
+  	<select id="selectCurrentLeftMoneySum" parameterType="string" resultType="int">
+  		select sum(amount) from left_money where id=#{value}
+  	</select>
   </mapper>
  

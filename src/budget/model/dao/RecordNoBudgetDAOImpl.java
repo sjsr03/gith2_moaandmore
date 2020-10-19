@@ -43,7 +43,7 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		int count = 0;
 		System.out.println("디에이오에서~~");
 		System.out.println("아이디"+searchForRecordDTO.getId());	
-		System.out.println("날짜"+searchForRecordDTO.getSerachDate());
+		System.out.println("날짜"+searchForRecordDTO.getSearchDate());
 		System.out.println("타입"+searchForRecordDTO.getType());
 		count = sqlSession.selectOne("record.countNoBudgetRecord", searchForRecordDTO);
 		System.out.println("count ::: " + count);
@@ -58,4 +58,44 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		//System.out.println("노버겟~리스트~~ : " + noBudgetRocordList.size());
 		return noBudgetRocordList;
 	}
+
+	
+	// 아이디, 타입으로 예산 기록 총 개수 가져오기
+	@Override
+	public int CountBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		System.out.println("dao11111111111");
+		int count = sqlSession.selectOne("record.countBudgetRecordById", searchForRecordDTO);
+		
+		System.out.println("dao1111123123 : "+ count);
+		return count;
+	}
+	// 아이디, 타입으로 예산외 기록 총 개수 가져오기
+	@Override
+	public int CountNoBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		System.out.println("dao22222222222");
+		int count = sqlSession.selectOne("record.countNoBudgetRecordById", searchForRecordDTO);
+		System.out.println("예산외!!!!!!!!!개수 : " + count);
+		return count;
+	}
+
+	// 아이디, 타입으로 예산외 총 기록 가져오기 
+	@Override
+	public List selectNobudgetRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		System.out.println("dao3333333333333");
+		List recordList = sqlSession.selectList("record.selectNobudgetRecord", searchForRecordDTO);
+		return recordList;
+	}
+	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 
+	@Override
+	public List selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		System.out.println("dao44444");
+		System.out.println("startRow!!!!!!! : " + searchForRecordDTO.getStartRow());
+		System.out.println("enRow!!!!!!! : " + searchForRecordDTO.getEndRow());
+		
+		List recordList = sqlSession.selectList("record.selectRecord", searchForRecordDTO);
+		System.out.println("dao44에서 사이즈 : " + recordList.size());
+		return recordList;
+	}
+
+	
 }

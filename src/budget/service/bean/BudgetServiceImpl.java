@@ -448,6 +448,8 @@ public class BudgetServiceImpl implements BudgetService {
 		//현재 예산의 카테고리 리스트 불러오기
 		
 		List returnList = new ArrayList();
+		int TRsum = 0;
+		int TAsum = 0;
 		
 		for(Object obj:TBDList) {
 			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) obj;
@@ -471,14 +473,28 @@ public class BudgetServiceImpl implements BudgetService {
 			
 			returnList.add(returnMap);
 			
-			
-			System.out.println("category_no : " + category_no + " / recommend : " + recommend + " / actual : " + actual);
+			TRsum += recommend;
+			TAsum += actual;
 			
 		}
+		
+		//총예산값 넣기
+		HashMap total = new HashMap();
+		total.put("category_no", 0);
+		total.put("recommend", TRsum);
+		total.put("actual", TAsum);
+		
+		returnList.add(0, total);
 		
 		return returnList;
 	}
 
+	
+	@Override
+	public int selectLeftMoneySum(java.lang.String id) throws SQLException {
+		int LMsum = leftMoneyDAO.selectCurrentLeftMoneySum(id) + recordTransferDAO.selectLeftMoneySum(id);
+		return LMsum;
+	}
 }
 	
 

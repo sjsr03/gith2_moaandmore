@@ -7,8 +7,10 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -218,7 +220,7 @@ public class RecordBean {
 	public String selectBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{
 		// 처음 딱 들어올 땐 dto에 든 변수들 다 null일 것임!
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
-		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSerachDate());
+		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
 		Timestamp dateTime;
 
 		// 현재 진행중인 예산의 끝나는 날짜와 지난 예산의 시작 날짜를 가져오기
@@ -226,8 +228,8 @@ public class RecordBean {
 		
 		Boolean result = recordService.compareDate(searchForRecordDTO, budgetDate);
 		if(result){ //result 값이 참이면 해당 예산이 존재하는 것임.
-			System.out.println("검색날짜 ::: " + searchForRecordDTO.getSerachDate());
-			String newDate = searchForRecordDTO.getSerachDate() + " 00:00:00";
+			System.out.println("검색날짜 ::: " + searchForRecordDTO.getSearchDate());
+			String newDate = searchForRecordDTO.getSearchDate() + " 00:00:00";
 			dateTime = Timestamp.valueOf(newDate);
 			searchForRecordDTO.setTimeStampDate(dateTime);
 			
@@ -246,7 +248,7 @@ public class RecordBean {
 			// model로 다 보내주기
 			model.addAttribute("categories", categories);
 			model.addAttribute("recordPage", recordPage);
-		
+			
 		}else{ // 해당 예산이 없으면  가져올 내역이 없다는 말임 없으면..뭘보내주지;?
 		}
 		
@@ -259,14 +261,31 @@ public class RecordBean {
 	@RequestMapping(value="selectNoBudgetRecord.moa")
 	public String selectNoBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
-		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSerachDate());
+		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
 		model.addAttribute("recordPage", recordPage);
 		return "budget/moneyLog";
 	}
-	
+	// 여러개 가져올 때 
+	@RequestMapping(value="selectRecords.moa")
+	public String selectRecords(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model)throws SQLException{
+		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
+		System.out.println("타이입" + searchForRecordDTO.getType());
+		Map allRecord = recordService.selectAllRecord(searchForRecordDTO);
+		
+		
+		Set keys = allRecord.keySet();
+		Iterator it = keys.iterator();
+		while(it.hasNext()) {
+			String key = (String)it.next();
+			allRecord.get(key);
+			
+			model.addAttribute(key, allRecord.get(key));
+		}
+		return "budget/moneyLog";
+	}
 	
 	
 }
