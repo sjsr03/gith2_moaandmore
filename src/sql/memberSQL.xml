@@ -28,5 +28,9 @@
  		select id from member where nickname=#{value}
  	</select>
  	
+ 	<select id="getNickname" parameterType="string" resultType="string">
+ 		select nickname from member where id=#{value}
+ 	</select>
+ 	
 	
  </mapper>

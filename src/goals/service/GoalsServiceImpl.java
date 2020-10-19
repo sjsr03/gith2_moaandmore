@@ -113,10 +113,8 @@ public class GoalsServiceImpl implements GoalsService {
 		
 		//goals테이블에 팀 목표추가
 		//GoalsDTO goal = new GoalsDTO(0, id, "", target_money, saving, start_day, end_day, public_ch, public_type, team_no)
-		GoalsDTO goal = new GoalsDTO();
-		goal.setId(id);
-		goal.setTeam_no(team_no);
-		goalsDAO.insertGoalByTeam(goal);
+
+		goalsDAO.insertGoalByTeam(id, team_no);
 		
 			
 	}
