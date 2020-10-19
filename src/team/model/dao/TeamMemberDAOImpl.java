@@ -52,4 +52,10 @@ public class TeamMemberDAOImpl implements TeamMemberDAO {
 		sqlSession.update("teamMember.updateTeamMemJoin", map);		
 	}
 
+	@Override
+	public List selectMyTeamAll(String nickname) throws SQLException {
+		List list = sqlSession.selectList("teamMember.selectMyTeamAll", nickname);
+		return list;
+	}
+
 }

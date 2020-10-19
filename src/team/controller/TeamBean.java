@@ -217,14 +217,14 @@ public class TeamBean {
 	}
 	
 	@RequestMapping("teamDetailSecurity.moa")
-	public String teamDetail(int team_no, Model model) throws SQLException{
+	public String teamDetailSecurity(int team_no, Model model) throws SQLException{
 		model.addAttribute("team_no", team_no);
 		
 		return "team/groupDetailSecurity";
 	}
 	
 	@RequestMapping("teamDetailSecurityPro.moa")
-	public String teamDetailPro(int team_no, String nickname, String pw, Model model) throws SQLException{
+	public String teamDetailSecurityPro(int team_no, String nickname, String pw, Model model) throws SQLException{
 		
 		int result = teamService.checkPw(team_no, pw);
 		
