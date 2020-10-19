@@ -12,18 +12,19 @@
 .bolder     { font-weight: 800 }
 .light      { font-weight: 300 }
 
-html,body {
+#ranking-body {
 	padding:0px;
 	margin:0px;
 	font-family: 'NanumSquare', sans-serif;
 	position:relative;
 }
-#wrap {
+
+#ranking-wrap {
 	margin:0px;
 	padding:0px;
 	width:100%;
 }
-.container {
+.ranking-container {
 	width:800px;
 	margin:0 auto;
 }
@@ -57,16 +58,7 @@ h1 > b {
 	display:inline-block;
 	vertical-align:middle;
 }
-button {
-	width:121px;
-	background-color:#0085e2;
-	color:#fff;
-	border:0px;
-	height:63px;
-	margin-left:-5px;
-	padding:0px;
-	font-size:18px;
-}
+
 #best_search li p {
 	color:#393939;
 	font-size:17px;
@@ -135,6 +127,28 @@ $(function(){
 			}
 			$(".time4").append(txt);
 			
+			
+			function view(arg){
+				$(".time1, .time4, .ad1, .ad4").css("display","none");
+				if(arg=="0") {
+					$(".time4, .ad4").css("display","block");
+					viewcount = 3;
+				}else if(arg=="3") {
+					$(".time1, .ad1").css("display","block");
+					viewcount = 0;
+				}
+			}
+			var viewcount = 0;
+			var rtcarousel = setInterval(function(){ view(viewcount) },5000);
+			
+			$("#best_search").mouseenter(function() {
+				clearInterval(rtcarousel);
+			});
+			
+			$("#best_search").mouseleave(function() {
+				rtcarousel = setInterval(function(){ view(viewcount) },5000);
+			});
+			
 		},
 		error : function(e){
 			console.log("리스트 로딩 실패");
@@ -143,32 +157,13 @@ $(function(){
 })
 
 
-	function view(arg){
-		$(".time1, .time4, .ad1, .ad4").css("display","none");
-		if(arg=="0") {
-			$(".time4, .ad4").css("display","block");
-			viewcount = 3;
-		}else if(arg=="3") {
-			$(".time1, .ad1").css("display","block");
-			viewcount = 0;
-		}
-	}
-	var viewcount = 0;
-	var rtcarousel = setInterval(function(){ view(viewcount) },5000);
 	
-	$("#best_search").mouseenter(function() {
-		clearInterval(rtcarousel);
-	});
-	
-	$("#best_search").mouseleave(function() {
-		rtcarousel = setInterval(function(){ view(viewcount) },5000);
-	});
 
 </script>
 </head>
-<body>
-	<div id="wrap">
-		<div class="container">
+<body id="ranking-body">
+	<div id="ranking-wrap">
+		<div class="ranking-container">
 			<ul id="best_search">
 				<li><p>목표 달성 랭킹</p></li>
 				<li>
