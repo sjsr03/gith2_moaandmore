@@ -110,8 +110,4 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 		teamMemDao.updateTeamMemJoin(team_no, nickname);
 	}
 
-	@Override
-	public List selectMyTeamAll(String nickname) throws SQLException {
-		return teamMemDao.selectMyTeamAll(nickname);
-	}
 }

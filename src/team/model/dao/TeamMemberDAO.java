@@ -25,7 +25,4 @@ public interface TeamMemberDAO {
 	
 	//실제 그룹 가입 상태(is_join) 가입(1)으로 변경
 	public void updateTeamMemJoin(int team_no, String nickname) throws SQLException;
-	
-	//내가 가입된 그룹 전체 가져오기
-	public List selectMyTeamAll(String nickname) throws SQLException;
 }

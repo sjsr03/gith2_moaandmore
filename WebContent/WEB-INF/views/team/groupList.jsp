@@ -63,9 +63,9 @@
 		
 		$('#range').on('change', function(){
 			if(${isSearch}==0 || ${isSearch}==null){
-				var url = "groupList.moa?pageStatus=${pageStatus}&range=" + $("select[name='range']").val(); 
+				var url = "groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&range=" + $("select[name='range']").val(); 
 			} else {
-				var url = "groupList.moa?pageStatus=${pageStatus}&isSearch=${isSearch}&search=${search}&range=" + $("select[name='range']").val(); 
+				var url = "groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&isSearch=${isSearch}&search=${search}&range=" + $("select[name='range']").val(); 
 			}
 			window.location.replace(url);
 		});
@@ -76,8 +76,10 @@
 		<h1 style="margin-top:0; margin-bottom: 0;">Header</h1>
 	</div>
 	<div class="menu" style="background-color:#FFD6FF;width:200px;height:840px;float:left;">
+		<a href="/moamore/team/groupList.moa?isMyTeam=0">전체 그룹 보기</a><br/>
 		<c:if test="${sessionScope.memName != null}">
-			<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a>
+			<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a><br/>
+			<a href="/moamore/team/groupList.moa?isMyTeam=1">내가 가입한 그룹 보기</a>
 		</c:if>
 	</div>
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:820px;margin-left: 200px; padding: 10px;">
@@ -90,9 +92,9 @@
 			<button onclick="alert('로그인을 해주세요.');document.location.href='/moamore/member/loginForm.moa'">개설 신청</button>
 			</c:if>
 			<div style="float:right">
-				<button onclick="location='/moamore/team/groupList.moa?pageStatus=2&range=${range}'">진행중</button>
-				<button onclick="location='/moamore/team/groupList.moa?pageStatus=3&range=${range}'">종료</button>
-				<button onclick="location='/moamore/team/groupList.moa?pageStatus=1&range=${range}'">개설예정</button>
+				<button onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=2&range=${range}'">진행중</button>
+				<button onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=3&range=${range}'">종료</button>
+				<button onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=1&range=${range}'">개설예정</button>
 			</div>
 		</div>
 		<div class="middle" style="width: 100%; height: 720px; text-align: center;">
@@ -114,7 +116,7 @@
 			<c:if test="${articleList == null}">
 				<script>
 					alert('해당되는 조건의 그룹이 없습니다.');
-					history.back();
+					//history.back();
 				</script>
 			</c:if>
 		
@@ -124,9 +126,16 @@
 							<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
 								<c:forEach var="mem" items="${articleMemberAvgList[0][stat.index]}">
 									<c:if test="${sessionScope.memName == mem.nickname}">
-										<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+										<c:if test="${isMyTeam==0}">
+											<div style="float: left;"><img src="/moamore/resources/img/take_part_icon.png" width="80"/></div>
+										</c:if>
 									</c:if>
 								</c:forEach>
+								<c:if test="${isMyTeam==1}">
+									<c:if test="${article.isopen==0}">
+										<div style="float: left;"><img src="/moamore/resources/img/secret.png" width="80"/></div>
+									</c:if>
+								</c:if>
 								<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>
 								<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% ${articleMemberAvgList[1][stat.index]}%, #BDBDBD ${articleMemberAvgList[1][stat.index]}% 100%);"><span class="center"></span><span class="big">${articleMemberAvgList[1][stat.index]}%</span><span class="mini">평균달성률</span></span></div>
 							</div>
@@ -160,33 +169,33 @@
 				
 				<c:if test="${startPage > pageBlock}">
 					<c:if test="${isSearch==0}">
-						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage-pageBlock}&range=${range}" > &lt; </a>
+						<a href="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&pageNum=${startPage-pageBlock}&range=${range}" > &lt; </a>
 					</c:if>
 					<c:if test="${isSearch==1}">
-						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage-pageBlock}&range=${range}" > &lt; </a>
+						<a href="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage-pageBlock}&range=${range}" > &lt; </a>
 					</c:if>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1" >
 					<c:if test="${isSearch==0}">
-						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${i}&range=${range}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+						<a href="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&pageNum=${i}&range=${range}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 					</c:if>
 					<c:if test="${isSearch==1}">
-						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${i}&range=${range}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+						<a href="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${i}&range=${range}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 					</c:if>
 				</c:forEach>
 				<c:if test="${endPage < pageCount}">
 					<c:if test="${isSearch==0}">
-						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&pageNum=${startPage+pageBlock}&range=${range}" > &gt; </a>
+						<a href="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&pageNum=${startPage+pageBlock}&range=${range}" > &gt; </a>
 					</c:if>
 					<c:if test="${isSearch==1}">
-						<a href="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage+pageBlock}&range=${range}" > &gt; </a>
+						<a href="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&isSearch=1&search=${search}&pageNum=${startPage+pageBlock}&range=${range}" > &gt; </a>
 					</c:if>
 				</c:if>
 			
 			</c:if>
 		</div>
 		<div class="bottom"  style="width: 100%; height: 55px; text-align: center; margin-top: 5px;">
-			<form action="/moamore/team/groupList.moa?pageStatus=${pageStatus}&isSearch=1&range=${range}" method="post" style="align-self: center;">
+			<form action="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&isSearch=1&range=${range}" method="post" style="align-self: center;">
 				<input type="text" name="search" placeholder="그룹명 검색"/>
 				<input type="submit" value="검색"/>
 			</form>
