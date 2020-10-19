@@ -76,6 +76,10 @@
 		]]>
  	</select>
   	
+  	<!-- 총예산 현재값=(총예산 세부정보의 카테고리별 현재값 총합) -->
+  	<update id="updateCurrentBudget" parameterType="totalBudgetDTO">
+  		UPDATE TOTAL_BUDGET SET TOTAL_BUDGET_CURRENT=(SELECT sum(CATEGORY_CURRENT) FROM TOTAL_BUDGET_DETAIL tbd WHERE BUDGET_NO = #{BUDGET_NO}) WHERE BUDGET_NO=#{BUDGET_NO}
+  	</update>
   	
   </mapper>
  

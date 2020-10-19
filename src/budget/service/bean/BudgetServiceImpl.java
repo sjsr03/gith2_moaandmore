@@ -23,10 +23,13 @@ import budget.model.dao.TotalBudgetDetailDAO;
 import budget.model.dao.LeftMoneyDAO;
 import budget.model.dao.RecordBudgetDAO;
 import budget.model.dao.RecordTransferDAO;
+import budget.model.dao.TodayBudgetDAO;
+import budget.model.dao.TodayBudgetDAOImpl;
 import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.TotalBudgetDetailDTO;
 import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.RecordTransferDTO;
+import budget.model.dto.TodayBudgetDTO;
 import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
 import goals.model.dao.GoalsDAOImpl;
@@ -55,6 +58,8 @@ public class BudgetServiceImpl implements BudgetService {
 	private ReportDAO reportDAO = null;
 	@Autowired
 	private GoalsDAOImpl goalsDAO = null;
+	@Autowired
+	private TodayBudgetDAO todayBudgetDAO = null;
 	
 	//신규 예산 설정
 	@Override
@@ -124,18 +129,36 @@ public class BudgetServiceImpl implements BudgetService {
 			BDdto.setBudget_no(budget_no);
 			BDdto.setCategory_budget(Integer.parseInt(amount[i]));
 			BDdto.setCategory_no(categoryDAO.selectNumByName(category_name[i], id));
-			BDdto.setCategory_current(BDdto.getCategory_budget()*(actualPeriod-1)/actualPeriod);
+			
+			int today = (int)(Math.ceil((double)BDdto.getCategory_budget()/actualPeriod));
+			BDdto.setCategory_current(BDdto.getCategory_budget()-today);
 			
 			total_budget_detail.add(BDdto);
-			leftMoneyDAO.insertZero(budget_no, BDdto.getCategory_no(), id);
+			
+			//남은돈 테이블에 0으로 삽입
+			leftMoneyDAO.insertZero(budget_no, BDdto.getCategory_no(), id);		//0으로 insert 해주기
+			
+			
+			//하루예산 테이블에 삽입
+			TodayBudgetDTO todayDTO = new TodayBudgetDTO();
+			todayDTO.setBudget_no(budget_no);
+			todayDTO.setCategory_no(BDdto.getCategory_no());
+			todayDTO.setCategory_today(today);
+			todayDTO.setId(id);
+			todayBudgetDAO.insertTodayBudget(todayDTO);
 		}
 		
 		totalBudgetDetailDAO.insertTotalBudgetDetail(total_budget_detail);
+		
+		//////////////여기까지 총예산 세부내용 설정//////////////////
 		
 	}
 	
 	@Override
 	public void updateNewTB(String id) throws SQLException {
+		if(selectOutClose(id)==null) {
+			return;
+		} else {
 		while(selectOutClose(id)!=null) {
 		
 			TotalBudgetDTO outDate = selectOutClose(id);
@@ -168,6 +191,9 @@ public class BudgetServiceImpl implements BudgetService {
 				newTB.setId(id);
 				newTB.setPeriod(period);
 				
+				
+				//기존 총예산 종료처리
+				memberDAO.updateClose(id);
 				//DB에 총예산설정 넣은 후 해당 총예산의 고유번호 리턴
 				int budget_no = totalBudgetDAO.setBudget(newTB);
 				
@@ -180,11 +206,18 @@ public class BudgetServiceImpl implements BudgetService {
 					TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) obj;
 					dto.setBudget_no(budget_no);
 					dto.setCategory_current(dto.getCategory_budget()*(actualPeriod-1)/actualPeriod);
+					
+					leftMoneyDAO.insertZero(budget_no, dto.getCategory_no(), id);	
 				}
 				
 				totalBudgetDetailDAO.insertTotalBudgetDetail(TBDList);
 			}
 		
+		}
+		
+		//총예산정보가 현재값으로 적절하게 들어갔으면
+		//LeftMoney의 reg를 (총예산정보의 시작일로)
+		leftMoneyDAO.updateRegToStartDay(id);
 		}
 		
 	}
@@ -297,26 +330,14 @@ public class BudgetServiceImpl implements BudgetService {
 			
 		/////////////////// 기록 삽입 끝///////////////////
 		
-		if(target_table.equals("budget")) {
+		if(target_table.equals("budget")) {	//예산에 분배하는 거라면
 			
 			//분배대상의 예산값 늘리기
 			TotalBudgetDetailDTO target = new TotalBudgetDetailDTO();
 			target.setBudget_no(totalBudgetDAO.selectCurrentOne(id).getBudget_no());
-			target.setCategory_budget(sum);
+			target.setCategory_current(sum);
 			target.setCategory_no(Integer.parseInt(subSel));
-			
-			//분배출처의 예산값 줄이기
-			List fromList = new ArrayList();
-			for (int i = 0; i < categories.length; i++) {
-				TotalBudgetDetailDTO from = new TotalBudgetDetailDTO();
-				from.setBudget_no(totalBudgetDAO.selectCurrentOne(id).getBudget_no());
-				from.setCategory_budget(Integer.parseInt(inputAmount[i]));
-				from.setCategory_no(Integer.parseInt(categories[i]));
-				
-				fromList.add(from);
-			}
-					
-			recordTransferDAO.updateRecordTBD(target, fromList);
+			recordTransferDAO.updateRecordTBD(target);
 
 		} else {
 			RecordGoalsDTO dto = new RecordGoalsDTO();
@@ -377,12 +398,15 @@ public class BudgetServiceImpl implements BudgetService {
 
 	@Override
 	public void calLeftMoney(String id) throws SQLException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		//마지막 로그인날짜(남은돈 계산날짜 가져오기)
 		String lastD = leftMoneyDAO.selectLastLoginReg(id);
 		if(lastD == null) {
 			return;
 		}
-		Date lastDate = new Date(Timestamp.valueOf(lastD).getTime());
+		
+		long lt = Timestamp.valueOf(lastD).getTime();
+		Date lastDate = new Date(lt);
 		lastDate.setHours(0);
 		lastDate.setMinutes(0);
 		lastDate.setSeconds(0);
@@ -393,48 +417,65 @@ public class BudgetServiceImpl implements BudgetService {
 		today.setSeconds(0);
 		
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		if(sdf.format(lastDate).equals(sdf.format(today))) {
+		if(sdf.format(lastDate).equals(sdf.format(today))) {	//마지막 로그인날짜가 오늘이면 메서드 종료
 			return;
 		}
 
 		
 		
+		//현재 총예산 정보 가져오기
+		TotalBudgetDTO TBdto = selectCurrentOne(id);
+		List TBDList = selectAllbyBudgetNum(TBdto.getBudget_no());
 		
-		while(lastDate.before(today)) {
-			HashMap data = new HashMap();
-			data.put("id", id);
-			data.put("dateTime", lastDate);
-			
-			int budget_no = totalBudgetDAO.selectBudgetNum(data);
-			
-			TotalBudgetDTO TBdto = selectOneByNum(budget_no);
-			List TBDList = selectAllbyBudgetNum(budget_no);
-			int period = Math.round((TBdto.getEnd_day().getTime()-TBdto.getStart_day().getTime())/(1000*60*60*24)) + 1;
-			
-			
-			for(int i = 0; i < TBDList.size(); i++) {
-				//카테고리 번호와 날짜를 주고, 실제 지출액 가져오기
-				TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) TBDList.get(i);
-				
-				int dailyBudget = dto.getCategory_budget()/period;  //하루권장예산
-				HashMap map = new HashMap();
-				map.put("budget_no", dto.getBudget_no());
-				map.put("category_no", dto.getCategory_no());
-				map.put("reg", sdf.format(lastDate));
-				
-				int actualOutcomeSum = reportDAO.selectOutcomeSumByCatAndReg(map);
-				
-				int thisLeftmoney = dailyBudget-actualOutcomeSum;
-				
-				//해당 카테고리에 남은돈 추가
-				leftMoneyDAO.updateLeftMoney(thisLeftmoney, dto.getCategory_no(),id);
-				
-			}
-			
-			lastDate.setDate(lastDate.getDate()+1);
+		Date startDay = new Date(TBdto.getStart_day().getTime());
+		if(startDay.after(lastDate)) {	//마지막 로그인이 현재총예산 시작일보다 전이면
+			lastDate = startDay;	//계산은 현재총예산 시작일부터 시작
 		}
+		
+		//계산해야할 일수가 얼마나 되는지?
+		int period = (int)(today.getTime()-lastDate.getTime()) / (1000*60*60*24);
+		System.out.println("마지막 로그인으로부터 " + period + "일째 지났다");
+		//lastDate는 종료까지 며칠 남은 상태였을까
+		int lastPeriod = (int)(Math.ceil((TBdto.getEnd_day().getTime()-lastDate.getTime()) / (1000*60*60*24)));
+		System.out.println("endDay : " + TBdto.getEnd_day() + " / long : " + TBdto.getEnd_day().getTime());
+		System.out.println("lastDate : " + lastDate + " / long : " + lastDate.getTime());
+		System.out.println("마지막 로그인은 종료일까지" + lastPeriod + "일 남은 시점이었다");
+		
+		for(int i = 0; i < TBDList.size(); i++) {
+			TotalBudgetDetailDTO TBDdto = (TotalBudgetDetailDTO) TBDList.get(i);
+			//기록된 현재 예산값은
+			int current = TBDdto.getCategory_current();
+			int dailyBudget = (int)Math.ceil(current / lastPeriod);
+			
+			//소비했다고 가정하는 액수
+			int assumed = dailyBudget*period;
+			System.out.println(TBDdto.getCategory_no() + "번 카테고리에서 " + assumed + "원만큼 사용했다고 추정");
+			
+			TBDdto.setCategory_current(assumed);
+			//현재값에서 추정치만큼 빼기
+			totalBudgetDetailDAO.updateMinusCurrent(TBDdto);
+			
+			//사용한 기록이 있는지 확인(미래 지출기록이 가능하므로 염두)
+			//lastDate부터 today까지
+			HashMap map = new HashMap();
+			map.put("category_no", TBDdto.getCategory_no());
+			map.put("startDay", sdf.format(lastDate));
+			
+			int outcomeSum = recordBudgetDAO.selectSumFromDateAndCatNo(map);
+			System.out.println("실제 사용액 : " + outcomeSum + "원");
+			
+			//남은돈 추가
+			int leftMoney = (assumed-outcomeSum);
+			System.out.println("남은 돈은 " + leftMoney + "원");
+			
+			leftMoneyDAO.updateLeftMoney(leftMoney, TBDdto.getCategory_no(), id);
+			
+		}
+		
+		//총예산 현재값 계산
+		totalBudgetDAO.updateCurrentBudget(TBdto.getBudget_no());
+		
 		
 	}
 	@Override
@@ -494,6 +535,68 @@ public class BudgetServiceImpl implements BudgetService {
 	public int selectLeftMoneySum(java.lang.String id) throws SQLException {
 		int LMsum = leftMoneyDAO.selectCurrentLeftMoneySum(id) + recordTransferDAO.selectLeftMoneySum(id);
 		return LMsum;
+	}
+	
+	@Override
+	public void calTodayBudget(java.lang.String id) throws SQLException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		//마지막 로그인날짜(남은돈 계산날짜 가져오기)
+		String lastD = todayBudgetDAO.selectLastLoginReg(id);
+		if(lastD == null) {
+			return;
+		}
+		
+		long lt = Timestamp.valueOf(lastD).getTime();
+		Date lastDate = new Date(lt);
+		lastDate.setHours(0);
+		lastDate.setMinutes(0);
+		lastDate.setSeconds(0);
+		
+		Date today = new Date();
+		today.setHours(0);
+		today.setMinutes(0);
+		today.setSeconds(0);
+		
+		
+		
+		if(sdf.format(lastDate).equals(sdf.format(today))) {	//마지막 로그인날짜가 오늘이면 메서드 종료
+			return;
+		}
+		
+		
+		//현재 진행중인 총예산정보 가져오기
+		TotalBudgetDTO TBdto = selectCurrentOne(id);
+		List TBDList = totalBudgetDetailDAO.selectAllbyBudgetNum(TBdto.getBudget_no());
+		
+		//오늘 기준 남은 일수는?
+		int period = totalBudgetDAO.calLeftDaysCurrentTB(id);
+		System.out.println("현재 남은 일수는 " + period + "일");
+		
+		for(int i = 0; i<TBDList.size(); i++) {
+			TotalBudgetDetailDTO TBDdto = (TotalBudgetDetailDTO)TBDList.get(i);
+			
+			//카테고리의 현재값
+			double catCurrent = TBDdto.getCategory_current();
+			//남은 일수로 나눈 하루치 값
+			int daily = (int)(Math.ceil(catCurrent / period));
+			
+			TodayBudgetDTO todayDTO = new TodayBudgetDTO();
+			todayDTO.setBudget_no(TBDdto.getBudget_no());
+			todayDTO.setCategory_no(TBDdto.getCategory_no());
+			todayDTO.setCategory_today(daily);
+			
+			//오늘의 예산 업데이트
+			todayBudgetDAO.updateTodayBudget(todayDTO);
+			
+			//카테고리별 예산 현재값에서 차감
+			TBDdto.setCategory_current(daily);
+			totalBudgetDetailDAO.updateMinusCurrent(TBDdto);
+			
+			
+		}
+		//총예산 현재값 계산
+		totalBudgetDAO.updateCurrentBudget(TBdto.getBudget_no());
+		
 	}
 }
 	

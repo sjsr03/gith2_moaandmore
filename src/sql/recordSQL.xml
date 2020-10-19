@@ -99,4 +99,13 @@
 			</otherwise>
   		</choose>
   	</select>
+  	
+  	<!-- 주어진 날짜부터 오늘까지, 카테고리번호에 따른 예산지출값의 합
+	//map에는 category_no과 startDay 존재 -->
+  	<select id="selectSumFromDateAndCatNo" parameterType="hashmap" resultType="int" >
+  		<![CDATA[
+	  		select sum(amount) from budget where category_no=#{category_no} and to_char(reg, 'yyyy-MM-dd') >= #{startDay} and reg<=sysdate
+  		]]>
+  	</select>
+  	
   </mapper>

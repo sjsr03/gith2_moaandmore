@@ -1,7 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
 <head>
 <meta charset="UTF-8">
 <title>Realtime Ranking List</title>
@@ -25,19 +23,19 @@
 	width:100%;
 }
 .ranking-container {
-	width:800px;
+	width:900px;
 	margin:0 auto;
 }
-a,img {
+#ranking-body a,#ranking-body img {
 	border:0px;
 	text-decoration:none;
 }
-ul,li {
+#ranking-body ul,#ranking-body li {
 	list-style:none;
 	padding:0px;
 	margin:0px;
 }
-h1 {
+#ranking-body h1 {
 	color:#525252;
 	font-size:40px;
 	font-weight:100;
@@ -45,7 +43,7 @@ h1 {
 	margin:0px;
 	margin-top:193px;
 }
-h1 > b {
+#ranking-body h1 > b {
 	font-weight:900;
 }
 
@@ -66,25 +64,25 @@ h1 > b {
 	margin:0px;
 	padding-right:30px;
 }
-dd {
+#ranking-body dd {
 	margin:0px;
 }
-dd  a.t{
+#ranking-body dd  a.t{
 	cursor:pointer;
 	margin:0px;
 	color:#4b4b4b;
-	text-overflow:ellipsis;
+	
 	overflow:hidden;
 	width:94px;
 	white-space:nowrap;
 	display:inline-block;
-	font-size:17px;
+	font-size:15px;
 	text-align:left;
 	padding-right:13px;
 	font-weight:700;
 	vertical-align:middle;
 }
-dd .num {
+#ranking-body dd .num {
 	background-color:#4b4b4b;
 	color:#fff;
 	font-size:10px;
@@ -116,52 +114,55 @@ $(function(){
 		success:function(data){
 			var txt ="";
 			for(var i = 0 ; i < 5; i++){
-				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i].nickname+"</a></dd>";
+				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i]+"</a></dd>";
 			}
 			
 			$(".time1").append(txt);
 			
 			txt="";
 			for(var i = 5 ; i < 10; i++){
-				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i].nickname+"</a></dd>";
+				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i]+"</a></dd>";
 			}
 			$(".time4").append(txt);
 			
 			
-			function view(arg){
-				$(".time1, .time4, .ad1, .ad4").css("display","none");
-				if(arg=="0") {
-					$(".time4, .ad4").css("display","block");
-					viewcount = 3;
-				}else if(arg=="3") {
-					$(".time1, .ad1").css("display","block");
-					viewcount = 0;
-				}
-			}
-			var viewcount = 0;
-			var rtcarousel = setInterval(function(){ view(viewcount) },5000);
 			
-			$("#best_search").mouseenter(function() {
-				clearInterval(rtcarousel);
-			});
-			
-			$("#best_search").mouseleave(function() {
-				rtcarousel = setInterval(function(){ view(viewcount) },5000);
-			});
 			
 		},
 		error : function(e){
 			console.log("리스트 로딩 실패");
 		}
 	})
+	
+	
 })
+	function view(arg){
+		$(".time1, .time4, .ad1, .ad4").css("display","none");
+		if(arg=="0") {
+			$(".time4, .ad4").css("display","block");
+			viewcount = 3;
+		}else if(arg=="3") {
+			$(".time1, .ad1").css("display","block");
+			viewcount = 0;
+		}
+	}
+	var viewcount = 0;
+	var rtcarousel = setInterval(function(){ view(viewcount) },5000);
+	
+	$("#best_search").mouseenter(function() {
+		clearInterval(rtcarousel);
+	});
+	
+	$("#best_search").mouseleave(function() {
+		rtcarousel = setInterval(function(){ view(viewcount) },5000);
+	});
 
 
 	
 
 </script>
 </head>
-<body id="ranking-body">
+<div id="ranking-body">
 	<div id="ranking-wrap">
 		<div class="ranking-container">
 			<ul id="best_search">
@@ -180,5 +181,4 @@ $(function(){
 		</div>
    </div>
 	
-</body>
-</html>
+</div>

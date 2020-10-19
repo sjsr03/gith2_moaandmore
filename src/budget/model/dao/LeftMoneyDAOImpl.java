@@ -1,6 +1,7 @@
 package budget.model.dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
@@ -55,5 +56,11 @@ public class LeftMoneyDAOImpl implements LeftMoneyDAO {
 		} else {
 			return sqlSession.selectOne("leftMoney.selectCurrentLeftMoneySum", id);
 		}
+	}
+	
+	@Override
+	public void updateRegToStartDay(String id) {
+		sqlSession.update("leftMoney.updateRegToStartDay", id);
+		
 	}
 }

@@ -78,11 +78,11 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		if(result==1) {	
 			sqlSession.update("totalBudget.updateTBClose", id);	//기존 1을 2로 바꾸고
-			//기존 예산정보를 가져옴
-			
 			
 			sqlSession.update("totalBudget.updateClose", id);	//기존 0을 1로
 			
+			//leftmoney에 남아있던 컬럼 지우기
+			sqlSession.delete("leftMoney.deleteLeftMoneyById", id);
 		}
 		
 	}
