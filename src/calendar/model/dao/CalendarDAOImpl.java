@@ -111,9 +111,11 @@ public class CalendarDAOImpl implements CalendarDAO{
 		map.put("id", id);
 		map.put("date",date); 
 		List noBudgetExpenseDetail = sqlSession.selectList("calendar.selectNobudgetExpenseDetail",map);
-		return null;
+		
+		return noBudgetExpenseDetail;
 	}
 
+	
 	@Override
 	public List getNobudgetIncomeDetail(String id, String date) throws SQLException {
 	
@@ -122,7 +124,8 @@ public class CalendarDAOImpl implements CalendarDAO{
 		map.put("date",date); 
 		List nobudgetIncomeDetail = sqlSession.selectList("calendar.selectNobudgetIncomeDetail",map);
 		
-		return null;
+		
+		return nobudgetIncomeDetail;
 	}
 
 	
