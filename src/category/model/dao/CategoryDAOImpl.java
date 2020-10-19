@@ -124,7 +124,6 @@ public class CategoryDAOImpl implements CategoryDAO {
 		map.put("category_no",category_no);
 		map.put("newName", newName);
 		map.put("id", id);
-		
 		sqlSession.update("category.updateoutcomeCategory",map);
 		
 	}

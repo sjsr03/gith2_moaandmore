@@ -44,7 +44,6 @@ public class CalendarBean {
 	}
 	    
 	   
-	   
 	
 	@RequestMapping(value="getCalendarEvent.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map getCalendarEvent(@RequestParam(value="checkVal[]") List<String> checkVal) throws SQLException{

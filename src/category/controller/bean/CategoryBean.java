@@ -2,6 +2,7 @@ package category.controller.bean;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.security.auth.message.callback.PrivateKeyCallback.Request;
 import javax.servlet.http.HttpServletRequest;
@@ -9,8 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
@@ -28,19 +32,38 @@ public class CategoryBean {
 	public String setCategory(Model model,HttpServletRequest request) throws SQLException{
 		
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-		List income = categoryService.selectAllIncomeCategoryById(id);
-		List outcome = categoryService.selectAllById(id);
+		//List income = categoryService.selectAllIncomeCategoryById(id);
+		//List outcome = categoryService.selectAllById(id);
 	
 		String already = request.getParameter("already");
-			
+		
 		model.addAttribute("already", already);
-		model.addAttribute("income",income);
-		model.addAttribute("outcome", outcome);
+		//model.addAttribute("income",income);
+		//model.addAttribute("outcome", outcome);
 		
 
 		
 		return "category/setCategory";
 	}
+	
+	@RequestMapping("getExpenseCategoryList.moa")
+	public @ResponseBody List getExpenseCateogryList() throws SQLException{
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+		List outcome = categoryService.selectAllById(id);
+
+		return outcome;
+	}
+	
+	@RequestMapping("getIncomeCategoryList.moa")
+	public @ResponseBody List getIncomeCategoryList() throws SQLException{
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
+		List income = categoryService.selectAllIncomeCategoryById(id);
+		
+		return income;
+	}
+	
+	
 	//카테고리 추가하기
 	@RequestMapping("setCategoryPro.moa")
 	public String setCategoryPro(String category_name,String categoryOption,Model model) throws SQLException{
@@ -48,6 +71,7 @@ public class CategoryBean {
 	
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		//카테고리명 안겹치는지 확인
+		
 		boolean already = false;
 		//수입카테고리 추가하기
 		if(categoryOption.equals("수입")) {
@@ -97,19 +121,35 @@ public class CategoryBean {
 			
 		}
 		
-		List income = categoryService.selectAllIncomeCategoryById(id);
-		List outcome = categoryService.selectAllById(id);
+		//List income = categoryService.selectAllIncomeCategoryById(id);
+		//List outcome = categoryService.selectAllById(id);
 		
-		model.addAttribute("income",income);
-		model.addAttribute("outcome", outcome);
+		//model.addAttribute("income",income);
+		//model.addAttribute("outcome", outcome);
 		model.addAttribute("already",already);
 	
 	
-
 	
 		return "category/setCategoryPro";
 
 	}
+	
+	
+	
+	/*
+	@RequestMapping(value="updateCategory.moa", method= {RequestMethod.GET, RequestMethod.POST})
+	public @ResponseBody void updateCateogry(String newName, int category_no) throws SQLException{
+		System.out.println(newName);
+		System.out.println(category_no);
+		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
+		categoryService.updateoutcomeCategory(category_no,newName,id);
+
+		
+		
+	}
+	*/
+	
 	//카테고리 수정하기
 	@RequestMapping("updateCategory.moa")
 	public String updateoutcomeCategory(Model model,String inorout,int category_no,String newName) throws SQLException {
@@ -170,10 +210,10 @@ public class CategoryBean {
 		
 		return "category/setCategory";
 	}
+	
 	//카테고리 삭제하기
 	@RequestMapping("deleteCategory.moa")
 	public String deleteCategory(int category_no,Model model,String inorout) throws SQLException{
-		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		
 		//budget테이블,nobudget테이블에 해당 category_no가 있는지 확인
@@ -206,4 +246,9 @@ public class CategoryBean {
 		return "category/setCategory";
 	}
 
+	
+	
+	
+	
+	
 }
