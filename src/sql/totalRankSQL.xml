@@ -7,6 +7,25 @@
   
  <mapper namespace="totalRank">
  	
- 
- 
+ 	<select id="selectAll" resultType="totalRankDTO">
+ 	<![CDATA[
+ 		SELECT * FROM (SELECT * FROM record_rank ORDER BY rank_sum/cnt ASC, cnt DESC) WHERE rownum<=10;
+ 	]]>
+ 	</select>
+
+	<select id="checkUpdateReg" resultType="int">
+	<![CDATA[
+		SELECT count(*) FROM update_table_reg WHERE sysdate >= lastdate AND TABLE_name='total_rank'
+	]]>
+	</select> 
+	
+	<delete id="deleteAll">
+		DELETE FROM total_rank
+	</delete>
+	
+	<insert id="insertAll">
+	<![CDATA[
+		INSERT into total_rank SELECT rr.id FROM(SELECT *  FROM record_rank ORDER BY rank_sum/cnt asc, cnt DESC)rr WHERE rownum<=10
+	 ]]>
+	</insert>
  </mapper>
