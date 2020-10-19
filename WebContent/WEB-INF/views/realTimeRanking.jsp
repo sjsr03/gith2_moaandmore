@@ -25,7 +25,7 @@
 	width:100%;
 }
 .ranking-container {
-	width:800px;
+	width:900px;
 	margin:0 auto;
 }
 a,img {
@@ -73,7 +73,7 @@ dd  a.t{
 	cursor:pointer;
 	margin:0px;
 	color:#4b4b4b;
-	text-overflow:ellipsis;
+	
 	overflow:hidden;
 	width:94px;
 	white-space:nowrap;
@@ -128,33 +128,36 @@ $(function(){
 			$(".time4").append(txt);
 			
 			
-			function view(arg){
-				$(".time1, .time4, .ad1, .ad4").css("display","none");
-				if(arg=="0") {
-					$(".time4, .ad4").css("display","block");
-					viewcount = 3;
-				}else if(arg=="3") {
-					$(".time1, .ad1").css("display","block");
-					viewcount = 0;
-				}
-			}
-			var viewcount = 0;
-			var rtcarousel = setInterval(function(){ view(viewcount) },5000);
 			
-			$("#best_search").mouseenter(function() {
-				clearInterval(rtcarousel);
-			});
-			
-			$("#best_search").mouseleave(function() {
-				rtcarousel = setInterval(function(){ view(viewcount) },5000);
-			});
 			
 		},
 		error : function(e){
 			console.log("리스트 로딩 실패");
 		}
 	})
+	
+	
 })
+	function view(arg){
+		$(".time1, .time4, .ad1, .ad4").css("display","none");
+		if(arg=="0") {
+			$(".time4, .ad4").css("display","block");
+			viewcount = 3;
+		}else if(arg=="3") {
+			$(".time1, .ad1").css("display","block");
+			viewcount = 0;
+		}
+	}
+	var viewcount = 0;
+	var rtcarousel = setInterval(function(){ view(viewcount) },5000);
+	
+	$("#best_search").mouseenter(function() {
+		clearInterval(rtcarousel);
+	});
+	
+	$("#best_search").mouseleave(function() {
+		rtcarousel = setInterval(function(){ view(viewcount) },5000);
+	});
 
 
 	
