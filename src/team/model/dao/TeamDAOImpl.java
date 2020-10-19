@@ -181,5 +181,24 @@ public class TeamDAOImpl implements TeamDAO{
 		
 		return result;
 	}
+
+	@Override
+	public int getTeamComeInviteCount(String nickname) throws SQLException {
+		int count = sqlSession.selectOne("team.countMyComeInviteTeamAll", nickname);
+		
+		return count;
+	}
+
+	@Override
+	public List getTeamComeInvites(String nickname, int start, int end) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("nickname", nickname);
+		
+		List list = sqlSession.selectList("team.selectAllComeInviteTeam", map);
+		
+		return list;
+	}
 	
 }
