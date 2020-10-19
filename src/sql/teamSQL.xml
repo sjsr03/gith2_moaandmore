@@ -16,7 +16,7 @@
 	
 	<select id="countMyOkTeamAll" parameterType="hashmap" resultType="int">
 		<![CDATA[
-			SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND A.STATUS=#{pageStatus}
+			SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND (A.ISOPEN=1 OR (A.ISOPEN=0 AND b.IS_JOIN=1)) AND a.STATUS=#{pageStatus}
 		]]>
 	
 		<if test="isSearch == 1">
@@ -26,7 +26,7 @@
 	
 	<select id="selectMyOkTeamAll" parameterType="hashmap" resultType="teamDTO">
 		<![CDATA[
-		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people,ISOPEN FROM (SELECT A.TEAM_NO, A.SUBJECT, A.AMOUNT, A.START_DAY, A.END_DAY, A.PEOPLE, A.ISOPEN FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND A.STATUS=#{pageStatus}
+		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people,ISOPEN FROM (SELECT A.TEAM_NO, A.SUBJECT, A.AMOUNT, A.START_DAY, A.END_DAY, A.PEOPLE, A.ISOPEN FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND (A.ISOPEN=1 OR (A.ISOPEN=0 AND b.IS_JOIN=1)) AND a.STATUS=#{pageStatus}
 		]]>
 		
 		<if test="isSearch == 1">
