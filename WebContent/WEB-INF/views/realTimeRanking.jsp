@@ -78,7 +78,7 @@ dd  a.t{
 	width:94px;
 	white-space:nowrap;
 	display:inline-block;
-	font-size:17px;
+	font-size:15px;
 	text-align:left;
 	padding-right:13px;
 	font-weight:700;
@@ -116,14 +116,14 @@ $(function(){
 		success:function(data){
 			var txt ="";
 			for(var i = 0 ; i < 5; i++){
-				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i].nickname+"</a></dd>";
+				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i]+"</a></dd>";
 			}
 			
 			$(".time1").append(txt);
 			
 			txt="";
 			for(var i = 5 ; i < 10; i++){
-				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i].nickname+"</a></dd>";
+				txt += "<dd><a class='t'><div class='num'>"+(i+1)+"</div>"+data[i]+"</a></dd>";
 			}
 			$(".time4").append(txt);
 			
