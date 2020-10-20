@@ -40,6 +40,8 @@ import budget.model.dto.RecordPageDTO;
 import budget.model.dto.SearchForRecordDTO;
 import budget.service.bean.BudgetService;
 import budget.service.bean.RecordService;
+import category.model.dto.income_categoryDTO;
+import category.model.dto.outcome_categoryDTO;
 import category.service.bean.CategoryService;
 
 
@@ -148,6 +150,7 @@ public class RecordBean {
 		
 		return "budget/moneyLog";
 	}
+	//------------------------------------------------------------------------
 	
 	// 수입지출목록 보여주기
 	@RequestMapping("moneyLog.moa")
@@ -230,6 +233,8 @@ public class RecordBean {
 			// model로 다 보내주기
 			model.addAttribute("categories", categories);
 			model.addAttribute("recordPage", recordPage);
+			System.out.println("아아아아" + recordPage.getCount());
+		
 			
 		}else{ // 해당 예산이 없으면  가져올 내역이 없다는 말임 없으면..뭘보내주지;?
 		}
@@ -248,8 +253,27 @@ public class RecordBean {
 		
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
+		
+		
+		// 아이디당 수입/지출 카테고리 통으로 가져오기	
+		List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
+		List incomeCategoryList= categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
+		Map<Integer, String> incomeCategories = new HashMap();
+
+		for(int i = 0; i < incomeCategoryList.size(); i++) {
+			incomeCategories.put(((income_categoryDTO)incomeCategoryList.get(i)).getCategory_no(), ((income_categoryDTO)incomeCategoryList.get(i)).getCategory_name());		
+		}
+		
+		Map<Integer, String> outcomeCategories = new HashMap();
+		for(int i = 0; i < outcomeCategoryList.size(); i++) {
+			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
+		}
+		
 		model.addAttribute("searchDate",  searchForRecordDTO.getSearchDate());
 		model.addAttribute("recordPage", recordPage);
+		model.addAttribute("incomeCategories", incomeCategories);
+		model.addAttribute("outcomeCategoryList", outcomeCategoryList);
+		
 		return "budget/moneyLog";
 	}
 	// 여러개 가져올 때 
@@ -257,18 +281,27 @@ public class RecordBean {
 	public String selectRecords(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model)throws SQLException{
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
-		Map allRecord = recordService.selectAllRecord(searchForRecordDTO);
+		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
+		recordPage.setType(searchForRecordDTO.getType());
 		
-		
-		Set keys = allRecord.keySet();
-		Iterator it = keys.iterator();
-		while(it.hasNext()) {
-			String key = (String)it.next();
-			allRecord.get(key); 
-			model.addAttribute(key, allRecord.get(key));
-			System.out.println("레코드 찾아보겠음 : "+key);
+		// 아이디당 수입/지출 카테고리 통으로 가져오기	
+		List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
+		List incomeCategoryList= categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
+		Map<Integer, String> incomeCategories = new HashMap();
+
+		for(int i = 0; i < incomeCategoryList.size(); i++) {
+			incomeCategories.put(((income_categoryDTO)incomeCategoryList.get(i)).getCategory_no(), ((income_categoryDTO)incomeCategoryList.get(i)).getCategory_name());		
 		}
-		model.addAttribute("type", searchForRecordDTO.getType());
+		
+		Map<Integer, String> outcomeCategories = new HashMap();
+		for(int i = 0; i < outcomeCategoryList.size(); i++) {
+			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
+		}
+		
+		model.addAttribute("incomeCategories", incomeCategories);
+		model.addAttribute("outcomeCategoryList", outcomeCategoryList);
+		model.addAttribute("recordPage", recordPage);
+		
 		return "budget/moneyLog";
 	}
 	

@@ -35,5 +35,6 @@ public interface RecordService {
 	public Boolean compareDate(SearchForRecordDTO searchForRecordDTO, List budgetDate )throws SQLException, ParseException;
 
 	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 
-	public Map selectAllRecord(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+
 }

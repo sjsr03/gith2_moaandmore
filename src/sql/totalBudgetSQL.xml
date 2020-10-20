@@ -41,7 +41,7 @@
 
   	<!-- 지난 예산 시작 날짜 가져오기 현재 예산 밖에 없으면 이 부분을 close =0 으로 바꿔줘야하는데~... -->
   	<select id="selectBudgetStartDate" parameterType="string" resultType="string">
-  		select start_day from TOTAL_BUDGET WHERE id=#{value} and close=1
+  		select min(start_day) from TOTAL_BUDGET WHERE id=#{value} and close=1 or close=2
   	</select>
   	<!-- 가진 예산이 현재 에산 뿐이면 현재 예산에서 시작날짜 가져오기 -->
   	<select id="selectCurrBudgetStartDate" parameterType="string" resultType="string">

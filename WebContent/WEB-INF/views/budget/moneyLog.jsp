@@ -13,10 +13,21 @@
 <title>moneyLog</title>
 </head>
 <script>
+var type= "${recordPage.type}";
 	$(document).ready(function(){
-		console.log("타아아아아아아아아아입 :" +  "${recordPage.type}");
+		console.log("타아아아아아아아아아입 :" +  type);
 		console.log("searchDate :" +  "${searchDate}");
 		console.log("pageNum :" +  "${recordPage.pageNum}");
+		
+		/*
+		if("${recordPage.type}"=="budget"){
+			$("#category").html("${categories[records.category_no]}")
+		}else if("${recordPage.type}"=="income"){
+			$("#category").html("${incomeCategories[records.category_no]}")
+		}else if("${recordPage.type}"=="outcome"){
+			$("#category").html("${outcomeCategoryList[records.category_no]}")
+		}
+		*/
 		/*
 		$("#modifybtn").click(function(){
 			console.log("수정버튼이닷");
@@ -38,7 +49,7 @@
 					console.log(num);
 					
 					// 댓글 삭제 Ajax
-					/*
+					
 					$.ajax({
 						type:"POST",
 						url:"budgetRecordDelete.moa",
@@ -55,7 +66,7 @@
 							}
 						}				
 					});
-					*/
+					
 				}else{// check가 false면 
 					alert("삭제를 취소합니다.");
 				}
@@ -96,8 +107,8 @@
 				<td>
 					<fmt:formatDate value="${records.reg}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td>
-				${categories[records.category_no]}
+				<td id="category">
+					"${categories[records.category_no]}"
 				</td>
 				<td>${records.content}</td>
 				<td>
@@ -145,7 +156,7 @@
 			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage-pageBlock}"> %lt;</a>
 		</c:if>
 		<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
-		<a href="/moamore/record/moneyRecord.moa?pageNum=${i}&type=${recordPage.type}&searchDate=${searchDate}" class="pageNums"> &nbsp; ${i} &nbsp; </a>	
+		<a href="/moamore/record/moneyRecord.moa?pageNum=${i}&type=${recordPage.type}${type}&searchDate=${searchDate}" class="pageNums"> &nbsp; ${i} &nbsp; </a>	
 		</c:forEach>
 		<c:if test="${endPage<pageCount}">
 			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage+pageBlock }"> &gt; </a>	  
