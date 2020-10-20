@@ -2,19 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!-- 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
--->
+
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
 <title>그룹 리스트</title>
+	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
+	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 <style type="text/css">
-	html, body{ width:1800px; height:980px;}
 	span.center{
 	  background: #fff;
 	  display : block;
@@ -74,23 +71,9 @@
 		});
 	});
 </script>
-<body>
-<!-- 
-	<div class="header" style="background-color: gray;width:1650px;height:140px;">
-		<h1 style="margin-top:0; margin-bottom: 0;">Header</h1>
-	</div>
-	<div class="menu" style="background-color:#FFD6FF;width:200px;height:840px;float:left;">
-		<a href="/moamore/team/groupList.moa?isMyTeam=0">전체 그룹 보기</a><br/>
-		<c:if test="${sessionScope.memName != null}">
-			<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a><br/>
-			<a href="/moamore/team/groupList.moa?isMyTeam=1">내가 가입한 그룹 보기</a><br/>
-			<a href="/moamore/team/groupComeInviteList.moa">나를 초대한 그룹 보기</a>
-		</c:if>
-	</div>
- -->
-	<div class="content" style="background-color:#8BBDFF;width:1430px;height:820px;margin-left: 200px; padding: 10px;">
-		
-		<div class="top" style="width: 100%; height: 40px; padding-top: 5px;">
+<div class="container-fluid">
+	<div class="content" style="padding: 10px;">
+		<div class="top" style="padding: 10px;">
 			<c:if test="${sessionScope.memName != null}">
 				<button onclick="window.location='/moamore/team/groupOpenForm.moa'">개설 신청</button>	
 			</c:if>
@@ -103,9 +86,9 @@
 				<button onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=1&range=${range}'">개설예정</button>
 			</div>
 		</div>
-		<div class="middle" style="width: 100%; height: 720px; text-align: center;">
+		<div class="middle" style="text-align: center; margin-top: 10px;">
 		
-			<select name="range" id="range">
+			<select name="range" id="range" style="margin-bottom: 15px;">
 				<option value="0">그룹 등록 최신순</option>
 				<option value="1">그룹 등록 오래된순</option>
 				<option value="2">목표 금액 높은순</option>
@@ -128,8 +111,8 @@
 		
 			<c:if test="${articleList != null}">
 				<c:forEach var="article" items="${articleList}" varStatus="stat">
-					<div style="width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}&nickname=${sessionScope.memName}'">
-							<div style="width: 380px; height: 200px; border: 1px solid red; text-align: center; margin-left: 10px;">
+					<div style="border: 1px solid black; padding:5px; width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}&nickname=${sessionScope.memName}'">
+							<div style="border: 1px solid white; width: 380px; height: 200px; text-align: center; margin-left: 10px;">
 								<c:forEach var="mem" items="${articleMemberAvgList[0][stat.index]}">
 									<c:if test="${sessionScope.memName == mem.nickname}">
 										<c:if test="${isMyTeam==0}">
@@ -143,7 +126,15 @@
 									</c:if>
 								</c:if>
 								<div style="float: right; padding-right: 10px; font-size: 22px;">${article.people}명</div>
-								<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% ${articleMemberAvgList[1][stat.index]}%, #BDBDBD ${articleMemberAvgList[1][stat.index]}% 100%);"><span class="center"></span><span class="big">${articleMemberAvgList[1][stat.index]}%</span><span class="mini">평균달성률</span></span></div>
+								<c:if test="${pageStatus!=1}">
+									<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% ${articleMemberAvgList[1][stat.index]}%, #BDBDBD ${articleMemberAvgList[1][stat.index]}% 100%);"><span class="center"></span><span class="big">${articleMemberAvgList[1][stat.index]}%</span><span class="mini">평균달성률</span></span></div>
+								</c:if>
+								<c:if test="${pageStatus==1}">
+									<c:set var="tmp" value="${fn:substring(article.start_day,0,10)}" />
+									<c:set var="startday" value="${fn:replace(tmp,'-', '')}"/>
+									<fmt:parseNumber var="i" integerOnly="true" type="number" value="${startday}" />
+									<div class="pie-chart pie-chart1"><span class="center"></span><span class="mini">남은 날짜</span><span class="big">D-<c:out value="${i-today}" /></span></span></div>
+								</c:if>
 							</div>
 							<table style="width:380px; height:130px;">
 								<tr>
@@ -200,15 +191,12 @@
 			
 			</c:if>
 		</div>
-		<div class="bottom"  style="width: 100%; height: 55px; text-align: center; margin-top: 5px;">
+		<div class="bottom"  style="text-align: center; margin-top: 5px;">
 			<form action="/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=${pageStatus}&isSearch=1&range=${range}" method="post" style="align-self: center;">
 				<input type="text" name="search" placeholder="그룹명 검색"/>
 				<input type="submit" value="검색"/>
 			</form>
 		</div>
 	</div>
+</div>
 <jsp:include page="../footer.jsp"/>
-<!-- 
-</body>
-</html>
- -->
