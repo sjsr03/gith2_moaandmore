@@ -18,5 +18,15 @@
   	<select id="selectLastLoginReg" parameterType="string" resultType="string">
   		select max(reg) from today_budget where id=#{value}
   	</select>
+  	
+  	<!-- 오늘의 예산정보 리스트로 가져오기 -->
+  	<select id="selectTodayBudgetList" parameterType="string" resultType="todayBudgetDTO">
+  		select * from today_budget where id=#{value}
+  	</select>
+  	
+  	<!-- 오늘의 예산의 합산 -->
+  	<select id="selectSumTodayBudget" parameterType="string" resultType="int">
+  		select sum(category_today) from today_budget where id=#{value}
+  	</select>
   </mapper>
  

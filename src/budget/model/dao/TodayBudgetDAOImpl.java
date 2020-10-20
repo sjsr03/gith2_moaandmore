@@ -1,6 +1,7 @@
 package budget.model.dao;
 
 import java.util.Date;
+import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,12 @@ public class TodayBudgetDAOImpl implements TodayBudgetDAO {
 	
 	
 	@Override
-	public void insertTodayBudget(TodayBudgetDTO dto) {
-		sqlSession.insert("todayBudget.insertTodayBudget", dto);
+	public void insertTodayBudget(List list) {
+		for (int i=0; i < list.size(); i++) {
+			TodayBudgetDTO todayDTO = (TodayBudgetDTO) list.get(i);
+			
+			sqlSession.insert("todayBudget.insertTodayBudget", todayDTO);
+		}
 	}
 	
 	@Override
@@ -29,5 +34,17 @@ public class TodayBudgetDAOImpl implements TodayBudgetDAO {
 	public String selectLastLoginReg(String id) {
 		String lastDate = sqlSession.selectOne("todayBudget.selectLastLoginReg", id);
 		return lastDate;
+	}
+	
+	@Override
+	public List selectTodayBudgetList(String id) {
+		List list = sqlSession.selectList("todayBudget.selectTodayBudgetList", id);
+		return list;
+	}
+	
+	@Override
+	public int selectSumTodayBudget(String id) {
+		int sum = sqlSession.selectOne("todayBudget.selectSumTodayBudget", id);
+		return sum;
 	}
 }

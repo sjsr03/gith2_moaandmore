@@ -124,6 +124,8 @@ public class BudgetServiceImpl implements BudgetService {
 		String[] amount = request.getParameterValues("amount");
 		
 		List total_budget_detail = new ArrayList();
+		List today_zero = new ArrayList();
+		
 		for(int i = 0; i < category_name.length; i++) {
 			TotalBudgetDetailDTO BDdto = new TotalBudgetDetailDTO();
 			BDdto.setBudget_no(budget_no);
@@ -145,10 +147,11 @@ public class BudgetServiceImpl implements BudgetService {
 			todayDTO.setCategory_no(BDdto.getCategory_no());
 			todayDTO.setCategory_today(today);
 			todayDTO.setId(id);
-			todayBudgetDAO.insertTodayBudget(todayDTO);
+			today_zero.add(todayDTO);
 		}
 		
 		totalBudgetDetailDAO.insertTotalBudgetDetail(total_budget_detail);
+		todayBudgetDAO.insertTodayBudget(today_zero);
 		
 		//////////////여기까지 총예산 세부내용 설정//////////////////
 		
@@ -446,7 +449,7 @@ public class BudgetServiceImpl implements BudgetService {
 			TotalBudgetDetailDTO TBDdto = (TotalBudgetDetailDTO) TBDList.get(i);
 			//기록된 현재 예산값은
 			int current = TBDdto.getCategory_current();
-			int dailyBudget = (int)Math.ceil(current / lastPeriod);
+			int dailyBudget = (int)Math.ceil(current / (lastPeriod-1));
 			
 			//소비했다고 가정하는 액수
 			int assumed = dailyBudget*period;
@@ -485,20 +488,20 @@ public class BudgetServiceImpl implements BudgetService {
 		int period = Math.round((lt)/(1000*60*60*24)) + 1;
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		
-		List TBDList = totalBudgetDetailDAO.selectAllbyBudgetNum(TBdto.getBudget_no());
-		//현재 예산의 카테고리 리스트 불러오기
+		//오늘의 예산정보 불러오기
+		List todayList = todayBudgetDAO.selectTodayBudgetList(id);
 		
 		List returnList = new ArrayList();
 		int TRsum = 0;
 		int TAsum = 0;
 		
-		for(Object obj:TBDList) {
-			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO) obj;
+		for(Object obj:todayList) {
+			TodayBudgetDTO dto = (TodayBudgetDTO) obj;
 			
 			int category_no = dto.getCategory_no();
 			
 			//카테고리번호의 오늘하루 권장 예산
-			double recommend = dto.getCategory_current() / period;
+			double recommend = dto.getCategory_today();
 			
 			HashMap map = new HashMap();
 			map.put("budget_no", TBdto.getBudget_no());
@@ -597,6 +600,11 @@ public class BudgetServiceImpl implements BudgetService {
 		//총예산 현재값 계산
 		totalBudgetDAO.updateCurrentBudget(TBdto.getBudget_no());
 		
+	}
+	
+	@Override
+	public int selectSumTodayBudget(java.lang.String id) throws SQLException {
+		return todayBudgetDAO.selectSumTodayBudget(id);
 	}
 }
 	

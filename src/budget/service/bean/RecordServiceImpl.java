@@ -113,10 +113,9 @@ public class RecordServiceImpl implements RecordService{
 	// 예산번호로 해당 예산 기록 목록 가져오기
 	@Override
 	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
-		
+		System.out.println("서비스에서 페이지번호!! : " + pageNum);
 		RecordPageDTO recordPage = new RecordPageDTO();
-		
-		if(pageNum == null) {
+		if(pageNum == "") {
 			pageNum = "1";
 		}
 		// 페이지 정보 담기
@@ -126,6 +125,7 @@ public class RecordServiceImpl implements RecordService{
 		int endRow = currPage*pageSize;
 		int count = 0;
 		
+		System.out.println("서비스에서 currpage : " + currPage);
 		List recordList = null;
 		
 		// 전체 목록 수 가져오기 
@@ -157,7 +157,7 @@ public class RecordServiceImpl implements RecordService{
 			throws SQLException {
 		RecordPageDTO recordPage = new RecordPageDTO();
 		
-		if(searchForRecordDTO.getPageNum() == null) {
+		if(searchForRecordDTO.getPageNum() == "") {
 			searchForRecordDTO.setPageNum("1");
 		}
 		// 페이지 정보 담기
@@ -193,7 +193,7 @@ public class RecordServiceImpl implements RecordService{
 	public Map selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		RecordPageDTO recordPage = new RecordPageDTO();
 		Map allRecord = new HashMap();
-		if(searchForRecordDTO.getPageNum() == null) {
+		if(searchForRecordDTO.getPageNum() == "") {
 			searchForRecordDTO.setPageNum("1");
 		}
 		// 페이지 정보 담기
@@ -208,9 +208,7 @@ public class RecordServiceImpl implements RecordService{
 		searchForRecordDTO.setEndRow(endRow);
 		
 		
-		// 아이디당 수입/지출 카테고리 통으로 가져오기
-		
-		
+		// 아이디당 수입/지출 카테고리 통으로 가져오기		
 		List incomeCategoryList = categoryDAO.selectAllIncomeCategoryById(searchForRecordDTO.getId());
 		List outcomeCategoryList = categoryDAO.selectAllById(searchForRecordDTO.getId());
 		
@@ -251,7 +249,7 @@ public class RecordServiceImpl implements RecordService{
 			if(count >0) { // 내역이 하나라도 있으면 
 				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
 			}
-		}else if(type.equals("all")){ //예산+수입+지출이면
+		}else if(type.equals("budgetincomeoutcome")){ //예산+수입+지출이면
 			System.out.println("예산+수입+지출");
 			count = recordNoBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
 			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);

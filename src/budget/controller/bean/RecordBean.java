@@ -68,6 +68,7 @@ public class RecordBean {
 		
 		
 		// 현재 날짜+시간 받아오기
+		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date currTime = new Date();
 		String now = sdf.format(currTime);
@@ -98,6 +99,7 @@ public class RecordBean {
 		model.addAttribute("today", today);
 		model.addAttribute("budgetNum", budgetNum);
 		System.out.println("레코드빈 버짓넘~~ : " + budgetNum);
+		
 		return "budget/recordForm";
 	}
 	
@@ -168,34 +170,11 @@ public class RecordBean {
 	
 	@RequestMapping("moneyRecord.moa")
 	public String moneyRecord(HttpServletRequest request, Model model, SearchForRecordDTO searchForRecordDTO)throws SQLException{
-		// 처음 딱 들어올 땐 dto에 든 변수들 다 null일 것임!
-		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
-		System.out.println("아이디?11 : " + searchForRecordDTO.getId());
 		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date currTime = new Date();
-		String now = sdf.format(currTime);
-		System.out.println(now);
-		Timestamp dateTime = Timestamp.valueOf(now);
-		
-		searchForRecordDTO.setTimeStampDate(dateTime);
-		// 날짜랑 아이디로 해당 예산 번호 가져오기
-		int budgetNum = budgetService.selectBudgetNum(searchForRecordDTO.getId(), dateTime);
-		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum());
-		
-		// 예산 번호로 카테고리 번호, 이름 뽑아오기 
-		// 카테고리 번호 뽑아오기
-		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
-		
-		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
-		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
-	
-		
-		List outcomeCategories = categoryService.selectAllById(searchForRecordDTO.getId());
-		List incomeCategories = categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
-			
-		model.addAttribute("recordPage", recordPage);
-		model.addAttribute("categories", categories);
+		System.out.println("타입확인 >>> : " + searchForRecordDTO.getType());
+		System.out.println("날짜확인 >>> : " + searchForRecordDTO.getSearchDate());
+		System.out.println("페이지넘 >>> : " + searchForRecordDTO.getPageNum());
+		model.addAttribute("searchForRecordDTO", searchForRecordDTO);
 		return "budget/moneyRecord";
 	}
 	
@@ -221,11 +200,12 @@ public class RecordBean {
 		// 처음 딱 들어올 땐 dto에 든 변수들 다 null일 것임!
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
+		System.out.println("타입나와라.... : " + searchForRecordDTO.getType());
 		Timestamp dateTime;
 
 		// 현재 진행중인 예산의 끝나는 날짜와 지난 예산의 시작 날짜를 가져오기
 		List budgetDate = budgetService.selectBudgetDate(searchForRecordDTO.getId());
-		
+		System.out.println("seleectBudgetRecord에서~~~ type : " + searchForRecordDTO.getType());
 		Boolean result = recordService.compareDate(searchForRecordDTO, budgetDate);
 		if(result){ //result 값이 참이면 해당 예산이 존재하는 것임.
 			System.out.println("검색날짜 ::: " + searchForRecordDTO.getSearchDate());
@@ -244,7 +224,9 @@ public class RecordBean {
 			
 			// 예산번호로 예산 지출 내역 가져오기 
 			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum());
-		
+			String searchDate = searchForRecordDTO.getSearchDate();
+			model.addAttribute("searchDate", searchDate);
+			recordPage.setType(searchForRecordDTO.getType());
 			// model로 다 보내주기
 			model.addAttribute("categories", categories);
 			model.addAttribute("recordPage", recordPage);
@@ -265,6 +247,8 @@ public class RecordBean {
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
+		recordPage.setType(searchForRecordDTO.getType());
+		model.addAttribute("searchDate",  searchForRecordDTO.getSearchDate());
 		model.addAttribute("recordPage", recordPage);
 		return "budget/moneyLog";
 	}
@@ -280,10 +264,11 @@ public class RecordBean {
 		Iterator it = keys.iterator();
 		while(it.hasNext()) {
 			String key = (String)it.next();
-			allRecord.get(key);
-			
+			allRecord.get(key); 
 			model.addAttribute(key, allRecord.get(key));
+			System.out.println("레코드 찾아보겠음 : "+key);
 		}
+		model.addAttribute("type", searchForRecordDTO.getType());
 		return "budget/moneyLog";
 	}
 	

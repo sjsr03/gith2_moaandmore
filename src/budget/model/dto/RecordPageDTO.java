@@ -10,6 +10,7 @@ public class RecordPageDTO {
 	private int endRow;
 	private int count;
 	private List recordList;
+	private String type;
 	public String getPageNum() {
 		return pageNum;
 	}
@@ -53,6 +54,11 @@ public class RecordPageDTO {
 	public void setRecordList(List recordList) {
 		this.recordList = recordList;
 	}
-	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 }

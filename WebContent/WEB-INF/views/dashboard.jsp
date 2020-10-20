@@ -174,12 +174,12 @@
 			            <div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
 		                    <canvas id="myPieChart" width="327" height="245" class="chartjs-render-monitor" style="display: block; width: 327px; height: 245px;"></canvas>
 	                    </div>
-	                    남은 예산 : <span class="font-weight-bold text-primary"><fmt:formatNumber value="${TBdto.total_budget_current }" pattern="#,###" /></span>원
+	                    남은 예산 : <span class="font-weight-bold text-primary"><fmt:formatNumber value="${TBdto.total_budget_current+todaySum}" pattern="#,###" /></span>원
 	                    
 	                    <script type="text/javascript">
 	                   	 	var ctx = $("#myPieChart");
-	                    	var dataSet = [ ${TBdto.budget - TBdto.total_budget_current} , ${TBdto.total_budget_current}];
-	                    	var ratio = ${100-((TBdto.total_budget_current/TBdto.budget)*100)} ;
+	                    	var dataSet = [ ${TBdto.budget - TBdto.total_budget_current - todaySum} , ${TBdto.total_budget_current+todaySum}];
+	                    	var ratio = ${100-(((TBdto.total_budget_current + todaySum)/TBdto.budget)*100)} ;
 	                    </script>
 	                    <script src="/moamore/js/dashboard/totalbudget-pie.js"></script>
                   </div>

@@ -6,7 +6,7 @@
   <mapper namespace="totalBudgetDetail">
   	<!-- 예산 세부정보 삽입 -->
   	<insert id="insertTotalBudgetDetail" parameterType="totalBudgetDetailDTO">
-  		insert into total_budget_detail values(#{category_no}, #{budget_no}, #{category_budget}, #{total_budget_current})
+  		insert into total_budget_detail values(#{category_no}, #{budget_no}, #{category_budget}, #{category_current})
   	</insert>
   	
   	<!-- 총예산 고유번호에 해당하는 세부정보 가져오기 -->

@@ -24,6 +24,7 @@ import budget.model.dto.TotalBudgetDetailDTO;
 import budget.model.dto.LeftMoneyDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.service.bean.BudgetService;
+import category.model.dto.outcome_categoryDTO;
 import category.service.bean.CategoryService;
 import goals.model.dto.GoalsDTO;
 import goals.service.GoalsService;
@@ -51,7 +52,6 @@ public class BudgetBean {
 		
 		model.addAttribute("categoryList", categoryList);
 		
-		
 		if(currentTBudget != null) {	//현재 진행중인 예산이 있다면
 			model.addAttribute("currentTBudget", currentTBudget);
 			model.addAttribute("detailList", budgetService.selectAllbyBudgetNum(currentTBudget.getBudget_no()));
@@ -71,7 +71,7 @@ public class BudgetBean {
 		} else {//기존 예산 수정이면
 			budgetService.updateBudget();
 		}
-		return "redirect:main.moa";
+		return "redirect:../main.moa";
 	}
 	
 	@RequestMapping("todayBudget.moa")
@@ -112,7 +112,11 @@ public class BudgetBean {
 		
 		List todayData = budgetService.selectTodayBudget(id);
 		
+		int todaySum = budgetService.selectSumTodayBudget(id);
+		
 		model.addAttribute("todayData", todayData);
+		model.addAttribute("todaySum", todaySum);
+		
 		
 		
 		return "budget/todayBudget";
