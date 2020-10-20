@@ -51,5 +51,10 @@
   		UPDATE LEFT_MONEY SET reg=(SELECT START_day FROM TOTAL_BUDGET WHERE id=#{value} AND CLOSE=0) WHERE id=#{value}
   	</update>
   	
+  	<!-- 회원의 leftmoney에 담긴 내역 모두 삭제 -->
+  	<delete id="deleteLeftMoney" parameterType="string">
+  		delete from left_money where id=#{value}
+  	</delete>
+  	
   </mapper>
  

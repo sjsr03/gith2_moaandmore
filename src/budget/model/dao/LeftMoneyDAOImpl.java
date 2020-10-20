@@ -63,4 +63,8 @@ public class LeftMoneyDAOImpl implements LeftMoneyDAO {
 		sqlSession.update("leftMoney.updateRegToStartDay", id);
 		
 	}
+	@Override
+	public void deleteLeftMoney(String id) {
+		sqlSession.delete("leftMoney.deleteLeftMoney", id);
+	}
 }

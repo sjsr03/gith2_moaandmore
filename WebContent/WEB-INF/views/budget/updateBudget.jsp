@@ -62,7 +62,7 @@
 			<!-- 경고문 -->
             <div class="row" style="display:none;" id="warn" >
             
-	            <div class="col-xl-12 col-md-6 mb-4" >
+	            <div class="col-xl-12 col-md-12 mb-4" >
 	              <div class="card border-left-danger shadow h-100 py-2">
 	                <div class="card-body">
 	                  <div class="row no-gutters align-items-center">
@@ -80,13 +80,13 @@
             </div>
             
            	<!-- 첫번째 줄 -->
-            <div class="row" style="overflow:hidden;">
+            <div class="row">
             
             	
 	
 	<!-- 폼 시작 -->
-		<div class="col-lg-6" style="transition: .5s;" id="firstStep">
-		<div class="card shadow lg-12" >
+		<div class="col-lg-12">
+		<div class="card shadow lg-12 mb-4" >
 			<div class="card-header py-3">
 	          <h6 class="m-0 font-weight-bold text-primary">총 예산 설정</h6>
 	        </div>
@@ -109,8 +109,14 @@
 			</div>
 		</div>
 		</div>
-		<div class="col-lg-6" style="transition: .5s;" id="secondStep">
-		<div class="card shadow lg-12" >
+	</div>
+	<!-- 첫줄 끝 -->
+		
+	<!-- 두번째 줄 -->
+     <div class="row">
+
+		<div class="col-lg-12">
+		<div class="card shadow lg-12 mb-4" >
 			<div class="card-header py-3">
 	          <h6 class="m-0 font-weight-bold text-primary">카테고리별 세부 설정</h6>
 	        </div>
@@ -169,7 +175,6 @@
 	<input type="hidden" name="isNewBudget" id="isNewBudget" value="0" />
 	
 	</div>
-	
 	</div>
 	</div>
 	

@@ -23,4 +23,6 @@ public interface LeftMoneyDAO {
 	//leftmoney의 reg를 (총예산정보의 시작일로)
 	public void updateRegToStartDay(String id);
 	
+	//회원의 leftmoney에 담긴 내역 모두 삭제
+	public void deleteLeftMoney(String id);
 }

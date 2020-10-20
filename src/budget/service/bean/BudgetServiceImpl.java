@@ -116,6 +116,11 @@ public class BudgetServiceImpl implements BudgetService {
 		//DB에 총예산설정 넣은 후 해당 총예산의 고유번호 리턴
 		int budget_no = totalBudgetDAO.setBudget(TBdto);
 		
+		//남은돈 테이블에 있는 내역 삭제
+		leftMoneyDAO.deleteLeftMoney(id);
+		//오늘의 예산 테이블에 있는 내역 삭제
+		todayBudgetDAO.deleteTodayBudget(id);
+		
 		
 		////////////////여기까지 총예산 설정////////////////////
 		
