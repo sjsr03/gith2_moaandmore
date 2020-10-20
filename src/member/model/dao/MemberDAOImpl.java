@@ -74,15 +74,13 @@ public class MemberDAOImpl implements MemberDAO {
 	
 	@Override
 	public void updateClose(String id) throws SQLException {
-		int result = sqlSession.selectOne("totalBudget.selectOutClose", id);
+		TotalBudgetDTO dto = sqlSession.selectOne("totalBudget.selectOutClose", id);
 		
-		if(result==1) {	
+		if(dto!=null) {	
 			sqlSession.update("totalBudget.updateTBClose", id);	//기존 1을 2로 바꾸고
 			
 			sqlSession.update("totalBudget.updateClose", id);	//기존 0을 1로
-			
-			//leftmoney에 남아있던 컬럼 지우기
-			sqlSession.delete("leftMoney.deleteLeftMoneyById", id);
+
 		}
 		
 	}

@@ -72,7 +72,7 @@
 	
 	<input class="checkbox" id="checkbox"  type="checkbox" value="1"/> 지출
 	<input class="checkbox" id="checkbox"  type="checkbox" value="2"/> 수입
-	<input class="checkbox" id="checkbox"  type="checkbox" value="3"/> 예산 외 지출  </br>
+	<input class="checkbox" id="checkbox"  type="checkbox" value="3"/> 예산 외 지출  <br/>
 	
 	<div id='calendar'></div>
 	

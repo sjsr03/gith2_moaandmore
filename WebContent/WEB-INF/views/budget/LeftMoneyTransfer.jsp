@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>전환</title>
 </head>
 <body>
 <c:redirect url="/budget/todayBudget.moa" />
