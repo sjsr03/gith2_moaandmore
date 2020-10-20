@@ -32,14 +32,12 @@ public class CategoryBean {
 	public String setCategory(Model model,HttpServletRequest request) throws SQLException{
 		
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-		//List income = categoryService.selectAllIncomeCategoryById(id);
-		//List outcome = categoryService.selectAllById(id);
+		
 	
 		String already = request.getParameter("already");
 		
 		model.addAttribute("already", already);
-		//model.addAttribute("income",income);
-		//model.addAttribute("outcome", outcome);
+		
 		
 
 		
@@ -68,7 +66,8 @@ public class CategoryBean {
 	//카테고리 추가하기
 	@RequestMapping("setCategoryPro.moa")
 	public String setCategoryPro(String category_name,String categoryOption,Model model) throws SQLException{
-		
+		System.out.println(category_name);
+		System.out.println(categoryOption);
 	
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		//카테고리명 안겹치는지 확인
@@ -76,7 +75,7 @@ public class CategoryBean {
 		boolean already = false;
 		//수입카테고리 추가하기
 		if(categoryOption.equals("수입")) {
-			
+		
 			List incomeCategoryNames = categoryService.selectIncomeCategoryNamesbyId(id);
 			//지출카테고리 이름 겹치는지 검사
 			for(int i=0;i<incomeCategoryNames.size(); i++) {
@@ -100,7 +99,6 @@ public class CategoryBean {
 			List outcomeCategoryNames = categoryService.selectOutcomeCategoryNamesbyId(id);
 			//지출카테고리 이름 겹치는지 검사
 			
-			
 			for(int i=0;i<outcomeCategoryNames.size(); i++) {
 				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
 				
@@ -114,7 +112,7 @@ public class CategoryBean {
 
 				}
 			}
-			//이름이 안겹치면 수정 가능
+			//이름이 안겹치면 추가 가능
 			if(already == false) {
 				categoryService.addOutcomeCategory(category_name,id);
 			}		
@@ -122,25 +120,17 @@ public class CategoryBean {
 			
 		}
 		
-		//List income = categoryService.selectAllIncomeCategoryById(id);
-		//List outcome = categoryService.selectAllById(id);
-		
-		//model.addAttribute("income",income);
-		//model.addAttribute("outcome", outcome);
 		model.addAttribute("already",already);
-	
-	
-
-	
+		System.out.println(4);
 		return "category/setCategoryPro";
 
 	}
 	
-	
-	
 	//카테고리 수정하기
 	@RequestMapping("updateCategory.moa")
-	public String updateoutcomeCategory(Model model,String inorout,int category_no,String newName) throws SQLException {
+	public String updateCategory(Model model,String inorout,int category_no,String newName) throws SQLException {
+		
+		
 		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		String already = "false";
@@ -191,8 +181,8 @@ public class CategoryBean {
 		List income = categoryService.selectAllIncomeCategoryById(id);
 		List outcome = categoryService.selectAllById(id);
 		
-		model.addAttribute("income",income);
-		model.addAttribute("outcome", outcome);
+		//model.addAttribute("income",income);
+		//model.addAttribute("outcome", outcome);
 		model.addAttribute("already", already);
 		
 		
@@ -203,31 +193,19 @@ public class CategoryBean {
 	@RequestMapping("deleteCategory.moa")
 	public String deleteCategory(int category_no,Model model,String inorout) throws SQLException{
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-		
-		//budget테이블,nobudget테이블에 해당 category_no가 있는지 확인
-		//exist 1이면 삭제 불가
-		int exist = categoryService.selectCategoryInfo(category_no,id);	
-		
-		
-		if(exist == 0) {
-		
+		System.out.println("딜리트 페이지");
+		System.out.println(category_no);
+			int exist = 0; //exist 가 1이면 삭제 불가
+			
+			//지출 삭제
 			if(inorout.equals("outcome")) {
-				
-				categoryService.deleteOutcomeCategory(category_no,id);
-				
+				 exist = categoryService.deleteOutcomeCategory(category_no,id);
+			//수입 삭제	
 			}else if(inorout.equals("income")) {
-				categoryService.deleteIncomeCategory(category_no,id);
+				exist = categoryService.deleteIncomeCategory(category_no,id);
 			}
 			
-		}
 		
-		//List income = categoryService.selectAllIncomeCategoryById(id);
-		//List outcome = categoryService.selectAllById(id);
-		
-		
-		
-		//model.addAttribute("income",income);
-		//model.addAttribute("outcome", outcome);
 		model.addAttribute("exist", exist);
 		
 		

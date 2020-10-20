@@ -9,7 +9,6 @@
 <title>set category</title>
 <script src="https://kit.fontawesome.com/959593ce4b.js" crossorigin="anonymous"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
 </head>
 
@@ -57,7 +56,7 @@ a{text-decoration: none;color: #737271;}
          top: 50%; 
          left: 50%; 
          transform: translate(-50%, -50%); 
-         background-color: yellow; 
+         background-color: white; 
          padding: 1rem 1.5rem; 
          width: 500px; 
          height: 350px; 
@@ -86,6 +85,7 @@ a{text-decoration: none;color: #737271;}
 			alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
 		</script>
 	</c:if>
+<jsp:include page="../sidebar.jsp"/>
 	
 
 
@@ -100,7 +100,7 @@ a{text-decoration: none;color: #737271;}
 	
 	<!-- 첫번째 줄 -->
     <div class="row">
-		<form id="input" name="input">
+		<form id="inputCateogry" name="input">
 		<table>
 			<tr>
 				<td>카테고리 추가</td>
@@ -134,8 +134,8 @@ a{text-decoration: none;color: #737271;}
 		<div class='categorymodal-content'>
 			<span class="close-button">&times;</span>
 			<h1 class="title">카테고리 수정하기</h1>
-			<form class="modifyContent">															
-			</form>
+			<div class="modifyContent">															
+			</div>
 		</div>
 	</div>	
 
@@ -149,21 +149,44 @@ $(document).ready(function(){
 	//페이지 시작할때 카테고리 목록 불러오기
 	 getExpenseCategory();
 	 getIncomeCategory();
-	
-	
+	 
+	 setTimeout(function() {
+		 updateAndDelete(); 
+	 },100);
+
+	//수정창 x누를때 
+	$(".close-button").on('click',function(){
+		console.log("x버튼");
+			$(this).parent().parent().toggleClass('show-categorymodal');
+			$(".modifyContent").empty();
+			
+	});
+	$(".cancel").on('click',function(event){
+		console.log("취소버튼");
+		$(this).parent().parent().toggleClass('show-categorymodal');
+		$(".modifyContent").empty();
+	});
+	 
+	 
+	 
 	//카테고리 추가 하기 
-	$("#inputCategory").click(function(){ 
+	$("#inputCategory").click(function(event){ 
+		
+		console.log($("#inputCateogry").serialize());
+		event.preventDefault();
 		$.ajax({
 			type : "POST",
 			url : "setCategoryPro.moa",
-			data : $("#input").serialize(),
+			data : $("#inputCateogry").serialize(),   
 			dataType : "json",
 			error : function(error){
 				console.log("에러!!");
+				
 			},
-			success : function(data){							
+			success : function(data){		
+				console.log("success");
 				 getExpenseCategory();
-				 getIncomeCategory();
+				getIncomeCategory();
 			}
 		
 		});
@@ -213,11 +236,7 @@ function getExpenseCategory(){
       		html +="</tr>";
             html += "</table>";
             $(".allExpense").html(html);
-            
-          	//점 세개 누르면 수정하기 삭제하기 탭 보여주기
-            	updateAndDelete(); 
           
-            
         }
         
         
@@ -267,16 +286,8 @@ function getIncomeCategory(){
             html += "</table>";
             $(".allIncome").html(html);
            
-            //점 세개 누르면 수정하기 삭제하기 탭 보여주기
-            	updateAndDelete(); 
-            	
-          
-           
-           
-            
         }
-        
-        
+       
     });
 }
 
@@ -284,79 +295,62 @@ function getIncomeCategory(){
 
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
-	
+	console.log(11);
 		$('.cat_btn i').click(function(){
 			
-			$(this).next().closest('.my_sub').addClass('on');
-			
+			//수정,삭제 창 'on'클래스 없으면 추가해주고 있으면 삭제해주기
+			if($(this).next().closest('.my_sub').hasClass('on')){
+				$(this).next().closest('.my_sub').removeClass('on')
+			}else{
+				$(this).next().closest('.my_sub').addClass('on');
+			}
 			var category_no = $(this).parent().next().next().val();
-			
-			//수정하기 탭 누르면 모달창 띄어주기
+			var inorout = $(this).parent().next().next().next().val();
 			console.log(category_no);
-			cateogryModify(category_no);
+			//수정하기 탭 누르면 모달창 띄어주기
+			cateogryModify(category_no,inorout);
 		});
 	
-	
-	
-    
 }
 
 //수정하기 모달창 보여주기
-function cateogryModify(category_no){
-	
+function cateogryModify(category_no,inorout){
+	/*
 	$('.modify').click(function(){
-		console.log(1);
-		$('.categorymodal').addClass("show-modal");
+		console.log("왜");
+		$('.categorymodal').addClass("show-categorymodal");
 		$('.modifyContent').append("<textarea name='newName' class='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>");
 		$('.modifyContent').append("<button class='modifyCategory'>변경</button>");								
-		$('.modifyContent').append("<button>취소</button>");
-		modifyAction(category_no);
+		$('.modifyContent').append("<button class='close-button'>취소</button>");
+		modifyAction(category_no,inorout);
+	});
+	*/
+	
+	$('.modify').each(function(){
+		$(this).on('click', function(){
+			console.log("왜");
+			$('.categorymodal').addClass("show-categorymodal");
+			$('.modifyContent').append("<textarea name='newName' class='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>");
+			$('.modifyContent').append("<button class='modifyCategory'>변경</button>");								
+			$('.modifyContent').append("<button class='close-button'>취소</button>");
+			modifyAction(category_no,inorout);
+		});	
 	});
 	
 }
 
-//지출 카테고리 수정하기
-function modifyAction(category_no){
+//카테고리 수정하기
+function modifyAction(category_no,inorout){
 	$('.modifyCategory').click(function(event){
 		var newName = $('.newName').val();
-		console.log(newName);
+		
 		//$(location).attr('href','/moamore/category/updateCategory.moa');
-		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no;
-		event.preventDefault();
-		console.log("페이지 이동");
-		getExpenseCategory();
-	});
-}
-//수입 카테고리 수정하기
-function expenseModifyAction(category_no){
-	$('.modifyCategory').click(function(event){
-		var newName = $('.newName').val();
-		console.log(newName);
-		//$(location).attr('href','/moamore/category/updateCategory.moa');
-		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no;
+		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no+"&inorout="+inorout;
 		event.preventDefault();
 		
 		getExpenseCategory();
 	});
 }
-
-
-
-
-$(document).ready(function(){
-	
-	$(".close-button").on('click',function(){
-		$(this).parent().parent().toggleClass('show-modal');
-		$(".modifyContent").empty();
-		
-	});
-	$(".cancel").on('click',function(event){
-		event.preventDefault();
-		
-		$(this).parent().parent().toggleClass('show-modal');
-		$(".modifyContent").empty();
-	});
-});
 
 
 

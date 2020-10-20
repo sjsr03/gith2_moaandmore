@@ -41,5 +41,9 @@ public interface CategoryDAO {
 	public int selectBudgetInfo(int category_no,String id)throws SQLException;
 	//카테고리 넘으로 nobudget테이블 개수 가져오기(for 삭제막기)
 	public int selectNobudgetInfo(int category_no,String id) throws SQLException;
-
+    //카테고리 넘으로 totalbudgetDetail 개수 가져오기 
+	public int selectTotalBudgetDetailInfo(int category_no) throws SQLException;
+	
+	
+	
 }
