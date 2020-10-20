@@ -112,7 +112,11 @@ public class BudgetBean {
 		
 		List todayData = budgetService.selectTodayBudget(id);
 		
+		int todaySum = budgetService.selectSumTodayBudget(id);
+		
 		model.addAttribute("todayData", todayData);
+		model.addAttribute("todaySum", todaySum);
+		
 		
 		
 		return "budget/todayBudget";

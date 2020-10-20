@@ -42,7 +42,7 @@
 
           <!-- 페이지 이름 -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 class="h3 mb-0 text-gray-800">예산 설정</h1>
+            <h1 class="h3 mb-0 text-gray-800">예산 설정 수정</h1>
             </div>
             
 
