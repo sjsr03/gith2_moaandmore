@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <head>
 <title>예산 보고서</title>
 </head>
@@ -32,7 +33,7 @@
                 		</c:forEach>
                 	</select><br/>
                 	날짜 선택
-                	<input type="date" id="datepick" />
+                	<input type="date" id="datepick" min="<fmt:formatDate pattern="yyyy-MM-dd" value="${TBList[fn:length(TBList)-1].start_day}"/>" max="<fmt:formatDate pattern="yyyy-MM-dd" value="${TBList[0].end_day}"/>"/>
 
 
                 </div>

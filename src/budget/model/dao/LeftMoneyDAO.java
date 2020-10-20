@@ -11,7 +11,7 @@ public interface LeftMoneyDAO {
 	//마지막 로그인날짜(남은돈 계산날짜)
 	public String selectLastLoginReg(String id) throws SQLException;
 	
-	//예산생성시 남은돈 0 레코드 추가
+	//예산생성시 남은돈 0 레코드 추가, reg는 예산 시작일
 	public void insertZero(int budget_no, int category_no, String id);
 	
 	//해당 카테고리에 남은돈 추가
