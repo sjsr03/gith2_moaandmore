@@ -119,9 +119,88 @@
 			<div class="row">
 				<!-- 두번째줄 왼쪽컬럼 -->
 				<div class="col-lg-6">
-					<div class="card shadow mb-4">
-		                <div class="card-header py-3">
-		                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
+				
+				
+				
+				
+				
+				
+	           	<!-- 오늘의 예산 (간단)-->
+	            	<div class="card shadow mb-4" style="display:flex;" id="simple">
+		                <div class="card-header py-3 justify-content-between d-sm-flex align-items-center ">
+		                  <h6 class="m-0 font-weight-bold text-primary" style="display:inline-block">오늘의 예산</h6>	
+		                  
+		                  <div style="display:inline-block" >
+			                  <button class="btn btn-primary btn-icon-split btn-sm" style="border-radius:0.35em 0em 0em 0.35em;" onclick="simplify()"><span class="text">간단히</span></button>
+							  <button class="btn btn-light btn-icon-split btn-sm" style="border-radius:0em 0.35em 0.35em 0em; border:1px solid #ccc;"onclick="specify()"><span class="text">자세히</span></button>
+						  </div>
+		                  
+		                </div>
+		                <div class="card-body">
+		                	<c:forEach items="${todayData }" var="i">
+		                		<c:if test="${i.category_no != 0 }" >
+		                		<div class="row">
+			                		<div class="col-lg-9">
+					                  <h4 class="small font-weight-bold">${categories[i.category_no] }<span class="float-right"><fmt:formatNumber value="${i.actual / i.recommend * 100}" pattern="#,###" />%</span></h4>
+					                  <div class="progress mb-4">
+					                    <div class="progress-bar 
+						                    <c:if test="${(i.actual / i.recommend * 100) > 100}">
+						                    	 bg-danger
+						                    </c:if>"
+					                    role="progressbar" style="width: ${i.actual / i.recommend * 100}%" aria-valuenow="${i.actual / i.recommend * 100}" aria-valuemin="0" aria-valuemax="100"></div>
+					                  </div>
+				                  	</div>
+				                  	<div class="col-lg-3" >
+				                  		<h4 class="small" style="margin-top:0.8em">총 <strong><fmt:formatNumber value="${i.recommend }" pattern="#,###" /></strong>원 중<br/>
+				                  		<strong><fmt:formatNumber value="${i.actual }" pattern="#,###" /></strong>원 사용</h4>
+				                  	</div>
+				                  </div>
+				                  <c:if test="${i.category_no == 0 }">
+				                  	<hr/>
+				                  </c:if>
+			                  </c:if>
+		                	</c:forEach>
+		                
+		                </div>
+	             	 </div>
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				
+				<!-- 오늘의 예산(자세히) -->
+				
+					<div class="card shadow mb-4" style="display:none;" id="specific">
+		                 <div class="card-header py-3 justify-content-between d-sm-flex align-items-center ">
+		                  <h6 class="m-0 font-weight-bold text-primary" style="display:inline-block">오늘의 예산</h6>	
+		                  
+		                  <div style="display:inline-block" >
+			                  <button class="btn btn-light btn-icon-split btn-sm" style="border-radius:0.35em 0em 0em 0.35em; border:1px solid #ccc;" onclick="simplify()"><span class="text">간단히</span></button>
+							  <button class="btn btn-primary btn-icon-split btn-sm" style="border-radius:0em 0.35em 0.35em 0em; "onclick="specify()"><span class="text">자세히</span></button>
+						  </div>
+		                  
 		                </div>
 		                <div class="card-body">
 		                <!-- 
@@ -196,9 +275,10 @@
 					<div class="card shadow mb-4">
 		                <div class="card-header py-3">
 		                  <h6 class="m-0 font-weight-bold text-primary">예산에서 남은 돈<br/></h6>
-							총액 : <span id="totalLeftMoney"></span>원
 		                </div>
 		                <div class="card-body">
+							총액 : <span id="totalLeftMoney"></span>원
+							<hr/>
 		                	<c:forEach items="${leftMoney}" var="i" >
 								<div>
 									<span>${categories[i.category_no] }</span> : <span class="amount">${i.amount }</span>원
@@ -206,7 +286,7 @@
 							</c:forEach>
 		                 	<hr>
 							 <div>
-								<button onclick="$('#popup1').css('display','flex')">전환하기</button>
+								<button onclick="$('#popup1').css('display','flex')" class="btn btn-primary">전환하기</button>
 							</div>
 		                </div>
 	               </div>
@@ -418,6 +498,21 @@
 			rest = Ori - parseInt(inputAmount.val());
 		}
 		inputAmount.parent().next().children('.LeftAfterTrans').val(rest);
+	}
+	
+	
+	
+	
+	//간단히 보기
+	function simplify() {
+		$("#specific").css('display', 'none');
+		$("#simple").css('display','flex');
+	}
+	//자세히보기
+	function specify() {
+		$("#specific").css('display', 'flex');
+		$("#simple").css('display','none');
+		
 	}
 	
 </script>
