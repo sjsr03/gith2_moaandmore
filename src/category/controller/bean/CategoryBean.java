@@ -51,8 +51,10 @@ public class CategoryBean {
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		List outcome = categoryService.selectAllById(id);
 
+
 		return outcome;
 	}
+	
 	
 	@RequestMapping("getIncomeCategoryList.moa")
 	public @ResponseBody List getIncomeCategoryList() throws SQLException{
@@ -62,7 +64,7 @@ public class CategoryBean {
 		
 		return income;
 	}
-	
+
 	
 	//카테고리 추가하기
 	@RequestMapping("setCategoryPro.moa")
@@ -105,6 +107,7 @@ public class CategoryBean {
 				
 				if(outcomeCategoryName.equals(category_name)) {
 
+					
 					
 					
 					already = true;

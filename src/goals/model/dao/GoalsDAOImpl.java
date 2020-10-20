@@ -46,10 +46,15 @@ public class GoalsDAOImpl implements GoalsDAO{
 	}
 	
 	@Override
-	public void insertGoalByTeam(GoalsDTO goal) throws SQLException {
+	public void insertGoalByTeam(String id, int team_no) throws SQLException {
 		//team정보 와서 goal 셋팅
-		TeamDTO teamDetail = sqlSession.selectOne("team.selectOne", goal.getTeam_no());
+		TeamDTO teamDetail = sqlSession.selectOne("team.selectOne", team_no);
 		//subject, amount, start_day,end_day, isopen
+
+		GoalsDTO goal = new GoalsDTO();
+				
+		goal.setId(id);
+		goal.setTeam_no(team_no);
 		goal.setSubject(teamDetail.getSubject());
 		goal.setTarget_money(teamDetail.getAmount());
 		Timestamp st_day = Timestamp.valueOf(teamDetail.getStart_day());
@@ -99,14 +104,12 @@ public class GoalsDAOImpl implements GoalsDAO{
 	@Override
 	public HashMap selectMostPersonalGoal(String id) throws SQLException {
 		HashMap map = sqlSession.selectOne("goals.selectMostPersonalGoal", id);
-		System.out.println("MPGoal : " + map);
 		return map;
 	}
 	
 	@Override
 	public HashMap selectMostTeamGoal(String id) throws SQLException {
 		HashMap map = sqlSession.selectOne("goals.selectMostTeamGoal", id);
-		System.out.println("MTGoal : " + map);
 		return map;
 	}
 

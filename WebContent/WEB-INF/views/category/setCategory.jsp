@@ -121,12 +121,8 @@ a{text-decoration: none;color: #737271;}
 <form class='allExpense'>
 </form>
 
-
-
-<h3>[수입]</h3>
-<form class='allIncome'>
-</form>
-
+<<<<<<< HEAD
+=======
 
 <div class='modal'>
 	<div class='modal-content'>
@@ -138,11 +134,205 @@ a{text-decoration: none;color: #737271;}
 	</div>
 </div>	
 
+
+>>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
+
+
+<h3>[수입]</h3>
+<form class='allIncome'>
+</form>
+
+<<<<<<< HEAD
+
+<div class='modal'>
+	<div class='modal-content'>
+		<span class="close-button">&times;</span>
+		<h1 class="title">카테고리 수정하기</h1>
+		<form class="modifyContent">
+																			
+		</form>
+	</div>
+</div>	
+=======
+<table border="1">
+	<tr>
+		<c:forEach var="income" items="${income}" varStatus="status">
+			<c:if test="${status.index%3 ==0}">
+				</tr><tr>
+			</c:if>
+			<td style="width:100px; height:100px">
+			<button class="intrigger intrigger${status.count} btn"><i class="fas fa-ellipsis-v"></i></button>
+			<div>${income.category_name}</div>
+			</td>
+			<%-- 팝업될 레이어 --%>
+			<div  id="inmodal" class="inmodal inmodal${status.count}">
+				<div class="modal-content">
+					<span class="close-button">&times;</span>
+					<h1 class="title"> ${income.category_name} 카테고리 수정하기</h1>
+					<form action="/moamore/category/updateCategory.moa" method="post">
+						<textarea name="newName" placeholder="카테고리 이름을 입력해주세요"></textarea>								
+						<input type="button" value="삭제 " onclick="window.location='/moamore/category/deleteCategory.moa?category_no=${income.category_no}&inorout=income'"/>
+						<input type="submit" value="변경" />
+						<input type="button" class ="cancel" id="cancel" value="취소"/>
+						<input type="hidden" name="category_no" value=${income.category_no} />
+						<input type="hidden" name="inorout" value="income" />														
+					</form>
+				</div>
+			</div>	
+		</c:forEach>
+	</tr> 
+</table>
+>>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
+
 <script type="text/javascript">	
 
+<<<<<<< HEAD
 var inOrOut = '';
+=======
+$(document).ready(function(){
+	//페이지 시작할때 카테고리 목록 불러오기
+	 getExpenseCategory();
+	
+	
+	//카테고리 추가 하기 
+	$("#inputCategory").click(function(){ 
+		$.ajax({
+			type : "POST",
+			url : "setCategoryPro.moa",
+			data : $("#input").serialize(),
+			dataType : "json",
+			error : function(error){
+				console.log("에러!!");
+			},
+			success : function(data){							
+				 getExpenseCategory();
+			}
+		
+		});
+  	});    
+	
+	//수정하기, 삭제하기 탭 보여주기
+	/*
+	 $('.btn i').click(function(){  
+		console.log(1);
+        $(this).click(function() {
+        	if($(this).children('my_sub').hasClass('on')){
+        		$(this).find('.my_sub').removeClass('on');
+        	}else{
+        		$(this).find('div').addClass('on');
+        	}
+           // $(this).closest(".my_sub").modal('hide');
+            //$(ele).closest('.modal-backdrop').remove()		
+           
+        	//url = $(this).attr('class') + "?idx=" + $(this).attr('idx');
+			//console.log(url);
+        });
+    });
+	*/
+});
+
+function getExpenseCategory(){
+	//지출 카테고리 불러오기
+    $.ajax({
+        type:'GET',
+        url : "getExpenseCategoryList.moa",
+        dataType : "json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+        error:function(request,status,error){
+            
+        },
+        success : function(outcome){
+           	var html = "";
+            	
+       		html += "<table border='1'>";
+       		html += "<tr>";
+      		for (var i = 0; i < outcome.length; i++) {
+      				if(i%3==0){
+      					html += "</tr>";
+      					html +="<tr>";		
+      				}
+      				console.log();
+	            	html += "<td>";
+	            	html += "<div class='btn'>";
+	            	html += "<i class='fas fa-ellipsis-v'></i>";
+	            	html += "<div class='my_sub'>";
+	            	html +="<p>"
+	                html +="<a href='deleteCategory.moa?category_no="+outcome[i].category_no+"&inorout=outcome'>삭제하기</a>";
+	                html += "<a class='modify'>수정하기</a>";
+	           		html += "</p>"; 
+	            	html += "</div>";
+	            	html += "</div>";
+	            	html += "<div>";
+	            	html += outcome[i].category_name;
+	            	html += "</div>";
+	            	html += "</td>";
+           		}
+      		html +="</tr>";
+            html += "</table>";
+            $(".allExpense").html(html);
+         	
+            updateAndDelete(); //수정하기 삭제하기 탭 보여주기
+            
+            
+        }
+        
+        
+    });
+}
+//한칸 올라갔다가 형제
+//수정하기,삭제하기 창 띄워주기
+function updateAndDelete(){
+	$('.btn i').click(function(){
+		$(this).next().closest('.my_sub').addClass('on');
+		
+		/*
+		if($(this).next().closest('.my_sub') ){
+			console.log("yes");
+	   	 $('.my_sub').removeClass('on'); 
+		}else{           
+			console.log("no");
+			$('.my_sub').addClass('on');       
+		}
+		*/
+	
+		//수정하기 탭 누르면 모달창 띄어주기
+		cateogryModify();
+	});
+    
+}
+
+function cateogryModify(){
+	
+	$('.modify').click(function(){
+		$('.modal').addClass("show-modal");
+		$('.modifyContent').append("<textarea name='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>");
+		$('.modifyContent').append("<button>변경</button");								
+		$('.modifyContent').append("<button>취소<button>");
+	});
+}
+
+
+
+
+
+/*
+$(function(){
+    $('.btn i').click(function(){           아이콘 클릭시,
+        if($('.my_sub').hasClass('on')){    만약 서브메뉴에 on 클래스가 있다면  (두번클릭했을때를 위한 if~else절 사용.)
+            $('.my_sub').removeClass('on'); on클래스를 없애주고
+        }else{                              서브메뉴에 on클래스가 없다면
+        $('.my_sub').addClass('on');        //n클래스를 추가해준다.
+        }
+    });
+});
+*/
+
+
+
+>>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
 
 $(document).ready(function(){
+<<<<<<< HEAD
 	//페이지 시작할때 카테고리 목록 불러오기
 	 getExpenseCategory();
 	 getIncomeCategory();
@@ -285,6 +475,11 @@ function updateAndDelete(){
 		
 		//수정하기 탭 누르면 모달창 띄어주기
 		cateogryModify(category_no);
+=======
+	
+	$(".trigger").on('click',function(){
+		foundClass(event);
+>>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
 	});
     
 }
@@ -346,7 +541,54 @@ $(document).ready(function(){
 
 
 
+<<<<<<< HEAD
 
+=======
+//버튼클릭하면 targetclass 찾아서 해당 modal클래스에 show_modal 추가해주기
+/*
+function foundClass(event){
+	
+	var modals = document.querySelectorAll("#modal");
+	
+	var target = event.target;
+	var targetClass = $(target).attr('class');
+	var targetclIdx = targetClass.substr(15,2);
+	
+	for(var i=0; i<modals.length; i++) {
+		 var mm = modals[i];
+		 var modalclass= $(mm).attr('class');
+		 var modalclIdx = modalclass.substr(11,2);
+		 if(targetclIdx === modalclIdx){
+			 var modalcl = modalclass.substr(6,13);
+			 $('.'+modalcl).addClass('show-modal');
+		 }
+	}
+}
+*/
+/*
+function incomefoundClass(event){
+	
+	var inmodals = document.querySelectorAll("#inmodal");
+	
+	var target = event.target;
+	var targetClass = $(target).attr('class');
+	var targetclIdx = targetClass.substr(19,2);
+	
+	for(var i=0; i<inmodals.length; i++) {
+		 var mm = inmodals[i];
+		 var inmodalclass= $(mm).attr('class');
+		
+		 var inmodalclIdx = inmodalclass.substr(15,2);
+		
+		 if(targetclIdx === inmodalclIdx){
+			 console.log(inmodalclass);
+			 var inmodalcl = inmodalclass.substr(8,13);
+			 $('.'+inmodalcl).addClass('show-modal');
+		 }
+	}
+}
+*/
+>>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
 </script>
 
 </body>

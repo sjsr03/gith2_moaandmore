@@ -1,6 +1,7 @@
 package budget.model.dao;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface LeftMoneyDAO {
@@ -18,4 +19,8 @@ public interface LeftMoneyDAO {
 	
 	//회원의 현재 남은 돈 합산 
 	public int selectCurrentLeftMoneySum(String id);
+	
+	//leftmoney의 reg를 (총예산정보의 시작일로)
+	public void updateRegToStartDay(String id);
+	
 }
