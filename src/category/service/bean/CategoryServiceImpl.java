@@ -139,6 +139,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException {
 		
 		List outcomeCategoryNames = categoryDAO.selectOutcomeCategoryNamesbyId(id);
+		System.out.println("selectOutcomeCategoryNamesbyId : "+ outcomeCategoryNames);
 		
 		return outcomeCategoryNames;
 	}
@@ -148,6 +149,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public List selectIncomeCategoryNamesbyId(String id) throws SQLException {
 		
 		List incomeCategoryNames = categoryDAO.selectIncomeCategoryNamesbyId(id);
+		System.out.println("selectIncomeCategoryNamesbyId : "+ incomeCategoryNames);
 		
 		return incomeCategoryNames;
 		
