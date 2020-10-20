@@ -87,7 +87,7 @@ if("${orgType}" == ""){ // orgType에 에 값이 없으면 한개에 대해서�
 		});
 		
 		$("#close").click(function(){
-			widow.close()
+			$(this).parent().parent().hide();
 		});
 		
 	

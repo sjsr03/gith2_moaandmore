@@ -17,7 +17,6 @@
 var searchDate="${searchForRecordDTO.searchDate}";
 var pageNum="${searchForRecordDTO.pageNum}";
 var type = "${searchForRecordDTO.type}";
-<<<<<<< HEAD
 /*
   "${searchForRecordDTO.searchDate}"
  "${searchForRecordDTO.pageNum}"
