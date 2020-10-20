@@ -35,6 +35,7 @@ public class CategoryServiceImpl implements CategoryService{
 		return list;
 	}
 
+	
 	//수입 카테고리 추가하기
 	@Override
 	public void addIncomeCategory(String category_name,String id) throws SQLException {
