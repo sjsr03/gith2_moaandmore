@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
 <head>
 	<meta charset="UTF-8">
 	<title>내가 개설 신청한 그룹들</title>
@@ -18,7 +16,11 @@
 		}
 	</style>
 </head>
-<body>
+<jsp:include page="../sidebar.jsp"/>
+
+
+<!-- 본문내용 시작 -->
+<div class="container-fluid">
 	<div>
 		<table>
 			<tr>
@@ -86,5 +88,5 @@
 	<div align="center">
 		<button type="button" onclick="location.href='/moamore/team/groupList.moa'">돌아가기</button>
 	</div>
-</body>
-</html>
+</div>
+<jsp:include page="../footer.jsp"/>

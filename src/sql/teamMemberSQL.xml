@@ -12,8 +12,11 @@
 	<select id="selectAllByTeamNo" parameterType="int" resultType="teamMemberDTO">
 		select tm.*, RANK() OVER(ORDER BY saving DESC) AS tmp_rank from team_member tm where team_no = #{value}
 	</select>
-	<select id="deleteTeamMemberAll" parameterType="int">
-		delete from team_member where team_no = #{value}
+	<select id="deleteTeamMemberAll" parameterType="hashmap">
+		delete from team_member where team_no = #{teamNo}
+		<if test="is_no_join == 1">
+			and is_join = 0
+		</if>
 	</select>
 	
 	<update id="updateFinalRank" parameterType="int">
