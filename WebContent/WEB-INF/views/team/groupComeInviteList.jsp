@@ -6,7 +6,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>내가 개설 신청한 그룹들</title>
+	<title>나를 초대한 그룹들</title>
 	<style type="text/css">
 		table, th, td {
 		    border: 1px solid black;
@@ -28,34 +28,16 @@
 				<td>시작일</td>
 				<td>종료일</td>
 				<td>참여자 수</td>
-				<td>공개여부</td>
-				<td>비밀번호</td>
-				<td>현재상태</td>
 			</tr>
 			<c:forEach var="article" items="${articleList}">
-				<tr>
+				<tr onclick="location='/moamore/team/teamDetail.moa?team_no=${article.team_no}&nickname=${sessionScope.memName}'">
 					<td>${article.subject}</td>
 					<td>${article.content}</td>
 					<td>${article.amount}</td>
 					<td>${fn:substring(article.start_day,0,10)}</td>
 					<td>${fn:substring(article.end_day,0,10)}</td>
 					<td>${article.people}</td>
-					<c:if test="${article.isopen == 0 }">
-						<td>비공개</td>
-					</c:if>
-					<c:if test="${article.isopen == 1 }">
-						<td>공개</td>
-					</c:if>
-					<td>${article.password}</td>
-					<c:if test="${article.status == -1 }">
-						<td>거절</td>
-					</c:if>
-					<c:if test="${article.status == 0 }">
-						<td>대기중</td>
-					</c:if>
-					<c:if test="${article.status == 2 || article.status == 1 || article.status == 3}">
-						<td>승인</td>
-					</c:if>
+				</tr>
 			</c:forEach>
 		</table>
 	</div>
@@ -73,13 +55,13 @@
 			</c:if>
 
 			<c:if test="${startPage > pageBlock}">
-				<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}&pageNum=${startPage-pageBlock}"> &lt; </a>
+				<a href="/moamore/team/groupComeInviteList.moa?nickname=${sessionScope.memName}&pageNum=${startPage-pageBlock}"> &lt; </a>
 			</c:if>
 			<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-				<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+				<a href="/moamore/team/groupComeInviteList.moa?nickname=${sessionScope.memName}&pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 			</c:forEach>
 			<c:if test="${endPage < pageCount}">
-				<a href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}&pageNum=${startPage+pageBlock}"> &gt; </a>
+				<a href="/moamore/team/groupComeInviteList.moa?nickname=${sessionScope.memName}&pageNum=${startPage+pageBlock}"> &gt; </a>
 			</c:if>
 		</c:if>
 	</div>

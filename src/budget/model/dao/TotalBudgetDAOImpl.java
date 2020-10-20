@@ -2,6 +2,7 @@ package budget.model.dao;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,6 +83,23 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	@Override
 	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException {
 		return sqlSession.selectOne("totalBudget.selectOneByNum",budget_no);
+	}
+	
+	@Override
+	public int calLeftDaysCurrentTB(String id) throws SQLException {
+		Date today = new Date();
+		today.setHours(0);
+		today.setMinutes(0);
+		today.setSeconds(0);
+		
+		TotalBudgetDTO TBdto = selectCurrentOne(id);
+		long lt = TBdto.getEnd_day().getTime()-today.getTime();
+		int period = (int)lt/(1000*60*60*24) +1;
+		return period;
+	}
+	@Override
+	public void updateCurrentBudget(int budget_no) throws SQLException {
+		sqlSession.update("totalBudget.updateCurrentBudget", budget_no);
 	}
 	
 

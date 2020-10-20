@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
+import budget.model.dto.TotalBudgetDetailDTO;
+
 public interface TotalBudgetDetailDAO {
 
 	
@@ -19,4 +21,7 @@ public interface TotalBudgetDetailDAO {
 	
 	//예산 세부내용 수정
 	public void updateTotalBudgetDetail(List total_budget_detail);
+	
+	//카테고리별 현재값에서 액수 빼기
+	public void updateMinusCurrent(TotalBudgetDetailDTO TBDdto);
 }

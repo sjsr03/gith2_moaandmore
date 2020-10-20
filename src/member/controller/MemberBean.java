@@ -84,10 +84,16 @@ public class MemberBean {
 		}
 		model.addAttribute("result",result);
 
-		//예산 만료되었는지 확인
-		budgetService.updateNewTB(id);
-		//남은돈 계산
-		budgetService.calLeftMoney(id);
+		//현재 진행중인 예산이 있다면
+		if(budgetService.selectCurrentOne(id)!=null) {
+			//예산 만료되었는지 확인
+			budgetService.updateNewTB(id);
+			//남은돈 계산
+			budgetService.calLeftMoney(id);
+			//오늘의 예산 계산하기
+			budgetService.calTodayBudget(id);
+			
+		}
 		
 		return "member/loginPro";
 	}
@@ -130,7 +136,7 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String LClogout(HttpServletRequest request){
+	public String logout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		session.removeAttribute("memName");	//세션 삭제
@@ -144,7 +150,7 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("signupForm.moa")
-	public String signupForm() {
+	public String NLCsignupForm() {
 
 		
 		return "member/signupForm";
@@ -168,7 +174,7 @@ public class MemberBean {
 	
 	
 	@RequestMapping("updateMember.moa")
-	public String updateMember(HttpServletRequest request,Model model)throws SQLException{
+	public String LCupdateMember(HttpServletRequest request,Model model)throws SQLException{
 		
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("memId");

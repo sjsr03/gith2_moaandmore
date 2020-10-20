@@ -9,8 +9,30 @@
 <title>set category</title>
 <script src="https://kit.fontawesome.com/959593ce4b.js" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 </head>
 <style>
+
+a{text-decoration: none;color: #737271;}
+    i{font-size: 20px;}
+    .btn{position: relative;margin: 200px 0 0 200px;filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));}
+    .btn .my_sub p a{
+        display: block;
+        padding: 3px 0px;
+       
+    }
+    .my_sub{
+        position: absolute;
+        top: -90px;
+        left: -25px;
+        background: #EDEBE8;
+        width: 80px;
+        text-align: center;
+        border-radius: 8px;    /*서브 메뉴에 대한 스타일 값 다 적용 후*/
+        display: none;      /*화면에 보이지 않게 하기 위해 display:none;을 사용.*/
+    }
+    .btn .my_sub.on{display: block;}    /*클릭시 추가해줄 on 클래스 미리 만들어둠.*/
+
 
 .modal { 
          position: fixed; 
@@ -76,58 +98,41 @@
 		alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
 	</script>
 </c:if>
-<form action="/moamore/category/setCategoryPro.moa" method="post">
+<form id="input" name="input">
 <table>
 	<tr>
 		<td>카테고리 추가</td>
 	</tr>
 	<tr>
 		<td>
-			<select name="categoryOption">
+			<select name="categoryOption" id="categoryOption">
 				<option value="수입">수입</option>
 				<option value="지출">지출</option>
 			</select>
 		</td>
-		<td><input type="text" name="category_name" placeholder="카테고리명을 입력하세요"/> </td>
-		<td><input type="submit" value="추가" /></td>
+		<td><input type="text" name="category_name" id="category_name" placeholder="카테고리명을 입력하세요"/> </td>
+		<td><input type="submit" value="추가" id="inputCategory"/></td>
 	</tr>
 </table>
 </form>
 
 
-
 <h3>[지출]</h3>
-<table border="1">
-	<tr>
-		<c:forEach var="outcome" items="${outcome}" varStatus="status">
-			
-			<c:if test="${status.index%3 == 0}">
-			</tr><tr>
-			</c:if>
-			<td style="width:100px; height:100px">
-			<button class="trigger trigger${status.count}"><i class="fas fa-ellipsis-v"></i></button>
-			<div>${outcome.category_name}</div>
-			</td>
-		
-			<%-- 팝업될 레이어 --%>
-			<div  id="modal" class="modal modal${status.count}">
-				<div class="modal-content">
-					<span class="close-button">&times;</span>
-					<h1 class="title"> ${outcome.category_name} 카테고리 수정하기</h1>
-					<form action="/moamore/category/updateCategory.moa" method="post">
-						<textarea name="newName" placeholder="카테고리 이름을 입력해주세요"></textarea>								
-						<input type="button" value="삭제 " onclick="window.location='/moamore/category/deleteCategory.moa?category_no=${outcome.category_no}&inorout=outcome'"/>
-						<input type="submit" value="변경" />
-						<input type="button" class ="cancel" id="cancel" value="취소"/>
-						<input type="hidden" name="category_no" value=${outcome.category_no} />
-						<input type="hidden" name="inorout" value="outcome" />
-					</form>
-				</div>
-			</div>	
-		</c:forEach>
-		
-	</tr>
-</table>		
+<form class='allExpense'>
+</form>
+
+
+<div class='modal'>
+	<div class='modal-content'>
+		<span class="close-button">&times;</span>
+		<h1 class="title">카테고리 수정하기</h1>
+		<form class="modifyContent">
+																			
+		</form>
+	</div>
+</div>	
+
+
 
 
 <h3>[수입]</h3>
@@ -139,7 +144,7 @@
 				</tr><tr>
 			</c:if>
 			<td style="width:100px; height:100px">
-			<button class="intrigger intrigger${status.count}"><i class="fas fa-ellipsis-v"></i></button>
+			<button class="intrigger intrigger${status.count} btn"><i class="fas fa-ellipsis-v"></i></button>
 			<div>${income.category_name}</div>
 			</td>
 			<%-- 팝업될 레이어 --%>
@@ -163,9 +168,149 @@
 
 <script type="text/javascript">	
 
+$(document).ready(function(){
+	//페이지 시작할때 카테고리 목록 불러오기
+	 getExpenseCategory();
+	
+	
+	//카테고리 추가 하기 
+	$("#inputCategory").click(function(){ 
+		$.ajax({
+			type : "POST",
+			url : "setCategoryPro.moa",
+			data : $("#input").serialize(),
+			dataType : "json",
+			error : function(error){
+				console.log("에러!!");
+			},
+			success : function(data){							
+				 getExpenseCategory();
+			}
+		
+		});
+  	});    
+	
+	//수정하기, 삭제하기 탭 보여주기
+	/*
+	 $('.btn i').click(function(){  
+		console.log(1);
+        $(this).click(function() {
+        	if($(this).children('my_sub').hasClass('on')){
+        		$(this).find('.my_sub').removeClass('on');
+        	}else{
+        		$(this).find('div').addClass('on');
+        	}
+           // $(this).closest(".my_sub").modal('hide');
+            //$(ele).closest('.modal-backdrop').remove()		
+           
+        	//url = $(this).attr('class') + "?idx=" + $(this).attr('idx');
+			//console.log(url);
+        });
+    });
+	*/
+});
+
+function getExpenseCategory(){
+	//지출 카테고리 불러오기
+    $.ajax({
+        type:'GET',
+        url : "getExpenseCategoryList.moa",
+        dataType : "json",
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8", 
+        error:function(request,status,error){
+            
+        },
+        success : function(outcome){
+           	var html = "";
+            	
+       		html += "<table border='1'>";
+       		html += "<tr>";
+      		for (var i = 0; i < outcome.length; i++) {
+      				if(i%3==0){
+      					html += "</tr>";
+      					html +="<tr>";		
+      				}
+      				console.log();
+	            	html += "<td>";
+	            	html += "<div class='btn'>";
+	            	html += "<i class='fas fa-ellipsis-v'></i>";
+	            	html += "<div class='my_sub'>";
+	            	html +="<p>"
+	                html +="<a href='deleteCategory.moa?category_no="+outcome[i].category_no+"&inorout=outcome'>삭제하기</a>";
+	                html += "<a class='modify'>수정하기</a>";
+	           		html += "</p>"; 
+	            	html += "</div>";
+	            	html += "</div>";
+	            	html += "<div>";
+	            	html += outcome[i].category_name;
+	            	html += "</div>";
+	            	html += "</td>";
+           		}
+      		html +="</tr>";
+            html += "</table>";
+            $(".allExpense").html(html);
+         	
+            updateAndDelete(); //수정하기 삭제하기 탭 보여주기
+            
+            
+        }
+        
+        
+    });
+}
+//한칸 올라갔다가 형제
+//수정하기,삭제하기 창 띄워주기
+function updateAndDelete(){
+	$('.btn i').click(function(){
+		$(this).next().closest('.my_sub').addClass('on');
+		
+		/*
+		if($(this).next().closest('.my_sub') ){
+			console.log("yes");
+	   	 $('.my_sub').removeClass('on'); 
+		}else{           
+			console.log("no");
+			$('.my_sub').addClass('on');       
+		}
+		*/
+	
+		//수정하기 탭 누르면 모달창 띄어주기
+		cateogryModify();
+	});
+    
+}
+
+function cateogryModify(){
+	
+	$('.modify').click(function(){
+		$('.modal').addClass("show-modal");
+		$('.modifyContent').append("<textarea name='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>");
+		$('.modifyContent').append("<button>변경</button");								
+		$('.modifyContent').append("<button>취소<button>");
+	});
+}
+
+
+
+
+
+/*
+$(function(){
+    $('.btn i').click(function(){           아이콘 클릭시,
+        if($('.my_sub').hasClass('on')){    만약 서브메뉴에 on 클래스가 있다면  (두번클릭했을때를 위한 if~else절 사용.)
+            $('.my_sub').removeClass('on'); on클래스를 없애주고
+        }else{                              서브메뉴에 on클래스가 없다면
+        $('.my_sub').addClass('on');        //n클래스를 추가해준다.
+        }
+    });
+});
+*/
+
+
+
 
 $(document).ready(function(){
-	//수출 카테고리 관련
+	
 	$(".trigger").on('click',function(){
 		foundClass(event);
 	});
@@ -183,6 +328,7 @@ $(document).ready(function(){
 
 
 //버튼클릭하면 targetclass 찾아서 해당 modal클래스에 show_modal 추가해주기
+/*
 function foundClass(event){
 	
 	var modals = document.querySelectorAll("#modal");
@@ -201,7 +347,8 @@ function foundClass(event){
 		 }
 	}
 }
-
+*/
+/*
 function incomefoundClass(event){
 	
 	var inmodals = document.querySelectorAll("#inmodal");
@@ -223,8 +370,8 @@ function incomefoundClass(event){
 		 }
 	}
 }
+*/
 </script>
-
 
 </body>
 </html>

@@ -81,4 +81,24 @@ public class TeamServiceImpl implements TeamService{
 		return dao.checkPw(team_no, pw);
 	}
 
+	@Override
+	public int getMyOkTeamArticleCount(String nickname, int pageStatus, int isSearch, String search) throws SQLException {
+		return dao.getMyOkTeamArticleCount(nickname, pageStatus, isSearch, search);
+	}
+
+	@Override
+	public List<TeamDTO> getMyOkTeamArticles(String nickname, int pageStatus, int start, int end, int isSearch, String search, int range) throws SQLException {
+		return dao.getMyOkTeamArticles(nickname, pageStatus, start, end, isSearch, search, range);
+	}
+	
+	@Override
+	public int getTeamComeInviteCount(String nickname) throws SQLException {
+		return dao.getTeamComeInviteCount(nickname);
+	}
+
+	@Override
+	public List getTeamComeInvites(String nickname, int start, int end) throws SQLException {
+		return dao.getTeamComeInvites(nickname, start, end);
+	}
+
 }

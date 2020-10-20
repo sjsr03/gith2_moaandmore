@@ -24,7 +24,7 @@ public interface GoalsDAO {
 	public boolean insertGoal(GoalsDTO goal) throws SQLException;
 	
 	//팀 목표 삽입
-	public void insertGoalByTeam(GoalsDTO goal) throws SQLException;
+	public void insertGoalByTeam(String id, int team_no) throws SQLException;
   	
 	//수정
 	public void modifyGoal(GoalsDTO goal) throws SQLException;

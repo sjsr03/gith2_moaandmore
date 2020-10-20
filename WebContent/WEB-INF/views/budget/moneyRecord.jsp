@@ -26,6 +26,7 @@ var type;
 	$(document).ready(function(){
 		
 		$("#month").hide();
+<<<<<<< HEAD
 		recordCheck();
 		/*
 		if(!searchDate){// 처음 페이지 켰을 때 예산이 기본으로 보이게처리 
@@ -73,7 +74,38 @@ var type;
 			if($(".recordChk:checked").length==2){// 2개 선택했을 때
 				// 하위항목 다 숨김
 				$("#searchDate").css("display", "none");
+	
+		// recordOpt 선택에 따라 하위내역 보여주기/숨기기
+		$("#recordOpt").change(function(){
+
+			if($("#recordOpt").val()=="budget"){
+				$("#serachDate").css("display", "block");
 				$("#month").css("display", "none");
+			}else{
+				if($("#recordOpt").val()=="income"){// 예산외 수입일 때
+					$("#serachDate").css("display", "none");
+					$("#month").css("display", "block");
+					$("#month option:eq(0)").prop("selected", true);
+				}else if($("#recordOpt").val()=="outcome"){
+					$("#serachDate").css("display", "none");
+					$("#month").css("display", "block");
+					$("#month option:eq(0)").prop("selected", true);
+				}
+				$("#month").on('change', function(){
+					console.log("배고파 1111")
+					
+					$.ajax({
+						type : "POST",
+						url : "selectNoBudgetRecord.moa",
+						data : {"serachDate":$("#month").val(),"type":$("#recordOpt").val()},
+						error : function(request,status,error){
+							alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+						},
+						success : function(data){		
+							$("#moneyLog").empty();
+							$("#moneyLog").append(data);									
+						}
+					});
 
 				if($("#budget").is(":checked") == true && $('#income').is(":checked") == true){ // budget, income
 					$("#type").val("budgetincome");
@@ -107,6 +139,7 @@ var type;
 					$("#month option:eq(0)").prop("selected", true);
 					$("#type").val("outcome");		
 				}
+				});
 			}
 			*/
 		});	
@@ -199,6 +232,31 @@ var type;
 			console.log("타입타입 : " + type);
 			
 			selectNobudget(searchDate, pageNum, type);
+			/*else if($("#recordOpt").val()=="outcome"){// 예산외 지출일 때 
+				$("#serachDate").css("display", "none");
+				$("#month").css("display", "block");
+				$("#month option:eq(0)").prop("selected", true);
+				$("#month").on('change', function(){
+					//console.log("배고파 22")
+					/*
+					$.ajax({
+						type : "POST",
+						url : "selectBudgetRecord.moa",
+						data : {serachDate:$("#serachDate").val()},
+						error : function(request,status,error){
+							alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+						},
+						success : function(data){		
+							$("#moneyLog").empty();
+							$("#moneyLog").append(data);									
+						}
+					});
+					
+				});
+				
+			}
+			*/
+			
 		});
 		*/
 		function checkDateType(type){
@@ -217,9 +275,11 @@ var type;
 			}
 		}
 
+
 		// 예산 내역 볼때
 		/*
 		$("#searchDate").on('change', function(){
+		$("#serachDate").on('change', function(){
 			// 컨트롤러로 값 보내기 ajax				
 			// 예산 지출 내역 리스트랑 예산 카테고리 맵으로  list에 통으로 담아서 가져올 것.
 			//console.log($("#searchDate").val());	
@@ -264,6 +324,27 @@ var type;
 			});
 		}
 	});
+			console.log($("#serachDate").val());
+			$(document).ready(function(){
+				$.ajax({
+					type : "POST",
+					url : "selectBudgetRecord.moa",
+					data : {serachDate:$("#serachDate").val()},
+					error : function(request,status,error){
+						alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					},
+					success : function(data){		
+						$("#moneyLog").empty();
+						$("#moneyLog").append(data);									
+					}
+				});
+							
+			});	
+		});	
+		
+	});	
+	
+	
 	
 </script>
 <body>
@@ -272,6 +353,12 @@ var type;
 	<label><input type="checkbox" name="recordChk" class="recordChk" id="budget" value="budget" /> 예산 </label>
 	<label><input type="checkbox" name="recordChk" class="recordChk" id="income" value="income" /> 수입(예산외)</label>
 	<label><input type="checkbox" name="recordChk" class="recordChk" id="outcome" value="outcome" /> 지출(예산외)</label>
+
+	<select name="recordOpt" id="recordOpt">
+		<option value="budget">예산내역</option>
+		<option value="income">수입내역(예산외)</option>
+		<option value="outcome">지출내역(예산외)</option>
+	</select> 
 	<br />
 	<%-- month 셀렉트는 지출/수입(예산외) 일때만 뜰 것  --%>
 	<select name="month" id="month">
@@ -289,7 +376,7 @@ var type;
 		<option value=2020-12>12월 2020년</option>
 	</select>
 	<%-- 밑의 date는 예산일 때만 뜰 것 --%>
-	<input type="date" name="searchDate" id="searchDate" />
+	<input type="date" name="serachDate" id="serachDate" />
 
 </div>	
 
