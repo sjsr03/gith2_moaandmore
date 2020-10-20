@@ -37,6 +37,7 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	
 	@Override
 	public List selectAllbyBudgetNum(int num) {
+		System.out.println(num);
 		List list = sqlSession.selectList("totalBudgetDetail.selectAllbyBudgetNum", num);
 		return list;
 	}

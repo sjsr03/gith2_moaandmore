@@ -22,9 +22,9 @@ public interface CategoryService {
 	// 카테고리 번호로 카테고리 이름 list 뽑아오기
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException;
 	//지출 카테고리 삭제하기
-	public void deleteOutcomeCategory(int category_no,String id)throws SQLException;	
+	public int deleteOutcomeCategory(int category_no,String id)throws SQLException;	
 	//수입 카테고리 삭제하기
-	public void deleteIncomeCategory(int cateogry_no,String id)throws SQLException;
+	public int deleteIncomeCategory(int cateogry_no,String id)throws SQLException;
 	//회원 한명의 수출 카테고리명 다 가져오기
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException;
 	//회원 한명의 수입 카테고리명 다 가져오기
@@ -32,4 +32,6 @@ public interface CategoryService {
 	//카테고리 넘으로 budget테이블,nobudget테이블 개수 가져오기
 	public int selectCategoryInfo(int category_no,String id)throws SQLException;
 
+	
+	
 }

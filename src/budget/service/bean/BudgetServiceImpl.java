@@ -352,7 +352,43 @@ public class BudgetServiceImpl implements BudgetService {
 			target.setBudget_no(totalBudgetDAO.selectCurrentOne(id).getBudget_no());
 			target.setCategory_current(sum);
 			target.setCategory_no(Integer.parseInt(subSel));
-			recordTransferDAO.updateRecordTBD(target);
+			int resultCur = recordTransferDAO.updateRecordTBD(target);
+			
+			
+			
+			
+			
+			//오늘의 예산 재계산
+			int period = totalBudgetDAO.calLeftDaysCurrentTB(id);
+			//남은 일수로 나눈 하루치 값
+			int daily = (int)(Math.round((double)resultCur / period));
+			
+			TodayBudgetDTO todayDTO = new TodayBudgetDTO();
+			todayDTO.setBudget_no(target.getBudget_no());
+			todayDTO.setCategory_no(target.getCategory_no());
+			todayDTO.setCategory_today(daily);
+			
+			//오늘의 예산 업데이트
+			todayBudgetDAO.updateTodayBudget(todayDTO);
+			
+			
+			
+			
+			
+			
+			//카테고리별 예산 현재값에서 차감
+			target.setCategory_current(daily);
+			totalBudgetDetailDAO.updateMinusCurrent(target);
+			
+			
+			
+			
+			//총예산 현재값 계산
+			totalBudgetDAO.updateCurrentBudget(target.getBudget_no());
+			
+			
+			
+			
 
 		} else {
 			RecordGoalsDTO dto = new RecordGoalsDTO();

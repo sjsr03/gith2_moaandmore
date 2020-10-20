@@ -70,8 +70,8 @@ public class TeamMemberServiceImpl implements TeamMemberService{
 	}
 
 	@Override
-	public void deleteTeamMemberAll(int teamNo) throws SQLException {
-		teamMemDao.deleteTeamMemberAll(teamNo);
+	public void deleteTeamMemberAll(int teamNo, int is_no_join) throws SQLException {
+		teamMemDao.deleteTeamMemberAll(teamNo, is_no_join);
 	}
 
 	@Override

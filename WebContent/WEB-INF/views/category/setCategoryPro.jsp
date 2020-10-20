@@ -10,7 +10,7 @@
 <body>
 
 
-
+console.log(1123);
 <c:redirect url="/category/setCategory.moa?already=${already}" />
 
 </body>
