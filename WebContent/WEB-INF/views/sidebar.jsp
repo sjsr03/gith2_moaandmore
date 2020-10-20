@@ -29,7 +29,7 @@
 </style>
 <script>
 $(document).ready(function(){
-	$.ajax({
+	$.ajax({	//사이드바 그래프 불러오기
 		url:"/moamore/getBudgetState.moa",
 		type:"post",
 		data:{
@@ -53,7 +53,8 @@ $(document).ready(function(){
 </script>
 
 <body id="page-top">
-		
+	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
+
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -73,7 +74,7 @@ $(document).ready(function(){
       
       
       <!-- 예산 사용액 그래프 -->
-      <div class="card" id="BudgetState">
+      <div class="card" id="BudgetState" style="border-radius:0;height:100px;">
    		
       </div>
       
@@ -90,7 +91,10 @@ $(document).ready(function(){
 
       <!-- Divider -->
       <hr class="sidebar-divider">
-
+      
+      
+      <!-- 예산탭 시작 -->
+	<c:if test="${path.indexOf('/team/') < 0}" >
       <!-- Heading -->
       <div class="sidebar-heading">
         예산 관리
@@ -114,7 +118,7 @@ $(document).ready(function(){
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/record/recordForm.moa">
+        <a class="nav-link" href="/moamore/record/moneyRecord.moa">
           <i class="fas fa-fw fa-list-ul"></i>
           <span>수입/지출내역</span></a>
       </li>
@@ -145,10 +149,60 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/category/setCategory.moa">
           <i class="fas fa-fw fa-cog"></i>
           <span>설정</span></a>
       </li>
+      
+	</c:if>
+      
+      <!-- 예산 탭 끝 -->
+      <!-- 커뮤니티탭 시작 -->
+      <c:if test="${path.indexOf('/team/') >= 0}" >
+		 <!-- Heading -->
+      <div class="sidebar-heading">
+        커뮤니티
+      </div>
+
+      <!-- Nav Item - Pages Collapse Menu -->
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+          <i class="fas fa-fw fa-coins"></i>
+          <span>그룹</span>
+        </a>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">그룹</h6>
+            <a class="collapse-item" href="/moamore/team/groupList.moa?isMyTeam=0">전체 그룹 보기</a>
+            <c:if test="${sessionScope.memName != null }" >
+            <a class="collapse-item" href="/moamore/team/groupMyRequestList.moa?nickname=${sessionScope.memName}">My 개설 신청 리스트</a>
+            <a class="collapse-item" href="/moamore/team/groupList.moa?isMyTeam=1">내가 가입한 그룹 보기</a>
+            <a class="collapse-item" href="/moamore/team/groupComeInviteList.moa">나를 초대한 그룹 보기</a>
+            </c:if>
+            <c:if test="${sessionScope.memName == null }" >
+            <span class="text">로그인 후 접근가능한 게시판입니다.</span>
+            </c:if>
+          </div>
+        </div>
+      </li>
+
+
+      <!-- Nav Item - Charts -->
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-fw fa-list-ul"></i>
+          <span>랭킹 보기</span></a>
+      </li>
+      <!-- Nav Item - Charts -->
+      <li class="nav-item">
+        <a class="nav-link" href="#">
+          <i class="fas fa-fw fa-list-ul"></i>
+          <span>결산 게시판</span></a>
+      </li>
+      
+	</c:if>
+      
+      
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -177,14 +231,14 @@ $(document).ready(function(){
           
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
 			<div class="input-group" style="width:100%">
-				<button class="btn btn-secondary btn-icon-split"><span class="text">예산</span></button>
-				<button class="btn btn-secondary btn-icon-split" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/dashboard.moa'"><span class="text">예산</span></button>
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;"onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
 			</div>
 			
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-5">
-                <jsp:include page="./realTimeRanking.jsp"/>
+                <jsp:include page="./realTimeRankingForMobile.jsp"/>
             </li>
             
 			<!-- 로그인 상태일 때 -->

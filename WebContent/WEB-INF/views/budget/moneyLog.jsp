@@ -7,13 +7,34 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
 
-</script>
 <title>moneyLog</title>
+
 </head>
+<style>
+#pop{
+position: absolute; top:100px; left:100px; text-align: center; z-index:1;
+visibility:hidden; 
+border:2px solid #000;
+background-color:white;
+}
+
+</style>
 <script>
+var type = "${recordPage.type}";
+/*
+if("${orgType}" == ""){ // orgType에 에 값이 없으면 한개에 대해서만 가져온 것 -> type에 recordPage에 잇는type 넣어줘야함 
+	type = "${recordPage.type}"
+}else{ // 값이 있으면 여러개에 대해 데이터 가져온 것 -> type 에 orgType 넣어줘야함 
+	
+}
+*/
 	$(document).ready(function(){
+		console.log("타아아아아아아아아아입 :" + type);
+		console.log("searchDate :" +  "${searchDate}");
+		console.log("pageNum :" +  "${recordPage.pageNum}");
+		
+		
 		/*
 		$("#modifybtn").click(function(){
 			console.log("수정버튼이닷");
@@ -35,7 +56,7 @@
 					console.log(num);
 					
 					// 댓글 삭제 Ajax
-					/*
+					
 					$.ajax({
 						type:"POST",
 						url:"budgetRecordDelete.moa",
@@ -52,15 +73,38 @@
 							}
 						}				
 					});
-					*/
+					
 				}else{// check가 false면 
 					alert("삭제를 취소합니다.");
 				}
-		});	
+				
+		
+		});
+		$("#content").click(function(){
+			// 제목 클릭시 팝업창 띄워서 상세내역보여주기
+			layer_popup();
+			
+		});
+		
+		$("#close").click(function(){
+			widow.close()
+		});
+		
+	
+		
+		
 	});
+	
+	function layer_popup(){
+		var layer = document.getElementById("pop")
+		layer.style.visibility="visible";
+	}
+	
 </script>
 <body>
 <h2 align="center"> 입출력 내역 </h2>
+	
+	
 
 <div align="center">
 	<button onclick="location.href='/moamore/record/recordForm.moa'">입출력 입력</button><br />
@@ -88,15 +132,17 @@
 			
 		</thead>
 		<tbody>
-			<c:forEach var="records" items="${recordPage.recordList}" varStatus="status" >
-			<tr>
+			<c:forEach var="records" items="${recordPage.recordList}" varStatus="status" >		
+			<tr>		
 				<td>
 					<fmt:formatDate value="${records.reg}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
-				<td>
-				${categories[records.category_no]}
+				<td id="category">
+					"${categories[records.category_no]}"
 				</td>
-				<td>${records.content}</td>
+				<td id="content">
+				
+				</td>
 				<td>
 					<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
 				</td>
@@ -116,7 +162,9 @@
 					<button class="btn" id="btn_delete" name="btn_delete">삭제</button>
 					
 				</td>
-			</tr>		
+				
+			</tr>	
+			
 			</c:forEach>
 		</tbody>
 	</table>
@@ -125,7 +173,6 @@
 <%-- 페이지 번호 처리 --%>
 <br /><br />
 <div align="center">
-	<%-- 가입한 회원이 한명이라도 있어야 보여줌--%>
 	<c:if test="${recordPage.count > 0}">
 		<fmt:parseNumber var="res" value="${recordPage.count / recordPage.pageSize}" integerOnly="true"/>
 		
@@ -139,13 +186,13 @@
 		<c:set var="endPage" value="${pageCount}"/>
 		</c:if>
 		<c:if test="${startPage>pageBlock}">
-			<a href="/moamore/record/moneyLog.moa?pageNum=${startPage-pageBlock}"> %lt;</a>
+			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage-pageBlock}"> %lt;</a>
 		</c:if>
-		<c:forEach var="i" begin="${startPage }" end="${endPage }" step="1">
-		<a href="/moamore/record/moneyLog.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>	
+		<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
+		<a href="/moamore/record/moneyRecord.moa?pageNum=${i}&type=${recordPage.type}&searchDate=${searchDate}" class="pageNums"> &nbsp; ${i} &nbsp; </a>	
 		</c:forEach>
 		<c:if test="${endPage<pageCount}">
-			<a href="/moamore/record/moneyLog.moa?pageNum=${startPage+pageBlock }"> &gt; </a>	  
+			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage+pageBlock }"> &gt; </a>	  
 		</c:if>
 	</c:if>
 </div>
@@ -159,5 +206,44 @@
 	</form>
 </div>
  --%>
+ 
+<div id="pop">
+	<div id="recordDetail" class="recordDetail" style="width: 900px; height: 350;" align="center">
+		<div id="close" style="width:100px; margin:auto;">X</div>
+		<h3>상세내역</h3>
+		
+		<table border="1">
+			<tr>
+				<th>*수입or지출or예산지출</th>
+				<th>*카테고리</th>
+			
+			</tr>
+			<tr>
+				<th>//예산지출</th>
+				<th>//카테고리이름 </th>
+			</tr>
+			<tr>
+				<th>*날짜,시간</th>
+				<th>*금액</th>	
+			</tr>
+			<tr>
+				<th>//reg~</th>
+				<th>//100원</th>	
+			</tr>
+			<tr>
+				<th colspan="2">메모</th>
+			</tr>
+			<tr>
+				<th colspan="2">어쩌고저쩌고!</th>
+			</tr>
+			<tr>
+				<th colspan="2">이미지</th>
+			</tr>
+			<tr>
+				<th colspan="2">사진쓰~</th>
+			</tr>
+		</table>
+	</div>
+</div>
 </body>
 </html>

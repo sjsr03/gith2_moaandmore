@@ -83,10 +83,13 @@ public class TeamBean {
 					
 					if(today<startDate)
 						tmpStatus = 1;
-					else if(today>endDate)
+					else if(today>endDate) {
 						tmpStatus = 3;
-					else
+						teamMemService.deleteTeamMemberAll(autoChangeList.get(i).getTeam_no(), 1);
+					}else {
 						tmpStatus = 2;
+						teamMemService.deleteTeamMemberAll(autoChangeList.get(i).getTeam_no(), 1);
+					}
 					
 					if(tmpStatus != autoChangeList.get(i).getStatus()) {
 						autoChangeList.get(i).setStatus(tmpStatus);
@@ -130,6 +133,7 @@ public class TeamBean {
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("pageStatus", pageStatus);
+		model.addAttribute("today", today);
 		model.addAttribute("isMyTeam", isMyTeam);
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("search", search);

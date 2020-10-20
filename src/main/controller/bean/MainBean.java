@@ -81,6 +81,7 @@ public class MainBean {
 		String id = (String) request.getSession().getAttribute("memId");
 		//현재 진행중인 예산 정보 가져오기
 		TotalBudgetDTO TBdto = budgetService.selectCurrentOne(id);
+		
 		List BDdtoList = budgetService.selectAllbyBudgetNum(TBdto.getBudget_no());
 		long lt = TBdto.getEnd_day().getTime()-TBdto.getStart_day().getTime();
 		int period = Math.round((lt)/(1000*60*60*24)) + 1;
@@ -91,6 +92,7 @@ public class MainBean {
 			TotalBudgetDetailDTO dto = (TotalBudgetDetailDTO)obj;
 			categoryNums.add(dto.getCategory_no());
 		}
+		
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
 		categories.put(0, "총예산");
 				

@@ -28,5 +28,10 @@
   	<select id="selectSumTodayBudget" parameterType="string" resultType="int">
   		select sum(category_today) from today_budget where id=#{value}
   	</select>
+  	
+  	<!-- 회원의 오늘의 예산 내역 삭제 -->
+  	<delete id="deleteTodayBudget" parameterType="string">
+  		delete from today_budget where id=#{value}
+  	</delete>
   </mapper>
  

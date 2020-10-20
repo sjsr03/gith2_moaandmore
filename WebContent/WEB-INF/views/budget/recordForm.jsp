@@ -29,11 +29,9 @@
 		$("#checkbox").change(function(){
 			if($("#checkbox").is(":checked")){
 				// 예산 관련된거 없어져야함
-				alert("예산 외 선택!!");
 				$(".btn").show();	
 				$("#category").css("display", "none");
 			}else{
-				alert("예산 내 선택!!!!");
 				$(".btn").hide();	
 				$("#category").css("display", "block");
 				$("#outcomecategory").css("display", "none"); 
@@ -52,8 +50,6 @@
 				$(document).ready(function(){
 					var start = new Date("${budgetDate.get(1)}");
 					var end = new Date("${budgetDate.get(0)}");		
-					console.log("시작:::" + start);
-					console.log("R끝:::: " + end);
 					var selectedDay = new Date($("#date").val());
 					
 					if((start <=selectedDay) && (end >= selectedDay)){
@@ -95,7 +91,6 @@
 		});
 		// 버튼 누를 때마다 카테고리 나타내기/숨기기
 		$("#outcome").click(function(){ // 지출 카테고리로 세팅 
-			alert("지출");
 			$("#outcomecategory").css("display", "block"); 
 			$("#incomecategory").css("display", "none"); 
 			$("#type").val("outcome");
@@ -111,7 +106,6 @@
 			
 		});
 		$("#income").click(function(){ // 수입 카테고리로 세팅		
-			alert("수입");
 			$("#incomecategory").css("display", "block");
 			$("#outcomecategory").css("display", "none"); 
 			$("#type").val("income");

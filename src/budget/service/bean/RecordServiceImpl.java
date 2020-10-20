@@ -113,10 +113,9 @@ public class RecordServiceImpl implements RecordService{
 	// 예산번호로 해당 예산 기록 목록 가져오기
 	@Override
 	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
-		
+		System.out.println("서비스에서 페이지번호!! : " + pageNum);
 		RecordPageDTO recordPage = new RecordPageDTO();
-		
-		if(pageNum == null) {
+		if(pageNum == "") {
 			pageNum = "1";
 		}
 		// 페이지 정보 담기
@@ -126,10 +125,13 @@ public class RecordServiceImpl implements RecordService{
 		int endRow = currPage*pageSize;
 		int count = 0;
 		
+		System.out.println("서비스에서 currpage : " + currPage);
 		List recordList = null;
 		
 		// 전체 목록 수 가져오기 
 		count = recordBudgetDAO.countAllBudgetByNum(budgetNum);
+		System.out.println("서비스에서!!!!!예산 개수 : " + count);
+		System.out.println("서비스에서!!!!!버젯넘 : " + budgetNum);
 		if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
 			recordList = recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
 		}
@@ -157,7 +159,7 @@ public class RecordServiceImpl implements RecordService{
 			throws SQLException {
 		RecordPageDTO recordPage = new RecordPageDTO();
 		
-		if(searchForRecordDTO.getPageNum() == null) {
+		if(searchForRecordDTO.getPageNum() == "") {
 			searchForRecordDTO.setPageNum("1");
 		}
 		// 페이지 정보 담기
@@ -190,10 +192,10 @@ public class RecordServiceImpl implements RecordService{
 	}
 	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 
 	@Override
-	public Map selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		RecordPageDTO recordPage = new RecordPageDTO();
-		Map allRecord = new HashMap();
-		if(searchForRecordDTO.getPageNum() == null) {
+		
+		if(searchForRecordDTO.getPageNum() == "") {
 			searchForRecordDTO.setPageNum("1");
 		}
 		// 페이지 정보 담기
@@ -206,26 +208,7 @@ public class RecordServiceImpl implements RecordService{
 		List recordList = null;
 		searchForRecordDTO.setStartRow(startRow);
 		searchForRecordDTO.setEndRow(endRow);
-		
-		
-		// 아이디당 수입/지출 카테고리 통으로 가져오기
-		
-		
-		List incomeCategoryList = categoryDAO.selectAllIncomeCategoryById(searchForRecordDTO.getId());
-		List outcomeCategoryList = categoryDAO.selectAllById(searchForRecordDTO.getId());
-		
-		Map incomeCategories = new HashMap();
-		for(int i = 0; i < incomeCategoryList.size(); i++) {
-			incomeCategories.put(((income_categoryDTO)incomeCategoryList.get(i)).getCategory_no(), ((income_categoryDTO)incomeCategoryList.get(i)).getCategory_name());		
-		}
-		
-		Map outcomeCategories = new HashMap();
-		for(int i = 0; i < outcomeCategoryList.size(); i++) {
-			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
-		}
-		
-		allRecord.put("incomeCategories", incomeCategories);
-		allRecord.put("outcomeCategories", outcomeCategories);
+
 		System.out.println("11111111111111");
 		// 여기서 타입 체크 후 dao 각각 불러줘야함!
 		String type=searchForRecordDTO.getType();
@@ -251,12 +234,12 @@ public class RecordServiceImpl implements RecordService{
 			if(count >0) { // 내역이 하나라도 있으면 
 				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
 			}
-		}else if(type.equals("all")){ //예산+수입+지출이면
+		}else if(type.equals("budgetincomeoutcome")){ //예산+수입+지출이면
 			System.out.println("예산+수입+지출");
 			count = recordNoBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
 			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
 			if(count>0) {
-				recordList = recordNoBudgetDAO.selectNobudgetRecord(searchForRecordDTO);
+				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
 			}
 		}else{ //수입+지출이면
 			System.out.println("수입+지출");
@@ -277,9 +260,9 @@ public class RecordServiceImpl implements RecordService{
 		recordPage.setPageSize(pageSize);
 		recordPage.setRecordList(recordList);
 		recordPage.setStartRow(startRow);
+		recordPage.setRecordList(recordList);
 		
-		allRecord.put("recordPage", recordPage);
-		return allRecord;	
+		return recordPage;	
 	}
 	// 날짜비교 
 	@Override

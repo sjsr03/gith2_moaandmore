@@ -144,7 +144,9 @@ public class CategoryDAOImpl implements CategoryDAO {
 	// 카테고리 번호로 카테고리 이름 가져오기 
 	@Override
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		
 		Collections.sort(categoryNums);
+		
 		List categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
 		HashMap categories = new HashMap();
 		for(int i = 0; i < categoryNames.size(); i++) {
@@ -195,7 +197,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 		return incomeCategoryNames;
 	}
 	
-	//카테고리 넘으로 budget테이블 개수 가져오기
+	//budget테이블에 해당 category_no 내역 있는지 확인하기
 	@Override
 	public int selectBudgetInfo(int category_no, String id) throws SQLException {
 		
@@ -207,7 +209,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 		return count;
 	}
 	
-	//카테고리넘으로 nobudget테이블 개수 가져오기
+	//nobudget테이블에 해당 category_no 내역 있는지 확인하기
 	@Override
 	public int selectNobudgetInfo(int category_no, String id) throws SQLException {
 		
@@ -218,5 +220,16 @@ public class CategoryDAOImpl implements CategoryDAO {
 		int count=sqlSession.selectOne("category.selectNoBudgetInfo", map);
 		return count;
 	}
+	//total_budget_detail테이블에 해당 category_no 내역 있는지 확인하기
+	@Override
+	public int selectTotalBudgetDetailInfo(int category_no) throws SQLException {
+		
+		int count=sqlSession.selectOne("category.selectTotalDetailCategoryInfo",category_no);
+		
+		return count;
+		
+	}
+
+	
 	
 }

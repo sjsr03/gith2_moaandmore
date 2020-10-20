@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
 
 import category.model.dao.CategoryDAO;
 
@@ -33,6 +35,7 @@ public class CategoryServiceImpl implements CategoryService{
 		return list;
 	}
 
+	
 	//수입 카테고리 추가하기
 	@Override
 	public void addIncomeCategory(String category_name,String id) throws SQLException {
@@ -70,21 +73,64 @@ public class CategoryServiceImpl implements CategoryService{
 	// 카테고리 번호로 카테고리 이름을 뽑아오기
 	@Override
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
+		System.out.println("cate"+categoryNums);
 		HashMap categoryNames = categoryDAO.selectBudgetCategoryNames(categoryNums);
+		
+		
 		return categoryNames;
 	}
+	
 	//지출 카테고리 삭제하기
 	@Override
-	public void deleteOutcomeCategory(int category_no, String id) throws SQLException {
+	public int deleteOutcomeCategory(int category_no, String id) throws SQLException {
 		
-		categoryDAO.deleteOutcomeCategory(category_no,id);
+		// 각각 해당 테이블에 category_no 내역이 있는지 확인하기 (있으면 삭제 불가) 
+		int budgetCount = categoryDAO.selectBudgetInfo(category_no,id);
+		int nobudgetCount = categoryDAO.selectNobudgetInfo(category_no,id);
+		int totalBudgetDetailcount = categoryDAO.selectTotalBudgetDetailInfo(category_no);
+		
+		int exist = 0;
+		
+		if(budgetCount >0 || nobudgetCount >0 || totalBudgetDetailcount >0) {
+			exist = 1;
+		}
+		
+		//다른 테이블에 category_no 정보가 없으면 정상적으로 삭제
+		if(exist == 0) {
+			categoryDAO.deleteOutcomeCategory(category_no,id);
+		}else if(exist ==1) {
+			System.out.println("삭제불가 "+exist);
+		}
+		
+		
+		return exist;
+		
+		
 		
 	}
 	//수입 카테고리 삭제하기
 	@Override
-	public void deleteIncomeCategory(int category_no, String id) throws SQLException {
+	public int deleteIncomeCategory(int category_no, String id) throws SQLException {
 		
-		categoryDAO.deleteIncomeCategory(category_no,id);
+		int nobudgetCount = categoryDAO.selectNobudgetInfo(category_no,id);
+		int totalBudgetDetailcount = categoryDAO.selectTotalBudgetDetailInfo(category_no);
+		
+		int exist = 0;
+		
+		if(nobudgetCount >0 || totalBudgetDetailcount >0) {
+			exist = 1;
+		}
+		
+		//다른 테이블에 category_no 정보가 없으면 정상적으로 삭제
+		if(exist == 0) {
+			categoryDAO.deleteIncomeCategory(category_no,id);
+		}else if(exist ==1) {
+			System.out.println("삭제불가 "+exist);
+		}
+		
+		
+		return exist;
+		
 		
 	}
 	
@@ -93,6 +139,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException {
 		
 		List outcomeCategoryNames = categoryDAO.selectOutcomeCategoryNamesbyId(id);
+		System.out.println("selectOutcomeCategoryNamesbyId : "+ outcomeCategoryNames);
 		
 		return outcomeCategoryNames;
 	}
@@ -102,6 +149,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public List selectIncomeCategoryNamesbyId(String id) throws SQLException {
 		
 		List incomeCategoryNames = categoryDAO.selectIncomeCategoryNamesbyId(id);
+		System.out.println("selectIncomeCategoryNamesbyId : "+ incomeCategoryNames);
 		
 		return incomeCategoryNames;
 		
@@ -111,17 +159,20 @@ public class CategoryServiceImpl implements CategoryService{
 	@Override
 	public int selectCategoryInfo(int category_no,String id) throws SQLException {
 		
+		// 각각 해당 테이블에 category_no 내역이 있는지 확인하기 (있으면 삭제 불가) 
 		int budgetCount = categoryDAO.selectBudgetInfo(category_no,id);
 		int nobudgetCount = categoryDAO.selectNobudgetInfo(category_no,id);
-		
+		int totalBudgetDetailcount = categoryDAO.selectTotalBudgetDetailInfo(category_no);
 		
 		int exist = 0;
-		if(budgetCount >0 || nobudgetCount >0) {
+		if(budgetCount >0 || nobudgetCount >0 || totalBudgetDetailcount >0) {
 			exist = 1;
 		}
 		
 		return exist;
 	}
+
+	
 
 	
 }

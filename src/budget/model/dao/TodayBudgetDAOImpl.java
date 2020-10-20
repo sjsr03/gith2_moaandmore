@@ -47,4 +47,9 @@ public class TodayBudgetDAOImpl implements TodayBudgetDAO {
 		int sum = sqlSession.selectOne("todayBudget.selectSumTodayBudget", id);
 		return sum;
 	}
+	
+	@Override
+	public void deleteTodayBudget(String id) {
+		sqlSession.delete("todayBudget.deleteTodayBudget", id);
+	}
 }

@@ -1,6 +1,8 @@
 package admin.controller;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +54,15 @@ public class AdminBean {
 	public String groupWaitAdminList(String pageNum, Model model) throws SQLException {
 		ModelDTO dto = new ModelDTO();
 		dto = adminService.selectAllGroupWaitAdminList(pageNum);
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyyMMdd");
+		
+		Date tmpToday = new Date();
+				
+		int today = Integer.parseInt(dateFormat.format(tmpToday));
+		
 		model.addAttribute("modelDTO",dto);
+		model.addAttribute("today", today);
 		
 		return "admin/groupWaitAdminList";
 	}
@@ -62,7 +72,7 @@ public class AdminBean {
 		teamService.updateTeamStatus(dto);
 		
 		if(dto.getStatus() == -1)
-			teamMemberService.deleteTeamMemberAll(dto.getTeam_no());
+			teamMemberService.deleteTeamMemberAll(dto.getTeam_no(), 0);
 		
 		return "admin/groupWaitAdminPro";
 	}
