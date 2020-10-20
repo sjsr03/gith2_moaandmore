@@ -145,7 +145,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/category/setCategory.moa">
           <i class="fas fa-fw fa-cog"></i>
           <span>설정</span></a>
       </li>
