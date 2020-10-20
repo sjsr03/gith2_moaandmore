@@ -161,14 +161,10 @@ $(document).ready(function(){
 	//수정창 x누를때 
 	$(".close-button").on('click',function(){
 			$(this).parent().parent().toggleClass('show-categorymodal');
-
 			
 	});
 	$(".cancel").on('click',function(event){
-
 		$(this).parent().parent().parent().toggleClass('show-categorymodal');
-		$(this).parent().parent().toggleClass('show-categorymodal');
-
 	});
 	 
 	 
