@@ -239,7 +239,7 @@ public class RecordServiceImpl implements RecordService{
 			count = recordNoBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
 			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
 			if(count>0) {
-				recordList = recordNoBudgetDAO.selectNobudgetRecord(searchForRecordDTO);
+				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
 			}
 		}else{ //수입+지출이면
 			System.out.println("수입+지출");

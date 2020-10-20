@@ -118,7 +118,7 @@ $(document).ready(function(){
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/record/recordForm.moa">
+        <a class="nav-link" href="/moamore/record/moneyRecord.moa">
           <i class="fas fa-fw fa-list-ul"></i>
           <span>수입/지출내역</span></a>
       </li>

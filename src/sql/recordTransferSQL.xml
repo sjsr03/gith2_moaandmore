@@ -11,13 +11,13 @@
   	
   	<!-- 예산에 재분배 -->
   	<update id="updatePlusRecordTBD" parameterType="totalBudgetDetailDTO">
-  		update total_budget_detail set category_current=(category_current+#{category_current}) where budget_no=#{budget_no} and category_no=#{category_no}
+  		update total_budget_detail set category_current=(category_current+#{category_current}+(select category_today from today_budget where budget_no=#{budget_no} and category_no=#{category_no})) where budget_no=#{budget_no} and category_no=#{category_no}
   	</update>
   	
-  	<!-- 예산에 재분배 -->
-  	<update id="updateMinusRecordTBD" parameterType="totalBudgetDetailDTO">
-  		update total_budget_detail set category_budget=(category_budget-#{category_budget}) where budget_no=#{budget_no} and category_no=#{category_no}
-  	</update>
+  	<select id="selectCategoryCurrentAfterTrans" parameterType="totalBudgetDetailDTO" resultType="int">
+  		select category_current from total_budget_detail where category_no=#{category_no} and budget_no=#{budget_no}
+  	</select>
+  	
   	
   	<!-- 회원의 남은돈 기록 합산 -->
   	<select id="selectLeftMoneySum" parameterType="string" resultType="int">
