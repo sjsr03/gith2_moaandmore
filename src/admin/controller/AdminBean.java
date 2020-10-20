@@ -62,7 +62,7 @@ public class AdminBean {
 		teamService.updateTeamStatus(dto);
 		
 		if(dto.getStatus() == -1)
-			teamMemberService.deleteTeamMemberAll(dto.getTeam_no());
+			teamMemberService.deleteTeamMemberAll(dto.getTeam_no(), 0);
 		
 		return "admin/groupWaitAdminPro";
 	}
