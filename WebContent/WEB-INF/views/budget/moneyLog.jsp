@@ -14,6 +14,9 @@
 </head>
 <script>
 	$(document).ready(function(){
+		console.log("타아아아아아아아아아입 :" +  "${recordPage.type}");
+		console.log("searchDate :" +  "${searchDate}");
+		console.log("pageNum :" +  "${recordPage.pageNum}");
 		/*
 		$("#modifybtn").click(function(){
 			console.log("수정버튼이닷");
@@ -139,13 +142,13 @@
 		<c:set var="endPage" value="${pageCount}"/>
 		</c:if>
 		<c:if test="${startPage>pageBlock}">
-			<a href="/moamore/record/moneyLog.moa?pageNum=${startPage-pageBlock}"> %lt;</a>
+			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage-pageBlock}"> %lt;</a>
 		</c:if>
-		<c:forEach var="i" begin="${startPage }" end="${endPage }" step="1">
-		<a href="/moamore/record/moneyLog.moa?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>	
+		<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
+		<a href="/moamore/record/moneyRecord.moa?pageNum=${i}&type=${recordPage.type}&searchDate=${searchDate}" class="pageNums"> &nbsp; ${i} &nbsp; </a>	
 		</c:forEach>
 		<c:if test="${endPage<pageCount}">
-			<a href="/moamore/record/moneyLog.moa?pageNum=${startPage+pageBlock }"> &gt; </a>	  
+			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage+pageBlock }"> &gt; </a>	  
 		</c:if>
 	</c:if>
 </div>
