@@ -17,11 +17,6 @@
 var searchDate="${searchForRecordDTO.searchDate}";
 var pageNum="${searchForRecordDTO.pageNum}";
 var type = "${searchForRecordDTO.type}";
-/*
-  "${searchForRecordDTO.searchDate}"
- "${searchForRecordDTO.pageNum}"
- "${searchForRecordDTO.type}"
- */
  
 	$(document).ready(function(){
 		
@@ -72,45 +67,10 @@ var type = "${searchForRecordDTO.type}";
 		}
 		$("#searchDate").val(searchDate);
 		recordCheck();
-		/*
-		if(!searchDate){// 처음 페이지 켰을 때 예산이 기본으로 보이게처리 
-			$("#budget").prop("checked", true);
-			// 현재 날짜 구하기
-			var date = new Date();
-			searchDate = moment(date).format('YYYY-MM-DD');
-			// 날짜, type budget으로 예산 구하는 함수 호출
-			pageNum = "${searchForRecordDTO.pageNum}"
-			$("#searchDate").val(searchDate);
-			type="budget";		
-			selectBudget(searchDate, pageNum, type); 
-		}else{
-			console.log("타입 뭔디 ;;" + type);
-			
-			if(type=="budget" && searchDate != null){//날짜에 값이  있다면
-				pageNum = "${searchForRecordDTO.pageNum}"
-				searchDate = "${searchForRecordDTO.searchDate}";
-				$("#searchDate").val(searchDate);
-				$("#budget").prop("checked", true);
-				selectBudget(searchDate, pageNum, type); 
-			}else if(type=="income" || type=="outcome"){
-				pageNum = "${searchForRecordDTO.pageNum}"
-				searchDate = "${searchForRecordDTO.searchDate}";
-				$("#searchDate").val(searchDate);
-				if(type=="income"){
-					//$(".recordChk").prop("checked", false);
-					$("#income").prop("checked", true);
-				}else{
-					//$(".recordChk").prop("checked", false);
-					$("#outcome").prop("checked", true);
-				}
-				selectNobudget(searchDate, pageNum, type);	
-			}else if(type=="budgetincome"){
-				
-			}
-		}
-		*/
 		// recordChk 선택에 따라 하위내역 보여주기/숨기기
 		$(".recordChk").change(function(){
+			pageNum="";
+			searchDate="";
 			recordCheck();
 			
 			
@@ -158,7 +118,7 @@ var type = "${searchForRecordDTO.type}";
 	});
  
  function recordCheck(){
-	 history.replaceState({}, null, location.pathname);
+	 //history.replaceState({}, null, location.pathname);
 	 console.log("type>>>> : " + type);
 		var chkArr = [];
 		var chkStr = "";

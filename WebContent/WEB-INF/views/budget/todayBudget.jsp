@@ -306,7 +306,7 @@
 				<div>
 					<table id="leftMoneyList">
 						<tr>
-							<td><!-- 체크박스 -->&nbsp;</td>
+							<td><input type="checkbox" id="allChk"/></td>
 							<td>항목</td>
 							<td>잔액</td>
 							<td>전환할 금액</td>
@@ -379,6 +379,20 @@
 			calRest($(this));
 		});
 		
+		//모두 체크하기
+		$("#allChk").on('change', function(){
+			if($(this).is(':checked')==true) {
+				$('.chk').each(function(){
+					$(this).attr('checked', true);
+				});
+			} else {
+				$('.chk').each(function(){
+					$(this).attr('checked', false);
+				});
+			}
+			
+			calSumTrans();
+		});
 		
 		
 		//체크될때마다
