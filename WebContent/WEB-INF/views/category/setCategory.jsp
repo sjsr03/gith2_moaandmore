@@ -158,13 +158,13 @@ $(document).ready(function(){
 	$(".close-button").on('click',function(){
 		console.log("x버튼");
 			$(this).parent().parent().toggleClass('show-categorymodal');
-			$(".modifyContent").empty();
+			$(".modifyContent").text("");
 			
 	});
 	$(".cancel").on('click',function(event){
 		console.log("취소버튼");
 		$(this).parent().parent().toggleClass('show-categorymodal');
-		$(".modifyContent").empty();
+		$(".modifyContent").text("");
 	});
 	 
 	 

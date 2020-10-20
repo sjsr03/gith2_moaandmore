@@ -43,8 +43,9 @@ public class RecordTransferDAOImpl implements RecordTransferDAO {
 	};
 	
 	@Override
-	public void updateRecordTBD(TotalBudgetDetailDTO target) {
+	public int updateRecordTBD(TotalBudgetDetailDTO target) {
 		sqlSession.update("recordTransfer.updatePlusRecordTBD", target);
+		return sqlSession.selectOne("recordTransfer.selectCategoryCurrentAfterTrans", target);
 	}
 	
 	@Override
