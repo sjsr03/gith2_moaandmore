@@ -170,36 +170,6 @@ public class RecordBean {
 	
 	@RequestMapping("moneyRecord.moa")
 	public String moneyRecord(HttpServletRequest request, Model model, SearchForRecordDTO searchForRecordDTO)throws SQLException{
-		// 처음 딱 들어올 땐 dto에 든 변수들 다 null일 것임!
-		/*
-		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
-		System.out.println("아이디?11 : " + searchForRecordDTO.getId());
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date currTime = new Date();
-		String now = sdf.format(currTime);
-		System.out.println(now);
-		Timestamp dateTime = Timestamp.valueOf(now);
-		
-		searchForRecordDTO.setTimeStampDate(dateTime);
-		// 날짜랑 아이디로 해당 예산 번호 가져오기
-		int budgetNum = budgetService.selectBudgetNum(searchForRecordDTO.getId(), dateTime);
-		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum());
-		
-		// 예산 번호로 카테고리 번호, 이름 뽑아오기 
-		// 카테고리 번호 뽑아오기
-		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
-		
-		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
-		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
-	
-		
-		List outcomeCategories = categoryService.selectAllById(searchForRecordDTO.getId());
-		List incomeCategories = categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
-			
-		model.addAttribute("recordPage", recordPage);
-		model.addAttribute("categories", categories);
-		*/
 		
 		System.out.println("타입확인 >>> : " + searchForRecordDTO.getType());
 		System.out.println("날짜확인 >>> : " + searchForRecordDTO.getSearchDate());
