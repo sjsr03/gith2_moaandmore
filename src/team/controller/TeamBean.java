@@ -130,6 +130,7 @@ public class TeamBean {
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("pageStatus", pageStatus);
+		model.addAttribute("today", today);
 		model.addAttribute("isMyTeam", isMyTeam);
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("search", search);
