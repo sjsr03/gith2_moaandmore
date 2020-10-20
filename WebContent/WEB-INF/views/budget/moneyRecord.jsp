@@ -21,10 +21,10 @@ var type = "${searchForRecordDTO.type}";
   "${searchForRecordDTO.searchDate}"
  "${searchForRecordDTO.pageNum}"
  "${searchForRecordDTO.type}"
- */
+ */ 
  
 	$(document).ready(function(){
-		
+	
 		console.log("searchDate : " + searchDate);
 		console.log("pageNum : " + pageNum);
 		console.log("type : " + type);
@@ -111,6 +111,12 @@ var type = "${searchForRecordDTO.type}";
 		*/
 		// recordChk 선택에 따라 하위내역 보여주기/숨기기
 		$(".recordChk").change(function(){
+			console.log("체크하고 타입 체크 : " + type);
+			console.log("체크하고 페이지 넘 체크 : " + pageNum);
+			console.log("체크하고 데이트 체크 : " + searchDate);
+			searchDate = "";
+			pageNum = "";
+			type ="";
 			recordCheck();
 			
 			
@@ -158,7 +164,7 @@ var type = "${searchForRecordDTO.type}";
 	});
  
  function recordCheck(){
-	 history.replaceState({}, null, location.pathname);
+	// history.replaceState({}, null, location.pathname);
 	 console.log("type>>>> : " + type);
 		var chkArr = [];
 		var chkStr = "";
@@ -166,7 +172,7 @@ var type = "${searchForRecordDTO.type}";
 			chkArr.push($(this).val());		
 			chkStr += $(this).val();
 		});
-		
+		console.log("recordCheck 타입 체크 : " + chkStr);
 		$("#type").val(chkStr);
 		type=chkStr;
 		if(chkArr.length > 1 ){ // 두개 이상 체크 한 경우 
@@ -180,7 +186,9 @@ var type = "${searchForRecordDTO.type}";
 			if(chkArr.indexOf("budget") >= 0){ // 값에 budget이 들어가있으면 
 				$("#searchDate").css("display", "block");
 				$("#month").css("display", "none");
-				selectBudget(searchDate, pageNum, type); 		
+				if(searchDate != ""){
+					selectBudget(searchDate, pageNum, type); 	
+				}	
 			}else{
 				console.log("타아아아아입  : " + type );
 				$("#searchDate").css("display", "none");

@@ -94,6 +94,7 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		
 		List recordList = sqlSession.selectList("record.selectRecord", searchForRecordDTO);
 		System.out.println("dao44에서 사이즈 : " + recordList.size());
+		
 		return recordList;
 	}
 
