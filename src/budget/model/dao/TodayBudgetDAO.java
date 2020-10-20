@@ -21,4 +21,6 @@ public interface TodayBudgetDAO {
   	//오늘의 예산의 합산
   	public int selectSumTodayBudget(String id);
 	
+  	//회원의 오늘의 예산 내역 삭제
+  	public void deleteTodayBudget(String id);
 }

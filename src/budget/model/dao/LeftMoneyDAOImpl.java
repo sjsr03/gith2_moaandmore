@@ -2,6 +2,7 @@ package budget.model.dao;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class LeftMoneyDAOImpl implements LeftMoneyDAO {
 	
 	@Override
 	public void insertZero(int budget_no, int category_no, String id) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		HashMap map = new HashMap();
 		map.put("budget_no", budget_no);
 		map.put("category_no", category_no);
@@ -62,5 +64,9 @@ public class LeftMoneyDAOImpl implements LeftMoneyDAO {
 	public void updateRegToStartDay(String id) {
 		sqlSession.update("leftMoney.updateRegToStartDay", id);
 		
+	}
+	@Override
+	public void deleteLeftMoney(String id) {
+		sqlSession.delete("leftMoney.deleteLeftMoney", id);
 	}
 }

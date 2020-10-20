@@ -26,8 +26,16 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		map.put("id", total.getId());
 		map.put("end_day", total.getStart_day());
 		
-		sqlSession.update("totalBudget.updateTBClose", total.getId());
-		sqlSession.update("totalBudget.updateTotalBudgetEnd", map);
+		sqlSession.update("totalBudget.updateTBClose", total.getId());		//기존 close 1 --> 2
+		sqlSession.update("totalBudget.updateTotalBudgetEnd", map);			//기존 close 0 --> 1
+		
+		
+		//leftmoney에 남아있던 컬럼 지우기
+		sqlSession.delete("leftMoney.deleteLeftMoneyById", total.getId());
+		//todayBudget에 남아있던 컬럼 지우기
+		sqlSession.delete("todayBudget.deleteTodayBudget", total.getId());
+		
+		
 		//새 예산 삽입
 		sqlSession.insert("totalBudget.insertTotalBudget", total);
 		TotalBudgetDTO TBdto = sqlSession.selectOne("totalBudget.selectCurrentOneById",total.getId());
@@ -94,7 +102,7 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		
 		TotalBudgetDTO TBdto = selectCurrentOne(id);
 		long lt = TBdto.getEnd_day().getTime()-today.getTime();
-		int period = (int)Math.ceil(lt/(1000*60*60*24));
+		int period = (int)Math.round(lt/(1000*60*60*24));
 		return period;
 	}
 	@Override

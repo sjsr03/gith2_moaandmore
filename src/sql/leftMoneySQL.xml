@@ -23,7 +23,7 @@
   	
   	<!-- 예산 생성 : zero값 넣어주기 -->
   	<insert id="insertZero" parameterType="hashmap" >
-  		insert into left_money values(#{id}, #{category_no}, 0, sysdate)
+  		insert into left_money values(#{id}, #{category_no}, 0, (select start_day from total_budget where budget_no=#{budget_no}))
   	</insert>
   	
   	<!-- 예산 종료 : leftmoney 데이터 지우기 -->
@@ -50,6 +50,11 @@
   	<update id="updateRegToStartDay" parameterType="string">
   		UPDATE LEFT_MONEY SET reg=(SELECT START_day FROM TOTAL_BUDGET WHERE id=#{value} AND CLOSE=0) WHERE id=#{value}
   	</update>
+  	
+  	<!-- 회원의 leftmoney에 담긴 내역 모두 삭제 -->
+  	<delete id="deleteLeftMoney" parameterType="string">
+  		delete from left_money where id=#{value}
+  	</delete>
   	
   </mapper>
  

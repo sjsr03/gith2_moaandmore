@@ -39,8 +39,12 @@ public class TeamMemberDAOImpl implements TeamMemberDAO {
 	}
 
 	@Override
-	public void deleteTeamMemberAll(int teamNo) throws SQLException {
-		sqlSession.delete("teamMember.deleteTeamMemberAll", teamNo);
+	public void deleteTeamMemberAll(int teamNo, int is_no_join) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("teamNo", teamNo);
+		map.put("is_no_join", is_no_join);
+		
+		sqlSession.delete("teamMember.deleteTeamMemberAll", map);
 	}
 
 	@Override
