@@ -2,11 +2,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<!-- 
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+-->
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />  
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 <script src="http://code.jquery.com/ui/1.8.18/jquery-ui.min.js"></script>
@@ -57,6 +59,7 @@
 	}
 </style>
 </head>
+<jsp:include page="../sidebar.jsp" />
 <script>
 	$(document).ready(function(){
 		$('#range option:eq(${range})').prop("selected", true);
@@ -72,6 +75,7 @@
 	});
 </script>
 <body>
+<!-- 
 	<div class="header" style="background-color: gray;width:1650px;height:140px;">
 		<h1 style="margin-top:0; margin-bottom: 0;">Header</h1>
 	</div>
@@ -83,6 +87,7 @@
 			<a href="/moamore/team/groupComeInviteList.moa">나를 초대한 그룹 보기</a>
 		</c:if>
 	</div>
+ -->
 	<div class="content" style="background-color:#8BBDFF;width:1430px;height:820px;margin-left: 200px; padding: 10px;">
 		
 		<div class="top" style="width: 100%; height: 40px; padding-top: 5px;">
@@ -202,5 +207,8 @@
 			</form>
 		</div>
 	</div>
+<jsp:include page="../footer.jsp"/>
+<!-- 
 </body>
 </html>
+ -->

@@ -19,7 +19,6 @@
 		z-index: 1;
 		backdrop-filter: blur(4px);
  		-webkit-backdrop-filter: blur(4px);
- 		display:none;
 	}
 	.popup {
 		padding: 20px;
@@ -51,7 +50,7 @@
 		<div class="popup">
 			<h2>예산 주기 변경</h2>
 			<div>
-				<p>예산 주기를 변경할 시 기존의 예산은 종료되며, 오늘부터 새로운 예산이 시작됩니다.<br/>주기를 변경하시겠습니까?</p>
+				<p>예산 설정을 변경할 시 기존의 예산은 종료되며, 오늘부터 새로운 예산이 시작됩니다.<br/>설정을 변경하시겠습니까?</p>
 			</div>
 			<button id="PeChOk">확인</button>
 			<button id="PeChCancel">취소</button>
@@ -60,13 +59,37 @@
 
 	
 	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
+			<!-- 경고문 -->
+            <div class="row" style="display:none;" id="warn" >
+            
+	            <div class="col-xl-12 col-md-6 mb-4" >
+	              <div class="card border-left-danger shadow h-100 py-2">
+	                <div class="card-body">
+	                  <div class="row no-gutters align-items-center">
+	                    <div class="col mr-2">
+	                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">주의</div>
+	                      <div class="h5 mb-0 font-weight-bold" style="color:red;">기존의 예산은 종료되며, 새로운 예산이 생성됩니다.</div>
+	                    </div>
+	                    <div class="col-auto">
+	                      <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+	                    </div>
+	                  </div>
+	                </div>
+	              </div>
+	            </div>
+            </div>
+            
            	<!-- 첫번째 줄 -->
             <div class="row" style="overflow:hidden;">
+            
             	
 	
 	<!-- 폼 시작 -->
-		<div class="col-lg-12" style="transition: .5s;" id="firstStep">
+		<div class="col-lg-6" style="transition: .5s;" id="firstStep">
 		<div class="card shadow lg-12" >
+			<div class="card-header py-3">
+	          <h6 class="m-0 font-weight-bold text-primary">총 예산 설정</h6>
+	        </div>
             <div class="card-body">
 				<ul>
 					<li>
@@ -83,15 +106,16 @@
 					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
 					</li>
 				</ul>
-				<input type="button" value="세부설정 >" onclick="nextStep()"/>
 			</div>
 		</div>
 		</div>
-		<div class="col-lg-12" style="transition: .5s;" id="secondStep">
+		<div class="col-lg-6" style="transition: .5s;" id="secondStep">
 		<div class="card shadow lg-12" >
+			<div class="card-header py-3">
+	          <h6 class="m-0 font-weight-bold text-primary">카테고리별 세부 설정</h6>
+	        </div>
         	<div class="card-body" >
 		
-				<input type="button" value="<이전단계" onclick="preStep()"/>
 				<input type="button" value="추가" id="insertLine"/>
 				
 				<table id="detailBudget">
@@ -144,7 +168,6 @@
 	<input type="hidden" name="budget_no" value="${currentTBudget.budget_no }" />
 	<input type="hidden" name="isNewBudget" id="isNewBudget" value="0" />
 	
-	<div><span id="warn" style="color:red; display:none">주기를 변경하셨습니다. 새로운 예산이 생성됩니다.</span></div>
 	</div>
 	
 	</div>
@@ -171,44 +194,15 @@
 		});
 		reSum();
 		
-		//period가 변경되면 경고창 출력
-		$('#period').on('change', function(){
-			$('#popup1').css({display: 'flex'});
-		});
-		
-		//period 변경을 취소하면 다시 원래값으로
 		$('#PeChCancel').on('click', function(){
-			$('#popup1').css('display','none');
-			$('#period').children('option[value=${currentTBudget.period}]').prop('selected',true);
-			setStartDay(); //월 시작일 출력여부 결정
+			history.go(-1);
 		});
 		
-		//period 변경에서 확인을 누르면 값 더 바꿔도 경고창 다시 안뜨게(대신 경고문 띄워져있음)
 		$('#PeChOk').on('click', function(){
-			$('.amount').each(function(){
-				calDay($(this));
-			});
+			$('#isNewBudget').val(1);
 			
-			$('#popup1').remove();
-			$('#warn').css('display', 'flex');
-			
-				
-			//경고문 출력 여부
-			$('#period').on('change', function(){
-				$('.amount').each(function(){
-					calDay($(this));
-				});
-				
-				
-				if($('#period').val() != ${currentTBudget.period}) {
-					$('#warn').css('display', 'flex');
-					$('#isNewBudget').val(1);
-				} else {
-					$('#warn').css('display', 'none');
-					$('#isNewBudget').val(0);
-				}
-				
-			});
+			$('#popup1').css('display', 'none');
+			$('#warn').css('display','flex');
 		});
 		
 		
