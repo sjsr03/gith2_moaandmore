@@ -40,8 +40,11 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException {
 		
-		
-		
+			System.out.println("id :"+dto.getId());
+			System.out.println("pw :"+dto.getPw());
+			System.out.println("nickname :"+dto.getNickname());
+			System.out.println("img :"+dto.getProfile_img());
+			
 				MultipartFile mf = null;
 				String newName = null;
 				try { 
@@ -65,12 +68,6 @@ public class MemberServiceImpl implements MemberService {
 					dto.setNickname(dto.getNickname());
 				//이미지가 안들어 왔으면 
 				}else {
-					System.out.println(1);
-					//String path = request.getRealPath("save");
-		
-					//String imgPath = path + "\\" +"";
-					///File copyFile = new File(imgPath);
-					//mf.transferTo(copyFile);
 					
 					dto.setProfile_img("defaultImg.gif");
 				}
@@ -86,6 +83,7 @@ public class MemberServiceImpl implements MemberService {
 			categoryDAO.outcomeInsertCategory(dto.getId());
 			categoryDAO.incomeInsertCategory(dto.getId());
 			
+			System.out.println("회원가입 성공");
 	}
 		
 		

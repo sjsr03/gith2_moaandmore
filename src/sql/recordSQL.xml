@@ -41,6 +41,7 @@
   		select count(*) from budget where budget_no=#{value}
   	</select>
   	
+  	
   	<!-- 예산 지출 고유 번호로 해당 예산 내역 삭제 -->
   	<delete id="deleteBudgetRecord" parameterType="string" >
   		delete from budget where budget_outcome_no=#{value}
@@ -75,7 +76,7 @@
 			</otherwise>
 		</choose>
 		UNION ALL
-		SELECT b.BUDGET_OUTCOME_NO, NULL AS "INCOME_CATEGORY_NO", b.CATEGORY_NO, b.AMOUNT, b.REG, bd.CONTENT, bd.MEMO, bd.IMG, NULL AS "TYPE" 
+		SELECT b.BUDGET_OUTCOME_NO, NULL AS "INCOME_CATEGORY_NO", b.CATEGORY_NO, b.AMOUNT, b.REG, bd.CONTENT, bd.MEMO, bd.IMG, 'budget' AS "TYPE" 
 		FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE id=#{id})
 		 ORDER BY reg DESC)t1)t2 <![CDATA[WHERE r >=#{startRow} AND r <=#{endRow}]]>
   	</select>
