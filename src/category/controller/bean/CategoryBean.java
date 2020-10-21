@@ -66,6 +66,7 @@ public class CategoryBean {
 	//카테고리 추가하기
 	@RequestMapping(value="setCategoryPro.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public String setCategoryPro(String category_name,String categoryOption,Model model) throws SQLException{
+		System.out.println("aaaaa");
 		System.out.println(category_name);
 		System.out.println(categoryOption);
 	
@@ -122,6 +123,7 @@ public class CategoryBean {
 		
 		model.addAttribute("already",already);
 		System.out.println(4);
+	
 		return "category/setCategoryPro";
 
 	}
@@ -186,7 +188,7 @@ public class CategoryBean {
 		model.addAttribute("already", already);
 		
 		
-		return "category/setCategory";
+		return "category/setCategoryPro";
 	}
 	
 	//카테고리 삭제하기
@@ -209,7 +211,7 @@ public class CategoryBean {
 		model.addAttribute("exist", exist);
 		
 		
-		return "category/setCategory";
+		return "category/setCategoryPro";
 	}
 
 	

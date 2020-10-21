@@ -168,9 +168,6 @@ $(document).ready(function(){
 	});
 	 
 	 
-	
-	
-	
 	 
 	//카테고리 추가 하기 
 	$("#inputCategory").click(function(event){ 
