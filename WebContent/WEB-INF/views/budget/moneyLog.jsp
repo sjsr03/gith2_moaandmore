@@ -55,12 +55,14 @@
 
 </style>
 <script>
-var type = "${recordPage.type}";
-console.log("타이이입  ::: " + type);
+var type;
+console.log("레코드페이지 안의 타임 : " + type);
 	$(document).ready(function(){
-		console.log("타아아아아아아아아아입 :" + type);
-		console.log("searchDate :" +  "${searchDate}");
-		console.log("pageNum :" +  "${recordPage.pageNum}");
+		
+		//console.log("레코드페이지 안의 타입222 :" + type);
+		//console.log("searchDate :" +  "${searchDate}");
+		//console.log("pageNum :" +  "${recordPage.pageNum}");
+		//console.log("레코드 안의 type :" +  $("#hiddenType").val());
 		
 		
 		/*
@@ -83,30 +85,34 @@ console.log("타이이입  ::: " + type);
 					var num = $(this).prev().prev().val();
 					console.log(num);
 					
-					// 댓글 삭제 Ajax
-					
-					$.ajax({
-						type:"POST",
-						url:"budgetRecordDelete.moa",
-						dateType: "json",
-						data:{"budget_outcome_no":num},
-						success: function(result){
-							if(result=="OK"){
-								// 내용날리기 안되니까 걍 새로고침 ㅎㅎ;
-								location.reload();
-								alert("삭제완료");
-							}else{
-								// 삭제 실패
-								alert("삭제 실패");
-							}
-						}				
-					});
+					deleteRecord();
 					
 				}else{// check가 false면 
 					alert("삭제를 취소합니다.");
 				}	
-		});		
+		});//삭제 
+		
 	});
+	
+	// 댓글 삭제 Ajax	
+	function deleteRecord(){
+		$.ajax({
+			type:"POST",
+			url:"budgetRecordDelete.moa",
+			dateType: "json",
+			data:{"budget_outcome_no":num},
+			success: function(result){
+				if(result=="OK"){
+					// 내용날리기 안되니까 걍 새로고침 ㅎㅎ;
+					location.reload();
+					alert("삭제완료");
+				}else{
+					// 삭제 실패
+					alert("삭제 실패");
+				}
+			}				
+		});
+	}
 	
 	function wrapWindowByMask() {
 	    //화면의 높이와 너비를 구한다.
@@ -122,8 +128,7 @@ console.log("타이이입  ::: " + type);
 	    $('#mask').css({
 	        'width' : maskWidth,
 	        'height' : maskHeight
-	    });
-	
+	    });	
 	    //애니메이션 효과
 	    //$('#mask').fadeIn(1000);      
 	    $('#mask').fadeTo("slow", 0.5);
@@ -150,11 +155,10 @@ console.log("타이이입  ::: " + type);
 		console.log("금액~~" + amount);
 		console.log("이미지~~" + img);
 
-		if(type != "budgetincome" || type != "budgetoutcome" || type != "incomeoutcome"){
-			$("#recordType").html(type);
-		}else{
-			$("#recordType").html(recordType);
-		}
+		// 내역 여러개 가져오는거면  records.type(글마다 정해진 type에서 꺼내오기)
+		// ${records.type} 이 안에!! 다 들어있음  ${records.type} 값을 recordType으로 받아줬음!
+		$("#recordType").html(recordType); 
+		
 		
 		$("#img").attr('src','../../resources/img/'+img);
 		
@@ -210,10 +214,41 @@ console.log("타이이입  ::: " + type);
 					<fmt:formatDate value="${records.reg}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td id="category">
-					${categories[records.category_no]}
+				<c:set var="recordCate" value="" />
+		
+				<%-- c:set 이용해서 변수에 계속 담아 준 후 마지막에 a태그에 넣어줌 --%>
+				<c:out value="${records.type}"/>
+				<c:if test="${not empty categories}">
+					<c:choose>
+						<c:when test="${records.type eq 'income'}">
+							<c:set var="recordCate" value="${categories[records.income_category_no]}" />
+							${categories[records.income_category_no]}
+						</c:when>
+						<c:otherwise>
+							<c:set var="recordCate" value="${categories[records.outcome_category_no]}" />
+							${categories[records.outcome_category_no]}
+						</c:otherwise>
+					</c:choose>	
+				</c:if>
+				<c:if test="${not empty incomeCategories}">
+					<c:choose>
+						<c:when test="${records.type eq 'income'}">
+							<c:set var="recordCate" value="${incomeCategories[records.income_category_no]}" />
+							${incomeCategories[records.income_category_no]}
+						</c:when>
+						<c:otherwise>
+							<c:set var="recordCate" value="${outcomeCategories[records.outcome_category_no]}" />
+							${outcomeCategories[records.outcome_category_no]}
+						</c:otherwise>
+					</c:choose>
+				</c:if>	
+					<input type="hidden" id="hiddenType" value="${records.type}" />
 				</td>
+				
+				
 				<td id="content"> 
-					<a href="javascript:void(0)" onclick="goDetail('${records.type}','${categories[records.category_no]}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+					<a href="javascript:void(0)" onclick="goDetail('${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+					
 				</td>
 				<td>
 					<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
@@ -280,44 +315,46 @@ console.log("타이이입  ::: " + type);
 	    <a href="javascript:popupClose();" class="layerpop_close"
 	        id="layerbox_close">X</a> <br>
 	    <div class="content">
-			<table border="1" style="width:390px; height:300px;">
-			    <tr>
-					<td>타입</td>
-					<td>카테고리</td>				
-				</tr>
-				<tr>
-					<td id="recordType"></td>
-					<td id="recordCategory"></td>
-				</tr>
-				<tr>
-					<td>날짜,시간</td>
-					<td>금액</td>	
-				</tr>
-				<tr>
-					<td id="reg"></td>
-					<td id="amount"></td>	
-				</tr>
-				<tr>
-					<td colspan="2">제목</td>
-				</tr>
-				<tr>
-					<td colspan="2" id="recordContent"></td>
-				</tr>
-				<tr>
-					<td colspan="2">메모</td>
-				</tr>
-				<tr>
-					<td colspan="2" id="memo"></td>
-				</tr>
-				<tr>
-					<td colspan="2">이미지</td>
-				</tr>
-				<tr>
-					<td colspan="2" >
-						<img id="img" src=""/>
-					</td>
-				</tr>
-		   </table>
+	    	<form action="">
+				<table border="1" style="width:390px; height:300px;">
+				    <tr>
+						<td>타입</td>
+						<td>카테고리</td>				
+					</tr>
+					<tr>
+						<td id="recordType"></td>
+						<td id="recordCategory"></td>
+					</tr>
+					<tr>
+						<td>날짜,시간</td>
+						<td>금액</td>	
+					</tr>
+					<tr>
+						<td id="reg"></td>
+						<td id="amount"></td>	
+					</tr>
+					<tr>
+						<td colspan="2">제목</td>
+					</tr>
+					<tr>
+						<td colspan="2" id="recordContent"></td>
+					</tr>
+					<tr>
+						<td colspan="2">메모</td>
+					</tr>
+					<tr>
+						<td colspan="2" id="memo"></td>
+					</tr>
+					<tr>
+						<td colspan="2">이미지</td>
+					</tr>
+					<tr>
+						<td colspan="2" >
+							<img id="img" src=""/>
+						</td>
+					</tr>
+			   </table>
+		   </form>
 	    </div>
     </div>
 </div>

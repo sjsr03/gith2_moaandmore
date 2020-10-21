@@ -86,7 +86,7 @@ public class RecordServiceImpl implements RecordService{
 		if(type.equals("outcome") || type.equals("income")){ // 예산외 수입/지출 일 떄
 			noBudgetDTO.setReg(date);
 			
-			
+			System.out.println("서비스에서 타입 ;;;: "+ noBudgetDTO.getType());
 			recordNoBudgetDAO.insertNoBudget(noBudgetDTO);
 			
 			int nobudget_no = noBudgetDTO.getNobudget_no();
@@ -113,7 +113,7 @@ public class RecordServiceImpl implements RecordService{
 	// 예산번호로 해당 예산 기록 목록 가져오기
 	@Override
 	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
-		System.out.println("서비스에서 페이지번호!! : " + pageNum);
+		
 		RecordPageDTO recordPage = new RecordPageDTO();
 		if(pageNum == "") {
 			pageNum = "1";
@@ -124,8 +124,7 @@ public class RecordServiceImpl implements RecordService{
 		int startRow = (currPage - 1) * pageSize + 1;
 		int endRow = currPage*pageSize;
 		int count = 0;
-		
-		System.out.println("서비스에서 currpage : " + currPage);
+			
 		List recordList = null;
 		
 		// 전체 목록 수 가져오기 
@@ -135,7 +134,6 @@ public class RecordServiceImpl implements RecordService{
 		if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
 			recordList = recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
 		}
-		
 		recordPage.setCount(count);
 		recordPage.setCurrPage(currPage);
 		recordPage.setEndRow(endRow);
