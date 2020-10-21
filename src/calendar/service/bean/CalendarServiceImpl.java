@@ -35,7 +35,6 @@ public class CalendarServiceImpl implements CalendarService{
 		SimpleDateFormat yyyymmdd = new SimpleDateFormat("yyyy-MM-dd");
 		
 		List budget = calendarDAO.selectBudgetDatebyId(id);
-		
 		//return 해줄 중복값 제거된 budget 테이블 총 날짜
 		List budgetalldate = new ArrayList();
 		
@@ -69,16 +68,18 @@ public class CalendarServiceImpl implements CalendarService{
 			
 		//id로 budget테이블에서 데이터가 있는 날짜 가져오기
 		List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
-		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allbudgetAmount = calendarDAO.selectBudgetAmount(id,budgetAlldate);
-	
+		
 		//리턴해줄 날짜랑 지출액
 		Map selectBudgetDateAndAmount = new HashMap();
 		
-		for(int i = 0; i<budgetAlldate.size(); i++) {
-			selectBudgetDateAndAmount.put(budgetAlldate.get(i), allbudgetAmount.get(i));
-		}				
-		
+		if(budgetAlldate.size()>0) {
+			//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
+			List<Integer> allbudgetAmount = calendarDAO.selectBudgetAmount(id,budgetAlldate);
+			
+			for(int i = 0; i<budgetAlldate.size(); i++) {
+				selectBudgetDateAndAmount.put(budgetAlldate.get(i), allbudgetAmount.get(i));
+			}				
+		}
 		return selectBudgetDateAndAmount;
 	}
 
@@ -142,15 +143,20 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		//id로 nobudget테이블에서 데이터가 있는 날짜 가져오기
 		List<String> noBudgetAlldate = calendarService.selectNobudgetExpenseDatebyId(id);
-		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allnoBudgetExpenseAmount = calendarDAO.selectNoBudgetExpenseAmount(id, noBudgetAlldate);
-	
+		
 		//리턴해줄 날짜랑 지출액
 		Map noBudgetExpenseDateAndAmount = new HashMap();
 		
-		for(int i = 0; i<noBudgetAlldate.size(); i++) {
-			noBudgetExpenseDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetExpenseAmount.get(i));
-		}				
+		
+		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
+		if(noBudgetAlldate.size()>0) {
+			List<Integer> allnoBudgetExpenseAmount = calendarDAO.selectNoBudgetExpenseAmount(id, noBudgetAlldate);
+		
+			
+			for(int i = 0; i<noBudgetAlldate.size(); i++) {
+				noBudgetExpenseDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetExpenseAmount.get(i));
+			}				
+		}
 		
 		return noBudgetExpenseDateAndAmount;
 	}
@@ -161,16 +167,19 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		//id로 nobudget테이블에서 데이터가 있는 날짜 가져오기
 		List<String> noBudgetAlldate = calendarService.selectNobudgetIncomeDatebyId(id);
-		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> allnoBudgetAmount = calendarDAO.selectNoBudgetIncomeAmount(id, noBudgetAlldate);
 		
 		//리턴해줄 날짜랑 지출액
 		Map noBudgetIncomeDateAndAmount = new HashMap();
 		
-		for(int i = 0; i<noBudgetAlldate.size(); i++) {
-			noBudgetIncomeDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetAmount.get(i));
-		}				
-		
+		if(noBudgetAlldate.size()>0) {
+			//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
+			List<Integer> allnoBudgetAmount = calendarDAO.selectNoBudgetIncomeAmount(id, noBudgetAlldate);
+			
+			
+			for(int i = 0; i<noBudgetAlldate.size(); i++) {
+				noBudgetIncomeDateAndAmount.put(noBudgetAlldate.get(i), allnoBudgetAmount.get(i));
+			}				
+		}
 		return noBudgetIncomeDateAndAmount;
 	}
 
@@ -226,7 +235,6 @@ public class CalendarServiceImpl implements CalendarService{
 		
 		
 		
-		System.out.println("alldata"+alldata);
 		
 		return alldata;
 	}

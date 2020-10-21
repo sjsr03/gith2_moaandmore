@@ -14,7 +14,6 @@
 
 <style>
 
-
 a{text-decoration: none;color: #737271;}
     i{font-size: 20px;}
     .cat_btn{position: relative;margin: 200px 0 0 200px;filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));}
@@ -73,28 +72,29 @@ a{text-decoration: none;color: #737271;}
 
 </style>
 
-	<c:if test="${already == 'true'}">
-		<script>
-			alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
-		</script>
-	</c:if>
 	
-	
-	<c:if test="${exist==1}">
-		<script>
-			alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
-		</script>
-	</c:if>
 <jsp:include page="../sidebar.jsp"/>
-	
 
 
 <!-- 본문내용 시작 -->
 <div class="container-fluid">
+<c:if test="${already == 'true'}">
+	<script>
+		alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
+	</script>
+</c:if>
+
+
+<c:if test="${exist==1}">
+	<script>
+		alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
+	</script>
+</c:if>
 
  		<!-- 페이지 이름 -->
          <div class="d-sm-flex align-items-center justify-content-between mb-4">
            <h1 class="h3 mb-0 text-gray-800">카테고리 설정</h1>
+           	${already} ${exist}adf
            </div>	
 	
 	
@@ -168,9 +168,6 @@ $(document).ready(function(){
 	});
 	 
 	 
-	
-	
-	
 	 
 	//카테고리 추가 하기 
 	$("#inputCategory").click(function(event){ 
@@ -181,7 +178,7 @@ $(document).ready(function(){
 		$.ajax({
 			type : "POST",
 			url : "setCategoryPro.moa",
-			data :{"category_name": category_name,"categoryOption": categoryOption },   
+			data :$("#inputCateogry").serialize(),   
 			dataType : "json",
 			error : function(error){
 				console.log("에러!!");
@@ -295,8 +292,6 @@ function getIncomeCategory(){
     });
 }
 
-
-
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
 		console.log(1);
@@ -354,7 +349,6 @@ function modifyAction(category_no,inorout){
 	$('.modifyCategory').click(function(event){
 		var newName = $('.newName').val();
 		
-		//$(location).attr('href','/moamore/category/updateCategory.moa');
 		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no+"&inorout="+inorout;
 		event.preventDefault();
 		

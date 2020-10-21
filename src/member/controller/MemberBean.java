@@ -163,9 +163,11 @@ public class MemberBean {
 	public String signupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
 	
 			
+			
+			
 			memberService.insertMember(dto,request);
 			
-		
+			
 			
 			return "member/loginForm";
 		}
