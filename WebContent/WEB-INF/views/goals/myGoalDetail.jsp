@@ -9,6 +9,7 @@
 <title>MY GOAL DETAIL</title>
 </head>
 <body>
+<jsp:include page="../sidebar.jsp"/>
 	<h1>${goal.subject}</h1>
 	<button onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${goal.team_no}'">그룹 페이지로</button>
 	<h3>목표액 : ${goal.target_money}원</h3>
@@ -50,7 +51,7 @@
 	</table>
 	
 	<button onclick="redir('/moamore/goals/myGoalList.moa?','public_ch=${goal.public_ch}')">목록으로</button>
-	
+<jsp:include page="../footer.jsp"/>	
 	
 <script>
 	//삭제여부 확인 

@@ -7,6 +7,30 @@
 <head>
 <meta charset="UTF-8">
 <title>myGoalList</title>
+<style>
+select {
+
+    width: 100px; /* 원하는 너비설정 */
+  	padding: .4em .2em;
+    font-family: inherit;  /* 폰트 상속 */
+    background: url("/moamore/resources/img/select_arrow.png") no-repeat 95% 50%;  /* 화살표 모양의 이미지 */
+    border: 1px solid #999;
+    border-radius: 5px; /* iOS 둥근모서리 제거 */
+    -webkit-appearance: none; /* 네이티브 외형 감추기 */
+    -moz-appearance: none;
+    appearance: none;
+
+}
+
+#click-title{
+	cursor: pointer;
+}
+#pgbar{
+	width : 15em;
+}
+
+
+</style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 
@@ -31,33 +55,35 @@
 				$("#goal_list").empty();
 				
 				//헤더추가
-				var addListHtml = "<tr>";
+				var addListHtml = "<thead><tr>";
 				if(list_type == 0){//개인
-					addListHtml += "<td>목표명</td>";
-					addListHtml += "<td>목표액</td>";
-					addListHtml += "<td>달성액</td>";
-					addListHtml += "<td>달성률</td>";
-					addListHtml += "<td>시작날짜</td>";
+					addListHtml += "<th>목표명</th>";
+					addListHtml += "<th>목표액</th>";
+					addListHtml += "<th>달성액</th>";
+					addListHtml += "<th>달성률</th>";
+					addListHtml += "<th>시작날짜</th>";
 				}else{
-					addListHtml += "<td>목표명</td>";
-					addListHtml += "<td>목표액</td>";
-					addListHtml += "<td>달성액</td>";
-					addListHtml += "<td>달성률</td>";
-					addListHtml += "<td>시작날짜</td>";
-					addListHtml += "<td>마감날짜</td>";
-					addListHtml += "<td>공개여부</td>";
+					addListHtml += "<th>목표명</th>";
+					addListHtml += "<th>목표액</th>";
+					addListHtml += "<th>달성액</th>";
+					addListHtml += "<th>달성률</th>";
+					addListHtml += "<th>시작날짜</th>";
+					addListHtml += "<th>마감날짜</th>";
+					addListHtml += "<th>공개여부</th>";
 				}
-				addListHtml += "</tr>";	
+				addListHtml += "</tr></thead>";	
 				$("#goal_list").append(addListHtml);
 				
+				addListHtml = "<tbody>";
+				$("#goal_list").append(addListHtml);
 				for(var i = 0 ; i<data.length; i++){
 					addListHtml = "<tr>";
-					addListHtml += "<td onclick='redir("+data[i].goal_no+")'>" + data[i].subject+"</td>";
+					addListHtml += "<td id='click-title' onclick='redir("+data[i].goal_no+")'>" + data[i].subject+"</td>";
 					
 					
-					addListHtml += "<td>" + data[i].target_money.format() + "</td>";
-					addListHtml += "<td>" + data[i].saving.format()+"</td>";
-					addListHtml += "<td><progress value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress>"+((data[i].saving/data[i].target_money)*100).toFixed(2)+"%</td>";
+					addListHtml += "<td>" + data[i].target_money.format() + " 원</td>";
+					addListHtml += "<td>" + data[i].saving.format()+"원</td>";
+					addListHtml += "<td><progress id='pgbar' value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress> "+((data[i].saving/data[i].target_money)*100).toFixed(2)+"%</td>";
 					addListHtml += "<td>"+getFormatDate(data[i].start_day)+"</td>";
 					
 					if(data[i].public_ch == '1'){//마감날짜, 공개여부 
@@ -71,8 +97,9 @@
 					addListHtml += "<tr/>";			
 					$("#goal_list").append(addListHtml);
 				}//end for
+				addListHtml = "</tbody>";
+				$("#goal_list").append(addListHtml);
 				
-				console.log(sorting);
 			},
 			error : function(e){
 				console.log("리스트 로딩 실패");
@@ -116,21 +143,45 @@
 </head>
 
 <body>
-<h1> ${sessionScope.memName} 님의 목표리스트 </h1>
+	<jsp:include page="../sidebar.jsp"/>
+	<!-- 본문 -->
 
-
-<button onclick="window.location.href='/moamore/goals/insertGoalForm.moa'">+목표</button>
-
-<button onclick="chageType(0)">개인</button>
-<button onclick="chageType(1)">그룹</button>
-
-<select id="sorting_val">
-</select>
-
-<table border="1" id="goal_list">
-</table>
-
-
+	<div class="container">
+		<div class="row mb-5"></div>
+		 <div class="row d-sm-flex align-items-center justify-content-between mb-4">
+		 	<div>
+	            <h1 class="h2 mb-0 text-gray-800">[${sessionScope.memName}]의 목표리스트</h1>
+            </div>
+	     </div>
+		<div class="row mt-2 mb-2">
+			<div class="col-lg-2 col-2">	
+			<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="chageType(0)"><span class="text">개인</span></button>
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="chageType(1)"><span class="text">그룹</span></button>
+			</div>
+			<div class="col-lg-3 col-3 offset-7" style="padding: 0px 0px 0px 95px">
+				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/goals/insertGoalForm.moa'"><span class="text">+목표</span></button>	
+				<select id="sorting_val">
+				</select>
+			</div>
+		</div>
+		<div class="row">	
+			<div class="col-lg-12 col-12">
+				<table id="goal_list" class="table">
+				</table>
+			</div>
+		</div>
+		
+	</div>
+	
+	
+	
+	
+	<jsp:include page="../footer.jsp"/>
+	
+	
+	
+	
+	
 <script>
 //페이지 이동 
 function redir(goal_no){
