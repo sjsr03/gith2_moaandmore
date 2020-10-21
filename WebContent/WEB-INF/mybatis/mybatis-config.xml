@@ -28,6 +28,9 @@
 		<typeAlias type="ranking.model.dto.RecordRankDTO" alias="recordRankDTO"/>
  		<typeAlias type="ranking.model.dto.TotalRankDTO" alias="totalRankDTO"/>
  		<typeAlias type="search.model.dto.SearchDTO" alias="searchDTO"/>
+ 		<typeAlias type="closing.model.dto.ClosingAccountDTO" alias="closingAccountDTO"/>
+ 		<typeAlias type="closing.model.dto.ClosingAccountCommentDTO" alias="closingAccountCommentDTO"/>
+ 		
 
  	</typeAliases>
  	
@@ -49,6 +52,7 @@
  		<mapper resource="/sql/calendarSQL.xml" />
  		<mapper resource="/sql/recordRankSQL.xml" />
  		<mapper resource="/sql/totalRankSQL.xml" />
+ 		<mapper resource="/sql/closingSQL.xml" />
   	</mappers>
 
  </configuration>
