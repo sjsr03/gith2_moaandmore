@@ -59,6 +59,15 @@ public class ReportDAOImpl implements ReportDAO {
 	}
 	
 	@Override
+	public int selectOutcomeSumByRegAndId(HashMap map) {
+		if(sqlSession.selectOne("report.selectOutcomeSumByRegAndId",map) == null) {
+			return 0;
+		} else {
+			return sqlSession.selectOne("report.selectOutcomeSumByRegAndId",map);
+		}
+	}
+	
+	@Override
 	public HashMap selectTop3(int budget_no) {
 		HashMap map = new HashMap();
 		
@@ -77,5 +86,10 @@ public class ReportDAOImpl implements ReportDAO {
 		} else {
 			return sqlSession.selectOne("report.selectOutcomeSumByCatAndReg",map);
 		}
+	}
+	
+	@Override
+	public String selectFirstStartDay(String id) {
+		return sqlSession.selectOne("report.selectFirstStartDay", id);
 	}
 }

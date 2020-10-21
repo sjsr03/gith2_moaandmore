@@ -13,14 +13,14 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">대시보드</h1>
-            </div>
+           </div>
             
            	<!-- 첫번째 줄 -->
-            <div class="row">
+            <div class="row" style="display:flex;">
             
             	<!-- 오늘의 예산 -->
             	<div class="col-xl-6 col-lg-6">
-	            	<div class="card shadow mb-4">
+	            	<div class="card shadow mb-4" style="height:96%">
 		               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 		                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
 		                  <div class="dropdown no-arrow">
@@ -32,7 +32,7 @@
 		                    </div>
 		                  </div>
 		                </div>
-		                <div class="card-body">
+		                <div class="card-body"  style="vertical-align:middle">
 		                	<c:forEach items="${todayData }" var="i">
 		                		<c:if test="${i.category_no != 0 }" >
 		                		<div class="row">
@@ -237,7 +237,7 @@
                  
 	            <!-- 총 모은 금액 -->
 	            <div class="col-xl-4 col-lg-4">
-	              <div class="card shadow mb-4">
+	              <div class="card shadow mb-4"  style="height:95%">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 	                  <h6 class="m-0 font-weight-bold text-primary">총 모은 금액</h6>

@@ -6,7 +6,8 @@ public class AllRecordDTO {
 	private int budget_outcome_no;
 	private int budget_no;
 	private String id;
-	private int category_no;
+	private int income_category_no;
+	private int outcome_category_no;
 	private int amount;
 	private Timestamp reg;
 	private String content;
@@ -33,11 +34,18 @@ public class AllRecordDTO {
 	public void setId(String id) {
 		this.id = id;
 	}
-	public int getCategory_no() {
-		return category_no;
+	
+	public int getIncome_category_no() {
+		return income_category_no;
 	}
-	public void setCategory_no(int category_no) {
-		this.category_no = category_no;
+	public void setIncome_category_no(int income_category_no) {
+		this.income_category_no = income_category_no;
+	}
+	public int getOutcome_category_no() {
+		return outcome_category_no;
+	}
+	public void setOutcome_category_no(int outcome_category_no) {
+		this.outcome_category_no = outcome_category_no;
 	}
 	public int getAmount() {
 		return amount;

@@ -69,6 +69,7 @@ public class MemberBean {
 			
 			session.setAttribute("memId", id);	//세션 만들고
 			session.setAttribute("memName", nickname);
+			session.setAttribute("memImg", dto.getProfile_img());
 			
 			if(auto != null) {	//자동로그인 체크면 쿠키 추가
 				Cookie c1 = new Cookie("autoId", id);
@@ -196,6 +197,8 @@ public class MemberBean {
 		
 		  memberService.modifyMember(dto,request,eximage);
 		  dto = memberService.selectOne(id);
+		  
+		request.getSession().setAttribute("memImg", eximage);
 		
 		  model.addAttribute("dto", dto);
 		  
