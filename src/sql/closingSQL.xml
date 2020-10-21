@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="closing">
+	<select id="countClosingAccountAll" resultType="int">
+		SELECT count(*) FROM CLOSING_ACCOUNT
+	</select>
+	
+	<select id="selectClosingAccountAll" parameterType="hashmap" resultType="closingAccountDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,article_no,write_day,content,subject,id,budget_no FROM (SELECT * FROM closing_account order by article_no desc)) where r >= #{start} and r <= #{end} order by r asc
+		]]>
+	</select>
+	
+	<select id="selectOneClosingAccount" parameterType="int" resultType="closingAccountDTO">
+		select * from closing_account where article_no=#{value}
+	</select>
+	
+	<select id="selectClosingAccountCommentAll" parameterType="hashmap" resultType="closingAccountCommentDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,comment_no,article_no,content,id,write_day FROM (SELECT * FROM closing_account_comment where article_no=#{article_no} order by comment_no asc)) where r >= #{start} and r <= #{end} order by r asc
+		]]>
+	</select>
+	
+	<select id="countClosingAccountCommentAll" parameterType="int" resultType="int">
+		SELECT count(*) FROM closing_account_comment where article_no=#{value}
+	</select>
+</mapper>
