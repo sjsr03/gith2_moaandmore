@@ -243,7 +243,6 @@ public class RecordBean {
 	}
 	
 	// 예산외
-	// 아이디랑 pageNum, type, 시작날짜 끝나는날짜로 가져오기.................
 	// 아이디로 예산외 수입/지출 카테고리 정보 DTO 담은 리스트 가져오기
 	@RequestMapping(value="selectNoBudgetRecord.moa")
 	public String selectNoBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{
@@ -253,26 +252,23 @@ public class RecordBean {
 		
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
-		
-		
-		// 아이디당 수입/지출 카테고리 통으로 가져오기	
-		List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
-		List incomeCategoryList= categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
-		Map<Integer, String> incomeCategories = new HashMap();
+		Map<Integer, String> categories = new HashMap();
+		System.out.println("타입확인!!!>> " + recordPage.getType());
+		if(recordPage.getType().equals("income")){
+			List incomeCategoryList= categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
 
-		for(int i = 0; i < incomeCategoryList.size(); i++) {
-			incomeCategories.put(((income_categoryDTO)incomeCategoryList.get(i)).getCategory_no(), ((income_categoryDTO)incomeCategoryList.get(i)).getCategory_name());		
+			for(int i = 0; i < incomeCategoryList.size(); i++) {
+				categories.put(((income_categoryDTO)incomeCategoryList.get(i)).getCategory_no(), ((income_categoryDTO)incomeCategoryList.get(i)).getCategory_name());
+			}				
+		}else if(recordPage.getType().equals("outcome")){
+			List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
+			for(int i = 0; i < outcomeCategoryList.size(); i++) {
+				categories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
+			}
 		}
-		
-		Map<Integer, String> outcomeCategories = new HashMap();
-		for(int i = 0; i < outcomeCategoryList.size(); i++) {
-			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
-		}
-		
 		model.addAttribute("searchDate",  searchForRecordDTO.getSearchDate());
 		model.addAttribute("recordPage", recordPage);
-		model.addAttribute("incomeCategories", incomeCategories);
-		model.addAttribute("outcomeCategoryList", outcomeCategoryList);
+		model.addAttribute("categories", categories);
 		
 		return "budget/moneyLog";
 	}
@@ -281,6 +277,7 @@ public class RecordBean {
 	public String selectRecords(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model)throws SQLException{
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
+		String type = searchForRecordDTO.getType();
 		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
 		
@@ -298,12 +295,17 @@ public class RecordBean {
 			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
 		}
 		
+		System.out.println("아ㅠ : " + type);
+		recordPage.setType(type);
+
+		System.out.println("개빡침..." + recordPage.getType());
 		model.addAttribute("incomeCategories", incomeCategories);
 		model.addAttribute("outcomeCategoryList", outcomeCategoryList);
 		model.addAttribute("recordPage", recordPage);
-		
+		System.out.println("개빡침...???" + recordPage.getType());
 		return "budget/moneyLog";
 	}
+
 	
 	
 }

@@ -135,12 +135,16 @@ a{text-decoration: none;color: #737271;}
 			<span class="close-button">&times;</span>
 			<h1 class="title">카테고리 수정하기</h1>
 			<div class="modifyContent">															
+				<textarea name='newName' class='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>
+				<button class='modifyCategory'>변경</button>
+				<button class='cancel'>취소</button>
 			</div>
 		</div>
 	</div>	
 
 
  </div> 
+ <jsp:include page="../footer.jsp"/>
 <script type="text/javascript">	
 
 var inOrOut = '';
@@ -156,28 +160,28 @@ $(document).ready(function(){
 
 	//수정창 x누를때 
 	$(".close-button").on('click',function(){
-		console.log("x버튼");
 			$(this).parent().parent().toggleClass('show-categorymodal');
-			$(".modifyContent").text("");
 			
 	});
 	$(".cancel").on('click',function(event){
-		console.log("취소버튼");
-		$(this).parent().parent().toggleClass('show-categorymodal');
-		$(".modifyContent").text("");
+		$(this).parent().parent().parent().toggleClass('show-categorymodal');
 	});
 	 
 	 
+	
+	
+	
 	 
 	//카테고리 추가 하기 
 	$("#inputCategory").click(function(event){ 
 		
 		console.log($("#inputCateogry").serialize());
-		event.preventDefault();
+		console.log(category_name);
+		event.preventDefault
 		$.ajax({
 			type : "POST",
 			url : "setCategoryPro.moa",
-			data : $("#inputCateogry").serialize(),   
+			data :{"category_name": category_name,"categoryOption": categoryOption },   
 			dataType : "json",
 			error : function(error){
 				console.log("에러!!");
@@ -224,7 +228,7 @@ function getExpenseCategory(){
 	                html +="<a href='deleteCategory.moa?category_no="+outcome[i].category_no+"&inorout=outcome'>삭제하기</a>";
 	                html += "<a class='modify'>수정하기</a>";
 	           		html += "</p>"; 
-	            	html += "</div>";
+	            	html += "</div>"; 
 	            	html += "</div>";
 	            	html += "<div>";
 	            	html += outcome[i].category_name;
@@ -295,44 +299,50 @@ function getIncomeCategory(){
 
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
-	console.log(11);
-		$('.cat_btn i').click(function(){
-			
-			//수정,삭제 창 'on'클래스 없으면 추가해주고 있으면 삭제해주기
-			if($(this).next().closest('.my_sub').hasClass('on')){
-				$(this).next().closest('.my_sub').removeClass('on')
-			}else{
-				$(this).next().closest('.my_sub').addClass('on');
-			}
-			var category_no = $(this).parent().next().next().val();
-			var inorout = $(this).parent().next().next().next().val();
-			console.log(category_no);
-			//수정하기 탭 누르면 모달창 띄어주기
-			cateogryModify(category_no,inorout);
+		console.log(1);
+		$('.cat_btn i').each(function(){
+			$(this).on('click', function(){
+				console.log(2);
+				if($(this).next().closest('.my_sub').hasClass('on')){
+					console.log(2.5);
+					//수정.삭제 창에 on클래스가 있으면 on클래스 없애주기 
+					$(this).next().closest('.my_sub').removeClass('on')
+						console.log(3);
+						//수정 삭제 창이 열려있을때 창밖을 클릭하면 remove 클래스 
+						$(document).mouseup(function(e){
+							console.log(4);
+							var container = $('.my_sub');
+							if(container.has(e.target).length===0){
+								console.log("창밖");
+								$('.my_sub').removeClass('on');
+							}else{
+								$(this).next().closest('.my_sub').removeClass('on')
+							}
+						});
+
+				}else{
+					//버튼 누를때 수정삭제 창에 클래스 'on' 넣어주기 
+					$(this).next().closest('.my_sub').addClass('on');
+				}
+				var category_no = $(this).parent().next().next().val();
+				var inorout = $(this).parent().next().next().next().val();
+				
+				//수정하기 탭 누르면 모달창 띄어주기
+				cateogryModify(category_no,inorout);
+				
+				
+			});
 		});
-	
+		
 }
 
 //수정하기 모달창 보여주기
 function cateogryModify(category_no,inorout){
-	/*
-	$('.modify').click(function(){
-		console.log("왜");
-		$('.categorymodal').addClass("show-categorymodal");
-		$('.modifyContent').append("<textarea name='newName' class='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>");
-		$('.modifyContent').append("<button class='modifyCategory'>변경</button>");								
-		$('.modifyContent').append("<button class='close-button'>취소</button>");
-		modifyAction(category_no,inorout);
-	});
-	*/
 	
 	$('.modify').each(function(){
 		$(this).on('click', function(){
-			console.log("왜");
 			$('.categorymodal').addClass("show-categorymodal");
-			$('.modifyContent').append("<textarea name='newName' class='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>");
-			$('.modifyContent').append("<button class='modifyCategory'>변경</button>");								
-			$('.modifyContent').append("<button class='close-button'>취소</button>");
+			
 			modifyAction(category_no,inorout);
 		});	
 	});
@@ -351,8 +361,6 @@ function modifyAction(category_no,inorout){
 		getExpenseCategory();
 	});
 }
-
-
 
 
 </script>

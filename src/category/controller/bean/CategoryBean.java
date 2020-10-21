@@ -46,6 +46,7 @@ public class CategoryBean {
 	//지출카테고리 불러오기
 	@RequestMapping("getExpenseCategoryList.moa")
 	public @ResponseBody List getExpenseCateogryList() throws SQLException{
+		
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		List outcome = categoryService.selectAllById(id);
 
@@ -62,9 +63,8 @@ public class CategoryBean {
 		return income;
 	}
 	
-	
 	//카테고리 추가하기
-	@RequestMapping("setCategoryPro.moa")
+	@RequestMapping(value="setCategoryPro.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public String setCategoryPro(String category_name,String categoryOption,Model model) throws SQLException{
 		System.out.println(category_name);
 		System.out.println(categoryOption);
@@ -76,7 +76,7 @@ public class CategoryBean {
 		//수입카테고리 추가하기
 		if(categoryOption.equals("수입")) {
 		
-			List incomeCategoryNames = categoryService.selectIncomeCategoryNamesbyId(id);
+			List incomeCategoryNames = categoryService.selectIncomeCategoryNamesbyId(id); //ok
 			//지출카테고리 이름 겹치는지 검사
 			for(int i=0;i<incomeCategoryNames.size(); i++) {
 				String incomeCategoryName = (String)incomeCategoryNames.get(i);
@@ -96,7 +96,7 @@ public class CategoryBean {
 			
 		//지출 카테고리 추가하기
 		}else if(categoryOption.equals("지출")) {
-			List outcomeCategoryNames = categoryService.selectOutcomeCategoryNamesbyId(id);
+			List outcomeCategoryNames = categoryService.selectOutcomeCategoryNamesbyId(id); //ok
 			//지출카테고리 이름 겹치는지 검사
 			
 			for(int i=0;i<outcomeCategoryNames.size(); i++) {
@@ -194,7 +194,7 @@ public class CategoryBean {
 	public String deleteCategory(int category_no,Model model,String inorout) throws SQLException{
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		System.out.println("딜리트 페이지");
-		System.out.println(category_no);
+		
 			int exist = 0; //exist 가 1이면 삭제 불가
 			
 			//지출 삭제
