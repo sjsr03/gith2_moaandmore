@@ -16,11 +16,11 @@
             </div>
             
            	<!-- 첫번째 줄 -->
-            <div class="row">
+            <div class="row" style="display:flex;">
             
             	<!-- 오늘의 예산 -->
             	<div class="col-xl-6 col-lg-6">
-	            	<div class="card shadow mb-4">
+	            	<div class="card shadow mb-4" style="height:96%">
 		               <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 		                  <h6 class="m-0 font-weight-bold text-primary">오늘의 예산</h6>
 		                  <div class="dropdown no-arrow">
