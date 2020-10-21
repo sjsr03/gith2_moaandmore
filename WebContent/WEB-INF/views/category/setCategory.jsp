@@ -95,6 +95,7 @@ a{text-decoration: none;color: #737271;}
  		<!-- 페이지 이름 -->
          <div class="d-sm-flex align-items-center justify-content-between mb-4">
            <h1 class="h3 mb-0 text-gray-800">카테고리 설정</h1>
+           	${already} ${exist}
            </div>	
 	
 	
@@ -178,7 +179,7 @@ $(document).ready(function(){
 		$.ajax({
 			type : "POST",
 			url : "setCategoryPro.moa",
-			data :{"category_name": category_name,"categoryOption": categoryOption },   
+			data :$("#inputCateogry").serialize(),   
 			dataType : "json",
 			error : function(error){
 				console.log("에러!!");

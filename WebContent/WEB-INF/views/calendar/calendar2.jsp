@@ -42,14 +42,11 @@
      */
 	.detailModal-content { 
          position: absolute; 
-         top: 50%; 
-         left: 50%; 
-         transform: translate(-50%, -50%); 
-         background-color: yellow; 
-         padding: 1rem 1.5rem; 
+         top: 34%; 
+         left: 43%; 
          width: 500px; 
-         height: 350px; 
-         border-radius: 0.5rem; 
+         height: 400px; 
+         background-color:#fff;
        	 z-index:2;
    		 visibility: hidden; 
      }      
@@ -69,21 +66,19 @@
 <jsp:include page="../sidebar.jsp"/>
 <!-- 본문내용 시작 -->	
 <div class="container-fluid">
-	
-	<input class="checkbox" id="checkbox"  type="checkbox" value="1"/> 지출
-	<input class="checkbox" id="checkbox"  type="checkbox" value="2"/> 수입
-	<input class="checkbox" id="checkbox"  type="checkbox" value="3"/> 예산 외 지출  <br/>
+
+	<input class="checkbox" id="checkbox box1" type="checkbox" value="1"/> 지출
+	<input class="checkbox" id="checkbox" type="checkbox" value="2"/> 수입
+	<input class="checkbox" id="checkbox" type="checkbox" value="3"/> 예산 외 지출  <br/>
 	
 	<div id='calendar'></div>
 	
-	<div class="detailModal">
-		<div class="detailModal-content">
+		<div class="detailModal-content card-body">
 			<span class="close-button">&times;</span>
-			<table border="1" class="contentTable" >
+			<table  border="1" class="contentTable table table-bordered dataTable" >
 			</table>
 		</div>
-	</div>
-
+	
 </div>
 	
 
@@ -105,6 +100,7 @@ var pm='';
 var events = [];	
 
 $(document).ready(function () {
+	
 	$(".checkbox").each(function(){
 		 	$(this).on('change',function(){
 	 			//체크된값 checkVal에 넣어주기
@@ -158,7 +154,7 @@ $(document).ready(function () {
 	    				    	    		 	events.push({
 	    				    	    		 		title:pm+finalByCheckVal[i][j],
 	    				    	    		 		start:j,
-	    				    	    		 		color: 'rgba( 255, 255, 255, 0.5 )',
+	    				    	    		 		color: '#11ffee00;',
 	    				    	    		 	    textColor: col
 	    				    	    		 	});
 			    	    		 		}   		
@@ -168,7 +164,7 @@ $(document).ready(function () {
 	    		 		});//ajax
 	      },//events
 	      eventClick: function(event) {
-             	alert(event.start);
+             	//alert(event.start);
              	var date = new Date(event.start);
              	 date = getFormatDate(date);
 	    	 	
@@ -190,17 +186,10 @@ $(document).ready(function () {
 			   				$('.close-button').on('click',function(){
 		   			  			$(this).parent().removeClass('modalShow');
 		   			  			$('.contentTable').empty();
-		   			  		});			
-			   				
-			   			
+		   			  		});		
 			   			}
-	    	
               	});
 	      
-	      		//$(this).find('.div').hasClass('on')){
-        		//console.log(1);
-        		//$(this).find('.my_sub').removeClass('on');
-	  			
 		}//eventClick
 	  });
 	   
