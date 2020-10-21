@@ -97,7 +97,7 @@
 			console.log($("#type").val());
 			console.log("셀렉트 박스 옵션값은 ???? ");
 			console.log($("#outcomecategory option:selected").val())
-
+			$("#category_no").val($("#outcomecategory option:selected").val());
 			// 카테고리 선택하면 hidden으로 값넘겨주기
 			$("#outcomecategory").change(function(){
 				console.log($(this).val())		
@@ -111,30 +111,33 @@
 			$("#type").val("income");
 			console.log($("#type").val());
 			console.log("셀렉트 박스 옵션값은 ???? ");
+			$("#category_no").val($("#incomecategory option:selected").val());
 			$("#incomecategory").change(function(){
 				console.log($(this).val())
 				$("#category_no").val($("#incomecategory option:selected").val());
 				$("#type").val("income");
-				
+
 			});
+
 		});
 		$("#check").click(function(){
-			
-			
-			console.log("버겟 넘~~~ : " + budget_no);
+				
 			// budgetNum도 hidden으로 보내주기
 			if(budget_no != 0){
 				var intBudget_no = Number(budget_no);
 				//console.log(typeof intBudget_no);
 				$("#budget_no").val(intBudget_no);
 			}
+			// category_no 예산일 때만 카테고리 넘버 보내주기 
+			if($("#type").val() == "type"){
+				$("#type").val("type");
+				var selectedOption = $("#category option:selected").val(); 
+				var numberOption = Number(selectedOption);
+				$("#category_no").val(numberOption);
+				console.log(typeof numberOption);
+				console.log("카테고리 번호" + numberOption); 	
+			}
 			
-			// category_no 예산일 때 카테고리 넘버 보내주기 
-			var selectedOption = $("#category option:selected").val(); 
-			var numberOption = Number(selectedOption);
-			$("#category_no").val(numberOption);
-			console.log(typeof numberOption);
-			console.log("카테고리 번호" + numberOption); 
 			console.log($("#category_no").val());
 			
 			$("#recordForm").submit();
