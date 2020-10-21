@@ -177,6 +177,7 @@ public class RecordBean {
 		System.out.println("타입확인 >>> : " + searchForRecordDTO.getType());
 		System.out.println("날짜확인 >>> : " + searchForRecordDTO.getSearchDate());
 		System.out.println("페이지넘 >>> : " + searchForRecordDTO.getPageNum());
+	
 		model.addAttribute("searchForRecordDTO", searchForRecordDTO);
 		return "budget/moneyRecord";
 	}

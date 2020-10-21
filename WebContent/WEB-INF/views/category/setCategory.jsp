@@ -293,8 +293,6 @@ function getIncomeCategory(){
     });
 }
 
-
-
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
 		console.log(1);
@@ -352,7 +350,6 @@ function modifyAction(category_no,inorout){
 	$('.modifyCategory').click(function(event){
 		var newName = $('.newName').val();
 		
-		//$(location).attr('href','/moamore/category/updateCategory.moa');
 		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no+"&inorout="+inorout;
 		event.preventDefault();
 		

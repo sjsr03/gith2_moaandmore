@@ -25,21 +25,19 @@
         .fc-day-content {height: 35px !important;}
     }
     .fc-event-container > .fc-event-more {display: none;}
-   /*
-    .detailModal { 
-         position: fixed; 
-         left: 0; 
-         top: 0; 
-         width: 100%; 
-         height: 100%; 
-         opacity: 0; 
-         transform: scale(1.1); 
-         transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s; 
-         background-color: gray; 
-		 z-index:-1;
-		
-     } 
-     */
+   
+     .cal_modal{
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    width: 100%;
+	    height: 100%;
+	    background-color: rgba(0, 0, 0, 0.5);
+	    opacity: 0;
+	    z-index:-1;
+     }
+     
+     
 	.detailModal-content { 
          position: absolute; 
          top: 34%; 
@@ -48,7 +46,8 @@
          height: 400px; 
          background-color:#fff;
        	 z-index:2;
-   		 visibility: hidden; 
+    	 border: 1px solid #e3e6f0;
+    	 border-radius: .35rem;
      }      
      
      
@@ -57,28 +56,31 @@
          visibility: visible; 
          transform: scale(1.0); 
          transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; 
-         
+         z-index:3;
      }  
     
-    
+    .close-button{
+    	float:right;
+    	margin:5px;
+    }
 </style>
 <body>
 <jsp:include page="../sidebar.jsp"/>
 <!-- 본문내용 시작 -->	
 <div class="container-fluid">
 
-	<input class="checkbox" id="checkbox box1" type="checkbox" value="1"/> 지출
+	<input class="checkbox box1" id="checkbox" type="checkbox" value="1"/> 지출
 	<input class="checkbox" id="checkbox" type="checkbox" value="2"/> 수입
 	<input class="checkbox" id="checkbox" type="checkbox" value="3"/> 예산 외 지출  <br/>
 	
 	<div id='calendar'></div>
-	
-		<div class="detailModal-content card-body">
-			<span class="close-button">&times;</span>
-			<table  border="1" class="contentTable table table-bordered dataTable" >
-			</table>
+		<div class="cal_modal">
+			<div class="detailModal-content card-body">
+				<span class="close-button">&times;</span>
+				<table  border="1" class="contentTable table table-bordered dataTable" >
+				</table>
+			</div>
 		</div>
-	
 </div>
 	
 
@@ -101,6 +103,17 @@ var events = [];
 
 $(document).ready(function () {
 	
+	
+	
+	//페이지 시작할때 지출 체크박스에 체크해주기
+	$(".box1").prop("checked", true)
+	if($(".box1").is(":checked")){
+		checkVal.push($(".box1").val());
+		$('#calendar').fullCalendar('removeEventSource', events);
+	    $('#calendar').fullCalendar('addEventSource', events);
+	    $('#calendar').fullCalendar('refetchEvents');
+	}
+	
 	$(".checkbox").each(function(){
 		 	$(this).on('change',function(){
 	 			//체크된값 checkVal에 넣어주기
@@ -114,7 +127,9 @@ $(document).ready(function () {
 			    $('#calendar').fullCalendar('refetchEvents');
 		 	});
 	 });
-
+	
+	
+	
 	$('#calendar').fullCalendar({ 
 		
 	      initialView: 'dayGridMonth',
@@ -164,7 +179,7 @@ $(document).ready(function () {
 	    		 		});//ajax
 	      },//events
 	      eventClick: function(event) {
-             	//alert(event.start);
+             	
              	var date = new Date(event.start);
              	 date = getFormatDate(date);
 	    	 	
@@ -177,16 +192,27 @@ $(document).ready(function () {
 							console.log("error");
 						},
 			   			success: function(alldata) {
+			   				console.log(date);
 							$('.contentTable').append("<tr><td>" +'유형' + "</td><td>" +'금액'+ "</td><td>"+'제목'+"</td><td>"+'메모'+"</td></tr>");
 			   				for (var i = 0; i < alldata.length; i+=4) {
-			   					$('.detailModal-content').addClass('modalShow');
-			   					$('.contentTable').append("<tr><td>" +alldata[i] + "</td><td>" +alldata[i+1] + "</td><td>"+alldata[i+2]+"</td><td>"+alldata[i+3]+"</td></tr>");
+			   					//$('.detailModal-content').addClass('modalShow');
+			   					$('.cal_modal').addClass('modalShow');
+			   					$('.contentTable').append("<tr><td class='more'>" +alldata[i] + "</td><td class='more'>" +alldata[i+1] + "</td><td class='more'>"+alldata[i+2]+"</td><td class='more'>"+alldata[i+3]+"</td></tr>");
+			   					if(i>12){
+				   					$('.contentTable').append("<tr><td style='border-color:#11ffee00;' colspan='4' align=center ><div class='more'>...더보기</div></td></tr>");
+			   						break;
+			   					}
+			   				
 			   				}
 			   				//x 버튼 누르면 창 사라지고 데이터 삭제
 			   				$('.close-button').on('click',function(){
-		   			  			$(this).parent().removeClass('modalShow');
+		   			  			$(this).parent().parent().removeClass('modalShow');
 		   			  			$('.contentTable').empty();
-		   			  		});		
+		   			  		});
+			   				//더보기 누를때 
+			   				$(".more").on("click",function(){
+			   					window.location.href="/moamore/record/moneyRecord.moa?searchDate="+date+"&type=budget";
+			   				});
 			   			}
               	});
 	      
