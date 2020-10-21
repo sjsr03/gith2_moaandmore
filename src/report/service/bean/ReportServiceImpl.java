@@ -1,6 +1,9 @@
 package report.service.bean;
 
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -8,7 +11,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.TotalBudgetDTO;
+import report.model.dao.LinearRegression;
 import report.model.dao.ReportDAO;
 
 @Service
@@ -16,6 +21,8 @@ public class ReportServiceImpl implements ReportService {
 
 	@Autowired
 	private ReportDAO reportDAO = null;
+	@Autowired
+	private TotalBudgetDAO totalBudgetDAO = null;
 	
 	@Override
 	public List selectAllOrderByReg(String id) {
@@ -28,6 +35,14 @@ public class ReportServiceImpl implements ReportService {
 		map.put("budget_no", budget_no);
 		map.put("reg", reg);
 		return reportDAO.selectOutcomeSumByReg(map);
+	}
+	
+	@Override
+	public int selectOutcomeSumByRegAndId(String id, String reg) {
+		HashMap map = new HashMap();
+		map.put("id", id);
+		map.put("reg", reg);
+		return reportDAO.selectOutcomeSumByRegAndId(map);
 	}
 	
 	@Override
@@ -85,9 +100,103 @@ public class ReportServiceImpl implements ReportService {
 		map.put("amountList", amountList);
 		
 		
-		
-		
-		
 		return map;
+	}
+	
+	@Override
+	public int checkBeforeExpectation(String id) throws SQLException {
+		int result = 0;
+		
+		String firstStartDay = reportDAO.selectFirstStartDay(id);
+		Date firstStartDate = Timestamp.valueOf(firstStartDay);
+		firstStartDate.setDate(firstStartDate.getDate()+2);
+		Date today = new Date();
+		if(firstStartDate.after(today)) {
+			result = 1;
+		} else {
+			result = 0;
+		}
+		
+			
+		
+		
+		return result;
+	}
+	
+	
+	@Override
+	public HashMap expectation(String id) throws SQLException {
+		HashMap returnMap = new HashMap();
+		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date firstStartDay = Timestamp.valueOf(reportDAO.selectFirstStartDay(id));
+		Date today = new Date();
+		
+		List outcomeDataList = new ArrayList();
+		List outcomeDataDateList = new ArrayList();
+		String outcomeDataX = "[ ";
+		String outcomeDataY = "[ ";
+		
+		while(firstStartDay.before(today)) {
+			String date = sdf.format(firstStartDay);
+			int outcome = selectOutcomeSumByRegAndId(id, sdf.format(firstStartDay));
+			
+			outcomeDataX += " \'" + date + "\', ";
+			outcomeDataY += " \'" + outcome + "\', ";
+			
+			
+			outcomeDataList.add(outcome);
+			outcomeDataDateList.add(firstStartDay.getTime());
+			
+			
+			firstStartDay.setDate(firstStartDay.getDate()+1);
+		}
+		
+		
+		outcomeDataX += " ] ";
+		outcomeDataY += " ] ";
+		
+		returnMap.put("outcomeDataX", outcomeDataX);
+		returnMap.put("outcomeDataY", outcomeDataY);
+		
+		
+		//그래프 데이터 설정 끝(지출액)
+		
+		//현재 예산의 예상지출액 추정
+		LinearRegression lr = new LinearRegression(outcomeDataDateList, outcomeDataList);
+		
+		TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(id);
+		Date startDay = TBdto.getStart_day();
+		Date endDay = TBdto.getEnd_day();
+		Double predictAmountF = 0.0;
+		
+		
+		while(startDay.before(endDay)) {
+			predictAmountF += lr.predictValue(startDay.getTime());
+			
+			
+			startDay.setDate(startDay.getDate()+1);
+		}
+		
+		int predictAmount = (int)Math.round(predictAmountF);
+		
+		returnMap.put("predictAmount",predictAmount);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		return returnMap;
 	}
 }

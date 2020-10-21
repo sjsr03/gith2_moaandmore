@@ -75,4 +75,27 @@ public class ReportBean {
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
 		return budgetNum;
 	}
+	
+	@RequestMapping("expectation.moa")
+	public String expectation(HttpServletRequest request, Model model) throws SQLException {
+		//추정치를 도출할 수 있는지
+		String id = (String) request.getSession().getAttribute("memId");
+		int reject = reportService.checkBeforeExpectation(id);
+		model.addAttribute("reject", reject);
+		
+		if(reject == 1) {	//추정불가면 바로 리턴
+			return "report/expectation";
+		} else {	//추정가능
+			
+			HashMap expectation = reportService.expectation(id);
+			model.addAttribute("expectation", expectation);
+			
+			
+			
+			
+			
+			return "report/expectation";
+		}
+		
+	}
 }

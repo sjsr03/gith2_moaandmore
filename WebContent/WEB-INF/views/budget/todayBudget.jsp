@@ -2,14 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
 <head>
 <title>오늘의 예산</title>
 </head>
 <style>
 	#popup1 {
-		display: flex;
+		/*display: flex;*/
 		justify-content: center;
 		align-items: center;
 		position: fixed;
@@ -383,11 +381,11 @@
 		$("#allChk").on('change', function(){
 			if($(this).is(':checked')==true) {
 				$('.chk').each(function(){
-					$(this).attr('checked', true);
+					$(this).prop('checked', true);
 				});
 			} else {
 				$('.chk').each(function(){
-					$(this).attr('checked', false);
+					$(this).prop('checked', false);
 				});
 			}
 			

@@ -32,7 +32,7 @@
 		                    </div>
 		                  </div>
 		                </div>
-		                <div class="card-body">
+		                <div class="card-body"  style="vertical-align:middle">
 		                	<c:forEach items="${todayData }" var="i">
 		                		<c:if test="${i.category_no != 0 }" >
 		                		<div class="row">
@@ -237,7 +237,7 @@
                  
 	            <!-- 총 모은 금액 -->
 	            <div class="col-xl-4 col-lg-4">
-	              <div class="card shadow mb-4">
+	              <div class="card shadow mb-4"  style="height:95%">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 	                  <h6 class="m-0 font-weight-bold text-primary">총 모은 금액</h6>
