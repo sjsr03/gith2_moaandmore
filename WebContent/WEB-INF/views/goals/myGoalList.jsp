@@ -209,7 +209,6 @@ String.prototype.format = function(){
 	
 	return num.format();
 	
-
 }
 
 $(document).on('change','#sorting_val',function(){	
