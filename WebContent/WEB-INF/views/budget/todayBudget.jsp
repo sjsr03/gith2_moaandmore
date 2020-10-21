@@ -281,7 +281,7 @@
 							<hr/>
 		                	<c:forEach items="${leftMoney}" var="i" >
 								<div>
-									<span>${categories[i.category_no] }</span> : <span class="amount">${i.amount }</span>원
+									<span>${categories[i.category_no] }</span> : <span class="amount"><fmt:formatNumber value="${i.amount }" pattern="#,###"/></span>원
 								</div>
 							</c:forEach>
 		                 	<hr>
@@ -316,7 +316,7 @@
 						<tr>
 							<td><input type="checkbox" class="chk" name="category" value="${i.category_no}"/></td>
 							<td>${categories[i.category_no] }</td>
-							<td>${i.amount }</td>
+							<td><fmt:formatNumber value="${i.amount }" pattern="#,###"/>원</td>
 							<td><input type="number" class="inputAmount" name="inputAmount" value="0" max="${i.amount}" min="0"/></td>
 							<td><input type="number" readonly class="LeftAfterTrans" value="${i.amount }"/></td>
 						</tr>
@@ -451,7 +451,7 @@
 			sum += parseInt($(this).text());
 		});
 		
-		$('#totalLeftMoney').text(sum);
+		$('#totalLeftMoney').text((sum+"").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
 	}
 	
 	
@@ -492,8 +492,17 @@
 		var Ori = parseInt(inputAmount.parent().prev().text());
 		if(Ori < inputAmount.val()) {
 			alert("잔액을 초과할 수 없습니다.");
+			
 			var num = Math.floor(inputAmount.val()/10);
+			while(Ori < num) {
+				num = Math.floor(num/10);
+			}
 			inputAmount.val(num);
+		}
+		
+		if(inputAmount.val() < 0) {
+			alert("음수는 입력할 수 없습니다.");
+			inputAmount.val(0);
 		}
 		
 	}
@@ -530,4 +539,4 @@
 	}
 	
 </script>
->>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore.git
+>>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_maoandmore.git

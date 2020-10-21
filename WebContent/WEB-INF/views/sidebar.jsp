@@ -37,7 +37,8 @@ $(document).ready(function(){
 		},
 		success:function(data){
 			var totalBudget = data['totalBudget'];
-			var TBString = totalBudget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			totalBudget += "";
+			var TBString = totalBudget.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			
 			var outcomeSum = data['outcomeSum'];
 			var rate = (outcomeSum/totalBudget*100).toFixed(1);
@@ -237,7 +238,7 @@ $(document).ready(function(){
 			
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
-          <li class="nav-item mx-5">
+          <li class="nav-item mx-5" id="ranking">
                 <jsp:include page="./realTimeRankingForMobile.jsp"/>
             </li>
             
@@ -247,7 +248,7 @@ $(document).ready(function(){
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.memId}</span>
-	                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+	                <img class="img-profile rounded-circle" src="/moamore/save/${sessionScope.memImg }">
 	              </a>
 	              <!-- Dropdown - User Information -->
 	              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
