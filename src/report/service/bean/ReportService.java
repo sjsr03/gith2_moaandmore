@@ -1,5 +1,6 @@
 package report.service.bean;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,6 +14,15 @@ public interface ReportService {
 	//날짜와 예산번호로 지출액 합산
 	public int selectOutcomeSumByReg(int budget_no, String reg);
 	
+	//날짜와 예산번호로 지출액 합산
+	public int selectOutcomeSumByRegAndId(String id, String reg);
+	
 	//labelList, dataList 반환
 	public HashMap selectLabelDataList(TotalBudgetDTO dto);
+	
+	//데이터 분석 및 추정 가능한지 결과값
+	public int checkBeforeExpectation(String id) throws SQLException;
+	
+	//데이터 분석 자료 해쉬맵으로 리턴
+	public HashMap expectation(String id) throws SQLException;
 }

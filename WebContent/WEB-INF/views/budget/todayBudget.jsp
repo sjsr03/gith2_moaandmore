@@ -539,4 +539,3 @@
 	}
 	
 </script>
->>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_maoandmore.git

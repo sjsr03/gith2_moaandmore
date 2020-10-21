@@ -50,6 +50,7 @@ import category.service.bean.CategoryService;
 @RequestMapping("/record/")
 public class RecordBean {
 
+	private static final String RecordPageDTO = null;
 	@Autowired
 	private RecordService recordService = null;	
 	@Autowired
@@ -124,8 +125,6 @@ public class RecordBean {
 		
 		// categories에 예산 번호 추가해주기   
 		categories.put("budgetNum", budgetNum);	
-	
-		
 		return categories;	
 	}
 	
@@ -139,9 +138,11 @@ public class RecordBean {
 		noBudgetDTO.setId(id);
 	
 		int category_no = Integer.parseInt(request.getParameter("category_no"));
+		// 일단 카테고리 정보 전부다 채워서 보낸 후에 서비스에서 나눠서 처리
 		budgetDTO.setCategory_no(category_no);
-		noBudgetDTO.setCategory_no(category_no);
-		
+		noBudgetDTO.setIncome_category_no(category_no);
+		noBudgetDTO.setOutcome_category_no(category_no);
+		System.out.println("머지;;" + category_no);
 		String oldDate = request.getParameter("date") + " "+ request.getParameter("time")+":00";
 		Timestamp date = Timestamp.valueOf(oldDate);
 		
@@ -214,17 +215,14 @@ public class RecordBean {
 			System.out.println("검색날짜 ::: " + searchForRecordDTO.getSearchDate());
 			String newDate = searchForRecordDTO.getSearchDate() + " 00:00:00";
 			dateTime = Timestamp.valueOf(newDate);
-			searchForRecordDTO.setTimeStampDate(dateTime);
-			
+			searchForRecordDTO.setTimeStampDate(dateTime);		
 			// 예산 번호 뽑아오기
 			int budgetNum = budgetService.selectBudgetNum(searchForRecordDTO.getId(), dateTime);
 			System.out.println("컨트롤러 버겟 넘 : "+budgetNum);
 			// 카테고리 번호 뽑아오기
 			List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
-			
 			// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
-			HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
-			
+			HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);		
 			// 예산번호로 예산 지출 내역 가져오기 
 			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum());
 			String searchDate = searchForRecordDTO.getSearchDate();
@@ -233,10 +231,8 @@ public class RecordBean {
 			// model로 다 보내주기
 			model.addAttribute("categories", categories);
 			model.addAttribute("recordPage", recordPage);
-			System.out.println("아아아아" + recordPage.getCount());
-		
-			
-		}else{ // 해당 예산이 없으면  가져올 내역이 없다는 말임 없으면..뭘보내주지;?
+			System.out.println("아아아아" + recordPage.getCount());		
+		}else{
 		}
 		
 		return "budget/moneyLog";
@@ -266,7 +262,8 @@ public class RecordBean {
 				categories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
 			}
 		}
-		model.addAttribute("searchDate",  searchForRecordDTO.getSearchDate());
+		
+		model.addAttribute("searchDate", searchForRecordDTO.getSearchDate());
 		model.addAttribute("recordPage", recordPage);
 		model.addAttribute("categories", categories);
 		
