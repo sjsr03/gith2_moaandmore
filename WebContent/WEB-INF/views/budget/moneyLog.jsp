@@ -82,11 +82,9 @@ console.log("레코드페이지 안의 타임 : " + type);
 				var check = false;
 				check = confirm("정말 삭제하시겠습니까?");
 				if(check){ // check가 true면
-					var num = $(this).prev().prev().val();
-					console.log(num);
-					
-					deleteRecord();
-					
+					var num = $("#number").val();
+					var type = $("#recordType").val();
+					deleteRecord(num, type);
 				}else{// check가 false면 
 					alert("삭제를 취소합니다.");
 				}	
@@ -95,12 +93,12 @@ console.log("레코드페이지 안의 타임 : " + type);
 	});
 	
 	// 댓글 삭제 Ajax	
-	function deleteRecord(){
+	function deleteRecord(num, type){
 		$.ajax({
 			type:"POST",
 			url:"budgetRecordDelete.moa",
 			dateType: "json",
-			data:{"budget_outcome_no":num},
+			data:{"number":num, "type":type},
 			success: function(result){
 				if(result=="OK"){
 					// 내용날리기 안되니까 걍 새로고침 ㅎㅎ;
@@ -147,28 +145,26 @@ console.log("레코드페이지 안의 타임 : " + type);
 	    $('#mask').hide();
 	}
 	//, content, reg, amount, memo, img
-	function goDetail(recordType, recordCategory, content, reg, amount, memo, img) {
-		console.log("타입~~" + recordType);
-		console.log("카테고리~~" + recordCategory);
-		console.log("내용~~" + content);
-		console.log("ref~~" + reg);
-		console.log("금액~~" + amount);
-		console.log("이미지~~" + img);
-
+	function goDetail(num, recordType, recordCategory, content, reg, amount, memo, img) {
+		
+		// num 앞글자인 0 값 제거
+		var subNum = num.substr(1);
+		$("#number").val(subNum);
 		// 내역 여러개 가져오는거면  records.type(글마다 정해진 type에서 꺼내오기)
 		// ${records.type} 이 안에!! 다 들어있음  ${records.type} 값을 recordType으로 받아줬음!
-		$("#recordType").html(recordType); 
+		$("#recordType").val(recordType); 
 		
 		
-		$("#img").attr('src','../../resources/img/'+img);
+		$("#img").val('src','../../resources/img/'+img);
 		
+		// amount 정수타입으로 형변환
+		amount *= 1;
+		$("#recordCategory").val(recordCategory);
+		$("#recordContent").val(content);
+		$("#reg").val(reg);
+		$("#amount").val(amount);
 		
-		$("#recordCategory").html(recordCategory);
-		$("#recordContent").html(content);
-		$("#reg").html(reg);
-		$("#amount").html(amount);
-		
-		$("#memo").html(memo);
+		$("#memo").val(memo);
 	    /*팝업 오픈전 별도의 작업이 있을경우 구현*/ 
 	    popupOpen(); //레이어 팝업창 오픈 
 	    wrapWindowByMask(); //화면 마스크 효과 
@@ -217,7 +213,6 @@ console.log("레코드페이지 안의 타임 : " + type);
 				<c:set var="recordCate" value="" />
 		
 				<%-- c:set 이용해서 변수에 계속 담아 준 후 마지막에 a태그에 넣어줌 --%>
-				<c:out value="${records.type}"/>
 				<c:if test="${not empty categories}">
 					<c:choose>
 						<c:when test="${records.type eq 'income'}">
@@ -247,7 +242,7 @@ console.log("레코드페이지 안의 타임 : " + type);
 				
 				
 				<td id="content"> 
-					<a href="javascript:void(0)" onclick="goDetail('${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+					<a href="javascript:void(0)" onclick="goDetail('${records.budget_outcome_no}'+'${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
 					
 				</td>
 				<td>
@@ -264,9 +259,7 @@ console.log("레코드페이지 안의 타임 : " + type);
 						<input type="hidden" value="${records.nobudget_no}" class="num">
 					</c:otherwise>
 					</c:choose>
-					<button class="btn" id="btn_modify" name="btn_modify">수정</button>
 					
-					<button class="btn" id="btn_delete" name="btn_delete">삭제</button>
 					
 				</td>
 				
@@ -315,15 +308,16 @@ console.log("레코드페이지 안의 타임 : " + type);
 	    <a href="javascript:popupClose();" class="layerpop_close"
 	        id="layerbox_close">X</a> <br>
 	    <div class="content">
-	    	<form action="">
+	    	<form action="#" method="post" enctype="multipart/form-data">
+	    		<input type="hidden" id="number" value=0/>
 				<table border="1" style="width:390px; height:300px;">
 				    <tr>
 						<td>타입</td>
 						<td>카테고리</td>				
 					</tr>
 					<tr>
-						<td id="recordType"></td>
-						<td id="recordCategory"></td>
+						<td><input type="text" id="recordType" value="recordType"/></td>
+						<td><input type="text" id="recordCategory"  value="recordCategory"/></td>	
 					</tr>
 					<tr>
 						<td>날짜,시간</td>
@@ -331,45 +325,38 @@ console.log("레코드페이지 안의 타임 : " + type);
 					</tr>
 					<tr>
 						<td id="reg"></td>
-						<td id="amount"></td>	
+						<td><input type="number" id="amount" value=0 /></td>
+						
 					</tr>
 					<tr>
 						<td colspan="2">제목</td>
 					</tr>
 					<tr>
-						<td colspan="2" id="recordContent"></td>
+						<td colspan="2"><input type="text" id="recordContent" value="recordContent" /> </td>
 					</tr>
 					<tr>
 						<td colspan="2">메모</td>
 					</tr>
 					<tr>
-						<td colspan="2" id="memo"></td>
+						<td colspan="2"><input type="text" id="memo" value="memo" /></td>
 					</tr>
 					<tr>
 						<td colspan="2">이미지</td>
 					</tr>
 					<tr>
 						<td colspan="2" >
+							<input type="file" id="image" />
 							<img id="img" src=""/>
 						</td>
 					</tr>
 			   </table>
 		   </form>
+		   <button class="btn" id="btn_modify" name="btn_modify">수정</button>
+		   <button class="btn" id="btn_delete" name="btn_delete">삭제</button>
 	    </div>
     </div>
 </div>
-<!--Popup End -->
 
-<%-- 수정 팝업창 날짜, 시간, 카테고리번호
-<div id="modifyForm">
-	<form >
-		
-		<input type="text" id="" value=""/>
-		<input type="text" id="" value=""/>
-		<input type="text" id="" value="" />
-	</form>
-</div>
- --%>
 
 </body>
 </html>

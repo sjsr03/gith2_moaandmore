@@ -182,14 +182,15 @@ public class RecordBean {
 		return "budget/moneyRecord";
 	}
 	
-	// 예산 내역 삭제
+	// 내역 삭제
 	@RequestMapping("budgetRecordDelete.moa")
-	public void budgetRecordDelete(String budget_outcome_no, HttpServletResponse response) throws IOException, SQLException {
-		System.out.println("타입 : " + budget_outcome_no);
+	public void budgetRecordDelete(int number, String type, HttpServletResponse response) throws IOException, SQLException {
+		System.out.println("타입 : " + number);
 		int result = 0;
 		ObjectMapper mapper = new ObjectMapper();
 		response.setContentType("application/json;charset=UTF-8");
-		result = recordService.budgetRecordDelete(budget_outcome_no);
+		// 서비스에 통으로 보내서 type으로 나눈 후  분기처리해줄 것임
+		result = recordService.deleteRecord(number, type); 
 		// result가 0이면 실패 1이면 성공
 		if(result == 0 ) {
 			response.getWriter().print(mapper.writeValueAsString("Fail"));

@@ -43,8 +43,13 @@
   	
   	
   	<!-- 예산 지출 고유 번호로 해당 예산 내역 삭제 -->
-  	<delete id="deleteBudgetRecord" parameterType="string" >
+  	<delete id="deleteBudgetRecord" parameterType="int" >
   		delete from budget where budget_outcome_no=#{value}
+  	</delete>
+  	
+  	<!-- 예산외 수입/지출 고유 번호로 해당 내역 삭제 -->
+  	<delete id="deleteNoBudgetRecord" parameterType="int">
+  		delete from nobudget where nobudget_no=#{value}
   	</delete>
   	
   	<!-- 예산 외 수입or지출 내역 총 개수 가져오기 -->

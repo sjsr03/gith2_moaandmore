@@ -147,9 +147,14 @@ public class RecordServiceImpl implements RecordService{
 	
 	// 내역 삭제
 	@Override
-	public int budgetRecordDelete(String budget_outcome_no) throws SQLException {
+	public int deleteRecord(int number, String type) throws SQLException {
 		int result = 0;
-		result = recordBudgetDAO.budgetRecordDelete(budget_outcome_no);
+		if(type.equals("budget")){ // 예산이면 예산 삭제
+			result = recordBudgetDAO.deleteBudgetRecord(number);
+		}else { // 예산외 삭제
+			result = recordNoBudgetDAO.DeleteNoBudgetRecord(number);
+		}
+		
 		return result;	
 	}
 	@Override
