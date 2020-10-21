@@ -12,23 +12,51 @@
 
 </head>
 <style>
-#pop{
-position: absolute; top:100px; left:100px; text-align: center; z-index:1;
-visibility:hidden; 
-border:2px solid #000;
-background-color:white;
-}
+#mask {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    background-color: #000000;
+    display: none; }
+
+.layerpop {
+    display: none;
+    z-index: 1000;
+    border: 2px solid #ccc;
+    background: #fff;
+    cursor: move; }
+
+.layerpop_area .title {
+    padding: 10px 10px 10px 10px;
+    border: 0px solid #aaaaaa;
+    background: #f1f1f1;
+    color: #3eb0ce;
+    font-size: 1.3em;
+    font-weight: bold;
+    line-height: 24px; }
+
+.layerpop_area .layerpop_close {
+    width: 25px;
+    height: 25px;
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+   	
+.layerpop_area .layerpop_close:hover {
+    background: transparent url('btn_exit_on.png') no-repeat;
+    cursor: pointer; }
+
+.layerpop_area .content {
+    width: 96%;    
+    margin: 2%;
+    color: #828282; }
 
 </style>
 <script>
 var type = "${recordPage.type}";
-/*
-if("${orgType}" == ""){ // orgType에 에 값이 없으면 한개에 대해서만 가져온 것 -> type에 recordPage에 잇는type 넣어줘야함 
-	type = "${recordPage.type}"
-}else{ // 값이 있으면 여러개에 대해 데이터 가져온 것 -> type 에 orgType 넣어줘야함 
-	
-}
-*/
+console.log("타이이입  ::: " + type);
 	$(document).ready(function(){
 		console.log("타아아아아아아아아아입 :" + type);
 		console.log("searchDate :" +  "${searchDate}");
@@ -76,30 +104,73 @@ if("${orgType}" == ""){ // orgType에 에 값이 없으면 한개에 대해서�
 					
 				}else{// check가 false면 
 					alert("삭제를 취소합니다.");
-				}
-				
-		
-		});
-		$("#content").click(function(){
-			// 제목 클릭시 팝업창 띄워서 상세내역보여주기
-			layer_popup();
-			
-		});
-		
-		$("#close").click(function(){
-			widow.close()
-		});
-		
-	
-		
-		
+				}	
+		});		
 	});
 	
-	function layer_popup(){
-		var layer = document.getElementById("pop")
-		layer.style.visibility="visible";
+	function wrapWindowByMask() {
+	    //화면의 높이와 너비를 구한다.
+	    var maskHeight = $(document).height(); 
+	    var maskWidth = $(window).width();
+	
+	    //문서영역의 크기 
+	    console.log( "document 사이즈:"+ $(document).width() + "*" + $(document).height()); 
+	    //브라우저에서 문서가 보여지는 영역의 크기
+	    console.log( "window 사이즈:"+ $(window).width() + "*" + $(window).height());        
+	
+	    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+	    $('#mask').css({
+	        'width' : maskWidth,
+	        'height' : maskHeight
+	    });
+	
+	    //애니메이션 효과
+	    //$('#mask').fadeIn(1000);      
+	    $('#mask').fadeTo("slow", 0.5);
 	}
 	
+	function popupOpen() {
+	    $('.layerpop').css("position", "absolute");
+	    //영역 가운에데 레이어를 뛰우기 위해 위치 계산 
+	    $('.layerpop').css("top",(($(window).height() - $('.layerpop').outerHeight()) / 2) + $(window).scrollTop());
+	    $('.layerpop').css("left",(($(window).width() - $('.layerpop').outerWidth()) / 2) + $(window).scrollLeft());
+	    $('#layerbox').show();
+	}
+	
+	function popupClose() {
+	    $('#layerbox').hide();
+	    $('#mask').hide();
+	}
+	//, content, reg, amount, memo, img
+	function goDetail(recordType, recordCategory, content, reg, amount, memo, img) {
+		console.log("타입~~" + recordType);
+		console.log("카테고리~~" + recordCategory);
+		console.log("내용~~" + content);
+		console.log("ref~~" + reg);
+		console.log("금액~~" + amount);
+		console.log("이미지~~" + img);
+
+		if(type != "budgetincome" || type != "budgetoutcome" || type != "incomeoutcome"){
+			$("#recordType").html(type);
+		}else{
+			$("#recordType").html(recordType);
+		}
+		
+		$("#img").attr('src','../../resources/img/'+img);
+		
+		
+		$("#recordCategory").html(recordCategory);
+		$("#recordContent").html(content);
+		$("#reg").html(reg);
+		$("#amount").html(amount);
+		
+		$("#memo").html(memo);
+	    /*팝업 오픈전 별도의 작업이 있을경우 구현*/ 
+	    popupOpen(); //레이어 팝업창 오픈 
+	    wrapWindowByMask(); //화면 마스크 효과 
+	}
+
+
 </script>
 <body>
 <h2 align="center"> 입출력 내역 </h2>
@@ -125,23 +196,24 @@ if("${orgType}" == ""){ // orgType에 에 값이 없으면 한개에 대해서�
 		<thead>
 			<tr>
 				<th>날짜/시간</th>
-				<th>카테고리번호</th>
+				<th>카테고리</th>
 				<th>내역</th>
 				<th>금액</th>
 			</tr>
 			
 		</thead>
 		<tbody>
+			
 			<c:forEach var="records" items="${recordPage.recordList}" varStatus="status" >		
 			<tr>		
 				<td>
 					<fmt:formatDate value="${records.reg}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td id="category">
-					"${categories[records.category_no]}"
+					${categories[records.category_no]}
 				</td>
-				<td id="content">
-				
+				<td id="content"> 
+					<a href="javascript:void(0)" onclick="goDetail('${records.type}','${categories[records.category_no]}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
 				</td>
 				<td>
 					<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
@@ -196,6 +268,61 @@ if("${orgType}" == ""){ // orgType에 에 값이 없으면 한개에 대해서�
 		</c:if>
 	</c:if>
 </div>
+
+<div style="height:1000px;"></div>
+<!-- 팝업뜰 때 배경 -->
+<div id="mask"></div>
+<!-- 팝업창  -->
+<!--Popup Start -->
+<div id="layerbox" class="layerpop" style="width: 400px; height: 500px;">
+    <div class="layerpop_area">
+	    <div class="title">상세내역</div>
+	    <a href="javascript:popupClose();" class="layerpop_close"
+	        id="layerbox_close">X</a> <br>
+	    <div class="content">
+			<table border="1" style="width:390px; height:300px;">
+			    <tr>
+					<td>타입</td>
+					<td>카테고리</td>				
+				</tr>
+				<tr>
+					<td id="recordType"></td>
+					<td id="recordCategory"></td>
+				</tr>
+				<tr>
+					<td>날짜,시간</td>
+					<td>금액</td>	
+				</tr>
+				<tr>
+					<td id="reg"></td>
+					<td id="amount"></td>	
+				</tr>
+				<tr>
+					<td colspan="2">제목</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="recordContent"></td>
+				</tr>
+				<tr>
+					<td colspan="2">메모</td>
+				</tr>
+				<tr>
+					<td colspan="2" id="memo"></td>
+				</tr>
+				<tr>
+					<td colspan="2">이미지</td>
+				</tr>
+				<tr>
+					<td colspan="2" >
+						<img id="img" src=""/>
+					</td>
+				</tr>
+		   </table>
+	    </div>
+    </div>
+</div>
+<!--Popup End -->
+
 <%-- 수정 팝업창 날짜, 시간, 카테고리번호
 <div id="modifyForm">
 	<form >
@@ -206,44 +333,6 @@ if("${orgType}" == ""){ // orgType에 에 값이 없으면 한개에 대해서�
 	</form>
 </div>
  --%>
- 
-<div id="pop">
-	<div id="recordDetail" class="recordDetail" style="width: 900px; height: 350;" align="center">
-		<div id="close" style="width:100px; margin:auto;">X</div>
-		<h3>상세내역</h3>
-		
-		<table border="1">
-			<tr>
-				<th>*수입or지출or예산지출</th>
-				<th>*카테고리</th>
-			
-			</tr>
-			<tr>
-				<th>//예산지출</th>
-				<th>//카테고리이름 </th>
-			</tr>
-			<tr>
-				<th>*날짜,시간</th>
-				<th>*금액</th>	
-			</tr>
-			<tr>
-				<th>//reg~</th>
-				<th>//100원</th>	
-			</tr>
-			<tr>
-				<th colspan="2">메모</th>
-			</tr>
-			<tr>
-				<th colspan="2">어쩌고저쩌고!</th>
-			</tr>
-			<tr>
-				<th colspan="2">이미지</th>
-			</tr>
-			<tr>
-				<th colspan="2">사진쓰~</th>
-			</tr>
-		</table>
-	</div>
-</div>
+
 </body>
 </html>

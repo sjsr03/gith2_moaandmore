@@ -185,7 +185,6 @@ $(document).ready(function () {
 			   				for (var i = 0; i < alldata.length; i+=4) {
 			   					$('.detailModal-content').addClass('modalShow');
 			   					$('.contentTable').append("<tr><td>" +alldata[i] + "</td><td>" +alldata[i+1] + "</td><td>"+alldata[i+2]+"</td><td>"+alldata[i+3]+"</td></tr>");
-			   					$('.contentTable').append("<tr><td>" +alldata[i] + "</td><td>" +alldata[i+1] + "</td><td>"+alldata[i+2]+"</td><td>"+alldata[i+3]+"</td></tr>");
 			   				}
 			   				//x 버튼 누르면 창 사라지고 데이터 삭제
 			   				$('.close-button').on('click',function(){
