@@ -58,10 +58,11 @@
 var type;
 console.log("레코드페이지 안의 타임 : " + type);
 	$(document).ready(function(){
-		console.log("레코드페이지 안의 타입222 :" + type);
-		console.log("searchDate :" +  "${searchDate}");
-		console.log("pageNum :" +  "${recordPage.pageNum}");
-		console.log("레코드 안의 type :" +  $("#hiddenType").val());
+		
+		//console.log("레코드페이지 안의 타입222 :" + type);
+		//console.log("searchDate :" +  "${searchDate}");
+		//console.log("pageNum :" +  "${recordPage.pageNum}");
+		//console.log("레코드 안의 type :" +  $("#hiddenType").val());
 		
 		
 		/*
@@ -91,24 +92,7 @@ console.log("레코드페이지 안의 타임 : " + type);
 				}	
 		});//삭제 
 		
-		// 여러개 선택한 경우  종류마다 카테고리 값 가져오기
-		// ${categories[records.category_no]}  
-		// categories 이거 incomeCategories, outcomeCategoryList로
-		
-		/*
-		// 타입에 따라 카테고리의 내용을 바꿔줌
-		if($("#hiddenType").val() == "income"){
-			console.log("체크가넝?????!");
-			//$("#category").html("${categories[records.income_category_no]}");
-			//$("#category").html("왜안돼");
-		}else if($("#hiddenType").val() == "outcome"){
-			$("#category").html("${categories[records.outcome_category_no]}");
-		}else if($("#hiddenType").val() == "budget"){
-			$("#category").html("${categories[records.outcome_category_no]}");
-		}
-		*/
 	});
-	
 	
 	// 댓글 삭제 Ajax	
 	function deleteRecord(){
@@ -172,7 +156,7 @@ console.log("레코드페이지 안의 타임 : " + type);
 		console.log("이미지~~" + img);
 
 		// 내역 여러개 가져오는거면  records.type(글마다 정해진 type에서 꺼내오기)
-		// ${records.type} 이 안에!! 다 들어있음 
+		// ${records.type} 이 안에!! 다 들어있음  ${records.type} 값을 recordType으로 받아줬음!
 		$("#recordType").html(recordType); 
 		
 		
@@ -230,25 +214,40 @@ console.log("레코드페이지 안의 타임 : " + type);
 					<fmt:formatDate value="${records.reg}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				</td>
 				<td id="category">
+				<c:set var="recordCate" value="" />
+		
+				<%-- c:set 이용해서 변수에 계속 담아 준 후 마지막에 a태그에 넣어줌 --%>
+				<c:out value="${records.type}"/>
+				<c:if test="${not empty categories}">
 					<c:choose>
 						<c:when test="${records.type eq 'income'}">
+							<c:set var="recordCate" value="${categories[records.income_category_no]}" />
 							${categories[records.income_category_no]}
 						</c:when>
 						<c:otherwise>
+							<c:set var="recordCate" value="${categories[records.outcome_category_no]}" />
 							${categories[records.outcome_category_no]}
 						</c:otherwise>
-					</c:choose>		
-					<input type="hidden" id="hiddenType" value="${records.type}" />
-				</td>
-				<td id="content"> 
+					</c:choose>	
+				</c:if>
+				<c:if test="${not empty incomeCategories}">
 					<c:choose>
 						<c:when test="${records.type eq 'income'}">
-							<a href="javascript:void(0)" onclick="goDetail('${records.type}','${categories[records.income_category_no]}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+							<c:set var="recordCate" value="${incomeCategories[records.income_category_no]}" />
+							${incomeCategories[records.income_category_no]}
 						</c:when>
 						<c:otherwise>
-							<a href="javascript:void(0)" onclick="goDetail('${records.type}','${categories[records.outcome_category_no]}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+							<c:set var="recordCate" value="${outcomeCategories[records.outcome_category_no]}" />
+							${outcomeCategories[records.outcome_category_no]}
 						</c:otherwise>
-					</c:choose>	
+					</c:choose>
+				</c:if>	
+					<input type="hidden" id="hiddenType" value="${records.type}" />
+				</td>
+				
+				
+				<td id="content"> 
+					<a href="javascript:void(0)" onclick="goDetail('${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
 					
 				</td>
 				<td>

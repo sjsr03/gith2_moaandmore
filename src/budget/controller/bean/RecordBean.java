@@ -297,7 +297,7 @@ public class RecordBean {
 
 		System.out.println("개빡침..." + recordPage.getType());
 		model.addAttribute("incomeCategories", incomeCategories);
-		model.addAttribute("outcomeCategoryList", outcomeCategoryList);
+		model.addAttribute("outcomeCategories", outcomeCategories);
 		model.addAttribute("recordPage", recordPage);
 		System.out.println("개빡침...???" + recordPage.getType());
 		return "budget/moneyLog";
