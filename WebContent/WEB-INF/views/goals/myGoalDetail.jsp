@@ -10,7 +10,6 @@
 <style>
 #run-animation{
 	position: relative;
-
 	animation-name : pg_run;
 	animation-delay : 300ms;
 	animation-duration : 2s;
@@ -18,14 +17,40 @@
 	animation-fill-mode:both;
 }
 
-@keyframes pg_run{
-	0% { left: 0px;}
-	100% {left : 300px;}
-	
+#pgbar{
+	width:100%;
 }
 
-
 </style>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+	$(document).ready(function(){
+		var targetMoney = ${goal.target_money};
+		var saving= ${goal.saving};
+		var curPg = ((saving/targetMoney)*100).toFixed(2);
+		var txt = "<progress id='pgbar' value='"+curPg+"' max='100'></progress>";
+		$("#pg").append(txt);
+		
+		txt = "<span>"+curPg+"%</span>";
+		$("#pgVal").append(txt);
+		
+		var pgWidthStr = $("#pgbar").css('width').split("px")[0];
+		var spanWidth = $("#pgVal span").css('width').split("px")[0];
+		var imgWidth = $("#run-animation img").css('width').split("px")[0];	
+		var spanPdLeft= (pgWidthStr * (curPg * 0.01)) - spanWidth/2 ;
+		var imgPdLeft = (pgWidthStr * (curPg * 0.01)) - imgWidth/2 ;
+		$("#pgVal").css('padding-left',spanPdLeft+"px");
+		
+		//동적으로 애니메이션 스타일 추가 
+		var styleEle  = document.createElement('style');
+		styleEle.id ="keyset";
+		document.head.appendChild(styleEle);		
+		styleEle.innerHTML = "@keyframes pg_run{0%{left: 0px;} 100%{left:"+imgPdLeft+"px;}}";		
+				
+	});
+	
+
+</script>
 </head>
 <body>
 <jsp:include page="../sidebar.jsp"/>
@@ -67,10 +92,8 @@
 			<img src="/moamore/resources/img/pg_character.png"/>
 		</div>	
 	</div>	
-	<div class="row">
-		<progress id='pgbar' value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress>
-	</div>
-	
+	<div class="row" id="pg"></div>
+	<div class="row" id="pgVal"></div>
 	<div class="row">
 		<h3>목표액 기록 내역</h3>
 	</div>
