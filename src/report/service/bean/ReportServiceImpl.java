@@ -146,8 +146,8 @@ public class ReportServiceImpl implements ReportService {
 			outcomeDataY += " \'" + outcome + "\', ";
 			
 			
-			outcomeDataList.add(outcome);
-			outcomeDataDateList.add(firstStartDay.getTime());
+			outcomeDataList.add((float)outcome);
+			outcomeDataDateList.add((float)firstStartDay.getTime());
 			
 			
 			firstStartDay.setDate(firstStartDay.getDate()+1);
@@ -173,7 +173,7 @@ public class ReportServiceImpl implements ReportService {
 		
 		
 		while(startDay.before(endDay)) {
-			predictAmountF += lr.predictValue(startDay.getTime());
+			predictAmountF += lr.predictValue((float)startDay.getTime());
 			
 			
 			startDay.setDate(startDay.getDate()+1);
