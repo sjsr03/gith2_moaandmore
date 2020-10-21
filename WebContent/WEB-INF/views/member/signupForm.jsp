@@ -18,7 +18,8 @@
   <link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
-<body class="bg-gradient-primary">
+
+
 
   <div class="container">
 
