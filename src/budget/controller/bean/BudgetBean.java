@@ -55,7 +55,12 @@ public class BudgetBean {
 		if(currentTBudget != null) {	//현재 진행중인 예산이 있다면
 			model.addAttribute("currentTBudget", currentTBudget);
 			model.addAttribute("detailList", budgetService.selectAllbyBudgetNum(currentTBudget.getBudget_no()));
-			
+			if(currentTBudget.getPeriod()==30) {
+				int firstOfMonth = (currentTBudget.getEnd_day().getDate()+1);
+				model.addAttribute("firstOfMonth", firstOfMonth);
+			} else {
+				model.addAttribute("firstOfMonth", 1);
+			}
 			return "budget/updateBudget";
 		} else {	//진행중인 예산이 없다면 
 			return "budget/setBudget";
