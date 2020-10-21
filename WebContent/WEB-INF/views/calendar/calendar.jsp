@@ -167,7 +167,7 @@ $(document).ready(function () {
 					   					}
 					   					for(var j in finalByCheckVal[i]){
 	    				    	    		 	events.push({
-	    				    	    		 		title:pm+finalByCheckVal[i][j],
+	    				    	    		 		title:pm+finalByCheckVal[i][j].format(),
 	    				    	    		 		start:j,
 	    				    	    		 		color: '#11ffee00;',
 	    				    	    		 	    textColor: col
@@ -195,7 +195,7 @@ $(document).ready(function () {
 			   				console.log(date);
 							$('.contentTable').append("<tr><td>" +'유형' + "</td><td>" +'금액'+ "</td><td>"+'제목'+"</td><td>"+'메모'+"</td></tr>");
 			   				for (var i = 0; i < alldata.length; i+=4) {
-			   					//$('.detailModal-content').addClass('modalShow');
+			   					
 			   					$('.cal_modal').addClass('modalShow');
 			   					$('.contentTable').append("<tr><td class='more'>" +alldata[i] + "</td><td class='more'>" +alldata[i+1] + "</td><td class='more'>"+alldata[i+2]+"</td><td class='more'>"+alldata[i+3]+"</td></tr>");
 			   					if(i>12){
@@ -209,7 +209,7 @@ $(document).ready(function () {
 		   			  			$(this).parent().parent().removeClass('modalShow');
 		   			  			$('.contentTable').empty();
 		   			  		});
-			   				//더보기 누를때 
+			   				//상세보기 페이지 처리
 			   				$(".more").on("click",function(){
 			   					window.location.href="/moamore/record/moneyRecord.moa?searchDate="+date+"&type=budget";
 			   				});
@@ -231,9 +231,30 @@ function getFormatDate(date){
     day = day >= 10 ? day : '0' + day;
     return year + '-' + month + '-' + day;
 }
-    
-    
-    
+ 
+//숫자 자릿수 포맷(3자리수마다 ,) 
+Number.prototype.format = function(){
+	if(this ==0) return 0;
+	
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	var n = (this +'');
+	
+	while(reg.test(n)) n = n.replace(reg, '$1'+','+'$2');
+	
+	return n;
+}
+
+//문자 자릿수 포맷(3자리수마다 ,) 
+/*
+String.prototype.format = function(){
+	var num = parseFloat(this);
+	if(isNan(num)) return "0";
+	
+	return num.format();
+	
+
+}
+*/
  	
     </script>
 

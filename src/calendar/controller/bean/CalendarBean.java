@@ -40,7 +40,7 @@ public class CalendarBean {
 		
 
 		
-		return "calendar/calendar2";
+		return "calendar/calendar";
 	}
 	    
 	   
