@@ -73,29 +73,29 @@ a{text-decoration: none;color: #737271;}
 
 </style>
 
-	<c:if test="${already == 'true'}">
-		<script>
-			alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
-		</script>
-	</c:if>
 	
-	
-	<c:if test="${exist==1}">
-		<script>
-			alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
-		</script>
-	</c:if>
 <jsp:include page="../sidebar.jsp"/>
-	
 
 
 <!-- 본문내용 시작 -->
 <div class="container-fluid">
+<c:if test="${already == 'true'}">
+	<script>
+		alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
+	</script>
+</c:if>
+
+
+<c:if test="${exist==1}">
+	<script>
+		alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
+	</script>
+</c:if>
 
  		<!-- 페이지 이름 -->
          <div class="d-sm-flex align-items-center justify-content-between mb-4">
            <h1 class="h3 mb-0 text-gray-800">카테고리 설정</h1>
-           	${already} ${exist}
+           	${already} ${exist}adf
            </div>	
 	
 	

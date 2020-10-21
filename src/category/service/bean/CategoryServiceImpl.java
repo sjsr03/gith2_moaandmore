@@ -128,6 +128,7 @@ public class CategoryServiceImpl implements CategoryService{
 		// 각각 해당 테이블에 category_no 내역이 있는지 확인하기 (있으면 삭제 불가) 
 		int budgetCount = categoryDAO.selectBudgetInfo(category_no,id);
 		int nobudgetCount = categoryDAO.selectNobudgetInfo(category_no,id);
+							
 		int totalBudgetDetailcount = categoryDAO.selectTotalBudgetDetailInfo(category_no);
 		
 		int exist = 0;

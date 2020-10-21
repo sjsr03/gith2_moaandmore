@@ -35,10 +35,10 @@ public class CategoryBean {
 		
 	
 		String already = request.getParameter("already");
-		//String exist = request.getParameter("exist");
-		
+		String exist = request.getParameter("exist");
+		System.out.println("setCategory의 already : "+already);
 		model.addAttribute("already", already);
-		//model.addAttribute("exist", exist);
+		model.addAttribute("exist", exist);
 		
 		return "category/setCategory";
 	}
@@ -81,11 +81,12 @@ public class CategoryBean {
 			 already = categoryService.addOutcomeCategory(category_name,id);	
 			
 		}
+		System.out.println(already);
 		
 		model.addAttribute("already",already);
 		
 	
-		return "category/setCategory";
+		return "category/setCategoryPro";
 
 	}
 	
