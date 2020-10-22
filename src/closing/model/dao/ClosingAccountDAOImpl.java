@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import closing.model.dto.ClosingAccountCommentDTO;
 import closing.model.dto.ClosingAccountDTO;
 
 @Repository
@@ -59,6 +60,16 @@ public class ClosingAccountDAOImpl implements ClosingAccountDAO{
 		int count = sqlSession.selectOne("closing.countClosingAccountCommentAll", article_no);
 		
 		return count;
+	}
+
+	@Override
+	public void insertClosingAccountComment(ClosingAccountCommentDTO dto) throws SQLException {
+		sqlSession.insert("closing.insertClosingAccountComment", dto);
+	}
+
+	@Override
+	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException {
+		sqlSession.insert("closing.insertClosingAccount", dto);
 	}
 
 }

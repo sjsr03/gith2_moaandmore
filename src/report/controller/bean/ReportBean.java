@@ -15,17 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import budget.model.dao.RecordBudgetDAO;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
+import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.TotalBudgetDTO;
 import budget.model.dto.TotalBudgetDetailDTO;
 import budget.service.bean.BudgetService;
 import budget.service.bean.RecordService;
 import category.service.bean.CategoryService;
+import goals.model.dto.GoalsDTO;
+import goals.service.GoalsService;
+import report.model.dao.LinearRegression;
 import report.service.bean.ReportService;
 
 @Controller
@@ -42,6 +47,8 @@ public class ReportBean {
 	private CategoryService categoryService = null;
 	@Autowired
 	private RecordBudgetDAO recordBudgetDAO = null;
+	@Autowired
+	private GoalsService goalsService = null;
 	
 	
 	@RequestMapping("report.moa")
@@ -99,17 +106,117 @@ public class ReportBean {
 			return "report/expectation";
 		} else {	//추정가능
 			
-			HashMap expectation = reportService.expectation(id);
-			model.addAttribute("expectation", expectation);
-			
-			
-			
+			HashMap expectOutcome = reportService.expectOutcome(id);
+			model.addAttribute("expectOutcome", expectOutcome);
+
+			List goalsList =  reportService.selectNumAndSubListById(id);
+			model.addAttribute("goalsList", goalsList);
 			
 			
 			return "report/expectation";
 		}
 		
 	}
+	
+	@RequestMapping("selectGoal.moa")
+	@ResponseBody
+	public HashMap selectGoal(int goal_no, String id, String start_day) throws SQLException {
+		HashMap returnMap = new HashMap();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy년 MM월 dd일");
+		long startDay = Timestamp.valueOf(start_day + " 00:00:00").getTime();
+			
+		GoalsDTO goalsDTO = goalsService.selectOne(goal_no);
+		if(goalsDTO.getTarget_money() == goalsDTO.getSaving()) {
+			System.out.println("이미 목표 달성");
+			return null;
+		}
+		if(goalsDTO.getPublic_ch() == 1) {	//그룹 목표일 경우(종료일자 정해져있음)
+			if((goalsDTO.getEnd_day().getTime())<(new Date().getTime())) {	//이미 끝난 목표면 종료
+				System.out.println("이미 끝난 목표");
+				return null;
+			}
+		}
+		
+		
+		List goalList = reportService.selectAllByIdAndNum(id, goal_no);
+		if(goalList.size() < 2) {
+			System.out.println("전환 데이터 부족");
+			return null;
+		}
+		String goalX = "[";
+		String goalY = "";
+		
+		List goalXList = new ArrayList();	//선형회귀용 데이터리스트
+		List goalYList = new ArrayList();	//선형회귀용 데이터리스트
+		
+		for(Object obj2 : goalList) {
+			
+			RecordGoalsDTO RGdto = (RecordGoalsDTO) obj2;
+			System.out.println(RGdto.getReg());
+			
+			while(!sdf.format(new Date(RGdto.getReg().getTime())).equals(start_day)) {
+				goalY += "0,";
+				goalX += "\'" + sdf.format(startDay) + "\',";
+				
+				startDay += (1000*60*60*24);
+				start_day = sdf.format(startDay); 
+			}
+			startDay += (1000*60*60*24);
+			start_day = sdf.format(startDay); 
+			
+			goalY += RGdto.getAmount() + ",";
+			goalX += "\'" + sdf.format(RGdto.getReg()) + "\', ";
+			
+			goalXList.add((float)(RGdto.getReg().getTime() / (1000*60*60*24)));
+			goalYList.add((float)RGdto.getAmount());
+			
+			System.out.println("x: " + (float)(RGdto.getReg().getTime() / (1000*60*60*24)));
+			System.out.println("y: " + (float)RGdto.getAmount());
+		}
+		
+		LinearRegression lr = new LinearRegression(goalXList, goalYList);
+		int restAmount = goalsDTO.getTarget_money() - goalsDTO.getSaving();
+		int testAmount = 0;
+		
+		float todayDate = (float)(new Date().getTime()/(1000*60*60*24)+1);
+		
+		while(testAmount < restAmount) {
+			todayDate += 1;
+			testAmount += lr.predictValue(todayDate);
+			//System.out.println(testAmount);
+		}
+		
+		Date predictedDate = new Date((long)(todayDate)*(1000*60*60*24));
+		
+		goalX = goalX.substring(0, goalX.length()-2);
+		goalY = goalY.substring(0, goalY.length()-2);
+		goalX += "]";
+		
+
+		
+		
+		returnMap.put("goal_no", goal_no);
+		returnMap.put("goalX", goalX);
+		returnMap.put("goalY", goalY);
+		returnMap.put("subject", goalsDTO.getSubject());
+		returnMap.put("predictedDate", sdf2.format(predictedDate));
+		
+		System.out.println(returnMap);
+		System.out.println(returnMap.keySet());
+		return returnMap;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@RequestMapping("recordMacroForm.moa")
 	public String recordMacroForm() {

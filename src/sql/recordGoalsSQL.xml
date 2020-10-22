@@ -19,5 +19,20 @@
   		update team_member set saving=(saving+#{saving}) where id=#{id} and team_no=#{team_no}
   	</update>
   	
+  	 <!-- 회원의 남은돈 전환 기록 합산 -->
+  	<select id="selectLeftMoneySum" parameterType="string" resultType="int">
+  		select sum(amount) from record_goals where id=#{value}
+  	</select>
+  	
+  	<!-- 아이디와 목표번호로 전환기록 가져오기 -->
+  	<select id="selectAllByIdAndNum" parameterType="map" resultType="hashmap">
+  		<!-- select * from record_goals where id=#{id} and goal_no=#{goal_no}-->
+  		select to_char(reg, 'yyyy-MM-dd') as reg, goal_no, id, sum(amount) as amount from record_goals where id=#{id} and goal_no=#{goal_no} GROUP BY to_char(reg, 'yyyy-MM-dd'), goal_no, id order by reg 
+  	</select>
+  	
+	<!-- 아이디로 전환기록 있는 목표번호 리스트 가져오기 -->
+	<select id="selectNumListById" parameterType="string" resultType="int">
+		select distinct goal_no from record_goals where id=#{value}
+	</select>
   </mapper>
  

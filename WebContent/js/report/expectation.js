@@ -32,7 +32,7 @@ var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: Datelabels,
-    datasets: [outcomeData],
+    datasets: graphData,
   },
   options: {
     maintainAspectRatio: false,
@@ -54,7 +54,7 @@ var myLineChart = new Chart(ctx, {
           drawBorder: false
         },
         ticks: {
-          maxTicksLimit: 7
+          maxTicksLimit: 5
         }
       }],
       yAxes: [{
