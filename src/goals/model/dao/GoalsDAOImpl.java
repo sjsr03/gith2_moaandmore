@@ -31,6 +31,10 @@ public class GoalsDAOImpl implements GoalsDAO{
 	public List<GoalsDTO> selectAllByPublicCh(HashMap map) throws SQLException {
 		
 		List<GoalsDTO> goalList = sqlSession.selectList("goals.selectAllByPublicCh", map);
+		
+		for(int i = 0 ; i < goalList.size(); i++) {
+			GoalsDTO goal = (GoalsDTO)goalList.get(i);
+		}
 		return goalList;
 	}
 
