@@ -12,6 +12,7 @@
 
 </head>
 <style>
+
 #mask {
     position: absolute;
     left: 0;
@@ -52,10 +53,18 @@
     width: 96%;    
     margin: 2%;
     color: #828282; }
-
+.btn{
+	display: block;
+    position: absolute;
+    top: 10px;
+    right: 5px; }
 </style>
 <script>
 var type;
+var cateType;
+var budgetTime;
+var budgetDate;
+var budgetReg;
 console.log("레코드페이지 안의 타임 : " + type);
 	$(document).ready(function(){
 		
@@ -64,13 +73,51 @@ console.log("레코드페이지 안의 타임 : " + type);
 		//console.log("pageNum :" +  "${recordPage.pageNum}");
 		//console.log("레코드 안의 type :" +  $("#hiddenType").val());
 		
-		
-		/*
-		$("#modifybtn").click(function(){
-			console.log("수정버튼이닷");
-			var popup = window.open('팝업 주소 ','팝업창 이름',' 팝업창 설정');
+		// 내역을 클릭했을때 해당 카테고리 빼고 나머지 숨기기
+		$(".content").click(function(){
+			console.log("체크체크 : " +$("#recordType").val() );
+			if($("#recordType").val() == "budget"){
+				console.log("예산");
+				cateType="budgetcategory";
+				$("#budgetcategory").css("display", "block"); 
+				$("#incomecategory").css("display", "none"); 
+				$("#outcomecategory").css("display", "none"); 
+				getBudgetCategories();
+			}else if($("#recordType").val() == "income"){
+				console.log("수입")
+				cateType="incomecategory";
+				$("#incomecategory").css("display", "block"); 
+				$("#budgetcategory").css("display", "none");
+				$("#outcomecategory").css("display", "none"); 
+			}else if($("#recordType").val() == "outcome"){
+				console.log("지출")
+				cateType="outcomecategory";
+				$("#outcomecategory").css("display", "block"); 
+				$("#incomecategory").css("display", "none"); 
+				$("#budgetcategory").css("display", "none");
+			}// 끝
+			
 		});
-		*/
+		// 수정버튼 처리
+		$("button[name='btn_modify']").on('click',function(event){
+			console.log(event);
+			var id = $(this).attr("id");
+			
+			var number = id.replace("btn_", "");
+			console.log("id >> " + id);
+				alert(number)
+				console.log("수정버튼이닷");
+				var check = false;
+				check = confirm("수정을 하시겠습니까?");
+				if(check){ // check가 true면
+					//var num = $("#number").val();
+					//var type = $("#recordType").val();
+					//deleteRecord(num, type);
+				}else{// check가 false면 
+					alert("수정을 취소합니다.");
+				}	
+		})
+		// 삭제버튼 처리
 		$("button[name='btn_delete']").on('click',function(event){
 			console.log(event);
 			var id = $(this).attr("id");
@@ -91,8 +138,38 @@ console.log("레코드페이지 안의 타임 : " + type);
 		});//삭제 
 		
 	});
+	// 예산 카테고리 가져오는 Ajax
+	function getBudgetCategories(){
+		$.ajax({
+			type : "POST",
+			url : "budgetCategory.moa",
+			data : {date:$("#date").val(), id:"${id}"},
+			dataType : "json", 
+			async: false,
+			error : function(request,status,error){
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 	
-	// 댓글 삭제 Ajax	
+			},
+			success : function(data){							
+				console.log($("#date").val());
+				console.log(typeof date);
+				// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
+				$("#category").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
+	
+				for(var key in data){
+					console.log("컬럼:" + key + "value : " + data[key]);
+					//console.log(typeof key);
+					if(key != 'budgetNum'){ 
+						$("#category").append("<option value='"+key+"'>"+data[key]+"</option>");
+					}else{ // budgetNum 이면 변수에 담아주기
+						budget_no = data[key];
+					}								
+				}
+				$("#category").css("display", "block");
+			}
+		});
+	}
+	// 삭제 Ajax	
 	function deleteRecord(num, type){
 		$.ajax({
 			type:"POST",
@@ -145,7 +222,19 @@ console.log("레코드페이지 안의 타임 : " + type);
 	    $('#mask').hide();
 	}
 	//, content, reg, amount, memo, img
-	function goDetail(num, recordType, recordCategory, content, reg, amount, memo, img) {
+	function goDetail(cateNum, num, recordType, recordCategory, content, reg, amount, memo, img) {
+		// reg를 time과 date로 쪼개서 각각 대입해주기
+		budgetReg = reg;
+		budgetTime = reg.substr(11);
+		console.log("자른 시간 >>> " + budgetTime);
+		$("#time").val(budgetTime);
+	
+		
+		budgetDate = reg.substring(0,10);
+		console.log("자른 DATE >>>> " + budgetDate);
+		$("#date").val(budgetDate);
+		// 카테고리 번호도 같이 받아오기
+		console.log("번호다~ : " + cateNum);
 		
 		// num 앞글자인 0 값 제거
 		var subNum = num.substr(1);
@@ -154,14 +243,15 @@ console.log("레코드페이지 안의 타임 : " + type);
 		// ${records.type} 이 안에!! 다 들어있음  ${records.type} 값을 recordType으로 받아줬음!
 		$("#recordType").val(recordType); 
 		
+		console.log("이미지~~:" + img);
 		
-		$("#img").val('src','../../resources/img/'+img);
+		$("#img").attr('src','../resources/img/'+img);
 		
 		// amount 정수타입으로 형변환
 		amount *= 1;
 		$("#recordCategory").val(recordCategory);
 		$("#recordContent").val(content);
-		$("#reg").val(reg);
+		//$("#reg").val(reg);
 		$("#amount").val(amount);
 		
 		$("#memo").val(memo);
@@ -174,7 +264,7 @@ console.log("레코드페이지 안의 타임 : " + type);
 </script>
 <body>
 <h2 align="center"> 입출력 내역 </h2>
-	
+<c:out value="${categories}"/>
 	
 
 <div align="center">
@@ -217,10 +307,12 @@ console.log("레코드페이지 안의 타임 : " + type);
 					<c:choose>
 						<c:when test="${records.type eq 'income'}">
 							<c:set var="recordCate" value="${categories[records.income_category_no]}" />
+							<c:set var="recordCateNum" value="${records.income_category_no}" />
 							${categories[records.income_category_no]}
 						</c:when>
 						<c:otherwise>
 							<c:set var="recordCate" value="${categories[records.outcome_category_no]}" />
+							<c:set var="recordCateNum" value="${records.outcome_category_no}" />
 							${categories[records.outcome_category_no]}
 						</c:otherwise>
 					</c:choose>	
@@ -229,10 +321,12 @@ console.log("레코드페이지 안의 타임 : " + type);
 					<c:choose>
 						<c:when test="${records.type eq 'income'}">
 							<c:set var="recordCate" value="${incomeCategories[records.income_category_no]}" />
+							<c:set var="recordCateNum" value="${records.income_category_no}" />
 							${incomeCategories[records.income_category_no]}
 						</c:when>
 						<c:otherwise>
 							<c:set var="recordCate" value="${outcomeCategories[records.outcome_category_no]}" />
+							<c:set var="recordCateNum" value="${records.outcome_category_no}" />
 							${outcomeCategories[records.outcome_category_no]}
 						</c:otherwise>
 					</c:choose>
@@ -241,9 +335,8 @@ console.log("레코드페이지 안의 타임 : " + type);
 				</td>
 				
 				
-				<td id="content"> 
-					<a href="javascript:void(0)" onclick="goDetail('${records.budget_outcome_no}'+'${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
-					
+				<td class="content"> 
+					<a href="javascript:void(0)" onclick="goDetail('${recordCateNum}','${records.budget_outcome_no}'+'${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
 				</td>
 				<td>
 					<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
@@ -304,12 +397,16 @@ console.log("레코드페이지 안의 타임 : " + type);
 <!--Popup Start -->
 <div id="layerbox" class="layerpop" style="width: 400px; height: 500px;">
     <div class="layerpop_area">
-	    <div class="title">상세내역</div>
+	    <div class="title">상세내역
+	    <button class="btn" id="btn_modify" name="btn_modify">수정</button>
+		<button class="btn" id="btn_delete" name="btn_delete">삭제</button>
+	    </div>   
 	    <a href="javascript:popupClose();" class="layerpop_close"
 	        id="layerbox_close">X</a> <br>
-	    <div class="content">
+	    <div class="formContent">
 	    	<form action="#" method="post" enctype="multipart/form-data">
 	    		<input type="hidden" id="number" value=0/>
+	    		
 				<table border="1" style="width:390px; height:300px;">
 				    <tr>
 						<td>타입</td>
@@ -317,42 +414,70 @@ console.log("레코드페이지 안의 타임 : " + type);
 					</tr>
 					<tr>
 						<td><input type="text" id="recordType" value="recordType"/></td>
-						<td><input type="text" id="recordCategory"  value="recordCategory"/></td>	
+						<td><input type="text" id="recordCategory"  value="recordCategory"/>
+					<div class="category-section">
+						<%-- 지출 카테고리 --%>
+						<div class="input-area">
+							<select id="outcomecategory" name="outcomecategory">
+							<c:forEach var="outcomecategories" items= "${categories}" >
+								<option value="${outcomecategories.key}">${outcomecategories.value}</option>
+							</c:forEach>
+							</select>
+						</div>
+						<%-- 수입 카테고리 --%>
+						<div class="input-area">
+							<select id="incomecategory" name="incomecategory">
+							<c:forEach var="incomeCategories" items= "${categories}" >
+								<option value="${incomeCategories.key}">${incomeCategories.value}</option>
+							</c:forEach>
+							</select>
+						</div>
+						<%-- 예산내 지출 카테고리 --%>
+						<%-- categories 번호가 key 이름이 value --%>
+						<div class="input-area">
+							<select id="category" name="category">
+							<c:forEach var="categories" items= "${categories}" >
+								<option value="${categories.key}">${categories.value}</option>
+							</c:forEach>
+							</select>
+						</div>
+						
+					</div>
+						</td>	
 					</tr>
 					<tr>
 						<td>날짜,시간</td>
 						<td>금액</td>	
 					</tr>
 					<tr>
-						<td id="reg"></td>
-						<td><input type="number" id="amount" value=0 /></td>
-						
+						<td><input type="date" id="date"/><input type="time" id="time"/><td>
+						<td><input type="number" id="amount" value=0 /></td>	
 					</tr>
 					<tr>
 						<td colspan="2">제목</td>
 					</tr>
 					<tr>
-						<td colspan="2"><input type="text" id="recordContent" value="recordContent" /> </td>
+						<td colspan="2"><input type="text" id="recordContent" value="recordContent" size="47"/> </td>
 					</tr>
 					<tr>
 						<td colspan="2">메모</td>
+						
 					</tr>
 					<tr>
-						<td colspan="2"><input type="text" id="memo" value="memo" /></td>
+						<td colspan="2"><input type="text" id="memo" value="memo" size="47" /></td>
 					</tr>
 					<tr>
 						<td colspan="2">이미지</td>
 					</tr>
 					<tr>
 						<td colspan="2" >
+							<img id="img" src="" style="width:130px; height:130px;"/>
 							<input type="file" id="image" />
-							<img id="img" src=""/>
 						</td>
 					</tr>
 			   </table>
 		   </form>
-		   <button class="btn" id="btn_modify" name="btn_modify">수정</button>
-		   <button class="btn" id="btn_delete" name="btn_delete">삭제</button>
+
 	    </div>
     </div>
 </div>
