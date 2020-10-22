@@ -109,8 +109,12 @@ public class RecordBean {
 	// ajax로 회원 예산 카테고리 가져오기
 	@RequestMapping(value="budgetCategory.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map budgetCategory(HttpServletRequest request, String date, String id) throws SQLException{
-		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
+		// moneyLog에서 사용할 경우 아이디 없이옴 
+		if(id == "") {
+			id = (String)request.getSession().getAttribute("memId");
+		}
 		
+		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
 		Timestamp dateTime = Timestamp.valueOf(newDate);
@@ -142,7 +146,6 @@ public class RecordBean {
 		budgetDTO.setCategory_no(category_no);
 		noBudgetDTO.setIncome_category_no(category_no);
 		noBudgetDTO.setOutcome_category_no(category_no);
-		System.out.println("머지;;" + category_no);
 		String oldDate = request.getParameter("date") + " "+ request.getParameter("time")+":00";
 		Timestamp date = Timestamp.valueOf(oldDate);
 		
@@ -262,8 +265,10 @@ public class RecordBean {
 			List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
 			for(int i = 0; i < outcomeCategoryList.size(); i++) {
 				categories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
+				System.out.println("ddd:"+((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no());
 			}
 		}
+		
 		
 		model.addAttribute("searchDate", searchForRecordDTO.getSearchDate());
 		model.addAttribute("recordPage", recordPage);
