@@ -37,6 +37,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
+                	<div style="height:60px; vertical-align:middle; padding:10px;">
                 	<c:if test="${goalsList != null}">
                 	<label class="text-primary font-weight-bold"><input type="checkbox" id="outcomeChk" checked/>지출 데이터</label>&nbsp;&nbsp;
 	                	<label class="text-warning font-weight-bold"><input type="checkbox" id="goalChk"/>목표 달성 데이터</label>&nbsp;
@@ -49,6 +50,7 @@
 	                		</c:forEach>
 	                	</select>
                 	</c:if>
+                	</div>
                 	
                 	
                   <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
@@ -61,10 +63,12 @@
               	var ctx = $("#myAreaChart");
               	var Datelabels = ${expectOutcome.outcomeDataX};
               	var outcomeDataY = ${expectOutcome.outcomeDataY};
+              	var myLineChart;
               	
               	var graphData = [];
               	
               	var outcomeData = {
+              		  type:'line',
               	      label: "지출액",
               	      lineTension: 0.3,
               	      showLine: true,
@@ -82,13 +86,12 @@
              	};
               	
               	graphData.push(outcomeData);
-              	
               	var goalX;
 				var goalY = [];
 				var predictedDate;
 				var goal_subject;
+				
 				var goalData;
-						
               </script>
               <script src="/moamore/js/report/expectation.js"></script>
               
@@ -98,7 +101,7 @@
             
            	<!-- 두번째 줄 -->
             <div class="row">
-            	<div class="col-xl-6 col-lg-6 expectCard" >
+            	<div class="col-xl-6 col-lg-6 expectCard" id="outcomeCard">
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3">
@@ -112,7 +115,7 @@
                 </div>
               </div>	
               
-            	<div class="col-xl-6 col-lg-6 expectCard">
+            	<div class="col-xl-6 col-lg-6 expectCard" id="goalCard" style="display:none;">
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3">
@@ -149,10 +152,12 @@ $(document).ready(function(){
 		} else {
 			$("#goalsList").css("display","none");
 			$("#goalsList option:eq(0)").prop("selected", true);
-			graphData = [];
+			$("#goalCard").css("display", "none");
+			graphData.length = 0;
 			if($("#outcomeChk").is(":checked")==true) {
 				graphData.push(outcomeData);
 			}
+			goalY.length = 0;
 			console.log("업데이트");
 			console.log(graphData);
 			myLineChart.update();
@@ -162,12 +167,15 @@ $(document).ready(function(){
 	});
 	
 	$("#outcomeChk").on('change', function(){
-		graphData = [];
+		graphData.length = 0;
 		if($(this).is(":checked") == true) {
 			graphData.push(outcomeData);
-		} 
+			$("#outcomeCard").css("display", "block");
+		}  else {
+			$("#outcomeCard").css("display", "none");
+		}
 		if($("#goalChk").is(":checked") == true) {
-			if(goalData != null) {
+			if($("#goalChk").val() != "") {
 				graphData.push(goalData);
 			}
 		} 
@@ -180,10 +188,11 @@ $(document).ready(function(){
 	
 	
 	$("#goalsList").on('change', function(){
-		graphData = [];
+		graphData.length = 0;
 		if($("#outcomeChk").is(":checked")==true) {
 			graphData.push(outcomeData);
 		} 
+		$("#goalCard").css("display", "block");
 		
 		var goal_no = $(this).val();
 		
@@ -205,33 +214,32 @@ $(document).ready(function(){
 					alert("표시할 데이터가 없습니다.");
 					$("#goalsList option:eq(0)").prop("selected", true);
 				} else {
-					var goalX = data.goalX;
-					var goalY = [];
-					var goalY = data.goalY.split(",");
-					var predictedDate = data.predictedDate;
-					var goal_subject = data.subject;
+					goalX = data.goalX;
+					goalY = [];
+					goalY = data.goalY.split(",");
+					predictedDate = data.predictedDate;
+					goal_subject = data.subject;
 					
-					var goalData = {
-		              	      label: "목표달성액",
-		              	      lineTension: 0.3,
-		              	      showLine: true,
-		              	      backgroundColor: "rgba(246, 194, 62, 0.05)",
-		              	      borderColor: "rgba(246, 194, 62, 1)",
-		              	      pointRadius: 3,
-		              	      pointBackgroundColor: "rgba(246, 194, 62, 1)",
-		              	      pointBorderColor: "rgba(246, 194, 62, 1)",
-		              	      pointHoverRadius: 3,
-		              	      pointHoverBackgroundColor: "rgba(246, 194, 62, 1)",
-		              	      pointHoverBorderColor: "rgba(246, 194, 62, 1)",
-		              	      pointHitRadius: 10,
-		              	      pointBorderWidth: 2,
-		              	      data: goalY,
-		              	    };
+					goalData = {
+						  type: 'line',
+	              	      label: "목표달성액",
+	              	      lineTension: 0.3,
+	              	      backgroundColor: "rgba(246, 194, 62, 0.05)",
+	              	      borderColor: "rgba(246, 194, 62, 1)",
+	              	      pointRadius: 3,
+	              	      pointBackgroundColor: "rgba(246, 194, 62, 1)",
+	              	      pointBorderColor: "rgba(246, 194, 62, 1)",
+	              	      pointHoverRadius: 3,
+	              	      pointHoverBackgroundColor: "rgba(246, 194, 62, 1)",
+	              	      pointHoverBorderColor: "rgba(246, 194, 62, 1)",
+	              	      pointHitRadius: 10,
+	              	      pointBorderWidth: 2,
+	              	      data: goalY,
+		            };
+					
 					graphData.push(goalData);
 					$("#predictDate").text(predictedDate);
 					$("#goal_subject").text(goal_subject);
-					console.log("업데이트");
-					console.log(graphData);
 					myLineChart.update();
 					
 					

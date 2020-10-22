@@ -157,7 +157,7 @@ public class ReportBean {
 			System.out.println(RGdto.getReg());
 			
 			while(!sdf.format(new Date(RGdto.getReg().getTime())).equals(start_day)) {
-				goalY += "0, ";
+				goalY += "0,";
 				goalX += "\'" + sdf.format(startDay) + "\',";
 				
 				startDay += (1000*60*60*24);
@@ -166,7 +166,7 @@ public class ReportBean {
 			startDay += (1000*60*60*24);
 			start_day = sdf.format(startDay); 
 			
-			goalY += RGdto.getAmount() + ", ";
+			goalY += RGdto.getAmount() + ",";
 			goalX += "\'" + sdf.format(RGdto.getReg()) + "\', ";
 			
 			goalXList.add((float)(RGdto.getReg().getTime() / (1000*60*60*24)));
@@ -190,8 +190,8 @@ public class ReportBean {
 		
 		Date predictedDate = new Date((long)(todayDate)*(1000*60*60*24));
 		
-		goalX.substring(0, goalX.length()-2);
-		goalY.substring(0, goalY.length()-2);
+		goalX = goalX.substring(0, goalX.length()-2);
+		goalY = goalY.substring(0, goalY.length()-2);
 		goalX += "]";
 		
 
