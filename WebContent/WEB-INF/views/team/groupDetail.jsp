@@ -11,7 +11,7 @@
 	.goal-explan {
 		border-radius: 5px;
 		background-color: #e6e6e6;
-		padding: 5px;
+		padding: 15px;
 	}
 	.tag-eff{
 	width : 60px;
@@ -36,6 +36,13 @@
 		background-color: #577de6;
 	}
 	
+	#team_memList{
+		list-style : none;
+	
+	}
+	.pg-text{
+		padding: 0px 5px;
+	}
 
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -63,14 +70,35 @@
 				
 				//팀원 목록
 				memList = data;
+				
+				//참여자수
+				var enterPeopleCount = memList.length;
+				$("#pCnt").text( enterPeopleCount+"명");
+				
+				console.log(enterPeopleCount);
+					
+				$("#team_memList").append("<thead><th>랭크</th><th>활동명</th><th>진행도</th></thead>");
+				$("#team_memList").append("<tbody>");
 				for(var i = 0 ; i < memList.length ; i ++){
 					if(memList[i].id == "${sessionScope.memId}"){
 						btnCh = true;
-						
+					}
+					var pgVal = ((memList[i].saving/ ${team.amount})*100).toFixed(2);
+
+					
+					
+					if(memList[i].tmp_rank == 1){
+						$("#team_memList").append("<tr><td class='h3'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+					}else if(memList[i].tmp_rank ==2){
+						$("#team_memList").append("<tr><td class='h4'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+					}else if(memList[i].tmp_rank ==3){
+						$("#team_memList").append("<tr><td class='h5'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+					}else{
+						$("#team_memList").append("<tr><td class='text'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
 					}
 					
-					$("#team_memList").append("<li>"+ memList[i].tmp_rank+"등."+memList[i].nickname+"님. 달성액:"+memList[i].saving+"원</li>")
 				}
+				$("#team_memList").append("</tbody>");
 				
 				if(btnCh == true){
 					$("#enterBtnText").text("참여중");
@@ -146,19 +174,44 @@
 	</div>
 	
 	
-	<div class="row mt-4">
+	<div class="row mt-5">
 		<span class="h2">참여인원 목록</span>
 	</div>
 	<div class="row">
-		<span class="h5">${team.people}명의 회원들이 이 목표를 진행중입니다.</span>
+		<span class="h5"><span class="h4" id="pCnt" style="color: #d692af; font-weight: bold; "></span>의 회원들이 이 목표를 진행중입니다.</span>
 	</div>	
 	<div class="row mt-2">
-		<ul id="team_memList">
-		</ul>
+		<div class="col-12">
+			<table id="team_memList" class="table">
+			</table>
+		</div>
 	</div>
 	
 	
 </div>
 <jsp:include page="../footer.jsp"/>
+<script>
+//숫자 자릿수 포맷(3자리수마다 ,) 
+Number.prototype.format = function(){
+	if(this ==0) return 0;
+	
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	var n = (this +'');
+	
+	while(reg.test(n)) n = n.replace(reg, '$1'+','+'$2');
+	
+	return n;
+}
+
+//문자 자릿수 포맷(3자리수마다 ,) 
+String.prototype.format = function(){
+	var num = parseFloat(this);
+	if(isNan(num)) return "0";
+	
+	return num.format();
+	
+}
+
+</script>
 </body>
 </html>
