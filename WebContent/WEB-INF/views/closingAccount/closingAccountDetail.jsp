@@ -82,7 +82,7 @@
 				</c:if>
 			</c:if>
 		</div>
-		<c:if test="${sessionScope.memName != null}">
+		<c:if test="${sessionScope.memId != null}">
 			<div style="margin-top: 20px;">
 				<form action="/moamore/closing/closingAccountDetailPro.moa" method="post" name="inputForm" onsubmit="return check()">
 					<input type="hidden" name="article_no" value="${dto.article_no}"/>

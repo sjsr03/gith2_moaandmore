@@ -29,4 +29,8 @@
 	<insert id="insertClosingAccountComment" parameterType="closingAccountCommentDTO">
 		insert into closing_account_comment values(CLOSING_ACCOUNT_COMMENT_SEQ.nextVal, #{article_no}, #{content}, #{id}, sysdate)
 	</insert>
+	
+	<insert id="insertClosingAccount" parameterType="closingAccountDTO">
+		insert into closing_account values(CLOSING_ACCOUNT_SEQ.nextVal, sysdate, #{content}, #{subject}, #{id}, #{budget_no})
+	</insert>
 </mapper>

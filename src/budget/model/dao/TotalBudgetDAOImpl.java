@@ -109,6 +109,13 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	public void updateCurrentBudget(int budget_no) throws SQLException {
 		sqlSession.update("totalBudget.updateCurrentBudget", budget_no);
 	}
+
+	@Override
+	public List<TotalBudgetDTO> selectBudgetAllByID(String id) throws SQLException {
+		List<TotalBudgetDTO> list = sqlSession.selectList("totalBudget.selectBudgetAllByID", id);
+		
+		return list;
+	}
 	
 
 }

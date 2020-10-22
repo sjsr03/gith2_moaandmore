@@ -81,5 +81,10 @@
   		UPDATE TOTAL_BUDGET SET TOTAL_BUDGET_CURRENT=(SELECT sum(CATEGORY_CURRENT) FROM TOTAL_BUDGET_DETAIL tbd WHERE BUDGET_NO = #{BUDGET_NO}) WHERE BUDGET_NO=#{BUDGET_NO}
   	</update>
   	
+  	<!-- 사용자의 모든 예산 목록 가져오기 -->
+  	<select id="selectBudgetAllByID" parameterType="string" resultType="totalBudgetDTO">
+  		select * from total_budget where id=#{value}
+  	</select>
+  	
   </mapper>
  

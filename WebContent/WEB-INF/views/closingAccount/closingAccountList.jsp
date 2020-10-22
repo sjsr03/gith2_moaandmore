@@ -18,9 +18,11 @@
 </head>
 <jsp:include page="../sidebar.jsp"/>
 <div class="container-fluid">
-	<div>
-		<button onclick="location.href='/moamore/closing/closingAccountForm'">등록</button>
-	</div>
+	<c:if test="${sessionScope.memId != null}">
+		<div>
+			<button onclick="location.href='/moamore/closing/closingAccountForm.moa'">등록</button>
+		</div>
+	</c:if>
 	<div style="margin-top: 20px;">
 		<table>
 			<tr>
@@ -32,7 +34,7 @@
 				<tr onclick="location='/moamore/closing/closingAccountDetail.moa?article_no=${article.article_no}'">
 					<td>${article.subject}</td>
 					<td>${article.id}</td>
-					<td>${fn:substring(article.write_day,0,10)}</td>
+					<td>${fn:substring(article.write_day,0,19)}</td>
 				</tr>
 			</c:forEach>
 		</table>
