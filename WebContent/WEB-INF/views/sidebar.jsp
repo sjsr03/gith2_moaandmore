@@ -95,7 +95,7 @@ $(document).ready(function(){
       
       
       <!-- 예산탭 시작 -->
-	<c:if test="${path.indexOf('/team/') < 0}" >
+	<c:if test="${path.indexOf('/team/') < 0 || path.indexOf('/closing/') < 0 }}" >
       <!-- Heading -->
       <div class="sidebar-heading">
         예산 관리
@@ -159,7 +159,7 @@ $(document).ready(function(){
       
       <!-- 예산 탭 끝 -->
       <!-- 커뮤니티탭 시작 -->
-      <c:if test="${path.indexOf('/team/') >= 0}" >
+      <c:if test="${path.indexOf('/team/') >= 0 || path.indexOf('/closing/') >= 0 }" >
 		 <!-- Heading -->
       <div class="sidebar-heading">
         커뮤니티
@@ -196,7 +196,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/moamore/closing/closingAccountList.moa">
           <i class="fas fa-fw fa-list-ul"></i>
           <span>결산 게시판</span></a>
       </li>
