@@ -66,7 +66,7 @@ public interface BudgetService {
 	
 	//오늘의 예산 총합
 	public int selectSumTodayBudget(String id) throws SQLException;
-	
+
 	//아이디로 해당 사용자 예산들 가져오기
 	public List<TotalBudgetDTO> selectBudgetAllByID(String id) throws SQLException;
 }

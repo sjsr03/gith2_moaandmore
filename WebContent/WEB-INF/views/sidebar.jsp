@@ -103,11 +103,11 @@ $(document).ready(function(){
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBudget" aria-expanded="true" aria-controls="collapseBudget">
           <i class="fas fa-fw fa-coins"></i>
           <span>예산</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseBudget" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">예산</h6>
             <a class="collapse-item" href="/moamore/budget/todayBudget.moa">오늘의 예산</a>
@@ -130,11 +130,19 @@ $(document).ready(function(){
           <i class="fas fa-fw fa-calendar-alt"></i>
           <span>달력</span></a>
       </li>
-      <!-- Nav Item - Tables -->
+       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/report/report.moa">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true" aria-controls="collapseReport">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>예산 보고서</span></a>
+          <span>예산 보고서</span>
+        </a>
+        <div id="collapseReport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">보고서</h6>
+            <a class="collapse-item" href="/moamore/report/report.moa">예산 보고서</a>
+            <a class="collapse-item" href="/moamore/report/expectation.moa">데이터 분석</a>
+          </div>
+        </div>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">

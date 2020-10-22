@@ -11,8 +11,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import budget.model.dao.RecordGoalsDAO;
 import budget.model.dao.TotalBudgetDAO;
+import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.TotalBudgetDTO;
+import goals.model.dao.GoalsDAO;
+import goals.model.dto.GoalsDTO;
 import report.model.dao.LinearRegression;
 import report.model.dao.ReportDAO;
 
@@ -23,6 +27,10 @@ public class ReportServiceImpl implements ReportService {
 	private ReportDAO reportDAO = null;
 	@Autowired
 	private TotalBudgetDAO totalBudgetDAO = null;
+	@Autowired
+	private RecordGoalsDAO recordGoalsDAO = null;
+	@Autowired
+	private GoalsDAO goalsDAO = null;
 	
 	@Override
 	public List selectAllOrderByReg(String id) {
@@ -125,7 +133,7 @@ public class ReportServiceImpl implements ReportService {
 	
 	
 	@Override
-	public HashMap expectation(String id) throws SQLException {
+	public HashMap expectOutcome(String id) throws SQLException {
 		HashMap returnMap = new HashMap();
 		
 		
@@ -184,19 +192,106 @@ public class ReportServiceImpl implements ReportService {
 		returnMap.put("predictAmount",predictAmount);
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		return returnMap;
+	}
+	
+	@Override
+	public HashMap expectGoals(String id) throws SQLException {
+		HashMap returnMap = new HashMap();
+		List goalNumList = selectNumAndSubListById(id);
+		List predictedGoalsNo = new ArrayList();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		
+		if(goalNumList.size() == 0) {
+			return null;
+		} else {
+			
+			for(Object obj:goalNumList) {
+				
+				int goal_no = (int)obj;
+				
+				GoalsDTO goalsDTO = goalsDAO.selectOne(goal_no);
+				if(goalsDTO.getTarget_money() == goalsDTO.getSaving()) {
+					break;
+				}
+				if(goalsDTO.getPublic_ch() == 1) {	//그룹 목표일 경우(종료일자 정해져있음)
+					if((goalsDTO.getEnd_day().getTime())<(new Date().getTime())) {	//이미 끝난 목표면 종료
+						break;
+					}
+				}
+				
+				
+				
+				List goalList = selectAllByIdAndNum(id, goal_no);
+				if(goalList.size() < 2) {
+					break;
+				}
+				String goalX = "[";
+				String goalY = "[";
+				
+				List goalXList = new ArrayList();	//선형회귀용 데이터리스트
+				List goalYList = new ArrayList();	//선형회귀용 데이터리스트
+				
+				for(Object obj2 : goalList) {
+					RecordGoalsDTO RGdto = (RecordGoalsDTO) obj2;
+					goalY += "\'" + RGdto.getAmount() + "\',";
+					goalX += "\'" + sdf.format(RGdto.getReg()) + "\',";
+					
+					goalXList.add((float)(RGdto.getReg().getTime() / (1000*60*60*24)));
+					goalYList.add((float)RGdto.getAmount());
+				}
+				
+				LinearRegression lr = new LinearRegression(goalXList, goalYList);
+				int restAmount = goalsDTO.getTarget_money() - goalsDTO.getSaving();
+				int testAmount = 0;
+				
+				float todayDate = (float)(new Date().getTime()/(1000*60*60*24));
+				
+				while(testAmount < restAmount) {
+					todayDate += 1;
+					testAmount += lr.predictValue(todayDate);
+					System.out.println(testAmount);
+				}
+				
+				Date predictedDate = new Date((long)todayDate*(1000*60*60*24));
+				
+				HashMap map = new HashMap();
+				map.put("goal_no", goal_no);
+				map.put("goalX", goalX);
+				map.put("goalY", goalY);
+				map.put("subject", goalsDTO.getSubject());
+				map.put("predictedDate", predictedDate);
+				predictedGoalsNo.add(goal_no);
+				
+				returnMap.put(goal_no, map);
+			}
+			returnMap.put("predictedGoalsNo", predictedGoalsNo);
+			
+			return returnMap;
+		}
+	}
+	
+	@Override
+	public List selectAllByIdAndNum(java.lang.String id, int goal_no) {
+		HashMap map = new HashMap();
+		map.put("id", id);
+		map.put("goal_no", goal_no);
+		
+		List list = recordGoalsDAO.selectAllByIdAndNum(map);
+		return list;
+	}
+	
+	@Override
+	public List selectNumAndSubListById(String id) throws SQLException {
+		List list = new ArrayList();
+		List listNum = recordGoalsDAO.selectNumListById(id);
+		
+		for (int i = 0; i < listNum.size(); i++) {
+			GoalsDTO dto = goalsDAO.selectOne((int)listNum.get(i));
+			HashMap map = new HashMap();
+			map.put(dto.getGoal_no(), dto.getSubject());
+			list.add(map);
+		}
+		return list;
 	}
 }

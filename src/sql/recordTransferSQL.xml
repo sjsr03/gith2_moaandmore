@@ -19,10 +19,5 @@
   	</select>
   	
   	
-  	<!-- 회원의 남은돈 기록 합산 -->
-  	<select id="selectLeftMoneySum" parameterType="string" resultType="int">
-  		select sum(amount) from record_transfer where id=#{value}
-  	</select>
-  	
   </mapper>
  

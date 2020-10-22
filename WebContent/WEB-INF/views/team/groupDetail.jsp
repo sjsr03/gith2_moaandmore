@@ -178,7 +178,7 @@
 		<span class="h2">참여인원 목록</span>
 	</div>
 	<div class="row">
-		<span class="h5"><span class="h4" id="pCnt" style="color: #d692af; font-weight: bold; "></span>의 회원들이 이 목표를 진행중입니다.</span>
+		<span class="h5"><span class="h4" id="pCnt" style="color: #d692af; font-weight: bold; "></span>의 회원들이 참여중입니다.</span>
 	</div>	
 	<div class="row mt-2">
 		<div class="col-12">

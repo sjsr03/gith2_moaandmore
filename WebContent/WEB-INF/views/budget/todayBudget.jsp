@@ -277,7 +277,7 @@
 		                  <h6 class="m-0 font-weight-bold text-primary">예산에서 남은 돈<br/></h6>
 		                </div>
 		                <div class="card-body">
-							총액 : <span id="totalLeftMoney"></span>원
+							총액 : <fmt:formatNumber value="${LMSum}" pattern="#,###"/>원
 							<hr/>
 		                	<c:forEach items="${leftMoney}" var="i" >
 								<div>
@@ -365,7 +365,7 @@
 <script>
 	$(document).ready(function(){
 		//남은 돈 총합 계산
-		calSumFirst();
+		//calSumFirst();
 
 		
 		//분배금액 입력될때마다
@@ -449,6 +449,7 @@
 		
 		$('.amount').each(function(){
 			sum += parseInt($(this).text());
+			alert(sum);
 		});
 		
 		$('#totalLeftMoney').text((sum+"").replace(/\B(?=(\d{3})+(?!\d))/g, ","));
@@ -489,7 +490,7 @@
 	
 	//입력된 값이 최대값을 넘지 않는지, 음수는 아닌지 계산
 	function testAmount(inputAmount) {
-		var Ori = parseInt(inputAmount.parent().prev().text());
+		var Ori = parseInt($(inputAmount).prop("max"));
 		if(Ori < inputAmount.val()) {
 			alert("잔액을 초과할 수 없습니다.");
 			
@@ -514,7 +515,7 @@
 	//전환 후 남은 금액 자동계산
 	function calRest(inputAmount) {
 		var rest = 0;
-		var Ori = parseInt(inputAmount.parent().prev().text());
+		var Ori = parseInt($(inputAmount).prop("max"));
 		if(inputAmount.val()=="") {
 			rest = Ori;
 		} else {
