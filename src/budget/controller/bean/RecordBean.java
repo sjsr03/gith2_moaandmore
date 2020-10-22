@@ -58,7 +58,7 @@ import category.service.bean.CategoryService;
 @RequestMapping("/record/")
 public class RecordBean {
 
-	private static final String RecordPageDTO = null;
+	
 	@Autowired
 	private RecordService recordService = null;	
 	@Autowired
