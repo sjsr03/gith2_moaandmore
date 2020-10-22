@@ -73,31 +73,7 @@ console.log("레코드페이지 안의 타임 : " + type);
 		//console.log("pageNum :" +  "${recordPage.pageNum}");
 		//console.log("레코드 안의 type :" +  $("#hiddenType").val());
 		
-		// 내역을 클릭했을때 해당 카테고리 빼고 나머지 숨기기
-		$(".content").click(function(){
-			console.log("체크체크 : " +$("#recordType").val() );
-			if($("#recordType").val() == "budget"){
-				console.log("예산");
-				cateType="budgetcategory";
-				$("#budgetcategory").css("display", "block"); 
-				$("#incomecategory").css("display", "none"); 
-				$("#outcomecategory").css("display", "none"); 
-				getBudgetCategories();
-			}else if($("#recordType").val() == "income"){
-				console.log("수입")
-				cateType="incomecategory";
-				$("#incomecategory").css("display", "block"); 
-				$("#budgetcategory").css("display", "none");
-				$("#outcomecategory").css("display", "none"); 
-			}else if($("#recordType").val() == "outcome"){
-				console.log("지출")
-				cateType="outcomecategory";
-				$("#outcomecategory").css("display", "block"); 
-				$("#incomecategory").css("display", "none"); 
-				$("#budgetcategory").css("display", "none");
-			}// 끝
-			
-		});
+		
 		// 수정버튼 처리
 		$("button[name='btn_modify']").on('click',function(event){
 			console.log(event);
@@ -160,6 +136,8 @@ console.log("레코드페이지 안의 타임 : " + type);
 					console.log("컬럼:" + key + "value : " + data[key]);
 					//console.log(typeof key);
 					if(key != 'budgetNum'){ 
+						
+						console.log("되냐안되냐");
 						$("#category").append("<option value='"+key+"'>"+data[key]+"</option>");
 					}else{ // budgetNum 이면 변수에 담아주기
 						budget_no = data[key];
@@ -255,6 +233,33 @@ console.log("레코드페이지 안의 타임 : " + type);
 		$("#amount").val(amount);
 		
 		$("#memo").val(memo);
+		
+		
+		// 내역을 클릭했을때 해당 카테고리 빼고 나머지 숨기기
+		console.log("체크체크 : " +$("#recordType").val() );
+		if($("#recordType").val() == "budget"){
+			console.log("예산");
+			cateType="budgetcategory";
+			$("#budgetcategory").css("display", "block"); 
+			$("#incomecategory").css("display", "none"); 
+			$("#outcomecategory").css("display", "none"); 
+			getBudgetCategories();
+		}else if($("#recordType").val() == "income"){
+			console.log("수입")
+			cateType="incomecategory";
+			$("#incomecategory").css("display", "block"); 
+			$("#budgetcategory").css("display", "none");
+			$("#outcomecategory").css("display", "none"); 
+		}else if($("#recordType").val() == "outcome"){
+			console.log("지출")
+			cateType="outcomecategory";
+			$("#outcomecategory").css("display", "block"); 
+			$("#incomecategory").css("display", "none"); 
+			$("#budgetcategory").css("display", "none");
+		}// 끝
+
+		
+		
 	    /*팝업 오픈전 별도의 작업이 있을경우 구현*/ 
 	    popupOpen(); //레이어 팝업창 오픈 
 	    wrapWindowByMask(); //화면 마스크 효과 
@@ -263,9 +268,7 @@ console.log("레코드페이지 안의 타임 : " + type);
 
 </script>
 <body>
-<h2 align="center"> 입출력 내역 </h2>
-<c:out value="${categories}"/>
-	
+<h2 align="center"> 입출력 내역 </h2>	
 
 <div align="center">
 	<button onclick="location.href='/moamore/record/recordForm.moa'">입출력 입력</button><br />
@@ -413,36 +416,67 @@ console.log("레코드페이지 안의 타임 : " + type);
 						<td>카테고리</td>				
 					</tr>
 					<tr>
+					<%--
+					<c:if test="${not empty incomeCategories}">
+						<c:choose>
+							<c:when test="${records.type eq 'income'}">
+								<c:set var="recordCate" value="${incomeCategories[records.income_category_no]}" />
+								<c:set var="recordCateNum" value="${records.income_category_no}" />
+								${incomeCategories[records.income_category_no]}
+							</c:when>
+							<c:otherwise>
+								<c:set var="recordCate" value="${outcomeCategories[records.outcome_category_no]}" />
+								<c:set var="recordCateNum" value="${records.outcome_category_no}" />
+								${outcomeCategories[records.outcome_category_no]}
+							</c:otherwise>
+						</c:choose>
+					</c:if>	
+					 --%>
+					
 						<td><input type="text" id="recordType" value="recordType"/></td>
-						<td><input type="text" id="recordCategory"  value="recordCategory"/>
-					<div class="category-section">
-						<%-- 지출 카테고리 --%>
-						<div class="input-area">
-							<select id="outcomecategory" name="outcomecategory">
-							<c:forEach var="outcomecategories" items= "${categories}" >
-								<option value="${outcomecategories.key}">${outcomecategories.value}</option>
-							</c:forEach>
-							</select>
-						</div>
-						<%-- 수입 카테고리 --%>
-						<div class="input-area">
-							<select id="incomecategory" name="incomecategory">
-							<c:forEach var="incomeCategories" items= "${categories}" >
-								<option value="${incomeCategories.key}">${incomeCategories.value}</option>
-							</c:forEach>
-							</select>
-						</div>
-						<%-- 예산내 지출 카테고리 --%>
-						<%-- categories 번호가 key 이름이 value --%>
-						<div class="input-area">
-							<select id="category" name="category">
-							<c:forEach var="categories" items= "${categories}" >
-								<option value="${categories.key}">${categories.value}</option>
-							</c:forEach>
-							</select>
-						</div>
-						
-					</div>
+						<td>
+							<div class="category-section">
+								<%-- 수입 지출은 여러개 선택했을 때 카테고리 이름이 달라서 분기처리필요 --%>				
+								<%-- 지출 카테고리 --%>
+								<div class="input-area">
+									<select id="outcomecategory" name="outcomecategory">
+									<c:if test="${empty incomeCategories}">
+										<c:forEach var="outcomecategories" items= "${categories}" >
+											<option value="${outcomecategories.key}">${outcomecategories.value}</option>
+										</c:forEach>
+									</c:if>	
+									<c:if test="${not empty incomeCategories}">
+										<c:forEach var="outcomecategories" items= "${incomeCategories}" >
+											<option value="${outcomecategories.key}">${outcomecategories.value}</option>
+										</c:forEach>
+									</c:if>	
+									</select>
+								</div>
+								<%-- 수입 카테고리 --%>
+								<div class="input-area">
+									<select id="incomecategory" name="incomecategory">
+									<c:if test="${empty incomeCategories}">
+										<c:forEach var="incomeCategories" items= "${categories}" >
+											<option value="${incomeCategories.key}">${incomeCategories.value}</option>
+										</c:forEach>
+									</c:if>
+									<c:if test="${not empty incomeCategories}">
+										<c:forEach var="outcomecategories" items= "${outcomeCategories}" >
+											<option value="${outcomecategories.key}">${outcomecategories.value}</option>
+										</c:forEach>
+									</c:if>	
+									</select>
+								</div>
+								<%-- 예산내 지출 카테고리 --%>
+								<%-- categories 번호가 key 이름이 value --%>
+								<div class="input-area">
+									<select id="category" name="category">
+									<c:forEach var="categories" items= "${categories}" >
+										<option value="${categories.key}">${categories.value}</option>
+									</c:forEach>
+									</select>
+								</div>
+							</div>
 						</td>	
 					</tr>
 					<tr>
