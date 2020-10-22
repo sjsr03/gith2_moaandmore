@@ -67,4 +67,9 @@ public class ClosingAccountDAOImpl implements ClosingAccountDAO{
 		sqlSession.insert("closing.insertClosingAccountComment", dto);
 	}
 
+	@Override
+	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException {
+		sqlSession.insert("closing.insertClosingAccount", dto);
+	}
+
 }

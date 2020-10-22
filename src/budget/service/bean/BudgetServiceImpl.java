@@ -658,6 +658,10 @@ public class BudgetServiceImpl implements BudgetService {
 		return todayBudgetDAO.selectSumTodayBudget(id);
 	}
 	
+	@Override
+	public List<TotalBudgetDTO> selectBudgetAllByID(java.lang.String id) throws SQLException {
+		return totalBudgetDAO.selectBudgetAllByID(id);
+	}
 }
 	
 

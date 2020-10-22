@@ -46,4 +46,9 @@ public class ClosingAccountServiceImpl implements ClosingAccountService{
 		closingDao.insertClosingAccountComment(dto);
 	}
 
+	@Override
+	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException {
+		closingDao.insertClosingAccount(dto);
+	}
+
 }

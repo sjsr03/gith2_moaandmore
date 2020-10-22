@@ -37,6 +37,7 @@ public class CategoryBean {
 		String already = request.getParameter("already");
 		String exist = request.getParameter("exist");
 		System.out.println("setCategory의 already : "+already);
+		
 		model.addAttribute("already", already);
 		model.addAttribute("exist", exist);
 		
@@ -71,7 +72,7 @@ public class CategoryBean {
 	
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		//카테고리명 안겹치는지 확인
-		String already = "false";
+		int already =0;
 		
 		//수입카테고리 추가하기
 		if(categoryOption.equals("수입")) {
@@ -81,9 +82,9 @@ public class CategoryBean {
 			 already = categoryService.addOutcomeCategory(category_name,id);	
 			
 		}
-		System.out.println(already);
 		
-		model.addAttribute("already",already);
+		
+		//model.addAttribute("already",already);
 		
 	
 		return "category/setCategoryPro";
@@ -94,59 +95,18 @@ public class CategoryBean {
 	@RequestMapping("updateCategory.moa")
 	public String updateCategory(Model model,String inorout,int category_no,String newName) throws SQLException {
 		
-		
-		
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-		String already = "false";
+		
+		int  already = 0; // 카테고리 이름이 있는지
+		
 		//지출카테고리 수정
 		if(inorout.equals("outcome")) {
-			List outcomeCategoryNames = categoryService.selectOutcomeCategoryNamesbyId(id);
-			
-				
-			//지출카테고리 이름 겹치는지 검사
-			for(int i=0;i<outcomeCategoryNames.size(); i++) {
-				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
-				
-				if(outcomeCategoryName.equals(newName)) {
-					already ="true";
-				}
-			}
-			//이름이 안겹치면 수정 가능
-			if(!already.equals("true")) {
-				
-				categoryService.updateoutcomeCategory(category_no,newName,id);
-				
-			}	
-			
-		
-			
+			already = categoryService.updateoutcomeCategory(category_no,newName,id);
 		//수입카테고리 수정
 		}else if(inorout.equals("income")) {
-			
-			List incomeCategoryNames = categoryService.selectIncomeCategoryNamesbyId(id);
-			
-			//수입카테고리 이름 겹치는지 검사
-			for(int i=0;i<incomeCategoryNames.size(); i++) {
-				String incomeCategoryName = (String)incomeCategoryNames.get(i);
-				
-				if(incomeCategoryName.equals(newName)) {
-					already = "true";
-				}
-			
-			}
-			//이름이 안겹치면 수정 가능
-			if(!already.equals("true")){
-				categoryService.updateincomeCategory(category_no,newName,id);
-				
-			}
-			
+			already = categoryService.updateincomeCategory(category_no,newName,id);
 		}
 		
-		List income = categoryService.selectAllIncomeCategoryById(id);
-		List outcome = categoryService.selectAllById(id);
-		
-		//model.addAttribute("income",income);
-		//model.addAttribute("outcome", outcome);
 		model.addAttribute("already", already);
 		
 		

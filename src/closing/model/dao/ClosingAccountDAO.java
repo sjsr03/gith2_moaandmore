@@ -19,4 +19,6 @@ public interface ClosingAccountDAO {
 	public int getClosingCommentArticleCount(int article_no) throws SQLException;
 	//댓글 등록
 	public void insertClosingAccountComment(ClosingAccountCommentDTO dto) throws SQLException;
+	//결산 게시물 등록
+	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException;
 }

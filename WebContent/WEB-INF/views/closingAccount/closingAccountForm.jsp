@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <head>
 	<meta charset="UTF-8">
 	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -22,40 +23,13 @@
 			var inputs = document.inputForm;
 			
 			if(!inputs.subject.value){	//false일때, 값이 없을때
-				alert("목표명을 입력하세요.");
+				alert("제목을 입력하세요.");
 				return false;
 			}
 			
 			if(!inputs.content.value){	//false일때, 값이 없을때
-				alert("목표 내용을 입력하세요.");
+				alert("내용을 입력하세요.");
 				return false;
-			}
-			
-			if(!inputs.amount.value){	//false일때, 값이 없을때
-				alert("목표 금액을 입력하세요.");
-				return false;
-			}
-			
-			if(!inputs.start_day.value){	//false일때, 값이 없을때
-				alert("시작일을 입력하세요.");
-				return false;
-			}
-			
-			if(!inputs.end_day.value){	//false일때, 값이 없을때
-				alert("종료일을 입력하세요.");
-				return false;
-			}
-			
-			if(!inputs.people.value){	//false일때, 값이 없을때
-				alert("참여자 수를 입력하세요.");
-				return false;
-			}
-			
-			if(inputs.isopen.value=="0"){
-				if(!inputs.password.value){	//false일때, 값이 없을때
-					alert("비밀번호를 입력하세요.");
-					return false;
-				}
 			}
 		}
 	</script>
@@ -71,11 +45,21 @@
 					<table>
 						<tr>
 							<td> 신 청 자 </td>
-							<td><input type="text" name="leader" readonly="readonly" value="${sessionScope.memId}"/></td>
+							<td><input type="text" name="id" readonly="readonly" value="${sessionScope.memId}"/></td>
 						</tr>
 						<tr>
 							<td> 제목 </td>
 							<td><input type="text" name="subject"/></td>
+						</tr>
+						<tr>
+							<td> 예산 선택 </td>
+							<td>
+								<select name="budget_no">
+									<c:forEach var="article" items="${list}">
+										<option value='${article.budget_no}'>${fn:substring(article.start_day,0,10)} ~ ${fn:substring(article.end_day,0,10)}</option>
+									</c:forEach>
+								</select>
+							</td>
 						</tr>
 						<tr>
 							<td> 내용 </td>
@@ -83,7 +67,7 @@
 						</tr>
 						<tr>
 							<td colspan="2" style="text-align: center;">
-								<input type="submit" value="신청" />					
+								<input type="submit" value="작성" />					
 								<input type="reset" value="재작성" />					
 								<input type="button" value="돌아가기" onclick="window.location='/moamore/closing/closingAccountList.moa'" />					
 							</td>
