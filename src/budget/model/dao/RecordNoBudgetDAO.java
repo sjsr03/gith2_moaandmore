@@ -3,6 +3,8 @@ package budget.model.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import budget.model.dto.BudgetDTO;
+import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
 import budget.model.dto.SearchForRecordDTO;
@@ -35,4 +37,7 @@ public interface RecordNoBudgetDAO {
 	
 	// 고유번호로 예산 외 기록 삭제
 	public int DeleteNoBudgetRecord(int number)throws SQLException;
+	
+	// 내역 수정
+	public void modifyNoBudgetRecord(NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO)throws SQLException;
 }

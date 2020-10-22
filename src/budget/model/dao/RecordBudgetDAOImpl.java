@@ -75,6 +75,16 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 			return sqlSession.selectOne("record.selectSumFromDateAndCatNo", map);
 		}
 	}
+	@Override
+	public void modifyBudgetRecord(BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO) throws SQLException {
+		int result = 0;
+		System.out.println(budgetDTO.toString());
+		System.out.println(budgetDetailDTO.toString());
+		
+		sqlSession.selectOne("record.modifyBudgetRecord", budgetDTO);
+		sqlSession.selectOne("record.modifyBudgetDetailRecord", budgetDetailDTO);
+		
+	}
 	
 	
 	

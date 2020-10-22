@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,16 +19,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 
 import budget.model.dao.RecordBudgetDAO;
 import budget.model.dao.RecordBudgetDAOImpl;
@@ -36,6 +43,7 @@ import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
+import budget.model.dto.RecordModifyDTO;
 import budget.model.dto.RecordPageDTO;
 import budget.model.dto.SearchForRecordDTO;
 import budget.service.bean.BudgetService;
@@ -310,6 +318,31 @@ public class RecordBean {
 		return "budget/moneyLog";
 	}
 
-	
+	// 내역 수정  , produces = "application/json;charset=utf-8"
+	// MultipartHttpServletRequest request
+	@ResponseBody
+	@RequestMapping(value="modifyRecord.moa", method = RequestMethod.POST)  
+	public void modifyRecord(RecordModifyDTO recordModifyDTO, @RequestParam("image") MultipartFile file) throws Exception{
+		System.out.println("??? : " + recordModifyDTO.getUniqueNum());
+		
+		//String id = (String)request.getSession().getAttribute("memId");
+		//recordModifyDTO.setId(id);
+		//System.out.println(request.getParameter("image"));
+		
+		
+		System.out.println(recordModifyDTO.toString());
+		
+		recordService.modifyRecord(recordModifyDTO, file);
+		System.out.println("파일 : "+ file);
+		// mapper 사용해서 map -> json string으로 변환해서 리턴해주기
+		/*
+		ObjectMapper mapper = new ObjectMapper();
+		String json2 = "";
+		
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		*/
+		// json2 = mapper.writeValueAsString(map2);
+		
+	}
 	
 }
