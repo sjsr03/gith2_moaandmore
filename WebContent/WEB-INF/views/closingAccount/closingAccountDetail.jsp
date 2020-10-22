@@ -15,6 +15,16 @@
 		    border-collapse: collapse;
 		}
 	</style>
+	<script>
+		function check(){
+			var inputs = document.inputForm;
+			
+			if(!inputs.content.value){	//false일때, 값이 없을때
+				alert("댓글 내용을 입력하세요.");
+				return false;
+			}
+		}
+	</script>
 </head>
 <jsp:include page="../sidebar.jsp"/>
 <div class="container-fluid">
@@ -22,19 +32,19 @@
 		<table>
 			<tr>
 				<td>제목</td>
-				<td>${dto.subject}
+				<td>${dto.subject}</td>
 			</tr>
 			<tr>
 				<td>작성자</td>
-				<td>${dto.id}
+				<td>${dto.id}</td>
 			</tr>
 			<tr>
 				<td>작성일</td>
-				<td>${dto.write_day}
+				<td>${fn:substring(dto.write_day,0,19)}</td>
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td>${dto.content}
+				<td>${dto.content}</td>
 			</tr>
 		</table>
 	</div>
@@ -44,7 +54,7 @@
 				<tr>
 					<td>${article.id}</td>
 					<td>${article.content}</td>
-					<td>${fn:substring(article.write_day,0,10)}</td>
+					<td>${fn:substring(article.write_day,0,19)}</td>
 				</tr>
 			</c:forEach>
 		</table>
@@ -72,6 +82,15 @@
 				</c:if>
 			</c:if>
 		</div>
+		<c:if test="${sessionScope.memName != null}">
+			<div style="margin-top: 20px;">
+				<form action="/moamore/closing/closingAccountDetailPro.moa" method="post" name="inputForm" onsubmit="return check()">
+					<input type="hidden" name="article_no" value="${dto.article_no}"/>
+					<input type="text" name="content" placeholder="댓글 내용을 작성해주세요."/>
+					<input type="submit" value="등록"/>
+				</form>
+			</div>
+		</c:if>
 	</div>
 	<div align="right" style="margin-top: 10px;">
 		<button type="button" onclick="location.href='/moamore/closing/closingAccountList.moa'">돌아가기</button>
