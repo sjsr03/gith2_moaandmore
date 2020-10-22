@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import closing.model.dao.ClosingAccountDAO;
+import closing.model.dto.ClosingAccountCommentDTO;
 import closing.model.dto.ClosingAccountDTO;
 
 @Service
@@ -38,6 +39,16 @@ public class ClosingAccountServiceImpl implements ClosingAccountService{
 	@Override
 	public int getClosingCommentArticleCount(int article_no) throws SQLException{
 		return closingDao.getClosingCommentArticleCount(article_no);
+	}
+
+	@Override
+	public void insertClosingAccountComment(ClosingAccountCommentDTO dto) throws SQLException {
+		closingDao.insertClosingAccountComment(dto);
+	}
+
+	@Override
+	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException {
+		closingDao.insertClosingAccount(dto);
 	}
 
 }

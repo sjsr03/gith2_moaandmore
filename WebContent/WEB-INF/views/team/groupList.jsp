@@ -111,7 +111,7 @@
 		
 			<c:if test="${articleList != null}">
 				<c:forEach var="article" items="${articleList}" varStatus="stat">
-					<div style="border: 1px solid black; padding:5px; width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}&nickname=${sessionScope.memName}'">
+					<div style="border: 1px solid black; padding:5px; width:400px; height:330px;background-color: white; margin: 5px;display: inline-block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
 							<div style="border: 1px solid white; width: 380px; height: 200px; text-align: center; margin-left: 10px;">
 								<c:forEach var="mem" items="${articleMemberAvgList[0][stat.index]}">
 									<c:if test="${sessionScope.memName == mem.nickname}">

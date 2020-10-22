@@ -32,4 +32,7 @@ public interface TotalBudgetDAO {
 	
 	//예산 현재금액 수정
 	public void updateCurrentBudget(int budget_no) throws SQLException;
+	
+	//아이디로 해당 사용자 예산들 가져오기
+	public List<TotalBudgetDTO> selectBudgetAllByID(String id) throws SQLException;
 }

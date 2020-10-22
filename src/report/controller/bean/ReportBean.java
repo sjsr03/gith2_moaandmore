@@ -15,11 +15,22 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import budget.model.dao.RecordBudgetDAO;
+import budget.model.dto.BudgetDTO;
+import budget.model.dto.BudgetDetailDTO;
+import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.TotalBudgetDTO;
+import budget.model.dto.TotalBudgetDetailDTO;
 import budget.service.bean.BudgetService;
+import budget.service.bean.RecordService;
+import category.service.bean.CategoryService;
+import goals.model.dto.GoalsDTO;
+import goals.service.GoalsService;
+import report.model.dao.LinearRegression;
 import report.service.bean.ReportService;
 
 @Controller
@@ -30,6 +41,14 @@ public class ReportBean {
 	private ReportService reportService = null;
 	@Autowired
 	private BudgetService budgetService = null;
+	@Autowired
+	private RecordService recordService = null;
+	@Autowired
+	private CategoryService categoryService = null;
+	@Autowired
+	private RecordBudgetDAO recordBudgetDAO = null;
+	@Autowired
+	private GoalsService goalsService = null;
 	
 	
 	@RequestMapping("report.moa")
@@ -87,15 +106,163 @@ public class ReportBean {
 			return "report/expectation";
 		} else {	//추정가능
 			
-			HashMap expectation = reportService.expectation(id);
-			model.addAttribute("expectation", expectation);
-			
-			
-			
+			HashMap expectOutcome = reportService.expectOutcome(id);
+			model.addAttribute("expectOutcome", expectOutcome);
+
+			List goalsList =  reportService.selectNumAndSubListById(id);
+			model.addAttribute("goalsList", goalsList);
 			
 			
 			return "report/expectation";
 		}
 		
+	}
+	
+	@RequestMapping("selectGoal.moa")
+	@ResponseBody
+	public HashMap selectGoal(int goal_no, String id) throws SQLException {
+		HashMap returnMap = new HashMap();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			
+		GoalsDTO goalsDTO = goalsService.selectOne(goal_no);
+		if(goalsDTO.getTarget_money() == goalsDTO.getSaving()) {
+			return null;
+		}
+		if(goalsDTO.getPublic_ch() == 1) {	//그룹 목표일 경우(종료일자 정해져있음)
+			if((goalsDTO.getEnd_day().getTime())<(new Date().getTime())) {	//이미 끝난 목표면 종료
+				return null;
+			}
+		}
+		
+		
+		List goalList = reportService.selectAllByIdAndNum(id, goal_no);
+		if(goalList.size() < 2) {
+			return null;
+		}
+		String goalX = "[";
+		String goalY = "[";
+		
+		List goalXList = new ArrayList();	//선형회귀용 데이터리스트
+		List goalYList = new ArrayList();	//선형회귀용 데이터리스트
+		
+		for(Object obj2 : goalList) {
+			RecordGoalsDTO RGdto = (RecordGoalsDTO) obj2;
+			goalY += "\'" + RGdto.getAmount() + "\',";
+			goalX += "\'" + sdf.format(RGdto.getReg()) + "\',";
+			
+			goalXList.add((float)(RGdto.getReg().getTime() / (1000*60*60*24)));
+			goalYList.add((float)RGdto.getAmount());
+		}
+		
+		LinearRegression lr = new LinearRegression(goalXList, goalYList);
+		int restAmount = goalsDTO.getTarget_money() - goalsDTO.getSaving();
+		int testAmount = 0;
+		
+		float todayDate = (float)(new Date().getTime()/(1000*60*60*24));
+		
+		while(testAmount < restAmount) {
+			todayDate += 1;
+			testAmount += lr.predictValue(todayDate);
+			System.out.println(testAmount);
+		}
+		
+		Date predictedDate = new Date((long)todayDate*(1000*60*60*24));
+		
+		HashMap map = new HashMap();
+		map.put("goal_no", goal_no);
+		map.put("goalX", goalX);
+		map.put("goalY", goalY);
+		map.put("subject", goalsDTO.getSubject());
+		map.put("predictedDate", predictedDate);
+		
+		returnMap.put(goal_no, map);
+			
+		
+		
+		return returnMap;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@RequestMapping("recordMacroForm.moa")
+	public String recordMacroForm() {
+		return "report/recordMacro";
+	}
+	
+	@RequestMapping("recordMacro.moa")
+	public String recordMacro(String id, int count, String StartDay, String EndDay, String type) throws SQLException, InterruptedException {
+		
+		List categoryList = null;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		System.out.println(StartDay);
+		
+		Date startDay = new Date(Timestamp.valueOf(StartDay).getTime());
+		Date endDay = new Date(Timestamp.valueOf(EndDay).getTime());
+		
+		
+		
+		
+		if (type.equals("budget")) {
+			while(startDay.before(endDay)) {
+				
+				Timestamp startTS = Timestamp.valueOf(sdf.format(startDay));
+				// 예산 번호 뽑아오기
+				int budgetNum = budgetService.selectBudgetNum(id, startTS);
+				// 카테고리 번호 뽑아오기
+				categoryList = budgetService.selectBudgetCategoryNums(budgetNum);
+				
+				for (int i = 0; i < count; i++) {
+					BudgetDTO budgetDTO = new BudgetDTO();
+					int random = (int)((Math.random()*(categoryList.size()-1)));
+//					int category_no = ((TotalBudgetDetailDTO)categoryList.get(random)).getCategory_no();
+					int category_no = (int)categoryList.get(random);
+					Timestamp date = Timestamp.valueOf(sdf.format(new Date(startDay.getTime()+((long)(Math.round((1000*60*60*24)*Math.random()))))));
+					budgetDTO.setReg(date);
+					budgetDTO.setAmount((int)(Math.random()*10000) + 100);
+					budgetDTO.setBudget_no(budgetNum);
+					budgetDTO.setCategory_no(category_no);
+					budgetDTO.setId(id);
+					
+
+					
+					// 예산 내역 insert해준 후  구분번호 예산세부내역dto에 다시 세팅해주기 
+					recordBudgetDAO.insertBudget(budgetDTO);
+					int budget_outcome_no = budgetDTO.getBudget_outcome_no();
+					
+					BudgetDetailDTO budgetDetailDTO = new BudgetDetailDTO();
+					budgetDetailDTO.setContent("랜덤" + (int)Math.random()*10);
+					budgetDetailDTO.setBudget_outcome_no(budget_outcome_no);
+					budgetDetailDTO.setImg("");
+					budgetDetailDTO.setMemo("랜덤값");
+					
+					recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);		
+					
+				}
+				
+				startDay.setDate(startDay.getDate()+1);
+			}
+			
+		} else {
+			if (type.equals("income")) {
+				categoryList = categoryService.selectAllIncomeCategoryById(id);
+			}else if (type.equals("outcome")) {
+				categoryList = categoryService.selectAllById(id);
+			}
+			
+			
+			
+		
+		}
+		return "끝";
 	}
 }

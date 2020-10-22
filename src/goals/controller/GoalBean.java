@@ -36,6 +36,7 @@ public class GoalBean {
 		String public_ch_str = request.getParameter("public_ch");
 		if(public_ch_str != null && public_ch_str.equals("1")) {
 			public_ch = 1;
+			
 		}
 		
 		
@@ -47,7 +48,7 @@ public class GoalBean {
 	@RequestMapping("getMyGoalList.moa")
 	public @ResponseBody List<GoalsDTO> myGoalList (int public_ch, String sorting) throws SQLException {
 		//아이디별 리스트. 세션으로 id받아오기
-		
+		System.out.println("public_ch 값 : "+ public_ch +" sorting타입: "+ sorting);
 		return goalsService.selectAllByPublicCh(public_ch, sorting);
 	}
 	

@@ -61,7 +61,7 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 	}
 	
 	@Override
-	public int budgetRecordDelete(String budget_outcome_no) throws SQLException {
+	public int deleteBudgetRecord(int budget_outcome_no) throws SQLException {
 		int result = 0;
 		result = sqlSession.delete("record.deleteBudgetRecord", budget_outcome_no);
 		return result;

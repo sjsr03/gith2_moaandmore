@@ -31,7 +31,7 @@
 				<td>참여자 수</td>
 			</tr>
 			<c:forEach var="article" items="${articleList}">
-				<tr onclick="location='/moamore/team/teamDetail.moa?team_no=${article.team_no}&nickname=${sessionScope.memName}'">
+				<tr onclick="location='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
 					<td>${article.subject}</td>
 					<td>${article.content}</td>
 					<td>${article.amount}</td>

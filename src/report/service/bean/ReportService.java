@@ -23,6 +23,15 @@ public interface ReportService {
 	//데이터 분석 및 추정 가능한지 결과값
 	public int checkBeforeExpectation(String id) throws SQLException;
 	
-	//데이터 분석 자료 해쉬맵으로 리턴
-	public HashMap expectation(String id) throws SQLException;
+	//총지출 데이터 분석
+	public HashMap expectOutcome(String id) throws SQLException;
+	
+	//목표 달성 데이터 분석
+	public HashMap expectGoals(String id) throws SQLException;
+	
+	//아이디와 목표번호로 전환기록 가져오기
+	public List selectAllByIdAndNum(String id, int goal_no);
+	
+	//아이디로 전환기록 있는 목표번호와 이름 리스트 가져오기
+	public List selectNumAndSubListById(String id) throws SQLException;
 }

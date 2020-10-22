@@ -32,4 +32,7 @@ public interface RecordNoBudgetDAO {
 	
 	// 아이디, 타입으로 예산외 총 기록 가져오기 
 	public List selectNobudgetRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException;
+	
+	// 고유번호로 예산 외 기록 삭제
+	public int DeleteNoBudgetRecord(int number)throws SQLException;
 }
