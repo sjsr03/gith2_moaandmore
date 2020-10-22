@@ -106,9 +106,13 @@ public class BudgetBean {
 		// 남은돈 정보
 		
 		List leftMoneyList = budgetService.selectLeftMoneyById(id);
-		
+		int LMSum = 0;
+		for(Object obj:leftMoneyList) {
+			LMSum+= ((LeftMoneyDTO)obj).getAmount();
+		}
 		
 		model.addAttribute("leftMoney", leftMoneyList);
+		model.addAttribute("LMSum", LMSum);
 		model.addAttribute("categories", categories);
 		model.addAttribute("TBdto", TBdto);
 		model.addAttribute("BDdtoList", BDdtoList);

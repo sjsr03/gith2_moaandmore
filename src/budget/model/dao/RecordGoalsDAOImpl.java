@@ -27,5 +27,17 @@ public class RecordGoalsDAOImpl implements RecordGoalsDAO {
 		return sqlSession.selectList("recordGoals.selectAll", map);
 	}
 	
+	@Override
+	public List selectAllByIdAndNum(HashMap map) {
+		List list = sqlSession.selectList("recordGoals.selectAllByIdAndNum", map);
+		return list;
+	}
+	
+	@Override
+	public List selectNumListById(String id) {
+		List list = sqlSession.selectList("recordGoals.selectNumListById", id);
+		return list;
+	}
+	
 
 }

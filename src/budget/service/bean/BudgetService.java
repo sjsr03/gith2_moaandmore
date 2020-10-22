@@ -66,4 +66,5 @@ public interface BudgetService {
 	
 	//오늘의 예산 총합
 	public int selectSumTodayBudget(String id) throws SQLException;
+	
 }

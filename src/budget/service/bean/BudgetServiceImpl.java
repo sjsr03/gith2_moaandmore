@@ -22,6 +22,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import budget.model.dao.TotalBudgetDetailDAO;
 import budget.model.dao.LeftMoneyDAO;
 import budget.model.dao.RecordBudgetDAO;
+import budget.model.dao.RecordGoalsDAO;
 import budget.model.dao.RecordTransferDAO;
 import budget.model.dao.TodayBudgetDAO;
 import budget.model.dao.TodayBudgetDAOImpl;
@@ -60,6 +61,8 @@ public class BudgetServiceImpl implements BudgetService {
 	private GoalsDAOImpl goalsDAO = null;
 	@Autowired
 	private TodayBudgetDAO todayBudgetDAO = null;
+	@Autowired
+	private RecordGoalsDAO recordGoalsDAO = null;
 	
 	//신규 예산 설정
 	@Override
@@ -654,6 +657,7 @@ public class BudgetServiceImpl implements BudgetService {
 	public int selectSumTodayBudget(java.lang.String id) throws SQLException {
 		return todayBudgetDAO.selectSumTodayBudget(id);
 	}
+	
 }
 	
 

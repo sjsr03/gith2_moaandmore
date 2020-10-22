@@ -50,10 +50,10 @@ public class RecordTransferDAOImpl implements RecordTransferDAO {
 	
 	@Override
 	public int selectLeftMoneySum(String id) {
-		if(sqlSession.selectOne("recordTransfer.selectLeftMoneySum", id) == null) {
+		if(sqlSession.selectOne("recordGoals.selectLeftMoneySum", id) == null) {
 			return 0;
 		} else {
-			return sqlSession.selectOne("recordTransfer.selectLeftMoneySum", id);
+			return sqlSession.selectOne("recordGoals.selectLeftMoneySum", id);
 		}
 	}
 }
