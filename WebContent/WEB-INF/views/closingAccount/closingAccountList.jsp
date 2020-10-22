@@ -19,6 +19,9 @@
 <jsp:include page="../sidebar.jsp"/>
 <div class="container-fluid">
 	<div>
+		<button onclick="location.href='/moamore/closing/closingAccountForm'">등록</button>
+	</div>
+	<div style="margin-top: 20px;">
 		<table>
 			<tr>
 				<td>제목</td>

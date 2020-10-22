@@ -109,8 +109,12 @@ public class RecordBean {
 	// ajax로 회원 예산 카테고리 가져오기
 	@RequestMapping(value="budgetCategory.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map budgetCategory(HttpServletRequest request, String date, String id) throws SQLException{
-		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
+		// moneyLog에서 사용할 경우 아이디 없이옴 
+		if(id == "") {
+			id = (String)request.getSession().getAttribute("memId");
+		}
 		
+		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
 		Timestamp dateTime = Timestamp.valueOf(newDate);
@@ -142,7 +146,6 @@ public class RecordBean {
 		budgetDTO.setCategory_no(category_no);
 		noBudgetDTO.setIncome_category_no(category_no);
 		noBudgetDTO.setOutcome_category_no(category_no);
-		System.out.println("머지;;" + category_no);
 		String oldDate = request.getParameter("date") + " "+ request.getParameter("time")+":00";
 		Timestamp date = Timestamp.valueOf(oldDate);
 		
@@ -183,14 +186,15 @@ public class RecordBean {
 		return "budget/moneyRecord";
 	}
 	
-	// 예산 내역 삭제
+	// 내역 삭제
 	@RequestMapping("budgetRecordDelete.moa")
-	public void budgetRecordDelete(String budget_outcome_no, HttpServletResponse response) throws IOException, SQLException {
-		System.out.println("타입 : " + budget_outcome_no);
+	public void budgetRecordDelete(int number, String type, HttpServletResponse response) throws IOException, SQLException {
+		System.out.println("타입 : " + number);
 		int result = 0;
 		ObjectMapper mapper = new ObjectMapper();
 		response.setContentType("application/json;charset=UTF-8");
-		result = recordService.budgetRecordDelete(budget_outcome_no);
+		// 서비스에 통으로 보내서 type으로 나눈 후  분기처리해줄 것임
+		result = recordService.deleteRecord(number, type); 
 		// result가 0이면 실패 1이면 성공
 		if(result == 0 ) {
 			response.getWriter().print(mapper.writeValueAsString("Fail"));
@@ -261,8 +265,10 @@ public class RecordBean {
 			List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
 			for(int i = 0; i < outcomeCategoryList.size(); i++) {
 				categories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
+				System.out.println("ddd:"+((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no());
 			}
 		}
+		
 		
 		model.addAttribute("searchDate", searchForRecordDTO.getSearchDate());
 		model.addAttribute("recordPage", recordPage);

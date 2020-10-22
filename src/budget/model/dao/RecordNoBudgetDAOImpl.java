@@ -95,8 +95,14 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		
 		List recordList = sqlSession.selectList("record.selectRecord", searchForRecordDTO);
 		System.out.println("dao44에서 사이즈 : " + recordList.size());
-		
 		return recordList;
+	}
+	// 기록 삭제 
+	@Override
+	public int DeleteNoBudgetRecord(int number) throws SQLException {
+		int result = 0;
+		result = sqlSession.delete("record.deleteNoBudgetRecord", number);
+		return result;
 	}
 
 	

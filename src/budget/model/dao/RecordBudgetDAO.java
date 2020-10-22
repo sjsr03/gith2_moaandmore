@@ -22,7 +22,7 @@ public interface RecordBudgetDAO {
 	public int countAllBudgetByNum(int budgetNum)throws SQLException;
 	
 	// 예산 번호로 예산 기록 삭제하기(budget 테이블만 삭제 -> detail도 알아서삭제됨)
-	public int budgetRecordDelete(String budget_outcome_no)throws SQLException;
+	public int deleteBudgetRecord(int budget_outcome_no)throws SQLException;
 	
 	//주어진 날짜부터 오늘까지, 카테고리번호에 따른 예산지출값의 합
 	//map에는 category_no과 startDay 존재
