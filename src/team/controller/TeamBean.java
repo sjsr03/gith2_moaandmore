@@ -244,7 +244,10 @@ public class TeamBean {
 	}
 	
 	@RequestMapping("teamDetail.moa")
-	public String teamDetail(@RequestParam("team_no")int team_no, String nickname, Model model, HttpServletResponse response) throws SQLException, IOException{
+	public String teamDetail(HttpServletRequest request, @RequestParam("team_no")int team_no, Model model, HttpServletResponse response) throws SQLException, IOException{
+		HttpSession session = request.getSession();
+		String nickname = (String) session.getAttribute("memName");
+		
 		TeamDTO team = teamService.selectOne(team_no);
 		
 		List<TeamMemberDTO> memList = teamMemService.selectAllbyTeamNo(team_no);
