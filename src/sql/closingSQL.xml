@@ -25,4 +25,8 @@
 	<select id="countClosingAccountCommentAll" parameterType="int" resultType="int">
 		SELECT count(*) FROM closing_account_comment where article_no=#{value}
 	</select>
+	
+	<insert id="insertClosingAccountComment" parameterType="closingAccountCommentDTO">
+		insert into closing_account_comment values(CLOSING_ACCOUNT_COMMENT_SEQ.nextVal, #{article_no}, #{content}, #{id}, sysdate)
+	</insert>
 </mapper>

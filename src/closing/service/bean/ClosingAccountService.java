@@ -3,6 +3,7 @@ package closing.service.bean;
 import java.sql.SQLException;
 import java.util.List;
 
+import closing.model.dto.ClosingAccountCommentDTO;
 import closing.model.dto.ClosingAccountDTO;
 
 public interface ClosingAccountService {
@@ -16,4 +17,6 @@ public interface ClosingAccountService {
 	public List getClosingCommentArticles(int article_no, int start, int end) throws SQLException;
 	//댓글 개수 검색
 	public int getClosingCommentArticleCount(int article_no) throws SQLException;
+	//댓글 등록
+	public void insertClosingAccountComment(ClosingAccountCommentDTO dto) throws SQLException;
 }
