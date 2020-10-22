@@ -140,7 +140,7 @@ $(document).ready(function(){
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">보고서</h6>
             <a class="collapse-item" href="/moamore/report/report.moa">예산 보고서</a>
-            <a class="collapse-item" href="/moamore/report/expectation.moa">데이터 분석</a>
+            <a class="collapse-item" href="/moamore/report/expectation.moa" id="expectation" onclick="$('#loading').css('display','flex');">데이터 분석</a>
           </div>
         </div>
       </li>
@@ -281,3 +281,15 @@ $(document).ready(function(){
 
         </nav>
         <!-- End of Topbar -->
+        
+<div id="loading" style="display: none;justify-content: center;background: rgba(0, 0, 0, .7);align-items: center;position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;backdrop-filter: blur(4px);-webkit-backdrop-filter: blur(4px);">
+	<div style="text-align:center;">
+		<img src="/moamore/resources/img/Loading_2.gif" style="width:60px"/>
+		<br/>
+		&nbsp;
+		<br/>
+		<div>
+			<h4 style="color:white;">데이터를 불러오고 있습니다.</h4>
+		</div>
+	</div>
+</div>

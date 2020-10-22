@@ -38,8 +38,8 @@
                 <!-- Card Body -->
                 <div class="card-body">
                 	<c:if test="${goalsList != null}">
-                	<label class="text-primary"><input type="checkbox" id="outcomeChk" checked/>지출 데이터</label>&nbsp;&nbsp;
-	                	<label class="text-warning"><input type="checkbox" id="goalChk"/>목표 달성 데이터</label>&nbsp;
+                	<label class="text-primary font-weight-bold"><input type="checkbox" id="outcomeChk" checked/>지출 데이터</label>&nbsp;&nbsp;
+	                	<label class="text-warning font-weight-bold"><input type="checkbox" id="goalChk"/>목표 달성 데이터</label>&nbsp;
 	                	<select id="goalsList" style="display:none;">
 	                		<option selected disabled>목표명 선택</option>
 	                		<c:forEach var="i" items="${goalsList}">
@@ -49,57 +49,6 @@
 	                		</c:forEach>
 	                	</select>
                 	</c:if>
-                	
-                	
-                	<script>
-                		$("#goalChk").on('change', function(){
-                			if($(this).is(":checked")==true) {
-                				$("#goalsList").css("display","inline-block");
-                			} else {
-                				$("#goalsList").css("display","none");
-                				$("#goalsList option:eq(0)").prop("selected", true);
-                			}
-                		});
-                		function selectGoal() {
-                			$.ajax({
-                				url:"selectGoal.moa",
-                				data:{
-                					"goal_no" : $("#goalsList").val(),
-                					"id" : ${sessionScope.memId}
-                				},
-                				success:function(data){
-                					if(data==null) {
-                						alert("표시할 데이터가 없습니다.");
-                					} else {
-	                					var goalX = data.get("goalX");
-	                					var goalY = data.get("goalY");
-                						var predictedDate = data.get("predictedDate");
-                						
-                						var goalData = {
-                			              	      label: "목표달성액",
-                			              	      lineTension: 0.3,
-                			              	      showLine: true,
-                			              	      backgroundColor: "rgba(246, 194, 62, 0.05)",
-                			              	      borderColor: "rgba(246, 194, 62, 1)",
-                			              	      pointRadius: 3,
-                			              	      pointBackgroundColor: "rgba(246, 194, 62, 1)",
-                			              	      pointBorderColor: "rgba(246, 194, 62, 1)",
-                			              	      pointHoverRadius: 3,
-                			              	      pointHoverBackgroundColor: "rgba(246, 194, 62, 1)",
-                			              	      pointHoverBorderColor: "rgba(246, 194, 62, 1)",
-                			              	      pointHitRadius: 10,
-                			              	      pointBorderWidth: 2,
-                			              	      data: goalY,
-                			              	    };
-                					}
-                				},
-                				error:function(){
-                					alert("오류!");
-                				},
-                			});
-                		}
-                		
-                	</script>
                 	
                 	
                   <div class="chart-area"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
@@ -112,9 +61,8 @@
               	var ctx = $("#myAreaChart");
               	var Datelabels = ${expectOutcome.outcomeDataX};
               	var outcomeDataY = ${expectOutcome.outcomeDataY};
-              	var goalDataY;
-              	var goalDataX;
               	
+              	var graphData = [];
               	
               	var outcomeData = {
               	      label: "지출액",
@@ -131,8 +79,16 @@
               	      pointHitRadius: 10,
               	      pointBorderWidth: 2,
               	      data: outcomeDataY,
-              	    };
+             	};
               	
+              	graphData.push(outcomeData);
+              	
+              	var goalX;
+				var goalY = [];
+				var predictedDate;
+				var goal_subject;
+				var goalData;
+						
               </script>
               <script src="/moamore/js/report/expectation.js"></script>
               
@@ -142,7 +98,7 @@
             
            	<!-- 두번째 줄 -->
             <div class="row">
-            	<div class="col-xl-6 col-lg-6">
+            	<div class="col-xl-6 col-lg-6 expectCard" >
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3">
@@ -156,7 +112,7 @@
                 </div>
               </div>	
               
-            	<div class="col-xl-6 col-lg-6">
+            	<div class="col-xl-6 col-lg-6 expectCard">
 	              <div class="card shadow mb-4">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3">
@@ -164,7 +120,7 @@
 	                </div>
 	                <!-- Card Body -->
 	                <div class="card-body">
-	                	지금 속도로는 
+	                	지금처럼만 하면 
 			            <h1><span class="font-weight-bold text-primary" id="predictDate"></span></h1>
 			            에 목표를 달성할 수 있어요
 			            
@@ -182,3 +138,109 @@
 
 		
 <jsp:include page="../footer.jsp"/>
+<script>
+var memId = "${sessionScope.memId}";
+
+$(document).ready(function(){
+	
+	$("#goalChk").on('change', function(){
+		if($(this).is(":checked")==true) {
+			$("#goalsList").css("display","inline-block");
+		} else {
+			$("#goalsList").css("display","none");
+			$("#goalsList option:eq(0)").prop("selected", true);
+			graphData = [];
+			if($("#outcomeChk").is(":checked")==true) {
+				graphData.push(outcomeData);
+			}
+			console.log("업데이트");
+			console.log(graphData);
+			myLineChart.update();
+			$("#predictDate").empty();
+			
+		}
+	});
+	
+	$("#outcomeChk").on('change', function(){
+		graphData = [];
+		if($(this).is(":checked") == true) {
+			graphData.push(outcomeData);
+		} 
+		if($("#goalChk").is(":checked") == true) {
+			if(goalData != null) {
+				graphData.push(goalData);
+			}
+		} 
+		console.log("업데이트");
+		console.log(graphData);
+		myLineChart.update();
+		
+	});
+	
+	
+	
+	$("#goalsList").on('change', function(){
+		graphData = [];
+		if($("#outcomeChk").is(":checked")==true) {
+			graphData.push(outcomeData);
+		} 
+		
+		var goal_no = $(this).val();
+		
+		selectGoal(goal_no);
+	});
+	
+});
+
+	function selectGoal(goal_no) {
+		$.ajax({
+			url:"selectGoal.moa",
+			data:{
+				"goal_no" : goal_no,
+				"id" : memId,
+				"start_day" : Datelabels[0]
+			},
+			success:function(data){
+				if(data=="") {
+					alert("표시할 데이터가 없습니다.");
+					$("#goalsList option:eq(0)").prop("selected", true);
+				} else {
+					var goalX = data.goalX;
+					var goalY = [];
+					var goalY = data.goalY.split(",");
+					var predictedDate = data.predictedDate;
+					var goal_subject = data.subject;
+					
+					var goalData = {
+		              	      label: "목표달성액",
+		              	      lineTension: 0.3,
+		              	      showLine: true,
+		              	      backgroundColor: "rgba(246, 194, 62, 0.05)",
+		              	      borderColor: "rgba(246, 194, 62, 1)",
+		              	      pointRadius: 3,
+		              	      pointBackgroundColor: "rgba(246, 194, 62, 1)",
+		              	      pointBorderColor: "rgba(246, 194, 62, 1)",
+		              	      pointHoverRadius: 3,
+		              	      pointHoverBackgroundColor: "rgba(246, 194, 62, 1)",
+		              	      pointHoverBorderColor: "rgba(246, 194, 62, 1)",
+		              	      pointHitRadius: 10,
+		              	      pointBorderWidth: 2,
+		              	      data: goalY,
+		              	    };
+					graphData.push(goalData);
+					$("#predictDate").text(predictedDate);
+					$("#goal_subject").text(goal_subject);
+					console.log("업데이트");
+					console.log(graphData);
+					myLineChart.update();
+					
+					
+				}
+			},
+			error:function(){
+				alert("오류!");
+			},
+		});
+	}
+       		
+</script>

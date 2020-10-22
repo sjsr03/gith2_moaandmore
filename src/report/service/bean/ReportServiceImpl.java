@@ -151,7 +151,7 @@ public class ReportServiceImpl implements ReportService {
 			int outcome = selectOutcomeSumByRegAndId(id, sdf.format(firstStartDay));
 			
 			outcomeDataX += " \'" + date + "\', ";
-			outcomeDataY += " \'" + outcome + "\', ";
+			outcomeDataY += outcome + ", ";
 			
 			
 			outcomeDataList.add((float)outcome);
@@ -161,6 +161,8 @@ public class ReportServiceImpl implements ReportService {
 			firstStartDay.setDate(firstStartDay.getDate()+1);
 		}
 		
+		outcomeDataX.substring(0, outcomeDataX.length()-2);
+		outcomeDataY.substring(0, outcomeDataY.length()-2);
 		
 		outcomeDataX += " ] ";
 		outcomeDataY += " ] ";
