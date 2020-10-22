@@ -70,6 +70,18 @@ a{text-decoration: none;color: #737271;}
    		 
      }  
 
+
+table{
+	border-collapse:separate;
+	border-spacing:10px;
+}
+
+td{
+	width:100px;
+	height:100px;
+	margin:10px;
+
+}
 </style>
 
 	
@@ -78,7 +90,8 @@ a{text-decoration: none;color: #737271;}
 
 <!-- 본문내용 시작 -->
 <div class="container-fluid">
-<c:if test="${already == 'true'}">
+
+<c:if test="${already==1}">
 	<script>
 		alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
 	</script>
@@ -257,7 +270,7 @@ function getIncomeCategory(){
         success : function(income){
            	var html = "";
             var category_no = '';
-            
+             
        		html += "<table border='1'>";
        		html += "<tr>";
       		for (var i = 0; i < income.length; i++) {

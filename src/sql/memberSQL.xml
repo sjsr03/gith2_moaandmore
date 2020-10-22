@@ -32,5 +32,13 @@
  		select nickname from member where id=#{value}
  	</select>
  	
+ 	<select id="checkOverId" parameterType="string" resultType="int">
+ 		select count(*) from member where id=#{user_id}
+ 	</select>
+ 	
+	<select id="checkOverNick" parameterType="string" resultType="int">
+ 		select count(*) from member where id=#{nickname}
+ 	</select>
+	
 	
  </mapper>
