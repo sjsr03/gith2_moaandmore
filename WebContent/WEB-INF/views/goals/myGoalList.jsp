@@ -85,7 +85,7 @@ select {
 					
 					addListHtml += "<td>" + data[i].target_money.format() + " 원</td>";
 					addListHtml += "<td>" + data[i].saving.format()+"원</td>";
-					addListHtml += "<td><progress id='pgbar' value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress> "+((data[i].saving/data[i].target_money)*100).toFixed(2)+"%</td>";
+					addListHtml += "<td><progress id='pgbar' value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress> "+ ((data[i].saving/data[i].target_money)*100).toFixed(2)+"%</td>";
 					addListHtml += "<td>"+getFormatDate(data[i].start_day)+"</td>";
 					
 					if(data[i].public_ch == '1'){//마감날짜, 공개여부 
@@ -96,7 +96,7 @@ select {
 							addListHtml += "<td>공개</td>";
 						}
 					}
-					addListHtml += "<tr/>";			
+					addListHtml += "</tr>";			
 					$("#goal_list").append(addListHtml);
 				}//end for
 				addListHtml = "</tbody>";
