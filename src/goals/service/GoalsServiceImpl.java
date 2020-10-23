@@ -40,7 +40,7 @@ public class GoalsServiceImpl implements GoalsService {
 	}
 
 	@Override
-	public List<GoalsDTO> selectAllByPublicCh(int public_ch, String sorting) throws SQLException {	
+	public List<GoalsDTO> selectAllByPublicCh(int public_ch, String sorting, String list_type) throws SQLException {	
 		String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		
 		HashMap map = new HashMap();
@@ -49,6 +49,7 @@ public class GoalsServiceImpl implements GoalsService {
 
 				
 		map.put("sorting",sorting);
+		map.put("list_type", list_type);
 		
 		
 		return goalsDAO.selectAllByPublicCh(map);

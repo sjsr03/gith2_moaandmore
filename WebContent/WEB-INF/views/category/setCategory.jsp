@@ -15,7 +15,7 @@
 <style>
 
  @media (max-width: 500px){
-        .my_td{
+        .td{
         	width:50px !important;
         	height:50px !important;
         }
@@ -23,7 +23,7 @@
     }
     
  @media (max-width: 370px){
-    .my_td{
+    .td{
         	width:50px !important;
         	height:50px !important;
         }
@@ -102,7 +102,8 @@ a{text-decoration: none;color: #737271;}
 
 .my_tab{
 	border-collapse:separate;
-	border-spacing:24px;
+	border-spacing:26px;
+	
 }
 
 .my_td{
@@ -114,6 +115,23 @@ a{text-decoration: none;color: #737271;}
 
 .modify{
 	cursor:pointer;
+}
+
+
+button{
+	/* display: inline-block; */
+    padding: .5em .75em;
+    color: #333;
+    font-size: inherit;
+    /* line-height: normal; */
+    /* vertical-align: middle; */
+    /* background-color: #fdfdfd; */
+    cursor: pointer;
+    border: 1px solid #ebebeb;
+    border-bottom-color: #e2e2e2;
+    border-radius: .25em;
+    text-align: center;
+	
 }
 
 .close-button{
@@ -134,14 +152,6 @@ a{text-decoration: none;color: #737271;}
 
 
 </style>
-
-	
-<jsp:include page="../sidebar.jsp"/>
-
-
-<!-- 본문내용 시작 -->
-<div class="container-fluid">
-
 <c:if test="${already==1}">
 	<script>
 		alert("이미 있는 이름입니다.다른이름을 사용해주세요.");
@@ -154,45 +164,53 @@ a{text-decoration: none;color: #737271;}
 		alert("해당카테고리에 데이터가 있어 삭제가 불가능 합니다.");
 	</script>
 </c:if>
+	
+<jsp:include page="../sidebar.jsp"/>
+
+<!-- 본문내용 시작 -->
+<div class="container-fluid">
+
 
  		<!-- 페이지 이름 -->
          <div class="d-sm-flex align-items-center justify-content-between mb-4">
            <h1 class="h3 mb-0 text-gray-800">카테고리 설정</h1>
-           	${already} ${exist}adf
+           	${already}
            </div>	
 	
 	
 	<!-- 첫번째 줄 -->
     <div class="row">
-		<form id="inputCateogry" name="input">
-		<table>
-			<tr>
-				<td>카테고리 추가</td>
-			</tr>
-			<tr>
-				<td>
-					<select name="categoryOption" id="categoryOption">
-						<option value="수입">수입</option>
-						<option value="지출">지출</option>
-					</select>
-				</td>
-				<td><input type="text" name="category_name" id="category_name" placeholder="카테고리명을 입력하세요"/> </td>
-				<td><input type="submit" value="추가" id="inputCategory"/></td>
-			</tr>
-		</table>
+    	<div class="card mb-4">
+			<form id="inputCateogry" name="input">
+				<table>
+					<tr>
+						<td>카테고리 추가</td>
+					</tr>
+					<tr>
+						<td>
+							<select name="categoryOption" id="categoryOption">
+								<option value="지출">지출</option>
+								<option value="수입">수입</option>
+							</select>
+						</td>
+						<td><input type="text" name="category_name" id="category_name" placeholder="카테고리명을 입력하세요"/> </td>
+						<td><input type="submit" value="추가" id="inputCategory"/></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+	 <div class="card-body">
+		<h3>[지출]</h3>
+		<form class='allExpense'>
 		</form>
 	</div>
 	
-	<h3>[지출]</h3>
-	<form class='allExpense'>
-	</form>
-	
-	
-	
-	<h3>[수입]</h3>
-	<form class='allIncome'>
-	</form>
-	
+	 <div class="card-body">
+		<h3>[수입]</h3>
+		<form class='allIncome'>
+		</form>
+	</div>
 	
 	<div class='categorymodal'>
 		<div class='categorymodal-content'>
@@ -224,7 +242,7 @@ $(document).ready(function(){
 	 
 	 setTimeout(function() {
 		 updateAndDelete(); 
-	 },100);
+	 },1000);
 
 	//수정창 x누를때 
 	$(".close-button").on('click',function(){
@@ -237,28 +255,33 @@ $(document).ready(function(){
 	 
 	//카테고리 추가 하기 
 	$("#inputCategory").click(function(event){ 
-		
-		event.preventDefault
-		$.ajax({
-			type : "POST",
-			url : "setCategoryPro.moa",
-			data :$("#inputCateogry").serialize(),   
-			dataType : "json",
-			error : function(error){
-				console.log("에러!!");
-				
-			},
-			success : function(data){		
-				console.log("success");
-				 getExpenseCategory();
-				getIncomeCategory();
-			}
-		
-		});
-  	});    
+		if($('#category_name').val() == ""){
+			alert("카테고리를 입력해주세요");
+			event.preventdefault();
+			
+		}else{
+			console.log(12);
+			$.ajax({
+				type : "POST",
+				url : "setCategoryPro.moa",
+				data :$("#inputCateogry").serialize(),   
+				dataType : "json",
+				error : function(error){
+					console.log("에러!!");
+					
+				},
+				success : function(data){		
+					console.log("success");
+					 getExpenseCategory();
+					getIncomeCategory();
+				}
+			
+			});
+		}
+	});    
+});	
 	
-	
-});
+
 
 function getExpenseCategory(){
 	//지출 카테고리 불러오기
@@ -281,7 +304,7 @@ function getExpenseCategory(){
       					html +="<tr>";		
       				}
 
-	            	html += "<td class='my_td border-left-warning shadow'>";
+	            	html += "<td class='my_td border-left-primary shadow'>";
 	            	html += "<div class='cat_btn'>";
 	            	html += "<i class='fas fa-ellipsis-v'></i>";
 	            	html += "<div class='my_sub'>";
@@ -294,8 +317,8 @@ function getExpenseCategory(){
 	            	html += "<div class='cat_text font-weight-bold text-gray-800'>";
 	            	html += outcome[i].category_name;
 	            	html += "</div>";
-	            	html += "<input type='hidden' name='category_no' id='category_no' class='category_no' value='"+outcome[i].category_no+"' />";
-	            	html += "<input type='hidden' name='inOrOut' id='inOrOut' class='inOrOut' value='outcome' />";
+	            	html += "<input type='hidden' name='category_no' class='category_no' value='"+outcome[i].category_no+"' />";
+	            	html += "<input type='hidden' name='inOrOut' class='inOrOut' value='outcome' />";
 	            	html += "</td>";
            		}
       		html +="</tr>";
@@ -343,8 +366,8 @@ function getIncomeCategory(){
 	            	html += "<div class='cat_text font-weight-bold text-gray-800'>";
 	            	html += income[i].category_name;
 	            	html += "</div>";
-	            	html += "<input type='hidden' name='category_no' id='category_no' class='category_no' value='"+income[i].category_no+"' />";
-	            	html += "<input type='hidden' name='inOrOut' id='inOrOut' class='inOrOut' value='income' />";
+	            	html += "<input type='hidden' name='category_no' class='category_no' value='"+income[i].category_no+"' />";
+	            	html += "<input type='hidden' name='inOrOut' class='inOrOut' value='income' />";
 	            	html += "</td>";
            		
       		
@@ -371,10 +394,9 @@ function getIncomeCategory(){
 
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
-		console.log(1);
 		$('.cat_btn i').each(function(){
 			$(this).on('click', function(){
-				console.log(2);
+				console.log("수정하기 삭제하기 창 띄어주기");
 				
 				if($(this).next().closest('.my_sub').hasClass('on')){
 					console.log(2.5);
@@ -401,10 +423,10 @@ function updateAndDelete(){
 //수정하기 모달창 보여주기
 function cateogryModify(category_no,inorout){
 	
-	$('.modify').each(function(){
+	$('.modify').each(function(category_no,inorout){
 		$(this).on('click', function(){
 			$('.categorymodal').addClass("show-categorymodal");
-			
+			  console.log("수정하기 모달창");
 			modifyAction(category_no,inorout);
 		});	
 	});
@@ -415,11 +437,16 @@ function cateogryModify(category_no,inorout){
 function modifyAction(category_no,inorout){
 	$('.modifyCategory').click(function(event){
 		var newName = $('.newName').val();
-		
+		console.log("카테고리 수정하기");
+		if(newName == ""){
+			console.log("alert");
+			alert("카테고리를 입력해주세요");
+		}else{
 		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no+"&inorout="+inorout;
-		event.preventDefault();
-		
+		//event.preventDefault();
 		getExpenseCategory();
+		}
+	
 	});
 }
 

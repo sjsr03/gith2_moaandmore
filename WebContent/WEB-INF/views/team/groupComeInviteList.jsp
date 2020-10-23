@@ -24,7 +24,7 @@
 		}
 		
 		table {
-			border-radius:0.35em 0.35em 0.35em 0.35em;
+		    border-collapse: collapse;
 		}
 	</style>
 </head>
@@ -35,12 +35,12 @@
 		<div class="row" style="display:flex;" align="center">
 			<table class="col-sm-12">
 				<tr style="background-color: #C6C6C6;">
-					<td>목표명</td>
-					<td>목표내용</td>
-					<td>목표금액</td>
-					<td>시작일</td>
-					<td>종료일</td>
-					<td>참여자 수</td>
+					<td style="width:20%">목표명</td>
+					<td style="width:25%">목표내용</td>
+					<td style="width:15%">목표금액</td>
+					<td style="width:15%">시작일</td>
+					<td style="width:15%">종료일</td>
+					<td style="width:10%">참여자 수</td>
 				</tr>
 				<c:forEach var="article" items="${articleList}">
 					<tr onclick="location='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">

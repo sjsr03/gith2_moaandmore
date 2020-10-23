@@ -4,6 +4,22 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
 <title>대시보드</title>
+<style>
+		.overlay{
+		display: none;
+		z-index: 1000;
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		left:0;
+		top:0;
+		background-color: rgba(0,0,0, 0.5);
+		overflow-x :hidden;
+		
+		
+	}
+
+</style>
 </head>
 <jsp:include page="sidebar.jsp"/>
 <script src="/moamore/vendor/chart.js/Chart.min.js"></script>

@@ -14,6 +14,11 @@
 	
 	<select id="selectAllByPublicCh" parameterType="java.util.HashMap" resultType="goalsDTO">
 		select * from goals where id=#{id} and public_ch=#{public_ch} 
+		
+		<if test='list_type.equals("complete")'> and saving >= target_money</if>
+		<if test='list_type.equals("proceeding")'> <![CDATA[ and saving < target_money ]]></if>
+		
+		
 		<if test='sorting.equals("public")'> and public_type = '1'</if>
 		<if test='sorting.equals("private")'> and public_type = '0'</if>
 		<choose>

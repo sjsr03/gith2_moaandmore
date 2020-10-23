@@ -13,8 +13,6 @@
 	.block li span {padding:2px 5px; background:#adadad; color:#fff; font-weight:bold; margin-right:3px;}
 	
 </style>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 	
 
