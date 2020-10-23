@@ -100,7 +100,10 @@ public class BudgetBean {
 		
 		
 		//회원의 목표 리스트 가져오기
-		List<GoalsDTO> goals = goalsService.selectAllById();
+		List goals = goalsService.selectTransferPossibleGoals(id);
+		model.addAttribute("personalGoals", (List)goals.get(0));
+		model.addAttribute("teamGoals", (List)goals.get(1));
+		
 		
 		
 		// 남은돈 정보
@@ -116,7 +119,6 @@ public class BudgetBean {
 		model.addAttribute("categories", categories);
 		model.addAttribute("TBdto", TBdto);
 		model.addAttribute("BDdtoList", BDdtoList);
-		model.addAttribute("goals", goals);
 		model.addAttribute("period", period);
 		
 		List todayData = budgetService.selectTodayBudget(id);

@@ -35,10 +35,8 @@ select {
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-
-
 	var list_type = 0; // 개인
-	var sorting = ""; //정렬 기준
+	var sorting = "startday_desc"; //정렬 기준
 	//컨트롤러에서 넘겨줬을때 
 	
 	if(${public_ch} != null){
@@ -47,6 +45,7 @@ select {
 		
 	//ajax로 리스트 가져오기 
 	function loadList(_list_type){
+		
 		list_type = _list_type;	
 		console.log("리스트 로드");		
 		$.ajax({
@@ -55,23 +54,28 @@ select {
 			data : {"public_ch" : list_type, "sorting": sorting },
 			success:function(data){
 				$("#goal_list").empty();
-				
 				//헤더추가
 				var addListHtml = "<thead><tr>";
 				if(list_type == 0){//개인
 					addListHtml += "<th>목표명</th>";
-					addListHtml += "<th>목표액</th>";
-					addListHtml += "<th>달성액</th>";
-					addListHtml += "<th>달성률</th>";
-					addListHtml += "<th>시작날짜</th>";
+					if($(window).width() >= 768){
+						addListHtml += "<th>목표액</th>";
+						addListHtml += "<th>달성액</th>";
+						addListHtml += "<th>달성률</th>";
+						addListHtml += "<th>시작날짜</th>";
+					}
+					
 				}else{
 					addListHtml += "<th>목표명</th>";
-					addListHtml += "<th>목표액</th>";
-					addListHtml += "<th>달성액</th>";
-					addListHtml += "<th>달성률</th>";
-					addListHtml += "<th>시작날짜</th>";
-					addListHtml += "<th>마감날짜</th>";
-					addListHtml += "<th>공개여부</th>";
+					if($(window).width() >= 768){
+						addListHtml += "<th>목표액</th>";
+						addListHtml += "<th>달성액</th>";
+						addListHtml += "<th>달성률</th>";
+						addListHtml += "<th>시작날짜</th>";
+						addListHtml += "<th>마감날짜</th>";
+						addListHtml += "<th>공개여부</th>";
+					}
+					
 				}
 				addListHtml += "</tr></thead>";	
 				$("#goal_list").append(addListHtml);
@@ -81,19 +85,18 @@ select {
 				for(var i = 0 ; i<data.length; i++){
 					addListHtml = "<tr>";
 					addListHtml += "<td id='click-title' onclick='redir("+data[i].goal_no+")'>" + data[i].subject+"</td>";
-					
-					
-					addListHtml += "<td>" + data[i].target_money.format() + " 원</td>";
-					addListHtml += "<td>" + data[i].saving.format()+"원</td>";
-					addListHtml += "<td><progress id='pgbar' value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress> "+ ((data[i].saving/data[i].target_money)*100).toFixed(2)+"%</td>";
-					addListHtml += "<td>"+getFormatDate(data[i].start_day)+"</td>";
-					
-					if(data[i].public_ch == '1'){//마감날짜, 공개여부 
-						addListHtml += "<td>"+getFormatDate(data[i].end_day)+"</td>";
-						if(data[i].public_type =='0'){
-							addListHtml += "<td>비공개</td>";
-						}else{
-							addListHtml += "<td>공개</td>";
+					if($(window).width() >= 768){
+						addListHtml += "<td>" + data[i].target_money.format() + " 원</td>";
+						addListHtml += "<td>" + data[i].saving.format()+"원</td>";
+						addListHtml += "<td><progress class='pgbar' value='"+ ((data[i].saving/data[i].target_money)*100).toFixed(2)  +"' max='100'></progress> "+ ((data[i].saving/data[i].target_money)*100).toFixed(2)+"%</td>";
+						addListHtml += "<td>"+getFormatDate(data[i].start_day)+"</td>";
+						if(data[i].public_ch == '1'){//마감날짜, 공개여부 
+							addListHtml += "<td>"+getFormatDate(data[i].end_day)+"</td>";
+							if(data[i].public_type =='0'){
+								addListHtml += "<td>비공개</td>";
+							}else{
+								addListHtml += "<td>공개</td>";
+							}
 						}
 					}
 					addListHtml += "</tr>";			
@@ -136,10 +139,21 @@ select {
 		sorting  = $("#sorting_val option:selected").val();
 	}
 	
-	$(document).ready(function(){
+$(document).ready(function(){
+	if($(window).width() >= 768){
 		loadSelectVal(list_type);	
-		loadList(list_type);		
-	})
+	}else{
+		$("#sorting_val").css('display','none');
+	}
+	loadList(list_type);		
+})
+	
+$(window).resize(function(){
+	if($(window).width()>= 768){
+		$("#sorting_val").css('display','block');
+	}
+	loadList(list_type);
+})
 		
 </script>
 </head>
@@ -148,27 +162,27 @@ select {
 	<jsp:include page="../sidebar.jsp"/>
 	<!-- 본문 -->
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row mb-5"></div>
 		 <div class="row d-sm-flex align-items-center justify-content-between mb-4">
-		 	<div>
-	            <h1 class="h2 mb-0 text-gray-800">[${sessionScope.memName}]의 목표리스트</h1>
+		 	<div class="col-12 text-center">
+	            <h3 class="h3 mb-0 text-gray-800">[${sessionScope.memName}]의 목표리스트</h1>
             </div>
 	     </div>
 		<div class="row mt-2 mb-2">
-			<div class="col-lg-2 col-2">	
+			<div class="col-6">	
 			<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="chageType(0)"><span class="text">개인</span></button>
 				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="chageType(1)"><span class="text">그룹</span></button>
 			</div>
-			<div class="col-lg-3 col-3 offset-7" style="padding: 0px 0px 0px 95px">
+			<div class="col-6 text-right" >
 				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/goals/insertGoalForm.moa'"><span class="text">+목표</span></button>	
 				<select id="sorting_val">
 				</select>
 			</div>
 		</div>
 		<div class="row">	
-			<div class="col-lg-12 col-12">
-				<table id="goal_list" class="table">
+			<div class="col-12">
+				<table id="goal_list" class="table text-center">
 				</table>
 			</div>
 		</div>
@@ -217,11 +231,17 @@ $(document).on('change','#sorting_val',function(){
 	
 })
 
+
+
+
+
 function chageType(_list_type){
-	loadSelectVal(_list_type);	
+	if($(window).width()< 768){
+		loadSelectVal(_list_type);	
+	}
 	loadList(_list_type);
 	
-	}
+}
 
 //데이트 포맷바꾸기 
 function getFormatDate(str){

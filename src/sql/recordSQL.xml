@@ -41,7 +41,6 @@
   		select count(*) from budget where budget_no=#{value}
   	</select>
   	
-  	
   	<!-- 예산 지출 고유 번호로 해당 예산 내역 삭제 -->
   	<delete id="deleteBudgetRecord" parameterType="int" >
   		delete from budget where budget_outcome_no=#{value}
@@ -123,4 +122,32 @@
   		]]>
   	</select>
   	
+  	<!-- 예산 내역 수정 -->
+  	<update id="modifyBudgetRecord" parameterType="budgetDTO">
+  		update budget set budget_no=#{budget_no}, category_no=#{category_no}, amount=#{amount}, reg=#{reg} where budget_outcome_no=#{budget_outcome_no}
+  	</update>
+  	<!-- 예산 상세내역 수정 -->
+  	<update id="modifyBudgetDetailRecord" parameterType="budgetDetailDTO">
+  		update budget_detail set content=#{content}, memo=#{memo}, img=#{img} where budget_outcome_no=#{budget_outcome_no}
+  	</update>
+  	
+  	<!-- 예산 외 내역 수정 -->
+  	<update id="modifyNoBudgetRecord" parameterType="noBudgetDTO">
+  		update nobudget set type=#{type}, 
+  		<choose>
+  			<when test='type.equals("income")'>
+  			income_category_no=#{income_category_no}, 
+  			</when>
+  			<otherwise>
+  			outcome_category_no=#{outcome_category_no}, 
+  			</otherwise>
+  		</choose>
+  		amount=#{amount}, reg=#{reg} where nobudget_no=#{nobudget_no}
+  	</update>
+  	<!-- 예산 외 상세내역 수정 -->
+  	<update id="modifyNoBudgetDetailRecord" parameterType="noBudgetDetailDTO">
+  		update nobudget_detail set content=#{content}, memo=#{memo}, img=#{img} where nobudget_no=#{nobudget_no}
+  	</update>
+  	
+  
   </mapper>

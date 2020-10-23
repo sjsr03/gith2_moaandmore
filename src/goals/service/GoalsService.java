@@ -27,4 +27,8 @@ public interface GoalsService {
 		public void myGoalDetail(int goal_no) throws SQLException;
 		
 		public void enterTeam(int team_no) throws SQLException;
+		
+		//남은돈 전환가능한 목표리스트
+		public List selectTransferPossibleGoals(String id) throws SQLException;
 }
+

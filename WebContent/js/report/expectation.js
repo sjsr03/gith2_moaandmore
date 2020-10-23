@@ -32,7 +32,7 @@ var myLineChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: Datelabels,
-    datasets: [outcomeData],
+    datasets: graphData,
   },
   options: {
     maintainAspectRatio: false,

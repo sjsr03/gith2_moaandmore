@@ -104,6 +104,15 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		result = sqlSession.delete("record.deleteNoBudgetRecord", number);
 		return result;
 	}
+	@Override
+	public void modifyNoBudgetRecord(NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO) throws SQLException {
+		int result = 0;
+		System.out.println(noBudgetDTO.toString());
+		System.out.println(noBudgetDetailDTO.toString());
+		
+		sqlSession.selectOne("record.modifyNoBudgetRecord", noBudgetDTO);
+		sqlSession.selectOne("record.modifyNoBudgetDetailRecord", noBudgetDetailDTO);
+	}
 
 	
 }

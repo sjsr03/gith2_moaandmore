@@ -1,11 +1,13 @@
 package budget.service.bean;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
+import budget.model.dto.RecordModifyDTO;
 import budget.model.dto.RecordPageDTO;
 import budget.model.dto.SearchForRecordDTO;
 import category.model.dao.CategoryDAO;
@@ -288,5 +291,122 @@ public class RecordServiceImpl implements RecordService{
 		}
 		return result;
 	}
+	@Override
+	public void modifyRecord(RecordModifyDTO recordModifyDTO, MultipartFile imgfile) throws Exception{
+		BudgetDTO budgetDTO = new BudgetDTO();
+		BudgetDetailDTO budgetDetailDTO = new BudgetDetailDTO();
+		NoBudgetDTO noBudgetDTO = new NoBudgetDTO();
+		NoBudgetDetailDTO noBudgetDetailDTO = new NoBudgetDetailDTO();
+		
+		// reg에 값을 넣어주기 위해 날짜+시간을 더해서 timestamp로 변환
+		String time = recordModifyDTO.getTime();
+		String date = recordModifyDTO.getDate();
+		String oldTime = date + " " + time;
+		System.out.println("뭔데!! :" + time.length());
+		if(time.length() <= 5) {
+			oldTime = oldTime+":00";
+		}
+		System.out.println("시간 :"+ oldTime);
+		Timestamp reg = Timestamp.valueOf(oldTime);
+		String type = recordModifyDTO.getType();
+		
+		// 사진 업로드 처리
+		if(imgfile.getSize() > 0) {
+			String originFileName = imgfile.getOriginalFilename();
+			System.out.println("originFileName:" + originFileName);
+			// 서버에 저장할 파일 이름 생성
+			String saveFileName = getSaveFileName(originFileName);
+			
+			writeFile(imgfile, saveFileName);
+			/*
+			String path = request.getRealPath("save"); // 저장할 폴더 경로
+			String orgName = imgfile.getOriginalFilename(); 
+			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+			// 이미지 파일 확장자만 추출
+			String ext = orgName.substring(orgName.lastIndexOf('.'));
+			
+			// 이름에 실행되는 시간 넣어주기 
+			long now = System.currentTimeMillis();
+			// 새로운 이름 만들기
+			String newName = imgName+now+ext;
+			
+			// imgPath 다시 만들어주기(newName사용)
+			String imgPath = path + "\\" + newName;
+			
+			// 저장해주기
+			File file = new File(imgPath);
+			File copyFile = new File(imgPath);
+			
+			 ((MultipartFile) file).transferTo(copyFile);	
+			 */	
+			// dto에 세팅까지해주기
+			noBudgetDetailDTO.setImg(originFileName);
+			budgetDetailDTO.setImg(originFileName);	
+				
+		}else { // 이미지가 없을 땐 default값 넣어주기.
+			noBudgetDetailDTO.setImg("default.gif");
+			budgetDetailDTO.setImg("default.gif");
+		}
+		
+		// 타입 체크해서 각 DTO에 담아준 후 맞는 DAO 호출
+		if(type.equals("budget")) {		
+			budgetDTO.setAmount(recordModifyDTO.getAmount());
+			// 예산번호는 날짜로 체크해서 가져오기때문에 같이 update해줘야함 
+			budgetDTO.setBudget_no(recordModifyDTO.getBudget_no());
+			budgetDTO.setBudget_outcome_no(recordModifyDTO.getUniqueNum());
+			budgetDTO.setCategory_no(recordModifyDTO.getBudget_category_no());
+			budgetDTO.setId(recordModifyDTO.getId());
+			budgetDetailDTO.setBudget_outcome_no(recordModifyDTO.getUniqueNum());
+			budgetDetailDTO.setContent(recordModifyDTO.getContent());		
+			budgetDetailDTO.setMemo(recordModifyDTO.getMemo());
+			
+			// reg는 date+time해서 timestamp로 형변환 후 던져줌
+			budgetDTO.setReg(reg);
+			
+			System.out.println(budgetDTO.toString());
+			System.out.println(budgetDetailDTO.toString());
+			
+			
+			recordBudgetDAO.modifyBudgetRecord(budgetDTO, budgetDetailDTO);
+		}else if(type.equals("income") || type.equals("outcome")) {
+			noBudgetDTO.setAmount(recordModifyDTO.getAmount());
+			noBudgetDTO.setId(recordModifyDTO.getId());
+			noBudgetDTO.setIncome_category_no(recordModifyDTO.getIncome_category_no());
+			noBudgetDTO.setNobudget_no(recordModifyDTO.getUniqueNum());
+			noBudgetDTO.setOutcome_category_no(recordModifyDTO.getOutcome_category_no());
+			noBudgetDTO.setReg(reg);
+			noBudgetDTO.setType(type);
+			noBudgetDetailDTO.setNobudget_no(recordModifyDTO.getUniqueNum());
+			noBudgetDetailDTO.setContent(recordModifyDTO.getContent());
+			noBudgetDetailDTO.setMemo(recordModifyDTO.getMemo());	
+			recordNoBudgetDAO.modifyNoBudgetRecord(noBudgetDTO, noBudgetDetailDTO);
+		}
+	}
+	@Override
+	public String getSaveFileName(String originName) throws Exception {
+			String fileName="";
+			Calendar calendar = Calendar.getInstance();
+			fileName += calendar.get(Calendar.YEAR);
+			fileName += calendar.get(Calendar.MONTH);
+			fileName += calendar.get(Calendar.DATE);
+			fileName += calendar.get(Calendar.HOUR);
+			fileName += calendar.get(Calendar.MINUTE);
+			fileName += calendar.get(Calendar.SECOND);
+			fileName += calendar.get(Calendar.MILLISECOND);
+			fileName += originName;
+			return fileName;
+		
+	}
+	@Override
+	public boolean writeFile(MultipartFile mf, String saveFileName) throws IOException {
+		boolean result = false;
+		
+		byte[] data = mf.getBytes();
+		FileOutputStream fos = new FileOutputStream("c:/save/"+ mf.getOriginalFilename());
+		fos.write(data);
+		fos.close();
+		return result;
+	}
+	
 	
 }

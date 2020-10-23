@@ -28,4 +28,7 @@ public interface RecordBudgetDAO {
 	//map에는 category_no과 startDay 존재
 	public int selectSumFromDateAndCatNo(HashMap map) throws SQLException;
 	
+	// 내역 수정
+	public void modifyBudgetRecord(BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO)throws SQLException;
+	
 }
