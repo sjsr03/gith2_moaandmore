@@ -80,7 +80,7 @@
 		<div class="row" style="display:flex;">
 			<div class="col-xl-6 col-lg-6">
 				<c:if test="${sessionScope.memName != null}">
-					<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc;" onclick="window.location='/moamore/team/groupOpenForm.moa'"><span class="text">개설 신청</span></button>	
+					<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; background-color:#4374D9;" onclick="window.location='/moamore/team/groupOpenForm.moa'"><span class="text"><a style="color: white;">개설 신청</a></span></button>	
 				</c:if>
 				<c:if test="${sessionScope.memName == null}">
 					<button onclick="alert('로그인을 해주세요.');document.location.href='/moamore/member/loginForm.moa'">개설 신청</button>

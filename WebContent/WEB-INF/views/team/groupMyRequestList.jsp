@@ -24,7 +24,7 @@
 		}
 		
 		table {
-			border-radius:0.35em 0.35em 0.35em 0.35em;
+		    border-collapse: collapse;
 		}
 	</style>
 </head>
@@ -37,15 +37,15 @@
 		<div class="row" style="display:flex;" align="center">
 			<table class="col-sm-12">
 				<tr style="background-color: #C6C6C6;">
-					<td>목표명</td>
-					<td>목표내용</td>
-					<td>목표금액</td>
-					<td>시작일</td>
-					<td>종료일</td>
-					<td>참여자 수</td>
-					<td>공개여부</td>
-					<td>비밀번호</td>
-					<td>현재상태</td>
+					<td style="width:10%">목표명</td>
+					<td style="width:20%">목표내용</td>
+					<td style="width:10%">목표금액</td>
+					<td style="width:10%">시작일</td>
+					<td style="width:10%">종료일</td>
+					<td style="width:10%">참여자 수</td>
+					<td style="width:10%">공개여부</td>
+					<td style="width:10%">비밀번호</td>
+					<td style="width:10%">현재상태</td>
 				</tr>
 				<c:forEach var="article" items="${articleList}">
 					<tr>
