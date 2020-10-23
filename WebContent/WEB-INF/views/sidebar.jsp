@@ -95,7 +95,7 @@ $(document).ready(function(){
       
       
       <!-- 예산탭 시작 -->
-	<c:if test="${path.indexOf('/team/') < 0}" >
+	<c:if test="${path.indexOf('/team/') < 0 && path.indexOf('/closing/') < 0}" >
       <!-- Heading -->
       <div class="sidebar-heading">
         예산 관리
@@ -134,13 +134,13 @@ $(document).ready(function(){
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true" aria-controls="collapseReport">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>예산 보고서</span>
+          <span>보고서</span>
         </a>
         <div id="collapseReport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">보고서</h6>
             <a class="collapse-item" href="/moamore/report/report.moa">예산 보고서</a>
-            <a class="collapse-item" href="/moamore/report/expectation.moa">데이터 분석</a>
+            <a class="collapse-item" href="/moamore/report/expectation.moa" id="expectation" onclick="$('#loading').css('display','flex');">데이터 분석</a>
           </div>
         </div>
       </li>
@@ -167,7 +167,7 @@ $(document).ready(function(){
       
       <!-- 예산 탭 끝 -->
       <!-- 커뮤니티탭 시작 -->
-      <c:if test="${path.indexOf('/team/') >= 0}" >
+      <c:if test="${path.indexOf('/team/') >= 0 || path.indexOf('/closing/') >= 0}" >
 		 <!-- Heading -->
       <div class="sidebar-heading">
         커뮤니티
@@ -239,6 +239,7 @@ $(document).ready(function(){
           </button>
           
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
+          
 			<div class="input-group" style="width:100%">
 				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/dashboard.moa'"><span class="text">예산</span></button>
 				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;"onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
@@ -281,3 +282,15 @@ $(document).ready(function(){
 
         </nav>
         <!-- End of Topbar -->
+        
+<div id="loading" style="display: none;justify-content: center;background: rgba(0, 0, 0, .7);align-items: center;position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;backdrop-filter: blur(4px);-webkit-backdrop-filter: blur(4px);">
+	<div style="text-align:center;">
+		<img src="/moamore/resources/img/Loading_2.gif" style="width:60px"/>
+		<br/>
+		&nbsp;
+		<br/>
+		<div>
+			<h4 style="color:white;">데이터를 불러오고 있습니다.</h4>
+		</div>
+	</div>
+</div>

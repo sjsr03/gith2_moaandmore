@@ -332,7 +332,7 @@
 					</div>
 					<div style="display:inline-block; width:300px; height:50px; border:1px solid #ccc">
 						<div id="subCat">
-							재분배할 카테고리
+							<span>재분배할 카테고리</span>
 							<select id="targetCat" name="subSel">
 								<c:forEach items="${BDdtoList }" var="j">
 									<option value=${j.category_no } class="${categories[j.category_no] }">${categories[j.category_no] }</option>
@@ -340,14 +340,26 @@
 							</select>
 						</div>
 						<div id="subGoal" style="display:none;">
-							목표 선택
+							<span>목표 선택</span>
 							<select id="targetGoal" name="subSel">
-								<c:if test="${goals==null }" >
+								<c:if test="${personalGoals==null && teamGoals==null}" >
 									<option disabled>목표가 없습니다</option>
 								</c:if>
-								<c:forEach items="${goals }" var="j">
-									<option value=${j.goal_no } class="${j.subject }">${j.subject }</option>
-								</c:forEach>
+								<c:if test="${personalGoals!=null}" >
+									<optgroup label="==개인목표==">
+										<c:forEach items="${personalGoals}" var="j">
+											<option value=${j.GOAL_NO } class="${j.SUBJECT } ${j.REST}">${j.SUBJECT }</option>
+										</c:forEach>
+									</optgroup>
+								</c:if>
+								<c:if test="${teamGoals!=null}" >
+									<optgroup label="==그룹목표==">
+										<c:forEach items="${teamGoals}" var="j">
+											<option value=${j.GOAL_NO } class="${j.SUBJECT } ${j.REST}">${j.SUBJECT }</option>
+											<!-- <input type="hidden" value="${j.REST}"/> -->
+										</c:forEach>
+									</optgroup>
+								</c:if>
 							</select>
 						</div>
 					</div>
@@ -363,10 +375,13 @@
 	<jsp:include page="../footer.jsp" />
   
 <script>
+var personalGoals = [];
+var teamGoals=[];
+
+
 	$(document).ready(function(){
 		//남은 돈 총합 계산
 		//calSumFirst();
-
 		
 		//분배금액 입력될때마다
 		$('.inputAmount').on('keyup', function(){
@@ -423,15 +438,25 @@
 			var target_table = $('input:radio:checked').val();
 			var subSelect = "<";
 			if(target_table == "budget") {
-				subSelect += $('#targetCat').children(':selected').attr('class');
+				subSelect += $('#targetCat option:selected').prop('class');
 				subSelect += "> 카테고리";
 			} else {
-				subSelect += $('#targetGoal').children(':selected').attr('class');
+				subSelect += $('#targetGoal option:selected').prop('class').split(' ')[0];
 				subSelect += "> 목표";
 			}
 			var ans = confirm("총 " + $('#transSum').text() + "원을 " + subSelect + "로 전환합니다");			
 			if(ans == true) {
-				$('.chk').each(function(){
+				if($('input:radio:checked').val()=="goals") {
+					var goal_no = $("#targetGoal option:selected").val();
+					var rest = $('#targetGoal option:selected').prop('class').split(' ')[1];
+					
+					if($('#transSum').text() > rest) {
+						alert(subSelect + "달성까지 " + rest + "원 남았습니다.\n달성액을 초과할 수 없습니다.");
+						return;
+					}
+				}
+				
+				$('.chk').each(function(){	//체크안된 항목의 입력값은 전달되지 않도록 하는 작업
 					if($(this).is(':checked')==false) {
 						$(this).parent().next().next().next().children('.inputAmount').prop('name', '');
 					}

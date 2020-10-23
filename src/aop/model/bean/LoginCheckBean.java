@@ -23,7 +23,7 @@ public class LoginCheckBean {
 	private TotalBudgetDAO totalBudgetDAO = null;
 	
 	
-	@Around("execution(* LC*(..))")	//LoginCheck의 LC (로그인 해야만 접속가능하게)
+	@Around("bean(*Bean) && !execution(* NL*(..))")	//비로그인 상태에서도 볼 수 있는 페이지만 NL
 	public Object loginCheck(ProceedingJoinPoint j) throws Throwable {
 		ServletRequestAttributes sa = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 		HttpServletRequest request = sa.getRequest();

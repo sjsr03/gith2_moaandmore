@@ -30,6 +30,7 @@
  		<typeAlias type="search.model.dto.SearchDTO" alias="searchDTO"/>
  		<typeAlias type="closing.model.dto.ClosingAccountDTO" alias="closingAccountDTO"/>
  		<typeAlias type="closing.model.dto.ClosingAccountCommentDTO" alias="closingAccountCommentDTO"/>
+ 		<typeAlias type="budget.model.dto.RecordModifyDTO" alias="recordModifyDTO"/>
  		
 
  	</typeAliases>

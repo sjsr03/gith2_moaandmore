@@ -89,13 +89,6 @@ public class MemberServiceImpl implements MemberService {
 		
 	
 	@Override
-	public int confirmId(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
-	@Override
 	public void deleteMember(String id) throws SQLException {
 		memberDAO.deleteMember(id);	
 	}
@@ -176,5 +169,26 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updateClose(String id) throws SQLException {
 		
+	}
+
+
+	//아이디 중복검사 
+	@Override
+	public int userIdCheck(String user_id) throws SQLException {
+		
+		
+		 int checkId= memberDAO.checkOverId(user_id);
+		
+		return checkId;
+	}
+
+
+	//닉네임 중복검사
+	@Override
+	public int nicknameCheck(String nickname) throws SQLException {
+			
+		int checkNick= memberDAO.checkOverNick(nickname);
+		
+		return checkNick;
 	}
 }

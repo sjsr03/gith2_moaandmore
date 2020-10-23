@@ -38,11 +38,11 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	//수입 카테고리 추가하기
 	@Override
-	public String addIncomeCategory(String category_name,String id) throws SQLException {
+	public int addIncomeCategory(String category_name,String id) throws SQLException {
 		
 		List incomeCategoryNames = categoryDAO.selectIncomeCategoryNamesbyId(id); //ok
 		
-		String already = "false";
+		int already = 0;
 		
 		//수입카테고리 이름 겹치는지 검사
 		for(int i=0;i<incomeCategoryNames.size(); i++) {
@@ -50,12 +50,12 @@ public class CategoryServiceImpl implements CategoryService{
 			
 			if(incomeCategoryName.equals(category_name)) {
 				
-				already = "true";
+				already = 1;
 				break;
 			}
 		}
 		//이름이 안겹치면 수정 가능
-		if(already == "false") {
+		if(already ==0) {
 			categoryDAO.addIncomeCategory(category_name,id);
 		}		
 		
@@ -65,24 +65,24 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	//지출 카테고리 추가하기
 	@Override
-	public String addOutcomeCategory(String category_name,String id) throws SQLException {
+	public int addOutcomeCategory(String category_name,String id) throws SQLException {
 		
 		List outcomeCategoryNames = categoryDAO.selectOutcomeCategoryNamesbyId(id); //ok
 		//지출카테고리 이름 겹치는지 검사
-		String already = "false";
+		int already = 0;
 		
 		for(int i=0;i<outcomeCategoryNames.size(); i++) {
 				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
 			
 			if(outcomeCategoryName.equals(category_name)) {
 
-				already = "true";
+				already = 1;
 				break;
 			}
 		}
 		
 		//이름이 안겹치면 수정 가능
-		if(already == "false") {
+		if(already == 0) {
 			categoryDAO.addOutcomeCategory(category_name,id);
 		}
 		 
@@ -96,19 +96,51 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	//지출 카테고리 이름 수정하기
 	@Override
-	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
+	public int updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
 		
-		List outcomeCategoryNames = categoryDAO.selectAllById(id);
+		List outcomeCategoryNames = categoryDAO.selectOutcomeCategoryNamesbyId(id);
 		
-		categoryDAO.updateoutcomeCategory(category_no,newName,id);
-		
+		int already = 0;
+		//지출카테고리 이름 겹치는지 검사
+		for(int i=0;i<outcomeCategoryNames.size(); i++) {
+			String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
+			
+			if(outcomeCategoryName.equals(newName)) {
+				already =1;
+			}
+		}
+		//이름이 안겹치면 수정 가능
+		if(already==0) {
+			
+			categoryDAO.updateoutcomeCategory(category_no,newName,id);
+			
+		}	
+		System.out.println("already"+already);
+		return already;
 		
 	}
 	//수입 카테고리 이름 수정하기
 	@Override
-	public void updateincomeCategory(int category_no, String newName, String id) throws SQLException {
+	public int updateincomeCategory(int category_no, String newName, String id) throws SQLException {
 		
-		categoryDAO.updateincomeCategory(category_no,newName,id);
+		List incomeCategoryNames = categoryDAO.selectIncomeCategoryNamesbyId(id);
+		int already = 0;
+		//수입카테고리 이름 겹치는지 검사
+		for(int i=0;i<incomeCategoryNames.size(); i++) {
+			String incomeCategoryName = (String)incomeCategoryNames.get(i);
+			
+			if(incomeCategoryName.equals(newName)) {
+				already = 1;
+			}
+		
+		}
+		//이름이 안겹치면 수정 가능
+		if(already==0){
+			categoryDAO.updateincomeCategory(category_no,newName,id);
+			
+		}
+		System.out.println(already);
+		return already;
 		
 	}
 	

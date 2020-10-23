@@ -25,8 +25,9 @@
   	</select>
   	
   	<!-- 아이디와 목표번호로 전환기록 가져오기 -->
-  	<select id="selectAllByIdAndNum" parameterType="map" resultType="recordGoalsDTO">
-  		select * from record_goals where id=#{id} and goal_no=#{goal_no}
+  	<select id="selectAllByIdAndNum" parameterType="map" resultType="hashmap">
+  		<!-- select * from record_goals where id=#{id} and goal_no=#{goal_no}-->
+  		select to_char(reg, 'yyyy-MM-dd') as reg, goal_no, id, sum(amount) as amount from record_goals where id=#{id} and goal_no=#{goal_no} GROUP BY to_char(reg, 'yyyy-MM-dd'), goal_no, id order by reg 
   	</select>
   	
 	<!-- 아이디로 전환기록 있는 목표번호 리스트 가져오기 -->

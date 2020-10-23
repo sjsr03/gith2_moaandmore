@@ -20,8 +20,11 @@ public class LinearRegression {
         Float Xmean = (float)getXMean(Xdata);
         Float Ymean = (float)getYMean(YData);
         Float lineSlope = getLineSlope(Xmean, Ymean, X1, Y1) ;
+//        System.out.println("lineSlope : " + lineSlope);
         Float YIntercept = getYIntercept(Xmean , Ymean , lineSlope);
+//        System.out.println("YIntercept : " + YIntercept);
         Float prediction = (lineSlope * inputValue) + YIntercept;
+//        System.out.println("prediction : " + prediction);
         return prediction;
     }
     // y = ax + b : a = 가중치 b = 편향 

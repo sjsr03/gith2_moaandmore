@@ -66,6 +66,7 @@
   		</foreach>
   	</select>
   	
+  	
   	<!-- 지출 카테고리 삭제하기 -->
 	<delete id="deleteOutcomeCategory" parameterType="map">
 		delete from outcome_category where id=#{id} and category_no=#{category_no}

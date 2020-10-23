@@ -76,29 +76,52 @@
 				$("#pCnt").text( enterPeopleCount+"명");
 				
 				console.log(enterPeopleCount);
-					
-				$("#team_memList").append("<thead><th>랭크</th><th>활동명</th><th>진행도</th></thead>");
-				$("#team_memList").append("<tbody>");
-				for(var i = 0 ; i < memList.length ; i ++){
-					if(memList[i].id == "${sessionScope.memId}"){
-						btnCh = true;
+				
+				
+				if($(window).width >= 768){
+					$("#team_memList").append("<thead><th>랭크</th><th>활동명</th><th>진행도</th></thead>");
+					$("#team_memList").append("<tbody>");
+					for(var i = 0 ; i < memList.length ; i ++){
+						if(memList[i].id == "${sessionScope.memId}"){
+							btnCh = true;
+						}
+						var pgVal = ((memList[i].saving/ ${team.amount})*100 ).toFixed(2);
+				
+						if(memList[i].tmp_rank == 1){
+							$("#team_memList").append("<tr><td class='h3'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+						}else if(memList[i].tmp_rank ==2){
+							$("#team_memList").append("<tr><td class='h4'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+						}else if(memList[i].tmp_rank ==3){
+							$("#team_memList").append("<tr><td class='h5'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+						}else{
+							$("#team_memList").append("<tr><td class='text'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+						}
 					}
-					var pgVal = ((memList[i].saving/ ${team.amount})*100).toFixed(2);
-
+					$("#team_memList").append("</tbody>");
 					
-					
-					if(memList[i].tmp_rank == 1){
-						$("#team_memList").append("<tr><td class='h3'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
-					}else if(memList[i].tmp_rank ==2){
-						$("#team_memList").append("<tr><td class='h4'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
-					}else if(memList[i].tmp_rank ==3){
-						$("#team_memList").append("<tr><td class='h5'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
-					}else{
-						$("#team_memList").append("<tr><td class='text'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><progress value='"+ pgVal  +"' max='100'></progress><span class='pg-text'>"+pgVal+"%</span><span class='pg-text'>"+(memList[i].saving).format()+"/"+ (${team.amount}).format()+"(원)</span></td></tr>");
+				}else{
+					$("#team_memList").append("<thead><th>랭크</th><th>활동명</th><th>진행도</th></thead>");
+					$("#team_memList").append("<tbody>");
+					for(var i = 0 ; i < memList.length ; i ++){
+						if(memList[i].id == "${sessionScope.memId}"){
+							btnCh = true;
+						}
+						var pgVal = ((memList[i].saving/ ${team.amount})*100 ).toFixed(2);
+				
+						if(memList[i].tmp_rank == 1){
+							$("#team_memList").append("<tr><td class='h3'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><span class='pg-text'>"+pgVal+"%</span></td></tr>");
+						}else if(memList[i].tmp_rank ==2){
+							$("#team_memList").append("<tr><td class='h4'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><span class='pg-text'>"+pgVal+"%</span></td></tr>");
+						}else if(memList[i].tmp_rank ==3){
+							$("#team_memList").append("<tr><td class='h5'>"+ memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><span class='pg-text'>"+pgVal+"%</span></tr>");
+						}else{
+							$("#team_memList").append("<tr><td class='text'>"+  memList[i].tmp_rank+"</td><td>"+memList[i].nickname+"</td><td><span class='pg-text'>"+pgVal+"%</span></td></tr>");
+						}
 					}
+					$("#team_memList").append("</tbody>");
 					
 				}
-				$("#team_memList").append("</tbody>");
+				
 				
 				if(btnCh == true){
 					$("#enterBtnText").text("참여중");
@@ -137,18 +160,18 @@
 <jsp:include page="../sidebar.jsp"/>
 <div class="container">
 	<div class="row mt-3">
-		<div class="col-1 offset-11 mb-1">
+		<div>
 			<button class="btn btn-light btn-icon-split" style="border-radius:5px; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">목록</span></button>
 		</div>
 	</div>
-	<div class="row mt-5 mb-1"><span class="t4">개설자 : ${team.leader}</span></div>
+	<div class="row mt-3"><span class="t4">개설자 : ${team.leader}</span></div>
 	<div class="row mb-1">
 		<fmt:parseDate var="stFmt" pattern="yyyy-MM-dd HH:mm:ss.SSS" value="${team.start_day}"/>
 		<fmt:parseDate var="edFmt" pattern="yyyy-MM-dd HH:mm:ss.SSS" value="${team.end_day}"/>
 		<span>기간 : <fmt:formatDate value="${stFmt}" pattern="yyyy.MM.dd" /> - <fmt:formatDate value="${edFmt}" pattern="yyyy.MM.dd" /></span>
 	</div>
-	<div class="row mt-1">
-		<span class="h1">${team.subject}</span>
+	<div class="row mt-1 mb-2">
+		<h2 class="h2">${team.subject}</h2>
 		<c:if test="${team.status == 1}">
 			<div class="tag-eff before">시작전</div>
 		</c:if>
@@ -168,7 +191,7 @@
 			<button class="btn btn-light btn-icon-split" style="height:35px; border-radius:5px; border:2px solid #ccc; border-right:1px solid #ccc;" id="enterBtn"><span id="enterBtnText" class="text"></span></button>
 		</c:if>	
 	</div>
-	<div class="row mb-1"><span class="h4">목표액 : ${team.amount}원</span></div>
+	<div class="row mb-1"><h5 class="h5">목표액 : ${team.amount}원</h5></div>
 	<div class="row goal-explan">
 		<span class="text">${team.content}</span>
 	</div>
