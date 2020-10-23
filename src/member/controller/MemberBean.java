@@ -60,7 +60,7 @@ public class MemberBean {
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String loginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
 		
@@ -163,7 +163,7 @@ public class MemberBean {
 	
 					
 	@RequestMapping("signupPro.moa")
-	public String signupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
+	public String NLCsignupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
 	
 			
 			
