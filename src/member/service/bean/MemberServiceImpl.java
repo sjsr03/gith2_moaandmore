@@ -40,10 +40,7 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException {
 		
-			System.out.println("id :"+dto.getId());
-			System.out.println("pw :"+dto.getPw());
-			System.out.println("nickname :"+dto.getNickname());
-			System.out.println("img :"+dto.getProfile_img());
+			
 			
 				MultipartFile mf = null;
 				String newName = null;
@@ -83,7 +80,7 @@ public class MemberServiceImpl implements MemberService {
 			categoryDAO.outcomeInsertCategory(dto.getId());
 			categoryDAO.incomeInsertCategory(dto.getId());
 			
-			System.out.println("회원가입 성공");
+			
 	}
 		
 		
@@ -111,31 +108,30 @@ public class MemberServiceImpl implements MemberService {
 		String newName = null;
 		try {
 		
-		mf = request.getFile("image");
+			mf = request.getFile("image");
 		
-		//사진수정
-		if(mf.getSize() >0) {
+			//사진수정
+			if(mf.getSize() >0) {
+				
+				String path = request.getRealPath("save");
+				String orgName = mf.getOriginalFilename(); 
+				String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+				String ext = orgName.substring(orgName.lastIndexOf('.'));
+				long date = System.currentTimeMillis();
+				 newName = imgName+date+ext; 
 			
-			String path = request.getRealPath("save");
-			String orgName = mf.getOriginalFilename(); 
-			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
-			String ext = orgName.substring(orgName.lastIndexOf('.'));
-			long date = System.currentTimeMillis();
-			 newName = imgName+date+ext; 
-		
+				
+				String imgPath = path + "\\" + newName;
+				File copyFile = new File(imgPath);
+				mf.transferTo(copyFile);
+				
+				dto.setProfile_img(newName);
 			
-			String imgPath = path + "\\" + newName;
-			File copyFile = new File(imgPath);
-			mf.transferTo(copyFile);
+			// 이전 사진 불러오기
+			}else {
+				dto.setProfile_img(eximage);
+			}
 			
-			dto.setProfile_img(newName);
-		
-		// 이전 사진 불러오기
-		}else {
-			
-			dto.setProfile_img(eximage);
-		}
-		
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

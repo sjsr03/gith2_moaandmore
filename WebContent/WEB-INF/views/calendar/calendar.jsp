@@ -25,12 +25,23 @@
         .fc-scroller {height: 100% !important;}
     }
     */
+    @media (max-width: 800px){
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{    
+        	width: 90% !important;
+			 top: 250px !important;
+			 left: 34px !important;
+       	}
+   		
+    }
+    
     @media (max-width: 500px){
         .fc-scroller {height: 100% !important;}
         .detailModal-content{  
         	  width: 90% !important;					
 			  top: 250px !important;
 			  left: 20px !important;
+       	
        	}
        	
     }
@@ -69,6 +80,7 @@
        	 z-index:2;
     	 border: 1px solid #e3e6f0;
     	 border-radius: .35rem;
+    	 overflow:scroll;
      }      
      
      
@@ -82,7 +94,7 @@
     
     .close-button{
     	float:right;
-    	margin:5px;
+    	margin:1%;
     }
     
     .more{
