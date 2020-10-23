@@ -20,11 +20,14 @@ public interface RecordNoBudgetDAO {
 	// 아이디, 타입, 시작, 끝나는 날짜로 예산외 기록 총 개수  가져오기 
 	public int CountAllNoBudgetById(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 
+	// 아이디, 타입, 시작, 끝나는 날짜로 예산외 기록 총 개수  가져오기(키워드 포함)
+	public int CountAllNoBudgetByIdKeyword(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+	
 	// 아이디, 타입, 시작날짜, 끝나는 날짜, endRow, startRow로 예산 외 기록 가져오기 
 	public List selectAllNoBudget(SearchForRecordDTO searchForRecordDTO) throws SQLException;
 	
-	// 아이디, 타입으로 예산내역 총 개수 가져오기
-	public int CountBudgetRecordById(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+	// 아이디, 타입, 시작날짜, 끝나는 날짜, endRow, startRow로 예산 외 기록 가져오기 (키워드 포함)
+	public List selectAllNoBudgetKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException;
 	
 	// 아이디, 타입으로 예산외 내역 총 개수 가져오기
 	public int CountNoBudgetRecordById(SearchForRecordDTO searchForRecordDTO)throws SQLException;
