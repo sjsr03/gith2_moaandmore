@@ -216,10 +216,13 @@ public class MemberBean {
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		dto.setId(id);
 		
-		  memberService.modifyMember(dto,request,eximage);
-		  dto = memberService.selectOne(id);
+		memberService.modifyMember(dto,request,eximage);
+		dto = memberService.selectOne(id);
 		  
-		request.getSession().setAttribute("memImg", eximage);
+		request.getSession().setAttribute("memImg", dto.getProfile_img());
+		
+		
+		
 		
 		  model.addAttribute("dto", dto);
 		  
