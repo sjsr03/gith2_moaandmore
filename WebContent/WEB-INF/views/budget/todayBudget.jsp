@@ -303,15 +303,20 @@
 			<div style="display:inline;text-align:right;"><h2 style="display:inline">남은 돈 전환하기</h2>
 			<button onclick="$('#popup1').css('display','none')">X</button></div>
 			<form action="/moamore/budget/LeftMoneyTransfer.moa" method="post">
-				<div>
-					<table id="leftMoneyList">
-						<tr>
-							<td><input type="checkbox" id="allChk"/></td>
-							<td>항목</td>
-							<td>잔액</td>
-							<td>전환할 금액</td>
-							<td>전환 후 남은 금액</td>
-						</tr>
+			<div class="table-responsive">
+				<div class="col-lg-12 dataTables_wrapper dt-bootstrap4" >
+					<div class="row">
+						<table class="table table-bordered" id="leftMoneyList" >
+							<thead>
+								<tr>
+									<td><input type="checkbox" id="allChk"/></td>
+									<td>항목</td>
+									<td>잔액</td>
+									<td>전환할 금액</td>
+									<td>전환 후 남은 금액</td>
+								</tr>
+							</thead>
+							<tbody>
 					<c:forEach items="${leftMoney}" var="i" >
 						<tr>
 							<td><input type="checkbox" class="chk" name="category" value="${i.category_no}"/></td>
@@ -324,7 +329,10 @@
 						<tr>
 							<td colspan="5">전환할 총 금액 : <span id="transSum">0</span>원</td>
 						</tr>
+						</tbody>
 					</table>
+					</div>
+				</div>
 					<div style="display:inline-block">
 						<label><input type="radio" name="target_table" value="budget" checked/>현재예산에 재분배</label>
 						<br/>
