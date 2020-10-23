@@ -37,7 +37,7 @@
  	</select>
  	
 	<select id="checkOverNick" parameterType="string" resultType="int">
- 		select count(*) from member where id=#{nickname}
+ 		select count(*) from member where nickname=#{nickname}
  	</select>
 	
 	

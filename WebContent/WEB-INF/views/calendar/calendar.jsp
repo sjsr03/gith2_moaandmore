@@ -11,19 +11,40 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 </head>							
  <style>
-    .fc-day-content {height: 130px;}
-    @media (max-width: 992px){
-        .fc-day-content {height: 90px !important;}
+ 
+  /*
+  	 @media (max-width: 992px){
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{width:300px !important;}
     }
     @media (max-width: 767px){
-        .fc-day-content {height: 80px !important;}
+        .fc-scroller {height: 100% !important;}
+       
     }
     @media (max-width: 640px){
-        .fc-day-content {height: 45px !important;}
+        .fc-scroller {height: 100% !important;}
     }
+    */
     @media (max-width: 500px){
-        .fc-day-content {height: 35px !important;}
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{  
+        	  width: 90% !important;					
+			  top: 250px !important;
+			  left: 20px !important;
+       	}
+       	
     }
+    
+    @media (max-width: 370px){
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{    
+        	width: 90% !important;
+			 top: 250px !important;
+			 left: 20px !important;
+       	}
+   		
+    }
+  
     .fc-event-container > .fc-event-more {display: none;}
    
      .cal_modal{
@@ -63,6 +84,12 @@
     	float:right;
     	margin:5px;
     }
+    
+    .more{
+    	width:70px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+
+
+    }
 </style>
 <body>
 <jsp:include page="../sidebar.jsp"/>
@@ -73,12 +100,11 @@
 	<input class="checkbox" id="checkbox" type="checkbox" value="2"/> 수입
 	<input class="checkbox" id="checkbox" type="checkbox" value="3"/> 예산 외 지출  <br/>
 	
-	<div id='calendar'></div>
+	<div id='calendar' class="my_cal"></div>
 		<div class="cal_modal">
 			<div class="detailModal-content card-body">
 				<span class="close-button">&times;</span>
-				<table  border="1" class="contentTable table table-bordered dataTable" >
-				</table>
+				<table  border="1" class="contentTable mytable table table-bordered dataTable" ></table>
 			</div>
 		</div>
 </div>
@@ -167,7 +193,7 @@ $(document).ready(function () {
 					   					}
 					   					for(var j in finalByCheckVal[i]){
 	    				    	    		 	events.push({
-	    				    	    		 		title:pm+finalByCheckVal[i][j].format(),
+	    				    	    		 		title:pm+finalByCheckVal[i][j].format()+'원',
 	    				    	    		 		start:j,
 	    				    	    		 		color: '#11ffee00;',
 	    				    	    		 	    textColor: col

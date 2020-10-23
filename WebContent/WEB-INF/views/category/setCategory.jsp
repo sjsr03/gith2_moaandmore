@@ -14,18 +14,47 @@
 
 <style>
 
+ @media (max-width: 500px){
+        .my_td{
+        	width:50px !important;
+        	height:50px !important;
+        }
+       	
+    }
+    
+ @media (max-width: 370px){
+    .my_td{
+        	width:50px !important;
+        	height:50px !important;
+        }
+    
+ }
+
 a{text-decoration: none;color: #737271;}
     i{font-size: 20px;}
-    .cat_btn{position: relative;margin: 200px 0 0 200px;filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));}
+    .cat_btn{
+    	position: relative;
+    	float:right;
+    	top: -20%;
+    	padding:8px;
+    
+    		
+    }
     .cat_btn .my_sub p a{
         display: block;
         padding: 3px 0px;
        
     }
+    
+    .cat_text{
+    	text-align:center;
+    	top:-20%;
+    	font-size: 30px;
+    }
     .my_sub{
         position: absolute;
-        top: -90px;
-        left: -25px;
+        top: 32px;
+        left: -5px;
         background: #EDEBE8;
         width: 80px;
         text-align: center;
@@ -57,8 +86,8 @@ a{text-decoration: none;color: #737271;}
          transform: translate(-50%, -50%); 
          background-color: white; 
          padding: 1rem 1.5rem; 
-         width: 500px; 
-         height: 350px; 
+         width: 400px; 
+         height: 300px; 
          border-radius: 0.5rem; 
          z-index:5;
      }      
@@ -71,17 +100,39 @@ a{text-decoration: none;color: #737271;}
      }  
 
 
-table{
+.my_tab{
 	border-collapse:separate;
-	border-spacing:10px;
+	border-spacing:24px;
 }
 
-td{
-	width:100px;
+.my_td{
+	width:250px;
 	height:100px;
-	margin:10px;
-
+	border-radius: 10px;
+	
 }
+
+.modify{
+	cursor:pointer;
+}
+
+.close-button{
+	float:right;
+	cursor:pointer;
+}
+
+
+.btn-gradient {
+	margin: 5px;
+}
+
+.buttonDiv{
+	float:right;
+	padding:5px;
+	
+}
+
+
 </style>
 
 	
@@ -145,12 +196,16 @@ td{
 	
 	<div class='categorymodal'>
 		<div class='categorymodal-content'>
-			<span class="close-button">&times;</span>
-			<h1 class="title">카테고리 수정하기</h1>
-			<div class="modifyContent">															
-				<textarea name='newName' class='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>
-				<button class='modifyCategory'>변경</button>
-				<button class='cancel'>취소</button>
+			<div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+				<h6 class="title m-0 font-weight-bold text-primary">modify category</h6>
+				<span class="close-button">&times;</span>
+			</div>
+			<div class="modifyContent card-body">															
+				<textarea rows="2" style="width:310px" name='newName' class='newName' placeholder='카테고리 이름을 입력해주세요'></textarea>
+				<div class="buttonDiv">
+					<button class='modifyCategory'>변경</button>
+					<button class='cancel'>취소</button>
+				</div>
 			</div>
 		</div>
 	</div>	
@@ -173,20 +228,16 @@ $(document).ready(function(){
 
 	//수정창 x누를때 
 	$(".close-button").on('click',function(){
-			$(this).parent().parent().toggleClass('show-categorymodal');
+			$(this).parent().parent().parent().toggleClass('show-categorymodal');
 			
 	});
 	$(".cancel").on('click',function(event){
-		$(this).parent().parent().parent().toggleClass('show-categorymodal');
+		$(this).parent().parent().parent().parent().toggleClass('show-categorymodal');
 	});
-	 
-	 
 	 
 	//카테고리 추가 하기 
 	$("#inputCategory").click(function(event){ 
 		
-		console.log($("#inputCateogry").serialize());
-		console.log(category_name);
 		event.preventDefault
 		$.ajax({
 			type : "POST",
@@ -222,15 +273,15 @@ function getExpenseCategory(){
         success : function(outcome){
            	var html = "";
          
-       		html += "<table border='1'>";
+       		html += "<table class='my_tab' >";
        		html += "<tr>";
       		for (var i = 0; i < outcome.length; i++) {
-      				if(i%3==0){
+      				if(i%4==0){
       					html += "</tr>";
       					html +="<tr>";		
       				}
 
-	            	html += "<td>";
+	            	html += "<td class='my_td border-left-warning shadow'>";
 	            	html += "<div class='cat_btn'>";
 	            	html += "<i class='fas fa-ellipsis-v'></i>";
 	            	html += "<div class='my_sub'>";
@@ -240,7 +291,7 @@ function getExpenseCategory(){
 	           		html += "</p>"; 
 	            	html += "</div>"; 
 	            	html += "</div>";
-	            	html += "<div>";
+	            	html += "<div class='cat_text font-weight-bold text-gray-800'>";
 	            	html += outcome[i].category_name;
 	            	html += "</div>";
 	            	html += "<input type='hidden' name='category_no' id='category_no' class='category_no' value='"+outcome[i].category_no+"' />";
@@ -271,15 +322,15 @@ function getIncomeCategory(){
            	var html = "";
             var category_no = '';
              
-       		html += "<table border='1'>";
+       		html += "<table class='my_tab'>";
        		html += "<tr>";
       		for (var i = 0; i < income.length; i++) {
-      				if(i%3==0){
+      				if(i%4==0){
       					html += "</tr>";
       					html +="<tr>";		
       				}
 
-	            	html += "<td>";
+	            	html += "<td class='my_td border-left-warning shadow'>";
 	            	html += "<div class='cat_btn'>";
 	            	html += "<i class='fas fa-ellipsis-v'></i>";
 	            	html += "<div class='my_sub'>";
@@ -289,13 +340,15 @@ function getIncomeCategory(){
 	           		html += "</p>"; 
 	            	html += "</div>";
 	            	html += "</div>";
-	            	html += "<div>";
+	            	html += "<div class='cat_text font-weight-bold text-gray-800'>";
 	            	html += income[i].category_name;
 	            	html += "</div>";
 	            	html += "<input type='hidden' name='category_no' id='category_no' class='category_no' value='"+income[i].category_no+"' />";
 	            	html += "<input type='hidden' name='inOrOut' id='inOrOut' class='inOrOut' value='income' />";
 	            	html += "</td>";
-           		}
+           		
+      		
+      		}
       		html +="</tr>";
             html += "</table>";
             $(".allIncome").html(html);
@@ -305,30 +358,31 @@ function getIncomeCategory(){
     });
 }
 
+//수정 삭제 창이 열려있을때 창밖을 클릭하면 remove 클래스 
+	$(document).mouseup(function(e){
+		console.log(4);
+		var container = $('.my_sub');
+		if(container.has(e.target).length===0){
+			console.log("창밖");
+			$('.my_sub').removeClass('on');
+		}
+	});
+
+
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
 		console.log(1);
 		$('.cat_btn i').each(function(){
 			$(this).on('click', function(){
 				console.log(2);
+				
 				if($(this).next().closest('.my_sub').hasClass('on')){
 					console.log(2.5);
 					//수정.삭제 창에 on클래스가 있으면 on클래스 없애주기 
 					$(this).next().closest('.my_sub').removeClass('on')
-						console.log(3);
-						//수정 삭제 창이 열려있을때 창밖을 클릭하면 remove 클래스 
-						$(document).mouseup(function(e){
-							console.log(4);
-							var container = $('.my_sub');
-							if(container.has(e.target).length===0){
-								console.log("창밖");
-								$('.my_sub').removeClass('on');
-							}else{
-								$(this).next().closest('.my_sub').removeClass('on')
-							}
-						});
-
+						
 				}else{
+					console.log(3);
 					//버튼 누를때 수정삭제 창에 클래스 'on' 넣어주기 
 					$(this).next().closest('.my_sub').addClass('on');
 				}

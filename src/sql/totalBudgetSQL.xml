@@ -84,7 +84,7 @@
   	<!-- 사용자의 모든 예산 목록 가져오기 -->
   	<select id="selectBudgetAllByID" parameterType="string" resultType="totalBudgetDTO">
   		<![CDATA[
-			select * FROM (SELECT rownum r,budget_no,id,budget,period,start_day,end_day,close,total_budget_current FROM (SELECT * FROM total_budget where id=#{value} order by budget_no desc)) order by r asc
+			select * FROM (SELECT rownum r,budget_no,id,budget,period,start_day,end_day,close,total_budget_current FROM (SELECT * FROM total_budget where id=#{value} and close != 0 order by budget_no desc)) order by r asc
 		]]>
   	</select>
   	

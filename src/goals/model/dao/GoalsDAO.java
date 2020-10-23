@@ -41,4 +41,6 @@ public interface GoalsDAO {
 	//회원의 가장 달성도가 높은 그룹목표 가져오기
 	public HashMap selectMostTeamGoal(String id) throws SQLException;
 	
+	//남은돈 전환가능한 목표리스트
+	public List selectTransferPossibleGoals(String id) throws SQLException;
 }

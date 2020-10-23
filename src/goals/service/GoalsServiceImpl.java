@@ -118,6 +118,13 @@ public class GoalsServiceImpl implements GoalsService {
 		
 			
 	}
+	
+	@Override
+	public List selectTransferPossibleGoals(String id) throws SQLException {
+		return goalsDAO.selectTransferPossibleGoals(id);
+	}
+	
+	
 
 	
 
