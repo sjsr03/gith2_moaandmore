@@ -36,11 +36,20 @@
   		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
   	</select>
   	  	
+  	 <!-- 예산번호로 예산 지출 내역 리스트 가져오기 (키워드가 있는 경우) -->
+  	<select id="selectBudgetRecordByKeyword" parameterType="hashmap" resultType="allRecordDTO">
+  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND content LIKE '%'||#{keyword}||'%') ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
+  	</select>
+  	 	
   	<!-- 예산번호로 예산지출 내역 총 개수 가져오기 -->
   	<select id="countBudgetRecord" parameterType="int" resultType="int">
   		select count(*) from budget where budget_no=#{value}
   	</select>
   	
+  	<!-- 예산번호로 예산지출 내역 총 개수 가져오기 (키워드가 있는 경우)-->
+  	<select id="countBudgetRecordByKeyword" parameterType="map" resultType="int">
+  		SELECT count(*) FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND content LIKE '%${keyword}%'
+  	</select>
   	
   	<!-- 예산 지출 고유 번호로 해당 예산 내역 삭제 -->
   	<delete id="deleteBudgetRecord" parameterType="int" >
@@ -60,6 +69,15 @@
   	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기 -->
   	<select id="selectNoBudgetRecord" parameterType="searchForRecordDTO" resultType="allRecordDTO">  	
 		<![CDATA[SELECT t2.* from(SELECT rownum r, t1.* FROM(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]> 
+  	</select>
+  	<!-- 예산 외 수입or지출 내역 총 개수 가져오기  (키워드가 있는 경우) -->
+  	<select id="countNoBudgetRecordByKeyword" parameterType="searchForRecordDTO" resultType="int">
+  		SELECT count(*) FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type} AND content LIKE '%${keyword}%'
+  	</select>
+  	
+  	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기  (키워드가 있는 경우) -->
+  	<select id="selectNoBudgetRecordByKeyword" parameterType="searchForRecordDTO" resultType="allRecordDTO">  	
+		<![CDATA[SELECT t2.* from(SELECT rownum r, t1.* FROM(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type} AND content LIKE '%'||#{keyword}||'%') ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]> 
   	</select>
   	
   	<!-- 예산지출시 총예산 current값에서 차감 -->
@@ -123,4 +141,32 @@
   		]]>
   	</select>
   	
+  	<!-- 예산 내역 수정 -->
+  	<update id="modifyBudgetRecord" parameterType="budgetDTO">
+  		update budget set budget_no=#{budget_no}, category_no=#{category_no}, amount=#{amount}, reg=#{reg} where budget_outcome_no=#{budget_outcome_no}
+  	</update>
+  	<!-- 예산 상세내역 수정 -->
+  	<update id="modifyBudgetDetailRecord" parameterType="budgetDetailDTO">
+  		update budget_detail set content=#{content}, memo=#{memo}, img=#{img} where budget_outcome_no=#{budget_outcome_no}
+  	</update>
+  	
+  	<!-- 예산 외 내역 수정 -->
+  	<update id="modifyNoBudgetRecord" parameterType="noBudgetDTO">
+  		update nobudget set type=#{type}, 
+  		<choose>
+  			<when test='type.equals("income")'>
+  			income_category_no=#{income_category_no}, 
+  			</when>
+  			<otherwise>
+  			outcome_category_no=#{outcome_category_no}, 
+  			</otherwise>
+  		</choose>
+  		amount=#{amount}, reg=#{reg} where nobudget_no=#{nobudget_no}
+  	</update>
+  	<!-- 예산 외 상세내역 수정 -->
+  	<update id="modifyNoBudgetDetailRecord" parameterType="noBudgetDetailDTO">
+  		update nobudget_detail set content=#{content}, memo=#{memo}, img=#{img} where nobudget_no=#{nobudget_no}
+  	</update>
+  	
+  
   </mapper>

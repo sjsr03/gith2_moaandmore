@@ -55,5 +55,13 @@ public class NoBudgetDTO {
 	public void setReg(Timestamp reg) {
 		this.reg = reg;
 	}
+	@Override
+	public String toString() {
+		return "NoBudgetDTO [nobudget_no=" + nobudget_no + ", id=" + id + ", type=" + type + ", outcome_category_no="
+				+ outcome_category_no + ", income_category_no=" + income_category_no + ", amount=" + amount + ", reg="
+				+ reg + "]";
+	}
+	
+	
 		
 }

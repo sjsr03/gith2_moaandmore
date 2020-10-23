@@ -60,7 +60,7 @@ public class MemberBean {
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String loginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
 		
@@ -163,7 +163,7 @@ public class MemberBean {
 	
 					
 	@RequestMapping("signupPro.moa")
-	public String signupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
+	public String NLCsignupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
 	
 			
 			
@@ -196,10 +196,10 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("updateMember.moa")
-	public String LCupdateMember(HttpServletRequest request,Model model)throws SQLException{
+	public String LCupdateMember(Model model)throws SQLException{
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
 		
-		HttpSession session = request.getSession();
-		String id = (String)session.getAttribute("memId");
 		
 		MemberDTO dto = memberService.selectOne(id);
 		
@@ -216,10 +216,13 @@ public class MemberBean {
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		dto.setId(id);
 		
-		  memberService.modifyMember(dto,request,eximage);
-		  dto = memberService.selectOne(id);
+		memberService.modifyMember(dto,request,eximage);
+		dto = memberService.selectOne(id);
 		  
-		request.getSession().setAttribute("memImg", eximage);
+		request.getSession().setAttribute("memImg", dto.getProfile_img());
+		
+		
+		
 		
 		  model.addAttribute("dto", dto);
 		  

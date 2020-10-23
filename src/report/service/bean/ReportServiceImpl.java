@@ -161,6 +161,8 @@ public class ReportServiceImpl implements ReportService {
 			firstStartDay.setDate(firstStartDay.getDate()+1);
 		}
 		
+		outcomeDataX.substring(0, outcomeDataX.length()-2);
+		outcomeDataY.substring(0, outcomeDataY.length()-2);
 		
 		outcomeDataX += " ] ";
 		outcomeDataY += " ] ";

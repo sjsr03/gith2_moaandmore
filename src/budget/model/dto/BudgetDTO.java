@@ -47,6 +47,11 @@ public class BudgetDTO {
 	public void setReg(Timestamp reg) {
 		this.reg = reg;
 	}
+	@Override
+	public String toString() {
+		return "BudgetDTO [budget_outcome_no=" + budget_outcome_no + ", budget_no=" + budget_no + ", id=" + id
+				+ ", category_no=" + category_no + ", amount=" + amount + ", reg=" + reg + "]";
+	}
 
 	
 	
