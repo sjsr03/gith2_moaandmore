@@ -196,10 +196,10 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("updateMember.moa")
-	public String LCupdateMember(HttpServletRequest request,Model model)throws SQLException{
+	public String LCupdateMember(Model model)throws SQLException{
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
 		
-		HttpSession session = request.getSession();
-		String id = (String)session.getAttribute("memId");
 		
 		MemberDTO dto = memberService.selectOne(id);
 		

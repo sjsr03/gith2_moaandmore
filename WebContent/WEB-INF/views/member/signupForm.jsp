@@ -18,16 +18,13 @@
   <link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
-
-
-
+<body class="bg-gradient-primary">
   <div class="container">
-
     <div class="card o-hidden border-0 shadow-lg my-5">
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
         <div class="row">
-          <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+          <div class="col-lg-5 d-none d-lg-block bg-login-image"></div>
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
@@ -36,20 +33,20 @@
               <!-- 폼 시작 -->
 				<form action="/moamore/member/signupPro.moa" class ="user" method="post" name="inputForm" enctype="multipart/form-data">
                 <div class="form-group">
-                  <input type="text" name ="id" class="form-control form-control-user" id="user_id" placeholder="아이디">
+                  <input type="text" name ="id" class="form-control form-control-user input" id="user_id" placeholder="아이디">
                   <div class="check_font" id="id_check"></div>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" name ="pw" class="form-control form-control-user" id="pw" placeholder="비밀번호">
+                    <input type="password" name ="pw" class="form-control form-control-user input" id="pw" placeholder="비밀번호">
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" name="pwCh" class="form-control form-control-user" id="pwch" placeholder="비밀번호 확인">
+                    <input type="password" name="pwCh" class="form-control form-control-user input" id="pwch" placeholder="비밀번호 확인">
                   </div>
                 </div>
                 <div id="pw_alert"></div>
                 <div class="form-group">
-                  <input type="text" name="nickname" class="form-control form-control-user" id="nickname" placeholder="닉네임">
+                  <input type="text" name="nickname" class="form-control form-control-user input" id="nickname" placeholder="닉네임">
              	  <div class="check_nickname" id="nick_check"></div>
                 </div>
                  <div class="form-group">
@@ -99,19 +96,19 @@
 
   <!-- Custom scripts for all pages-->
   <script src="/moamore/js/sb-admin-2.min.js"></script>
-
+</body>
 <script>
 //아이디 중복검사
 
 $(document).ready(function () {
-	//처음에 회원가입 클릭 안되게 
 	
+	//처음에 회원가입 클릭 안되게 
 	$("#reg_submit").attr("disabled", true);
 	var idsuccess = 0;
 	var pwsuccess = 0;
 	var nicksuccess = 0;
 	
-$("#user_id").blur(function() {
+$("#user_id").keyup(function() {
 	var idJ = /[0-9a-zA-Z]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 	var user_id = $('#user_id').val();
 	$.ajax({
@@ -153,13 +150,14 @@ $("#user_id").blur(function() {
 });
 
 	//닉네임 유효성 검사
-	$("#nickname").blur(function() {
+	$("#nickname").keyup(function() {
+		console.log("keyup");
 	var nickname = $('#nickname').val();
 	$.ajax({
 		url : 'nicknameCheck.moa?nickname='+ nickname,
 		type : 'get',
 		success : function(data) {
-			
+			console.log(data);
 				if (data == 1) { 
 					// 1 : 아이디가 중복되는 문구
 					$("#nick_check").text("이미 사용중인 닉네임입니다");
@@ -178,15 +176,15 @@ $("#user_id").blur(function() {
 						nicksuccess = 1;
 					}
 				}
-			}, error : function() {
+		}, error : function() {
 					console.log("실패");
 			}
 		});
 	});
 	
 
-//비밀번호 확인
-	$('#pwch').blur(function(){
+ //비밀번호 확인
+	$('#pwch').keyup(function(){
 	
 		var pw = $("#pw").val();
 		var pwch = $("#pwch").val();
@@ -196,7 +194,6 @@ $("#user_id").blur(function() {
 			$("#pw_alert").css("color", "red");
 			$("#reg_submit").attr("disabled", true);
 		    	
-	       
 	    }else{
 	    	$("#pw_alert").text("비밀번호가 일치합니다.");
     		$("#pw_alert").css("color", "green");
@@ -214,7 +211,8 @@ $("#user_id").blur(function() {
 	    }
 	});  	   
 	
-	$(document).on('click',function(){
+    //회원가입 가능
+	$(".input").keyup(function(){
 		if(idsuccess==1 && pwsuccess==1 && nicksuccess==1){
 			$("#reg_submit").attr("disabled", false);
 			
