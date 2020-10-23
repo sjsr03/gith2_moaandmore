@@ -60,16 +60,6 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		return noBudgetRocordList;
 	}
 
-	
-	// 아이디, 타입으로 예산 기록 총 개수 가져오기
-	@Override
-	public int CountBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
-		System.out.println("dao11111111111");
-		int count = sqlSession.selectOne("record.countBudgetRecordById", searchForRecordDTO);
-		
-		System.out.println("dao1111123123 : "+ count);
-		return count;
-	}
 	// 아이디, 타입으로 예산외 기록 총 개수 가져오기
 	@Override
 	public int CountNoBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
@@ -86,6 +76,21 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		List recordList = sqlSession.selectList("record.selectNobudgetRecord", searchForRecordDTO);
 		return recordList;
 	}
+	// 아이디, 타입으로 예산외 내역 총 개수 가져오기(키워드 포함)
+	@Override
+	public int CountAllNoBudgetByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		int count = sqlSession.selectOne("record.countNoBudgetRecordByKeyword", searchForRecordDTO);
+		return count;
+	}
+	// 아이디, 타입으로 예산외 내역 총 기록 가져오기(키워드 포함)
+	@Override
+	public List selectAllNoBudgetKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		List recordList = sqlSession.selectList("record.selectNoBudgetRecordByKeyword", searchForRecordDTO);
+		return recordList;
+	}
+	
+	
+	
 	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 
 	@Override
 	public List selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
@@ -113,6 +118,5 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		sqlSession.selectOne("record.modifyNoBudgetRecord", noBudgetDTO);
 		sqlSession.selectOne("record.modifyNoBudgetDetailRecord", noBudgetDetailDTO);
 	}
-
 	
 }

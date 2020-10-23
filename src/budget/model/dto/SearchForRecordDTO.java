@@ -10,6 +10,8 @@ public class SearchForRecordDTO {
 	private Timestamp timeStampDate;
 	private int startRow;
 	private int endRow;
+	private String keyword; 
+	//keyword는 검색용
 	
 	public Timestamp getTimeStampDate() {
 		return timeStampDate;
@@ -53,6 +55,12 @@ public class SearchForRecordDTO {
 	}
 	public void setEndRow(int endRow) {
 		this.endRow = endRow;
+	}
+	public String getKeyword() {
+		return keyword;
+	}
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
 	}
 	
 	

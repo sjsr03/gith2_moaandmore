@@ -164,11 +164,12 @@ public class RecordBean {
 	}
 	//------------------------------------------------------------------------
 	
-	// 수입지출목록 보여주기
+	// 수입지출목록 보여주기 
+	/* 이거 이제 안쓰는것같음...확인후 지우셈
 	@RequestMapping("moneyLog.moa")
 	public String moneyLog(HttpServletRequest request, Model model, String pageNum)throws SQLException {
 		String id = (String)request.getSession().getAttribute("memId");
-		
+		String keyword ="";
 		// 현재 날짜+시간 받아오기(기본으로 현재 진행중인 예산의 지출 목록 보여줄 것임)
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date currTime = new Date();
@@ -177,12 +178,12 @@ public class RecordBean {
 		
 		// 날짜랑 아이디로 해당 예산 번호 가져오기
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
-		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum);
-
+		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum, keyword);
+		System.out.println("빈에서 !! :");
 		model.addAttribute("recordPage", recordPage);
 		return "budget/moneyLog";
 	}
-	
+	*/
 	@RequestMapping("moneyRecord.moa")
 	public String moneyRecord(HttpServletRequest request, Model model, SearchForRecordDTO searchForRecordDTO)throws SQLException{
 		
@@ -228,7 +229,8 @@ public class RecordBean {
 			System.out.println("검색날짜 ::: " + searchForRecordDTO.getSearchDate());
 			String newDate = searchForRecordDTO.getSearchDate() + " 00:00:00";
 			dateTime = Timestamp.valueOf(newDate);
-			searchForRecordDTO.setTimeStampDate(dateTime);		
+			searchForRecordDTO.setTimeStampDate(dateTime);	
+			
 			// 예산 번호 뽑아오기
 			int budgetNum = budgetService.selectBudgetNum(searchForRecordDTO.getId(), dateTime);
 			System.out.println("컨트롤러 버겟 넘 : "+budgetNum);
@@ -237,9 +239,11 @@ public class RecordBean {
 			// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
 			HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);		
 			// 예산번호로 예산 지출 내역 가져오기 
-			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum());
+			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum(), searchForRecordDTO.getKeyword());
 			String searchDate = searchForRecordDTO.getSearchDate();
 			model.addAttribute("searchDate", searchDate);
+			
+			System.out.println("빈에서 !! :" + recordPage.getRecordList().size());
 			recordPage.setType(searchForRecordDTO.getType());
 			// model로 다 보내주기
 			model.addAttribute("categories", categories);
@@ -247,6 +251,7 @@ public class RecordBean {
 			System.out.println("아아아아" + recordPage.getCount());		
 		}else{
 		}
+		
 		
 		return "budget/moneyLog";
 	}
@@ -259,10 +264,13 @@ public class RecordBean {
 		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		
+		// 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
 		Map<Integer, String> categories = new HashMap();
 		System.out.println("타입확인!!!>> " + recordPage.getType());
+		
+		// 해당 카테고리 가져오기
 		if(recordPage.getType().equals("income")){
 			List incomeCategoryList= categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
 
@@ -290,6 +298,8 @@ public class RecordBean {
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		String type = searchForRecordDTO.getType();
+		
+		// 타입에 들어있는 만큼 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
 		
@@ -307,14 +317,13 @@ public class RecordBean {
 			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
 		}
 		
-		System.out.println("아ㅠ : " + type);
+		//System.out.println("타입확인 : " + type);
 		recordPage.setType(type);
 
-		System.out.println("개빡침..." + recordPage.getType());
+		System.out.println("recordPage 내의 Type 확인 :" + recordPage.getType());
 		model.addAttribute("incomeCategories", incomeCategories);
 		model.addAttribute("outcomeCategories", outcomeCategories);
 		model.addAttribute("recordPage", recordPage);
-		System.out.println("개빡침...???" + recordPage.getType());
 		return "budget/moneyLog";
 	}
 

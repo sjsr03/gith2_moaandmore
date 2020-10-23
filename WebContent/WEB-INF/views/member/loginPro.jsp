@@ -11,7 +11,9 @@
 
 	<c:if test="${result==1 }" >
 		<script>
-			window.location='/moamore/main.moa';
+			//window.location='/moamore/main.moa';
+			var referrer = document.referrer;
+			window.location.href = referrer;
 		</script>
 	</c:if>
 	<c:if test="${result!=1 }">
