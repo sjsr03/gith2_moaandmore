@@ -10,6 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/moamore/js/snowfall.jquery.js"></script>
+
 	<!-- Custom fonts for this template-->
 	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -23,9 +25,7 @@
 	ul.toggled > #BudgetState {
 		display:none;
 	}
-	
-	#ranking{
-	}
+	#ranking{}	
 </style>
 <script>
 $(document).ready(function(){
@@ -53,14 +53,13 @@ $(document).ready(function(){
 });
 </script>
 
-<body id="page-top">
+<body id="page-top" >
 	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion " id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/main.moa">
@@ -152,9 +151,17 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/goals/myGoalList.moa">
-          <i class="fas fa-fw fa-crosshairs"></i>
-          <span>목표</span></a>
+       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGoal" aria-expanded="true" aria-controls="#collapseGoal">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>목표</span>
+        </a>
+          <div id="collapseGoal" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+           <h6 class="collapse-header">목표</h6>
+            <a class="collapse-item" href="/moamore/goals/myGoalList.moa">진행중인 목표</a>
+            <a class="collapse-item" href="/moamore/goals/completeGoalList.moa">완료한 목표</a>
+          </div>
+        </div>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">

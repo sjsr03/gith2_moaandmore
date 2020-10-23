@@ -11,7 +11,7 @@ public interface GoalsService {
 		public GoalsDTO selectOne(int goal_no) throws SQLException;
 		
 		//정렬기준으 정렬된  목표 전체 가져오기
-		public List<GoalsDTO> selectAllByPublicCh(int public_ch, String sorting) throws SQLException;
+		public List<GoalsDTO> selectAllByPublicCh(int public_ch, String sorting, String list_type) throws SQLException;
 		//목표 타입으로 목표 전체 가져오기
 		public List<GoalsDTO> selectAllById() throws SQLException;
 		

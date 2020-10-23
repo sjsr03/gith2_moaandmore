@@ -2,10 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
 <head>
-<meta charset="UTF-8">
 <title>MY GOAL DETAIL</title>
 <style>
 #run-animation{
@@ -48,11 +45,10 @@
 		background-color: #e6e6e6;
 		padding: 15px;
 }
-
-
 </style>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script>
+</head>
+<jsp:include page="../sidebar.jsp"/>
+<script type="text/javascript">
 function setBody(){
 	$("#pg").empty();
 	$("#pgVal").empty();
@@ -92,8 +88,40 @@ function setBody(){
 }
 
 $(document).ready(function(){
+	
+	
+	if( ${goal.saving} >= ${goal.target_money}){
+		if($(window).width() > 375){
+			for(var i = 1 ; i<5; i++){
+				$(document).snowfall({
+			 		 image : "/moamore/resources/img/money"+i+".png",
+			         minSize: 40, 
+			         maxSize: 60, 
+			         flakeIndex : i,
+			         flakeCount:10
+			    });
+			}
+				
+		}else{
+			for(var i = 1 ; i<5; i++){
+				$(document).snowfall({
+			 		 image : "/moamore/resources/img/money"+i+".png",
+			         minSize: 30, 
+			         maxSize: 40, 
+			         flakeIndex : i,
+			         flakeCount:5
+			    });
+			}
+		}
+	
+ 	
+	}
+
+ 	
+
 	setBody();		
 });
+
 	
 $(window).resize(function(){
 	setBody()
@@ -101,9 +129,8 @@ $(window).resize(function(){
 	
 
 </script>
-</head>
-<body>
-<jsp:include page="../sidebar.jsp"/>
+
+
 <div class="container">
 	<div class="row">
 		<div>
@@ -194,7 +221,3 @@ $(window).resize(function(){
 	}
 
 </script>
-	
-
-</body>
-</html>
