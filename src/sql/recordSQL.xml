@@ -61,24 +61,38 @@
   		delete from nobudget where nobudget_no=#{value}
   	</delete>
   	
+  	
+  	
+  	<!-- 아래의 두개는수입or지출 월별로 가져옴 -->
+  	
   	<!-- 예산 외 수입or지출 내역 총 개수 가져오기 -->
   	<select id="countNoBudgetRecord" parameterType="searchForRecordDTO" resultType="int">
   		SELECT count(*) FROM NOBUDGET WHERE id=#{id} and type=#{type} AND TO_CHAR(reg,'YYYY-MM')=#{searchDate}
   	</select>
   	
-  	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기 -->
+  	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기  월!!!!별로!! 날짜로@@@@@@@@@@@@@@@@@2 이거 고치기-->
   	<select id="selectNoBudgetRecord" parameterType="searchForRecordDTO" resultType="allRecordDTO">  	
 		<![CDATA[SELECT t2.* from(SELECT rownum r, t1.* FROM(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]> 
   	</select>
-  	<!-- 예산 외 수입or지출 내역 총 개수 가져오기  (키워드가 있는 경우) -->
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	<!-- 예산 외 수입or지출 내역 총 개수 가져오기  날짜로 가져와라 (키워드가 있는 경우) @@@@@@@@@@  이거 수정@@@@ 날짜 포함해서 가져와야한다 -->
   	<select id="countNoBudgetRecordByKeyword" parameterType="searchForRecordDTO" resultType="int">
   		SELECT count(*) FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type} AND content LIKE '%${keyword}%'
   	</select>
   	
-  	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기  (키워드가 있는 경우) -->
+  	<!-- 아이디, 타입 날짜로으로 예산 외 수입or지출내역 리스트로 가져오기  (키워드가 있는 경우) @@@@@@@@@@  이거 수정@@@@ 날짜 포함해서 가져와야한다-->
   	<select id="selectNoBudgetRecordByKeyword" parameterType="searchForRecordDTO" resultType="allRecordDTO">  	
 		<![CDATA[SELECT t2.* from(SELECT rownum r, t1.* FROM(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type} AND content LIKE '%'||#{keyword}||'%') ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]> 
   	</select>
+  	
+  	
+  	
   	
   	<!-- 예산지출시 총예산 current값에서 차감 -->
   	<update id="updateCurrentBudget" parameterType="budgetDTO">
@@ -104,17 +118,21 @@
 		 ORDER BY reg DESC)t1)t2 <![CDATA[WHERE r >=#{startRow} AND r <=#{endRow}]]>
   	</select>
   	
-  	<!-- 수입+지출 내역 리스트 아이디로 가져오기 -->
-  	<select id="selectNobudgetRecord" parameterType="searchForRecordDTO" resultType="allRecordDTO">
+
+
+  	<!-- 수입+지출 내역 리스트 아이디로 가져오기  -->
+  	<select id="selectNobudgetRecordAllType" parameterType="searchForRecordDTO" resultType="allRecordDTO">
   		SELECT t2.* from(SELECT rownum r, t1.* FROM
 		(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id}) 
 		ORDER BY reg DESC)t1)t2 <![CDATA[WHERE r >=#{startRow} AND r <=#{endRow}]]>
   	</select>
+
+  	
   	<!-- 아이디로 예산 총 개수 가져오기 -->
   	<select id="countBudgetRecordById" parameterType="searchForRecordDTO" resultType="int">
   		select count(*) from budget where id=#{id}
   	</select>
-  	<!-- 아이디로 예산외 총 개수 가져오기 -->
+  	<!-- 아이디랑 타입으로  예산외 총 개수 가져오기 (수입+지출 한번에 가져오기 가능 가능 )-->
   	<select id="countNoBudgetRecordById" parameterType="searchForRecordDTO" resultType="int">
   		select count(*) from nobudget where id=#{id} 
   		<choose>
@@ -168,5 +186,6 @@
   		update nobudget_detail set content=#{content}, memo=#{memo}, img=#{img} where nobudget_no=#{nobudget_no}
   	</update>
   	
-  
+  	<!-- 아이디, 키워드로 예산 내역 총 개수 가져오기 countBudgetRecordByIdKeyword -->
+  	
   </mapper>

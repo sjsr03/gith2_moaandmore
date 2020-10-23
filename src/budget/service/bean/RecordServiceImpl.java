@@ -180,6 +180,9 @@ public class RecordServiceImpl implements RecordService{
 		
 		return result;	
 	}
+	
+	
+	// 수입 or 지출 둘 중하나  조건 : 타입, 월(날짜)로 가져올 것
 	@Override
 	public RecordPageDTO selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)
 			throws SQLException {
@@ -200,11 +203,11 @@ public class RecordServiceImpl implements RecordService{
 		searchForRecordDTO.setEndRow(endRow);
 		
 		if(searchForRecordDTO.getKeyword() == null) {
-			// 전체 목록 수 가져오기 (타입별로) 
+			// 전체 목록 수 가져오기 
 			count = recordNoBudgetDAO.CountAllNoBudgetById(searchForRecordDTO);
-			if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
+			if(count > 0) { //  내역이 하나라도 있으면 전체 리스트 가져오기 
 				recordList = recordNoBudgetDAO.selectAllNoBudget(searchForRecordDTO);
-				System.out.println("예산번호로 예산기록목록 가져오기  : " + recordList.size());
+				System.out.println(" 지출+수입 내영ㄱ 리스트 아이디로 가져온 사이즈 : " + recordList.size());
 			}
 			
 			recordPage.setCount(count);

@@ -164,26 +164,6 @@ public class RecordBean {
 	}
 	//------------------------------------------------------------------------
 	
-	// 수입지출목록 보여주기 
-	/* 이거 이제 안쓰는것같음...확인후 지우셈
-	@RequestMapping("moneyLog.moa")
-	public String moneyLog(HttpServletRequest request, Model model, String pageNum)throws SQLException {
-		String id = (String)request.getSession().getAttribute("memId");
-		String keyword ="";
-		// 현재 날짜+시간 받아오기(기본으로 현재 진행중인 예산의 지출 목록 보여줄 것임)
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date currTime = new Date();
-		String now = sdf.format(currTime);
-		Timestamp dateTime = Timestamp.valueOf(now);
-		
-		// 날짜랑 아이디로 해당 예산 번호 가져오기
-		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
-		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum, keyword);
-		System.out.println("빈에서 !! :");
-		model.addAttribute("recordPage", recordPage);
-		return "budget/moneyLog";
-	}
-	*/
 	@RequestMapping("moneyRecord.moa")
 	public String moneyRecord(HttpServletRequest request, Model model, SearchForRecordDTO searchForRecordDTO)throws SQLException{
 		

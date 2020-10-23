@@ -64,290 +64,11 @@ a:visited { color: black; text-decoration: none;}
 a:hover { color: blue; text-decoration: underline;}
 
 </style>
-<script>
-var type;
-var cateType;
-var budgetTime;
-var budgetDate;
-var budgetReg;
-var budget_no = 0;
-var uniqueNum =0;
-console.log("레코드페이지 안의 타임 : " + type);
-	$(document).ready(function(){
-		
-		
-		console.log("레코드페이지 안의 타입222 :" + type);
 
-		
-		// 타입이 예산이고 date를 변경하면 해당 카테고리 불러오기 
-		$("#date").on('change', function(){
-			
-			console.log("작동안하냐");
-			if($("#recordType").val() == "budget"){
-				getBudgetCategories();
-			}
-		});
-		
-		
-		// 수정버튼 처리
-		$("button[name='btn_modify']").on('click',function(event){
-			modifyRecord();
-		
-			console.log(event);
-			var id = $(this).attr("id");
-			
-			var number = id.replace("btn_", "");
-			console.log("id >> " + id);
-				alert(number)
-				console.log("수정버튼이닷");
-				var check = false;
-				check = confirm("수정을 하시겠습니까?");
-				if(check){ // check가 true면
-					modifyRecord();
-				}else{// check가 false면 
-					alert("수정을 취소합니다.");
-				}	
-			
-		})
-		// 삭제버튼 처리
-		$("button[name='btn_delete']").on('click',function(event){
-			console.log(event);
-			var id = $(this).attr("id");
-			
-			var number = id.replace("btn_", "");
-			console.log("id >> " + id);
-				alert(number)
-				console.log("삭제버튼이닷");
-				var check = false;
-				check = confirm("정말 삭제하시겠습니까?");
-				if(check){ // check가 true면
-					var num = $("#number").val();
-					var type = $("#recordType").val();
-					deleteRecord(num, type);
-				}else{// check가 false면 
-					alert("삭제를 취소합니다.");
-				}	
-		});//삭제 
-		
-		
-		
-		
-	});
-	
-	
-	// 예산 카테고리 가져오는 Ajax
-	function getBudgetCategories(){
-		$.ajax({
-			type : "POST",
-			url : "budgetCategory.moa",
-			data : {date:$("#date").val(), id:"${id}"},
-			dataType : "json", 
-			async: false,
-			error : function(request,status,error){
-				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-	
-			},
-			success : function(data){							
-				console.log($("#date").val());
-				console.log(typeof date);
-				// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
-				$("#budgetcategory").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
-	
-				for(var key in data){
-					console.log("컬럼:" + key + "value : " + data[key]);
-					//console.log(typeof key);
-					if(key != 'budgetNum'){ 
-						$("#budgetcategory").append("<option value='"+key+"'>"+data[key]+"</option>");
-					}else{ // budgetNum 이면 변수에 담아주기
-						budget_no = data[key];
-					}								
-				}
-				$("#budgetcategory").css("display", "block");
-			}
-		});
-	}
-	// 삭제 Ajax	
-	function deleteRecord(num, type){
-		$.ajax({
-			type:"POST",
-			url:"budgetRecordDelete.moa",
-			dateType: "json",
-			data:{"number":num, "type":type},
-			success: function(result){
-				if(result=="OK"){
-					// 내용날리기 안되니까 걍 새로고침 ㅎㅎ;
-					location.reload();
-					alert("삭제완료");
-				}else{
-					// 삭제 실패
-					alert("삭제 실패");
-				}
-			}				
-		});
-	}
-	
-	// 수정 Ajax(사진포함)
-	function modifyRecord(){
-		console.log(budget_no);
-	
-
-		var form = $("#recordDetail")[0];
-		var formData = new FormData(form);
-		
-		formData.append("type", $("#recordType").val());
-		formData.append("id", $("#id").val());
-		
-		formData.append("date", $("#date").val());
-		
-		formData.append("time", $("#time").val());
-		
-		formData.append("amount", $("#amount").val());
-		formData.append("content", $("#recordContent").val());
-		formData.append("memo", $("#memo").val());
-		formData.append("uniqueNum ", uniqueNum);
-		formData.append("budget_no", budget_no);
-		// 카테고리 번호들은 비어있어도 그냥 한번에 보내주기
-		formData.append("outcome_category_no", $("#outcomecategory option:selected").val());
-		formData.append("income_category_no", $("#incomecategory option:selected").val());
-		formData.append("budget_category_no", $("#budgetcategory option:selected").val());
-		
-		
-		console.log("타입 : " + $("#recordType").val());
-		console.log("날짜 : " + $("#date").val());
-		console.log("시간 : " + $("#time").val());
-		console.log("금액 : " + $("#amount").val());
-		console.log("메모 : " + $("#memo").val());
-		console.log("uniqueNum : " + uniqueNum);
-		console.log("budget_no : " + budget_no);
-		console.log("outcomecategoryNum : " + $("#outcomecategory option:selected").val());
-		console.log("incomecategoryNum : " + $("#incomecategory option:selected").val());
-		console.log("budgetcategoryNum: " +  $("#budgetcategory option:selected").val());
-		// 파일 
-		console.log($("#image").val());
-		formData.append("image", $("#image")[0].files[0]);
-		
-		$.ajax({
-			type:"POST",
-			url:"modifyRecord.moa",
-			processData : false,
-			contentType : false,
-			data:formData,
-			success: function(data){			
-				alert(data);
-			}
-		});
-		
-	}
-	
-	function wrapWindowByMask() {
-	    //화면의 높이와 너비를 구한다.
-	    var maskHeight = $(document).height(); 
-	    var maskWidth = $(window).width();
-	
-	    //문서영역의 크기 
-	    console.log( "document 사이즈:"+ $(document).width() + "*" + $(document).height()); 
-	    //브라우저에서 문서가 보여지는 영역의 크기
-	    console.log( "window 사이즈:"+ $(window).width() + "*" + $(window).height());        
-	
-	    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
-	    $('#mask').css({
-	        'width' : maskWidth,
-	        'height' : maskHeight
-	    });	
-	    //애니메이션 효과
-	    //$('#mask').fadeIn(1000);      
-	    $('#mask').fadeTo("slow", 0.5);
-	}
-	
-	function popupOpen() {
-	    $('.layerpop').css("position", "absolute");
-	    //영역 가운에데 레이어를 뛰우기 위해 위치 계산 
-	    $('.layerpop').css("top",(($(window).height() - $('.layerpop').outerHeight()) / 2) + $(window).scrollTop());
-	    $('.layerpop').css("left",(($(window).width() - $('.layerpop').outerWidth()) / 2) + $(window).scrollLeft());
-	    $('#layerbox').show();
-	}
-	
-	function popupClose() {
-	    $('#layerbox').hide();
-	    $('#mask').hide();
-	}
-	//, content, reg, amount, memo, img
-	function goDetail(cateNum, budget_outcome_num, nobuget_num, recordType, recordCategory, content, reg, amount, memo, img) {
-		
-		
-		// reg를 time과 date로 쪼개서 각각 대입해주기
-		budgetReg = reg;
-		budgetTime = reg.substr(11);
-		$("#time").val(budgetTime);
-
-		budgetDate = reg.substring(0,10);		
-		$("#date").val(budgetDate);
-		
-		// num 은 ${records.budget_outcome_no}', '${records.nobudget_no} 값 각각 받아줘서
-		// 값이 들어있는 것만 전역변수인 uniqueNum에게 넣어줌
-		if(budget_outcome_num > 0){
-			//$("#number").val(budget_num);
-			uniqueNum = budget_outcome_num;
-		}else if(nobuget_num > 0){
-			//$("#number").val(nobuget_num);
-			uniqueNum = nobuget_num;
-		}	
-		
-		console.log($("#number").val());
-		// 내역 여러개 가져오는거면  records.type(글마다 정해진 type에서 꺼내오기)
-		// ${records.type} 이 안에!! 다 들어있음  ${records.type} 값을 recordType으로 받아줬음!
-		$("#recordType").val(recordType); 
-		
-		console.log("이미지~~:" + img);
-		
-		$("#img").attr('src','../resources/img/'+img);
-		
-		// amount 정수타입으로 형변환
-		amount *= 1;
-		$("#recordCategory").val(recordCategory);
-		$("#recordContent").val(content);
-		//$("#reg").val(reg);
-		$("#amount").val(amount);
-		
-		$("#memo").val(memo);
-		
-		
-		// 내역을 클릭했을때 해당 카테고리 빼고 나머지 숨기기
-		console.log("체크체크 : " +$("#recordType").val() );
-		if($("#recordType").val() == "budget"){
-			getBudgetCategories();
-			console.log("예산");
-			cateType="budgetcategory";
-			$("#budgetcategory").css("display", "block"); 
-			$("#incomecategory").css("display", "none"); 
-			$("#outcomecategory").css("display", "none"); 
-		}else if($("#recordType").val() == "income"){
-			console.log("수입")
-			cateType="incomecategory";
-			$("#incomecategory").css("display", "block"); 
-			$("#budgetcategory").css("display", "none");
-			$("#outcomecategory").css("display", "none"); 
-		}else if($("#recordType").val() == "outcome"){
-			console.log("지출")
-			cateType="outcomecategory";
-			$("#outcomecategory").css("display", "block"); 
-			$("#incomecategory").css("display", "none"); 
-			$("#budgetcategory").css("display", "none");
-		}// 끝
-
-		
-		
-	    /*팝업 오픈전 별도의 작업이 있을경우 구현*/ 
-	    popupOpen(); //레이어 팝업창 오픈 
-	    wrapWindowByMask(); //화면 마스크 효과 
-	}
-
-
-</script>
 <body>
 <br />
 <div align="center">
-	<button onclick="location.href='/moamore/record/recordForm.moa'">입출력 입력</button><br />
+	<button onclick="popupRecordForm()">입출력 입력</button><br />
 </div>
 <%-- 입출력 내역 테이블 시작--%>
 <div class="boardcss_list_table" align="center">
@@ -576,6 +297,295 @@ console.log("레코드페이지 안의 타임 : " + type);
 
 </body>
 <script>
+var type;
+var cateType;
+var budgetTime;
+var budgetDate;
+var budgetReg;
+var budget_no = 0;
+var uniqueNum =0;
+console.log("레코드페이지 안의 타임 : " + type);
+	$(document).ready(function(){
+		
+		
+		console.log("레코드페이지 안의 타입222 :" + type);
+
+		
+		// 타입이 예산이고 date를 변경하면 해당 카테고리 불러오기 
+		$("#date").on('change', function(){
+			
+			console.log("작동안하냐");
+			if($("#recordType").val() == "budget"){
+				getBudgetCategories();
+			}
+		});
+		
+		
+		// 수정버튼 처리
+		$("button[name='btn_modify']").on('click',function(event){
+			modifyRecord();
+		
+			console.log(event);
+			var id = $(this).attr("id");
+			
+			var number = id.replace("btn_", "");
+			console.log("id >> " + id);
+				alert(number)
+				console.log("수정버튼이닷");
+				var check = false;
+				check = confirm("수정을 하시겠습니까?");
+				if(check){ // check가 true면
+					modifyRecord();
+				}else{// check가 false면 
+					alert("수정을 취소합니다.");
+				}	
+			
+		})
+		// 삭제버튼 처리
+		$("button[name='btn_delete']").on('click',function(event){
+			console.log(event);
+			var id = $(this).attr("id");
+			
+			var number = id.replace("btn_", "");
+			console.log("id >> " + id);
+				alert(number)
+				console.log("삭제버튼이닷");
+				var check = false;
+				check = confirm("정말 삭제하시겠습니까?");
+				if(check){ // check가 true면
+					var num = $("#number").val();
+					var type = $("#recordType").val();
+					deleteRecord(num, type);
+				}else{// check가 false면 
+					alert("삭제를 취소합니다.");
+				}	
+		});//삭제 
+		
+		
+		
+		
+	});
 	
+	
+	// 예산 카테고리 가져오는 Ajax
+	function getBudgetCategories(){
+		$.ajax({
+			type : "POST",
+			url : "budgetCategory.moa",
+			data : {date:$("#date").val(), id:"${id}"},
+			dataType : "json", 
+			async: false,
+			error : function(request,status,error){
+				//alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	
+			},
+			success : function(data){							
+				console.log($("#date").val());
+				console.log(typeof date);
+				// 기간에 해당하는 예산의 카테고리로 셀렉트 옵션 새로 바꿔주기
+				$("#budgetcategory").find("option").remove(); // 기존 카테고리 셀렉트 옵션 삭제
+	
+				for(var key in data){
+					console.log("컬럼:" + key + "value : " + data[key]);
+					//console.log(typeof key);
+					if(key != 'budgetNum'){ 
+						$("#budgetcategory").append("<option value='"+key+"'>"+data[key]+"</option>");
+					}else{ // budgetNum 이면 변수에 담아주기
+						budget_no = data[key];
+					}								
+				}
+				$("#budgetcategory").css("display", "block");
+			}
+		});
+	}
+	// 삭제 Ajax	
+	function deleteRecord(num, type){
+		$.ajax({
+			type:"POST",
+			url:"budgetRecordDelete.moa",
+			dateType: "json",
+			data:{"number":num, "type":type},
+			success: function(result){
+				if(result=="OK"){
+					// 내용날리기 안되니까 걍 새로고침 ㅎㅎ;
+					location.reload();
+					alert("삭제완료");
+				}else{
+					// 삭제 실패
+					alert("삭제 실패");
+				}
+			}				
+		});
+	}
+	
+	// 수정 Ajax(사진포함)
+	function modifyRecord(){
+		console.log(budget_no);
+	
+
+		var form = $("#recordDetail")[0];
+		var formData = new FormData(form);
+		
+		formData.append("type", $("#recordType").val());
+		formData.append("id", $("#id").val());
+		
+		formData.append("date", $("#date").val());
+		
+		formData.append("time", $("#time").val());
+		
+		formData.append("amount", $("#amount").val());
+		formData.append("content", $("#recordContent").val());
+		formData.append("memo", $("#memo").val());
+		formData.append("uniqueNum ", uniqueNum);
+		formData.append("budget_no", budget_no);
+		// 카테고리 번호들은 비어있어도 그냥 한번에 보내주기
+		formData.append("outcome_category_no", $("#outcomecategory option:selected").val());
+		formData.append("income_category_no", $("#incomecategory option:selected").val());
+		formData.append("budget_category_no", $("#budgetcategory option:selected").val());
+		
+		
+		console.log("타입 : " + $("#recordType").val());
+		console.log("날짜 : " + $("#date").val());
+		console.log("시간 : " + $("#time").val());
+		console.log("금액 : " + $("#amount").val());
+		console.log("메모 : " + $("#memo").val());
+		console.log("uniqueNum : " + uniqueNum);
+		console.log("budget_no : " + budget_no);
+		console.log("outcomecategoryNum : " + $("#outcomecategory option:selected").val());
+		console.log("incomecategoryNum : " + $("#incomecategory option:selected").val());
+		console.log("budgetcategoryNum: " +  $("#budgetcategory option:selected").val());
+		// 파일 
+		console.log($("#image").val());
+		formData.append("image", $("#image")[0].files[0]);
+		
+		$.ajax({
+			type:"POST",
+			url:"modifyRecord.moa",
+			processData : false,
+			contentType : false,
+			data:formData,
+			success: function(data){			
+				alert(data);
+			}
+		});
+		
+	}
+	
+	function wrapWindowByMask() {
+	    //화면의 높이와 너비를 구한다.
+	    var maskHeight = $(document).height(); 
+	    var maskWidth = $(window).width();
+	
+	    //문서영역의 크기 
+	    console.log( "document 사이즈:"+ $(document).width() + "*" + $(document).height()); 
+	    //브라우저에서 문서가 보여지는 영역의 크기
+	    console.log( "window 사이즈:"+ $(window).width() + "*" + $(window).height());        
+	
+	    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
+	    $('#mask').css({
+	        'width' : maskWidth,
+	        'height' : maskHeight
+	    });	
+	    //애니메이션 효과
+	    //$('#mask').fadeIn(1000);      
+	    $('#mask').fadeTo("slow", 0.5);
+	}
+	
+	function popupOpen() {
+	    $('.layerpop').css("position", "absolute");
+	    //영역 가운에데 레이어를 뛰우기 위해 위치 계산 
+	    $('.layerpop').css("top",(($(window).height() - $('.layerpop').outerHeight()) / 2) + $(window).scrollTop());
+	    $('.layerpop').css("left",(($(window).width() - $('.layerpop').outerWidth()) / 2) + $(window).scrollLeft());
+	    $('#layerbox').show();
+	}
+	
+	function popupClose() {
+	    $('#layerbox').hide();
+	    $('#mask').hide();
+	}
+	//, content, reg, amount, memo, img
+	function goDetail(cateNum, budget_outcome_num, nobuget_num, recordType, recordCategory, content, reg, amount, memo, img) {
+		
+		
+		// reg를 time과 date로 쪼개서 각각 대입해주기
+		budgetReg = reg;
+		budgetTime = reg.substr(11);
+		$("#time").val(budgetTime);
+
+		budgetDate = reg.substring(0,10);		
+		$("#date").val(budgetDate);
+		
+		// num 은 ${records.budget_outcome_no}', '${records.nobudget_no} 값 각각 받아줘서
+		// 값이 들어있는 것만 전역변수인 uniqueNum에게 넣어줌
+		if(budget_outcome_num > 0){
+			//$("#number").val(budget_num);
+			uniqueNum = budget_outcome_num;
+		}else if(nobuget_num > 0){
+			//$("#number").val(nobuget_num);
+			uniqueNum = nobuget_num;
+		}	
+		
+		console.log($("#number").val());
+		// 내역 여러개 가져오는거면  records.type(글마다 정해진 type에서 꺼내오기)
+		// ${records.type} 이 안에!! 다 들어있음  ${records.type} 값을 recordType으로 받아줬음!
+		$("#recordType").val(recordType); 
+		
+		console.log("이미지~~:" + img);
+		
+		$("#img").attr('src','../resources/img/'+img);
+		
+		// amount 정수타입으로 형변환
+		amount *= 1;
+		$("#recordCategory").val(recordCategory);
+		$("#recordContent").val(content);
+		//$("#reg").val(reg);
+		$("#amount").val(amount);
+		
+		$("#memo").val(memo);
+		
+		
+		// 내역을 클릭했을때 해당 카테고리 빼고 나머지 숨기기
+		console.log("체크체크 : " +$("#recordType").val() );
+		if($("#recordType").val() == "budget"){
+			getBudgetCategories();
+			console.log("예산");
+			cateType="budgetcategory";
+			$("#budgetcategory").css("display", "block"); 
+			$("#incomecategory").css("display", "none"); 
+			$("#outcomecategory").css("display", "none"); 
+		}else if($("#recordType").val() == "income"){
+			console.log("수입")
+			cateType="incomecategory";
+			$("#incomecategory").css("display", "block"); 
+			$("#budgetcategory").css("display", "none");
+			$("#outcomecategory").css("display", "none"); 
+		}else if($("#recordType").val() == "outcome"){
+			console.log("지출")
+			cateType="outcomecategory";
+			$("#outcomecategory").css("display", "block"); 
+			$("#incomecategory").css("display", "none"); 
+			$("#budgetcategory").css("display", "none");
+		}// 끝
+
+		
+		
+	    /*팝업 오픈전 별도의 작업이 있을경우 구현*/ 
+	    popupOpen(); //레이어 팝업창 오픈 
+	    wrapWindowByMask(); //화면 마스크 효과 
+	}
+	// 입력 버튼 클릭하면 입력 폼 팝업창으로 띄워주기
+	function popupRecordForm(){
+		var url="recordForm.moa";
+		
+		var popupX = (document.body.offsetWidth/2) - (200/2);
+		//&nbsp;만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
+
+		var popupY= (window.screen.height/2) - (300/2);
+		//&nbsp;만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
+
+		window.open(url, '', 'status=no, height=600, width=500, left='+ popupX + ', top='+ popupY);
+
+	}
+
 </script>
 </html>
