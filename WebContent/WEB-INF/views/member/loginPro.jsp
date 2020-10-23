@@ -8,6 +8,7 @@
 <title>로그인</title>
 </head>
 <body>
+
 	<c:if test="${result==1 }" >
 		<script>
 			window.location='/moamore/main.moa';
@@ -19,5 +20,6 @@
 			history.go(-1);
 		</script>
 	</c:if>
+
 </body>
 </html>
