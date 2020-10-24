@@ -10,54 +10,84 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
-<style type="text/css">
+<body id="page-top">
+<jsp:include page="../sidebar.jsp"/>
+<!-- 본문내용 시작 -->
+<div class="container-fluid" align="center">
+	<!-- 페이지 이름  -->
+	<div class="d-sm-flex align-items-center justify-content-between mb-4">
+		<h1 class="h3 mb-0 text-gray-80"> 내역보기 </h1>
+	</div>
 
-</style>
-
-<body>
-<div align="center">
-	<input type="hidden" id="type" name="type" value="type">
-	<label><input type="checkbox" name="recordChk" class="recordChk" id="budget" value="budget" /> 예산 </label>
-	<label><input type="checkbox" name="recordChk" class="recordChk" id="income" value="income" /> 수입(예산외)</label>
-	<label><input type="checkbox" name="recordChk" class="recordChk" id="outcome" value="outcome" /> 지출(예산외)</label>
-	<br />
-	<%-- month 셀렉트는 지출/수입(예산외) 일때만 뜰 것  --%>
-	<select name="month" id="month">
-		<option value=2020-01>1월 2020년</option>
-		<option value=2020-02>2월 2020년</option>
-		<option value=2020-03>3월 2020년</option>
-		<option value=2020-04>4월 2020년</option>
-		<option value=2020-05>5월 2020년</option>
-		<option value=2020-06>6월 2020년</option>
-		<option value=2020-07>7월 2020년</option>
-		<option value=2020-08>8월 2020년</option>
-		<option value=2020-09>9월 2020년</option>
-		<option value=2020-10>10월 2020년</option>
-		<option value=2020-11>11월 2020년</option>
-		<option value=2020-12>12월 2020년</option>
-	</select>
-	<%-- 밑의 date는 예산일 때만 뜰 것 --%>
-	<input type="date" name="searchDate" id="searchDate" />
-	<br />
-	<input type="text" id="searchKeyword"/>
-	<input type="button" id="searchbth" value="검색"/>
-	
+	<!-- 첫번째 줄 -->
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card shadow mb-4">
+				<div class="card-body">
+					
+					<div class="input-group">
+						<button class="btn btn-primary" onclick="popupRecordForm()">입출력 입력</button>
+						<input type="text" id="searchKeyword" class="form-control bg-light border-0 small" aria-label="Search" aria-describedby="basic-addon2"/>
+						<div class="input-group-append"> 
+							<button id="searchbth" class="btn btn-primary">
+							<i class="fas fa-search fa-sm"></i>
+							</button>
+						</div>
+					</div>
+					<br /> <br />
+					<input type="hidden" id="type" name="type" value="type">
+					<div class="custom-control custom-checkbox">
+						<label><input type="checkbox" name="recordChk" class="recordChk" id="budget" value="budget" /> 예산 </label>
+						<label><input type="checkbox" name="recordChk" class="recordChk" id="income" value="income" /> 수입(예산외)</label>
+						<label><input type="checkbox" name="recordChk" class="recordChk" id="outcome" value="outcome" /> 지출(예산외)</label>
+					</div>
+					<br />
+				
+					<button type="button" id="beforeBtn" class="btn btn-default btn-lg">
+					  <i class="fas fa-angle-double-left" aria-hidden="true"></i>
+					</button>
+					
+					<%-- month 셀렉트는 지출/수입(예산외) 일때만 뜰 것  --%>
+					<select name="month" id="month"></select>
+					<%-- 밑의 date는 예산일 때만 뜰 것 --%>
+					<input type="date" name="searchDate" id="searchDate" />
+					
+					<button type="button" id="afterBtn" class="btn btn-default btn-lg">
+					  <i class="fas fa-angle-double-right" aria-hidden="true"></i>
+					</button>
+					
+					<br />
+					
+					
+					<div id="moneyLog">
+					
+					
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>	
-
-<div id="moneyLog">
-
-
-</div>
-</body>
+<jsp:include page="../footer.jsp"/>
 
 <script>
 var searchDate="${searchForRecordDTO.searchDate}";
 var pageNum="${searchForRecordDTO.pageNum}";
 var type = "${searchForRecordDTO.type}";
 var keyword ="";
- 
+var nowYear =2020;
+var nowMonth ="";
+
 	$(document).ready(function(){
-	
+		
+		console.log(nowYear);
+		$("#beforeBtn").click(function(){
+			minusYear();
+		});
+		$("#afterBtn").click(function(){
+			plusYear();
+		});
+
 		console.log("searchDate : " + searchDate);
 		console.log("pageNum : " + pageNum);
 		console.log("type : " + type);
@@ -68,6 +98,7 @@ var keyword ="";
 			selectBudget(searchDate, pageNum, type);
 		});
 		$("#month").on('change', function(){
+			console.log("예산외 연도 월 체크!!:"+$("#month").val());
 			searchDate = $("#month").val();
 			pageNum="${searchForRecordDTO.pageNum}";
 			$("#searchKeyword").val('');
@@ -78,7 +109,7 @@ var keyword ="";
 		
 		// recordChk 선택에 따라 하위내역 보여주기/숨기기
 		$(".recordChk").change(function(){
-
+			$("#searchKeyword").val('');
 			console.log("체크하고 타입 체크 : " + type);
 			console.log("체크하고 페이지 넘 체크 : " + pageNum);
 			console.log("체크하고 데이트 체크 : " + searchDate);
@@ -96,6 +127,7 @@ var keyword ="";
 		});
 	});
 
+	
 // 타입에 따라 체크박스 체크처리해주고 내역가져오는 함수 
 function selectRecordByTypeDateKeyword(){
 	if(type == "budget" && searchDate != null){ // budget일경우
@@ -131,7 +163,7 @@ function selectRecordByTypeDateKeyword(){
 	$("#searchDate").val(searchDate);
 	recordCheck();
 }
-// 체크박스와 날짜 기준으로 해당 내역 가져오는 메서드 
+// 체크박스와 날짜 기준으로 해당 내역 가져오는 함수 
  function recordCheck(){
 
 	 console.log("type>>>> : " + type);
@@ -145,7 +177,8 @@ function selectRecordByTypeDateKeyword(){
 		$("#type").val(chkStr);
 		type=chkStr;
 		if(chkArr.length > 1 ){ // 두개 이상 체크 한 경우 
-			
+			$("#beforeBtn").css("display", "none");
+			$("#afterBtn").css("display", "none");
 			$("#searchDate").css("display", "none");
 			$("#month").css("display", "none");	
 			console.log("recordCheckd에서 타입;;; : " + type);
@@ -158,12 +191,15 @@ function selectRecordByTypeDateKeyword(){
 				if(searchDate != ""){
 					selectBudget(searchDate, pageNum, type, keyword); 	
 				}	
-			}else{
+			}else{ // 체크를 아예 안 했을 때는 예산으로 보여줌(처음 들어왔을 때)
+				$("#month").empty();
+				$("#beforeBtn").css("display", "block");
+				$("#afterBtn").css("display", "block");
+				makeMonth();
+				checkedMonth();
 				console.log("타아아아아입  : " + type );
 				$("#searchDate").css("display", "none");
 				$("#month").css("display", "block");
-				//$("#month option:eq(0)").prop("selected", true);
-			
 
 				selectNobudget(searchDate, pageNum, type, keyword);
 				
@@ -211,7 +247,7 @@ function selectRecordByTypeDateKeyword(){
 		}
 	}
 
-	// 예산 내역 보는 메서드
+	// 예산 내역 보는 함수
 	function selectBudget(searchDate, pageNum, type, keyword){
 
 		$.ajax({
@@ -227,7 +263,7 @@ function selectRecordByTypeDateKeyword(){
 			}
 		});	
 	}	
-	// 체크박스에 두개 이상 체크했을 때 호출하는 메서드 
+	// 체크박스에 두개 이상 체크했을 때 내역 가져오는 함수 
 	function manycheck(pageNum, type, keyword){ 
 		$.ajax({
 			type : "POST",
@@ -242,5 +278,39 @@ function selectRecordByTypeDateKeyword(){
 			}
 		});
 	}	
+	// month selectbox 연도, 월 표시
+	function makeMonth(){
+		$("#month").empty();
+		for(var i = 1; i <= 12; i++){
+			var month = i > 9 ? i : "0" + i;
+			//$("#month").append('<option value="+'+month+'">'+ month + '월</option>');
+			$("#month").append("<option value='"+nowYear+"-"+month+"'>"+nowYear+"년 "+month + "월"+"</option>");
+			
+		}
+	}
+	// 연도 더해주기
+	function plusYear(){  
+		nowYear += 1;
+
+		console.log(nowYear);
+		makeMonth();
+	}
+	// 연도 빼주기
+	function minusYear(){
+		nowYear -= 1;
+
+		console.log(nowYear);
+		makeMonth();
+	}
+	
+	// 수입, 지출 처음 실행시 당월로 체크
+	function checkedMonth(){
+		// 현재 날짜 구하기
+		var date = new Date();
+		var currMonth = moment(date).format('YYYY-MM');
+		$("#month").val(currMonth).prop("selected", true);
+		searchDate = currMonth;
+		
+	}
 </script>
 </html>

@@ -133,7 +133,6 @@
 		</div>
 	</div>
 	<jsp:include page="../footer.jsp"/>
-</body>
 
 <script>
 	// 회원 탈퇴 
