@@ -38,7 +38,7 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		
 	}
 	
-	// 예산외 수입or지출 아이디와 날짜로 개수가져오기 
+	// 예산외 수입or지출 아이디와 날짜, 타입으로 개수가져오기 
 	@Override
 	public int CountAllNoBudgetById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		int count = 0;
@@ -51,6 +51,8 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		
 		return count;
 	}
+	
+	// 예산 외 수입 or 지출 아이디와 날짜, 타입으로 내역 가져오기  selectNobudgetRecord 과 겹침;
 	@Override
 	public List selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)throws SQLException {
 		List noBudgetRocordList = new ArrayList();
@@ -59,8 +61,9 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		//System.out.println("노버겟~리스트~~ : " + noBudgetRocordList.size());
 		return noBudgetRocordList;
 	}
-
-	// 아이디, 타입으로 예산외 기록 총 개수 가져오기
+////////////////////////////////////////////////////////////////
+	
+	// 아이디, 타입, 예산외 기록 총 개수 가져오기
 	@Override
 	public int CountNoBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		System.out.println("dao22222222222");
@@ -69,27 +72,27 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		return count;
 	}
 
-	// 아이디, 타입으로 예산외 총 기록 가져오기 
+	// 아이디로 예산외 총 기록 가져오기(수입+지출 같이 가져옴) 
 	@Override
-	public List selectNobudgetRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+	public List selectNobudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		System.out.println("dao3333333333333");
-		List recordList = sqlSession.selectList("record.selectNobudgetRecord", searchForRecordDTO);
+		List recordList = sqlSession.selectList("record.selectNobudgetRecordAllType", searchForRecordDTO);
 		return recordList;
 	}
-	// 아이디, 타입으로 예산외 내역 총 개수 가져오기(키워드 포함)
+	// 아이디, 타입, 날짜로 예산외 내역 총 개수 가져오기(키워드 포함)
 	@Override
 	public int CountAllNoBudgetByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		int count = sqlSession.selectOne("record.countNoBudgetRecordByKeyword", searchForRecordDTO);
 		return count;
 	}
-	// 아이디, 타입으로 예산외 내역 총 기록 가져오기(키워드 포함)
+	// 아이디, 타입, 날짜로 예산외 내역 총 기록 가져오기(키워드 포함)
 	@Override
 	public List selectAllNoBudgetKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		List recordList = sqlSession.selectList("record.selectNoBudgetRecordByKeyword", searchForRecordDTO);
 		return recordList;
 	}
 	
-	
+	/////////////////////////////////////////////////
 	
 	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 
 	@Override
@@ -98,7 +101,7 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		System.out.println("startRow!!!!!!! : " + searchForRecordDTO.getStartRow());
 		System.out.println("enRow!!!!!!! : " + searchForRecordDTO.getEndRow());
 		
-		List recordList = sqlSession.selectList("record.selectRecord", searchForRecordDTO);
+		List recordList = sqlSession.selectList("record.selectRecords", searchForRecordDTO);
 		System.out.println("dao44에서 사이즈 : " + recordList.size());
 		return recordList;
 	}
@@ -118,5 +121,31 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		sqlSession.selectOne("record.modifyNoBudgetRecord", noBudgetDTO);
 		sqlSession.selectOne("record.modifyNoBudgetDetailRecord", noBudgetDetailDTO);
 	}
+	// 아이디, 타입으로 예산외 내역 총 개수 가져오기(키워드 O)
+	// 수입, 지출, 수입+지출 다  가져올 수 있음
+	@Override
+	public int CountNoBudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		System.out.println("키워드 : "+ searchForRecordDTO.getKeyword());
+		System.out.println("타입 : "+ searchForRecordDTO.getType());
+		System.out.println("아이디 : "+ searchForRecordDTO.getId());
+		
+		int count = sqlSession.selectOne("record.countNoBudgetRecordByIdKeyword", searchForRecordDTO);
+		System.out.println("DAO에서 예산 외 내역 개수 체크 : " + count);
+		return count;
+	}
+	// 아이디, 타입으로 예산외 총 기록 가져오기(키워드 O)
+	// 수입+지출 내역을 가져옴 
+	@Override
+	public List selectNobudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		List recordList = sqlSession.selectList("record.selectNobudgetRecordAllTypeByKeyword", searchForRecordDTO);
+		return recordList;
+	}
 	
+	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 (키워드 O)
+	// 수입+지출 내역을 제외한 나머지는 다 가져올 수 있음
+	public List selectAllRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException{
+		List recordList = sqlSession.selectList("record.selectRecordsByIdKeyword", searchForRecordDTO);
+		return recordList;
+	}
+
 }
