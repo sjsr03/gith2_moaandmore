@@ -69,6 +69,7 @@ public class CategoryBean {
 	//카테고리 추가하기
 	@RequestMapping(value="setCategoryPro.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public String setCategoryPro(String category_name,String categoryOption,Model model) throws SQLException{
+		System.out.println("넘어오긴 하는거였어?");
 		System.out.println(category_name);
 		System.out.println(categoryOption);
 	
@@ -128,9 +129,9 @@ public class CategoryBean {
 
 	
 	
-	
-
 		System.out.println(4);
+
+		
 		return "category/setCategoryPro";
 
 	}
@@ -225,7 +226,7 @@ public class CategoryBean {
 		model.addAttribute("exist", exist);
 		
 		
-		return "category/setCategory";
+		return "category/setCategoryPro";
 	}
 
 	
