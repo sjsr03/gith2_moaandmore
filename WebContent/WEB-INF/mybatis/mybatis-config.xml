@@ -54,6 +54,7 @@
  		<mapper resource="/sql/recordRankSQL.xml" />
  		<mapper resource="/sql/totalRankSQL.xml" />
  		<mapper resource="/sql/closingSQL.xml" />
+ 		<mapper resource="/sql/searchSQL.xml" />
   	</mappers>
 
  </configuration>
