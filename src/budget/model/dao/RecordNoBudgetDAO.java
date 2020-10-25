@@ -17,27 +17,43 @@ public interface RecordNoBudgetDAO {
 	// 예산 외 세부내역 입력(수입/지출 세부내역 입력)
 	public void insertNoBudgetDetailDTO(NoBudgetDetailDTO noBudgetDetailDTO) throws SQLException;
 	
-	// 아이디, 타입, 시작, 끝나는 날짜로 예산외 기록 총 개수  가져오기 
+	// 아이디, 타입, 날짜(월)로 예산외 기록 총 개수  가져오기 (키워드 X)
 	public int CountAllNoBudgetById(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 
-	// 아이디, 타입, 시작, 끝나는 날짜로 예산외 기록 총 개수  가져오기(키워드 포함)
+	// 아이디, 타입, 날짜(월)로 예산외 기록 총 개수  가져오기(키워드 O)
 	public int CountAllNoBudgetByIdKeyword(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 	
-	// 아이디, 타입, 시작날짜, 끝나는 날짜, endRow, startRow로 예산 외 기록 가져오기 
+	// 아이디, 타입, 날짜(월), endRow, startRow로 예산 외 기록 가져오기 (키워드 X)
 	public List selectAllNoBudget(SearchForRecordDTO searchForRecordDTO) throws SQLException;
 	
-	// 아이디, 타입, 시작날짜, 끝나는 날짜, endRow, startRow로 예산 외 기록 가져오기 (키워드 포함)
+	// 아이디, 타입, 날짜(월), endRow, startRow로 예산 외 기록 가져오기 (키워드 O)
 	public List selectAllNoBudgetKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException;
 	
-	// 아이디, 타입으로 예산외 내역 총 개수 가져오기
+	
+	// 아이디, 타입으로 예산외 내역 총 개수 가져오기(키워드 X)
+	// 수입, 지출, 수입+지출 다  가져올 수 있음
 	public int CountNoBudgetRecordById(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 	
-	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 
+	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 (키워드 X)
+	// 수입+지출 내역을 제외한 나머지는 다 가져올 수 있음
 	public List selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException;
 	
-	// 아이디, 타입으로 예산외 총 기록 가져오기 
-	public List selectNobudgetRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException;
+	// 아이디, 타입으로 예산외 총 기록 가져오기(키워드 X)
+	// 수입+지출 내역을 가져옴 
+	public List selectNobudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException;
 	
+	
+	// 아이디, 타입으로 예산외 내역 총 개수 가져오기(키워드 O)
+	// 수입, 지출, 수입+지출 다  가져올 수 있음
+	public int CountNoBudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+	// 아이디, 타입으로 예산외 총 기록 가져오기(키워드 O)
+	// 수입+지출 내역을 가져옴 
+	public List selectNobudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException;
+	
+	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 (키워드 O)
+	// 수입+지출 내역을 제외한 나머지는 다 가져올 수 있음
+	public List selectAllRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException;
+
 	// 고유번호로 예산 외 기록 삭제
 	public int DeleteNoBudgetRecord(int number)throws SQLException;
 	

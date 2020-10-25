@@ -113,7 +113,7 @@ public class RecordServiceImpl implements RecordService{
 			recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);			
 		}	
 	}
-	// 예산번호로 해당 예산 기록 목록 가져오기
+	// 예산번호로 해당 예산 기록 목록 가져오기(키워드가 있으면 키워드에 해당하는 내역 가져오기)
 	@Override
 	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum, String keyword) throws SQLException {
 		
@@ -132,7 +132,7 @@ public class RecordServiceImpl implements RecordService{
 		System.out.println("키워드@@@@ "+ keyword);
 		// 검색키워드가 있는 경우, 없는 경우 체크해서 처리 
 		if(keyword == null) { // 키워드가 비어있으면 전체로 가져오기
-			System.out.println("널?");
+			System.out.println("키워드 값 X ");
 			// 전체 목록 수 가져오기 
 			count = recordBudgetDAO.countAllBudgetByNum(budgetNum);
 			//System.out.println("서비스에서!!!!!예산 개수 : " + count);
@@ -148,12 +148,12 @@ public class RecordServiceImpl implements RecordService{
 			recordPage.setRecordList(recordList);
 			recordPage.setStartRow(startRow);
 		}else { // 키워드에 내용이 있으면 키워드 결과로 가져오기
-			System.out.println("널아님");
+			System.out.println("키워드 값 O");
 			// 전체 목록 수 가져오기 
 			count = recordBudgetDAO.countAllBudgetByNum(budgetNum, keyword);
-			System.out.println("서비스에서 카테고리 포함!예산 개수 : " + count);
+			System.out.println("예산번호와 키워드로 에산 내역 개수 가져온 값 : " + count);
 			//System.out.println("서비스에서!!!!!버젯넘 : " + budgetNum);
-			if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
+			if(count > 0) { // 예산 내 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
 				recordList = recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow, keyword);
 			}
 			recordPage.setCount(count);
@@ -180,6 +180,9 @@ public class RecordServiceImpl implements RecordService{
 		
 		return result;	
 	}
+	
+	
+	// 수입 or 지출 둘 중하나  조건 : 타입, 월(날짜)로 가져올 것
 	@Override
 	public RecordPageDTO selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)
 			throws SQLException {
@@ -199,12 +202,12 @@ public class RecordServiceImpl implements RecordService{
 		searchForRecordDTO.setStartRow(startRow);
 		searchForRecordDTO.setEndRow(endRow);
 		
-		if(searchForRecordDTO.getKeyword() == null) {
-			// 전체 목록 수 가져오기 (타입별로) 
+		if(searchForRecordDTO.getKeyword() == null) { // 키워드 X
+			// 전체 목록 수 가져오기 
 			count = recordNoBudgetDAO.CountAllNoBudgetById(searchForRecordDTO);
-			if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
+			if(count > 0) { //  내역이 하나라도 있으면 전체 리스트 가져오기 
 				recordList = recordNoBudgetDAO.selectAllNoBudget(searchForRecordDTO);
-				System.out.println("예산번호로 예산기록목록 가져오기  : " + recordList.size());
+				System.out.println(" 지출+수입 내영ㄱ 리스트 아이디로 가져온 사이즈 : " + recordList.size());
 			}
 			
 			recordPage.setCount(count);
@@ -215,7 +218,7 @@ public class RecordServiceImpl implements RecordService{
 			recordPage.setRecordList(recordList);
 			recordPage.setStartRow(startRow);
 			
-		}else { // 키워드가 있을 때 
+		}else { // 키워드 O
 			// 전체 목록 수 가져오기 (타입별로) 
 			count = recordNoBudgetDAO.CountAllNoBudgetByIdKeyword(searchForRecordDTO);
 			if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
@@ -233,6 +236,8 @@ public class RecordServiceImpl implements RecordService{
 		}
 		return recordPage;	
 	}
+	
+	/*
 	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 
 	@Override
 	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
@@ -337,6 +342,118 @@ public class RecordServiceImpl implements RecordService{
 		
 		return recordPage;	
 	}
+	*/
+	
+	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 (수입+지출+예산) 날짜 상관없음 
+	@Override
+	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		RecordPageDTO recordPage = new RecordPageDTO();
+		
+		if(searchForRecordDTO.getPageNum() == "") {
+			searchForRecordDTO.setPageNum("1");
+		}
+		// 페이지 정보 담기
+		int pageSize = 10;
+		int currPage = Integer.parseInt(searchForRecordDTO.getPageNum());
+		int startRow = (currPage - 1) * pageSize + 1;
+		int endRow = currPage*pageSize;
+		int count = 0;
+		
+		List recordList = null;
+		searchForRecordDTO.setStartRow(startRow);
+		searchForRecordDTO.setEndRow(endRow);
+
+		
+		// 여기서 타입 체크 후 dao 각각 불러줘야함!
+		// 타입 체크  + 키워드 유무 체크 후 각각 해당하는 dao 호출
+		String type=searchForRecordDTO.getType();
+		System.out.println("키워드는??? : "+searchForRecordDTO.getKeyword());
+		if(searchForRecordDTO.getKeyword() == "") { // 키워드가 없으면
+			System.out.println("키워드 없음@@@@");
+			if(type.equals("incomeoutcome")) { //수입+지출이면
+				System.out.println("수입+지출");
+				count = recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
+				if(count>0) {
+					recordList = recordNoBudgetDAO.selectNobudgetRecordById(searchForRecordDTO);
+				}
+			}else {
+				if(type.equals("budgetincome")) { //예산+수입이면
+					//searchForRecordDTO.setType("income");
+					
+				}else if(type.equals("budgetoutcome")){//예산+지출이면
+					//searchForRecordDTO.setType("outcome");	
+				}else if(type.equals("budgetincomeoutcome")){//예산+수입+지출이면
+					//searchForRecordDTO.setType("budgetincomeoutcome");	
+				}
+				// 아이디로 예산 총 개수 가져온 값에 예산 외 총 개수를 더해줌(수입 or 지출)
+				count = recordBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
+				count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
+				
+				if(count >0) { // 내역이 하나라도 있으면 한번에 호출해주기
+					recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
+				}
+			}	
+		}else { // 키워드가 있으면 키워드로 검색해서 호출 
+			if(type.equals("incomeoutcome")) { //수입+지출이면
+				System.out.println("수입+지출");
+				count = recordNoBudgetDAO.CountNoBudgetRecordByIdKeyword(searchForRecordDTO);
+				if(count>0) {
+					recordList = recordNoBudgetDAO.selectNobudgetRecordByIdKeyword(searchForRecordDTO);
+				}
+			}else {
+				if(type.equals("budgetincome")) { //예산+수입이면
+					//searchForRecordDTO.setType("income");
+					
+				}else if(type.equals("budgetoutcome")){//예산+지출이면
+					//earchForRecordDTO.setType("outcome");	
+				}else if(type.equals("budgetincomeoutcome")){//예산+수입+지출이면
+					//searchForRecordDTO.setType("budgetincomeoutcome");	
+				}
+				count = recordBudgetDAO.CountBudgetRecordByIdKeyword(searchForRecordDTO);
+				System.out.println("budget count : " + count);
+				count += recordNoBudgetDAO.CountNoBudgetRecordByIdKeyword(searchForRecordDTO);
+				System.out.println("Allcount : " + count);
+				if(count >0) { // 내역이 하나라도 있으면 한번에 호출해주기
+					recordList = recordNoBudgetDAO.selectAllRecordByIdKeyword(searchForRecordDTO);
+				}
+			}	
+		}
+		
+		System.out.println("결과는???  : " + recordList.size());
+		System.out.println("결과 count ??  : " + count);
+		
+		
+		recordPage.setCount(count);
+		recordPage.setCurrPage(currPage);
+		recordPage.setEndRow(endRow);
+		recordPage.setPageNum(searchForRecordDTO.getPageNum());
+		recordPage.setPageSize(pageSize);
+		recordPage.setRecordList(recordList);
+		recordPage.setStartRow(startRow);
+		recordPage.setRecordList(recordList);
+		
+		return recordPage;	
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	// 날짜비교 
 	@Override
 	public Boolean compareDate(SearchForRecordDTO searchForRecordDTO, List budgetDate) throws SQLException, ParseException{

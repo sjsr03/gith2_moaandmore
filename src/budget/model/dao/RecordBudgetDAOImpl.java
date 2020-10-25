@@ -79,7 +79,7 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 	}
 	
 	
-	// 예산번호, 키워드로 개수 가져오기 
+	// 예산번호, 키워드로 예산 내역의 개수 가져오기 
 	@Override
 	public int countAllBudgetByNum(int budgetNum, String keyword) throws SQLException {
 		System.out.println("걸리냐");
@@ -122,6 +122,14 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 	@Override
 	public int CountBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		int count = sqlSession.selectOne("record.countBudgetRecordById", searchForRecordDTO);
+		return count;
+	}
+	
+	// 아이디와 키워드로  예산기록 총 개수 가져오기
+	@Override
+	public int CountBudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO)throws SQLException{
+		int count = sqlSession.selectOne("record.countBudgetRecordByIdKeyword", searchForRecordDTO);
+		System.out.println("budget DAO 키워드 포함 개수 : " + count);
 		return count;
 	}
 	

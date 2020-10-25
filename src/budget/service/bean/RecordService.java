@@ -30,7 +30,7 @@ public interface RecordService {
 	// type과 번호로 예산 or 예산외 체크해서 dao 호출 Delete(number, type)
 	public int deleteRecord(int number, String type)throws SQLException;
 	
-	// 아이디, 날짜, pageNum, type, startday, endday로 예산외 기록 가져오기
+	// 아이디, 날짜, pageNum, type, startday, endday로 예산외 기록 가져오기(수입 or 지출) 둘중 하나만!!!!
 	public RecordPageDTO selectAllNoBudget(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 
 	// 날짜비교

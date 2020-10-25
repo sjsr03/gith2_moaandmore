@@ -51,7 +51,7 @@ select {
 		$.ajax({
 			type : "POST",
 			url : "/moamore/goals/getMyGoalList.moa",
-			data : {"public_ch" : list_type, "sorting": sorting, "list_type" : "proceeding"},
+			data : {"public_ch" : list_type, "sorting": sorting , "list_type" : "complete"},
 			success:function(data){
 				$("#goal_list").empty();
 				//헤더추가
