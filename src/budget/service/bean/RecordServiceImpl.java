@@ -148,6 +148,7 @@ public class RecordServiceImpl implements RecordService{
 			recordPage.setRecordList(recordList);
 			recordPage.setStartRow(startRow);
 		}else { // 키워드에 내용이 있으면 키워드 결과로 가져오기
+			
 			System.out.println("키워드 값 O");
 			// 전체 목록 수 가져오기 
 			count = recordBudgetDAO.countAllBudgetByNum(budgetNum, keyword);

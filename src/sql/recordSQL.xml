@@ -190,7 +190,7 @@
 		FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND content LIKE '%'||#{keyword}||'%' 
 		<choose>
 			<when test="type.equals('budgetincomeoutcome')">
-				AND TYPE='income' OR TYPE='outcome' 
+				AND (TYPE='income' OR TYPE='outcome') 
 			</when>		
 			<otherwise>
 				AND TYPE=#{type}
