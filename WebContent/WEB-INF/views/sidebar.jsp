@@ -91,8 +91,9 @@ $(document).ready(function(){
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/main.moa">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+          <!-- <i class="fas fa-laugh-wink"></i> -->
+          <img src="/moamore/resources/img/whitepigF.png" width="50" height="50" />
         </div>
         <div class="sidebar-brand-text mx-3">모아 & More</div>
       </a>
