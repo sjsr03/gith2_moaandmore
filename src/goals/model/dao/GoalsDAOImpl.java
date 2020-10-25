@@ -31,6 +31,10 @@ public class GoalsDAOImpl implements GoalsDAO{
 	public List<GoalsDTO> selectAllByPublicCh(HashMap map) throws SQLException {
 		
 		List<GoalsDTO> goalList = sqlSession.selectList("goals.selectAllByPublicCh", map);
+		
+		for(int i = 0 ; i < goalList.size(); i++) {
+			GoalsDTO goal = (GoalsDTO)goalList.get(i);
+		}
 		return goalList;
 	}
 
@@ -113,6 +117,15 @@ public class GoalsDAOImpl implements GoalsDAO{
 		return map;
 	}
 
+	@Override
+	public List selectTransferPossibleGoals(String id) throws SQLException {
+		List list = new ArrayList();
+		List personalGoals = sqlSession.selectList("goals.selectPersonalTransferPossibleGoals", id);
+		List teamGoals = sqlSession.selectList("goals.selectTeamTransferPossibleGoals", id);
+		list.add(personalGoals);
+		list.add(teamGoals);
+		return list;
+	}
 	
 
 	

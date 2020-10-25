@@ -66,6 +66,7 @@
   		</foreach>
   	</select>
   	
+  	
   	<!-- 지출 카테고리 삭제하기 -->
 	<delete id="deleteOutcomeCategory" parameterType="map">
 		delete from outcome_category where id=#{id} and category_no=#{category_no}
@@ -94,8 +95,9 @@
 	
 	<!-- 카테고리 넘으로 nobudget 테이블에 해당 카테고리 내역 있는지 확인하기  -->
 	<select id="selectNoBudgetInfo" parameterType="map" resultType="int">
-		select count(*) from nobudget where id=#{id} and category_no=#{category_no}
+		select count(*) from nobudget where id=#{id} and (outcome_category_no=#{category_no} OR INCOME_CATEGORY_NO=#{category_no})
 	</select>
+	
 	
 	<!-- 카테고리 넘으로 totalbudgetDEtail 테이블에 해당 카테고리 내역 있는지 확인하기  -->
 	<select id="selectTotalDetailCategoryInfo" parameterType="int" resultType="int">

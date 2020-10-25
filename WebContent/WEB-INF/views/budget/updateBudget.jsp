@@ -103,7 +103,7 @@
 							<option value="30" <c:if test="${currentTBudget.period==30}">selected</c:if>>한달</option>
 						</select>
 					</li>
-					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
+					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${firstOfMonth}"/>일
 					</li>
 				</ul>
 			</div>
@@ -144,10 +144,10 @@
 							</select>
 						</td>
 						<td>
-							<input type="number" name="amount" min="0" required class="amount" value="${k.category_budget}"/>
+							<input type="number" name="amount" min="1" required class="amount" value="${k.category_budget}"/>
 						</td>
 						<td>
-							<input type="number" readonly class="rate"/>%
+							<input type="number" class="rate" />%
 						</td>
 						<td>
 							<input type="number" readonly class="dayAmount"/>원
@@ -179,8 +179,6 @@
 	</div>
 	
 	</form>
-	<div style="display:none;"><h1>예산 수정하면 기존 기록 반영해서 상태 보여주는 부분 아직 안함 <br/>(수입지출 기록 완료되면 수정할 것)</h1></div>
-	</div>
 	
 	<jsp:include page="../footer.jsp"/>
 	
@@ -241,6 +239,12 @@
 				reSum();
 				calDay($(this));
 			});
+			//비율 및 총합 자동계산
+			$('.rate').on('keyup', function(){
+				reCalRate($(this));
+				reSum();
+				calDay($(this));
+			});
 			
 			//카테고리명이 change일 때 옵션 속성 변경
 			$('.category_name').on('change', function(){
@@ -264,6 +268,12 @@
 			reRate($(this));
 			calDay($(this));
 			reSum();
+		});
+		//비율 및 총합 자동계산
+		$('.rate').on('keyup', function(){
+			reCalRate($(this));
+			reSum();
+			calDay($(this));
 		});
 		
 		//삭제버튼 기능
@@ -319,11 +329,21 @@
 			reRate($(this));
 			reSum();
 		});
+		//비율 및 총합 자동계산
+		$('.rate').on('keyup', function(){
+			reCalRate($(this));
+			reSum();
+		});
 		
 		//비율 자동계산
 		function reRate(i){
 			var rate = i.val()/$('#totalBudget').val()*100;
 			i.parent().next().children('.rate').val(rate.toFixed(1));
+		};
+		//금액 자동계산
+		function reCalRate(i){
+			var amount = $('#totalBudget').val()*i.val()/100;
+			i.parent().prev().children('.amount').val(amount.toFixed());
 		};
 		
 		//총합 자동계산

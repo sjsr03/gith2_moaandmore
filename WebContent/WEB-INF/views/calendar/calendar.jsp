@@ -11,47 +11,76 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>  
 </head>							
  <style>
-    .fc-day-content {height: 130px;}
-    @media (max-width: 992px){
-        .fc-day-content {height: 90px !important;}
+ 
+  /*
+  	 @media (max-width: 992px){
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{width:300px !important;}
     }
     @media (max-width: 767px){
-        .fc-day-content {height: 80px !important;}
+        .fc-scroller {height: 100% !important;}
+       
     }
     @media (max-width: 640px){
-        .fc-day-content {height: 45px !important;}
+        .fc-scroller {height: 100% !important;}
     }
+    */
+    @media (max-width: 800px){
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{    
+        	width: 90% !important;
+			 top: 250px !important;
+			 left: 34px !important;
+       	}
+   		
+    }
+    
     @media (max-width: 500px){
-        .fc-day-content {height: 35px !important;}
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{  
+        	  width: 90% !important;					
+			  top: 250px !important;
+			  left: 20px !important;
+       	
+       	}
+       	
     }
+    
+    @media (max-width: 370px){
+        .fc-scroller {height: 100% !important;}
+        .detailModal-content{    
+        	width: 90% !important;
+			 top: 250px !important;
+			 left: 20px !important;
+       	}
+   		
+    }
+  
     .fc-event-container > .fc-event-more {display: none;}
-   /*
-    .detailModal { 
-         position: fixed; 
-         left: 0; 
-         top: 0; 
-         width: 100%; 
-         height: 100%; 
-         opacity: 0; 
-         transform: scale(1.1); 
-         transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s; 
-         background-color: gray; 
-		 z-index:-1;
-		
-     } 
-     */
+   
+     .cal_modal{
+	    position: fixed;
+	    left: 0;
+	    top: 0;
+	    width: 100%;
+	    height: 100%;
+	    background-color: rgba(0, 0, 0, 0.5);
+	    opacity: 0;
+	    z-index:-1;
+     }
+     
+     
 	.detailModal-content { 
          position: absolute; 
-         top: 50%; 
-         left: 50%; 
-         transform: translate(-50%, -50%); 
-         background-color: yellow; 
-         padding: 1rem 1.5rem; 
+         top: 34%; 
+         left: 43%; 
          width: 500px; 
-         height: 350px; 
-         border-radius: 0.5rem; 
+         height: 400px; 
+         background-color:#fff;
        	 z-index:2;
-   		 visibility: hidden; 
+    	 border: 1px solid #e3e6f0;
+    	 border-radius: .35rem;
+    	 overflow:scroll;
      }      
      
      
@@ -60,42 +89,36 @@
          visibility: visible; 
          transform: scale(1.0); 
          transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; 
-         
+         z-index:3;
      }  
     
+    .close-button{
+    	float:right;
+    	margin:1%;
+    }
     
+    .more{
+    	width:70px; padding:0 5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+
+
+    }
 </style>
 <body>
 <jsp:include page="../sidebar.jsp"/>
 <!-- 본문내용 시작 -->	
 <div class="container-fluid">
+
+	<input class="checkbox box1" id="checkbox" type="checkbox" value="1"/> 지출
+	<input class="checkbox" id="checkbox" type="checkbox" value="2"/> 수입
+	<input class="checkbox" id="checkbox" type="checkbox" value="3"/> 예산 외 지출  <br/>
 	
-	<input class="checkbox" id="checkbox"  type="checkbox" value="1"/> 지출
-	<input class="checkbox" id="checkbox"  type="checkbox" value="2"/> 수입
-	<input class="checkbox" id="checkbox"  type="checkbox" value="3"/> 예산 외 지출  <br/>
-	
-	<div id='calendar'></div>
-	
-	<div class="detailModal">
-		<div class="detailModal-content">
-			<span class="close-button">&times;</span>
-			<table border="1" class="contentTable" >
-			</table>
+	<div id='calendar' class="my_cal"></div>
+		<div class="cal_modal">
+			<div class="detailModal-content card-body">
+				<span class="close-button">&times;</span>
+				<table  border="1" class="contentTable mytable table table-bordered dataTable" ></table>
+			</div>
 		</div>
-	</div>
-
-<<<<<<< HEAD
-<div id='calendar'></div>
-<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/moment.min.js'></script>
-<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery.min.js'></script>
-<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/lib/jquery-ui.min.js'></script>
-<script src='https://fullcalendar.io/js/fullcalendar-3.1.0/fullcalendar.min.js'></script>
-
-
-<div id="test" class="test">
-	
-=======
->>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
 </div>
 	
 
@@ -117,6 +140,18 @@ var pm='';
 var events = [];	
 
 $(document).ready(function () {
+	
+	
+	
+	//페이지 시작할때 지출 체크박스에 체크해주기
+	$(".box1").prop("checked", true)
+	if($(".box1").is(":checked")){
+		checkVal.push($(".box1").val());
+		$('#calendar').fullCalendar('removeEventSource', events);
+	    $('#calendar').fullCalendar('addEventSource', events);
+	    $('#calendar').fullCalendar('refetchEvents');
+	}
+	
 	$(".checkbox").each(function(){
 		 	$(this).on('change',function(){
 	 			//체크된값 checkVal에 넣어주기
@@ -130,7 +165,9 @@ $(document).ready(function () {
 			    $('#calendar').fullCalendar('refetchEvents');
 		 	});
 	 });
-
+	
+	
+	
 	$('#calendar').fullCalendar({ 
 		
 	      initialView: 'dayGridMonth',
@@ -168,9 +205,9 @@ $(document).ready(function () {
 					   					}
 					   					for(var j in finalByCheckVal[i]){
 	    				    	    		 	events.push({
-	    				    	    		 		title:pm+finalByCheckVal[i][j],
+	    				    	    		 		title:pm+finalByCheckVal[i][j].format()+'원',
 	    				    	    		 		start:j,
-	    				    	    		 		color: 'rgba( 255, 255, 255, 0.5 )',
+	    				    	    		 		color: '#11ffee00;',
 	    				    	    		 	    textColor: col
 	    				    	    		 	});
 			    	    		 		}   		
@@ -180,13 +217,9 @@ $(document).ready(function () {
 	    		 		});//ajax
 	      },//events
 	      eventClick: function(event) {
-             	alert(event.start);
+             	
              	var date = new Date(event.start);
              	 date = getFormatDate(date);
-<<<<<<< HEAD
-             	 //console.log(date);
-=======
->>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
 	    	 	
 	    	 	$.ajax({
 			   			url: "getCalendarEventDetail.moa", 
@@ -197,37 +230,30 @@ $(document).ready(function () {
 							console.log("error");
 						},
 			   			success: function(alldata) {
-<<<<<<< HEAD
-			   				//console.log(alldata);
-							$('#test').append("<tr><td>" +'유형' + "</td><td>" +'금액'+ "</td><td>"+'제목'+"</td><td>"+'메모'+"</td></tr>");
-			   				for (var i = 0; i < alldata.length; i+=4) {
-    							console.log(alldata[i]);
-			   					$('#test').addClass('show');
-					    	 	$('#test').append("<tr><td>" +alldata[i] + "</td><td>" +alldata[i+1] + "</td><td>"+alldata[i+2]+"</td><td>"+alldata[i+3]+"</td></tr>");
-			   			  	}	
-=======
+			   				console.log(date);
 							$('.contentTable').append("<tr><td>" +'유형' + "</td><td>" +'금액'+ "</td><td>"+'제목'+"</td><td>"+'메모'+"</td></tr>");
 			   				for (var i = 0; i < alldata.length; i+=4) {
-			   					$('.detailModal-content').addClass('modalShow');
-			   					$('.contentTable').append("<tr><td>" +alldata[i] + "</td><td>" +alldata[i+1] + "</td><td>"+alldata[i+2]+"</td><td>"+alldata[i+3]+"</td></tr>");
-			   					$('.contentTable').append("<tr><td>" +alldata[i] + "</td><td>" +alldata[i+1] + "</td><td>"+alldata[i+2]+"</td><td>"+alldata[i+3]+"</td></tr>");
+			   					
+			   					$('.cal_modal').addClass('modalShow');
+			   					$('.contentTable').append("<tr><td class='more'>" +alldata[i] + "</td><td class='more'>" +alldata[i+1] + "</td><td class='more'>"+alldata[i+2]+"</td><td class='more'>"+alldata[i+3]+"</td></tr>");
+			   					if(i>12){
+				   					$('.contentTable').append("<tr><td style='border-color:#11ffee00;' colspan='4' align=center ><div class='more'>...더보기</div></td></tr>");
+			   						break;
+			   					}
+			   				
 			   				}
 			   				//x 버튼 누르면 창 사라지고 데이터 삭제
 			   				$('.close-button').on('click',function(){
-		   			  			$(this).parent().removeClass('modalShow');
+		   			  			$(this).parent().parent().removeClass('modalShow');
 		   			  			$('.contentTable').empty();
-		   			  		});			
->>>>>>> branch 'develop' of https://github.com/sjsr03/gith2_moaandmore
-			   				
-			   			
+		   			  		});
+			   				//상세보기 페이지 처리
+			   				$(".more").on("click",function(){
+			   					window.location.href="/moamore/record/moneyRecord.moa?searchDate="+date+"&type=budget";
+			   				});
 			   			}
-	    	
               	});
 	      
-	      		//$(this).find('.div').hasClass('on')){
-        		//console.log(1);
-        		//$(this).find('.my_sub').removeClass('on');
-	  			
 		}//eventClick
 	  });
 	   
@@ -243,9 +269,30 @@ function getFormatDate(date){
     day = day >= 10 ? day : '0' + day;
     return year + '-' + month + '-' + day;
 }
-    
-    
-    
+ 
+//숫자 자릿수 포맷(3자리수마다 ,) 
+Number.prototype.format = function(){
+	if(this ==0) return 0;
+	
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	var n = (this +'');
+	
+	while(reg.test(n)) n = n.replace(reg, '$1'+','+'$2');
+	
+	return n;
+}
+
+//문자 자릿수 포맷(3자리수마다 ,) 
+/*
+String.prototype.format = function(){
+	var num = parseFloat(this);
+	if(isNan(num)) return "0";
+	
+	return num.format();
+	
+
+}
+*/
  	
     </script>
 

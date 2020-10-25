@@ -40,7 +40,7 @@ public class CalendarBean {
 		
 
 		
-		return "calendar/calendar2";
+		return "calendar/calendar";
 	}
 	    
 	   
@@ -86,11 +86,8 @@ public class CalendarBean {
 	@RequestMapping(value="getCalendarEventDetail.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody List getCalendarEventDetail(String date) throws SQLException{
 		
-		System.out.println(date);
 		
 		List alldata= calendarService.getAlldata(date);
-		
-		
 		
 		//전체 list들 list에 담아주기
 		return alldata;

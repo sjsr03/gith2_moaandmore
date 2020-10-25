@@ -10,6 +10,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/moamore/js/snowfall.jquery.js"></script>
+
 	<!-- Custom fonts for this template-->
 	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -23,9 +25,7 @@
 	ul.toggled > #BudgetState {
 		display:none;
 	}
-	
-	#ranking{
-	}
+	#ranking{}	
 </style>
 <script>
 $(document).ready(function(){
@@ -37,7 +37,8 @@ $(document).ready(function(){
 		},
 		success:function(data){
 			var totalBudget = data['totalBudget'];
-			var TBString = totalBudget.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			totalBudget += "";
+			var TBString = totalBudget.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 			
 			var outcomeSum = data['outcomeSum'];
 			var rate = (outcomeSum/totalBudget*100).toFixed(1);
@@ -52,14 +53,13 @@ $(document).ready(function(){
 });
 </script>
 
-<body id="page-top">
+<body id="page-top" >
 	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
 
   <!-- Page Wrapper -->
   <div id="wrapper">
-
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion " id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/main.moa">
@@ -94,7 +94,7 @@ $(document).ready(function(){
       
       
       <!-- 예산탭 시작 -->
-	<c:if test="${path.indexOf('/team/') < 0}" >
+	<c:if test="${path.indexOf('/team/') < 0 && path.indexOf('/closing/') < 0}" >
       <!-- Heading -->
       <div class="sidebar-heading">
         예산 관리
@@ -102,11 +102,11 @@ $(document).ready(function(){
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBudget" aria-expanded="true" aria-controls="collapseBudget">
           <i class="fas fa-fw fa-coins"></i>
           <span>예산</span>
         </a>
-        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+        <div id="collapseBudget" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">예산</h6>
             <a class="collapse-item" href="/moamore/budget/todayBudget.moa">오늘의 예산</a>
@@ -129,11 +129,19 @@ $(document).ready(function(){
           <i class="fas fa-fw fa-calendar-alt"></i>
           <span>달력</span></a>
       </li>
-      <!-- Nav Item - Tables -->
+       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/report/report.moa">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseReport" aria-expanded="true" aria-controls="collapseReport">
           <i class="fas fa-fw fa-chart-area"></i>
-          <span>예산 보고서</span></a>
+          <span>보고서</span>
+        </a>
+        <div id="collapseReport" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">보고서</h6>
+            <a class="collapse-item" href="/moamore/report/report.moa">예산 보고서</a>
+            <a class="collapse-item" href="/moamore/report/expectation.moa" id="expectation" onclick="$('#loading').css('display','flex');">데이터 분석</a>
+          </div>
+        </div>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
@@ -143,9 +151,17 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/goals/myGoalList.moa">
-          <i class="fas fa-fw fa-crosshairs"></i>
-          <span>목표</span></a>
+       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGoal" aria-expanded="true" aria-controls="#collapseGoal">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>목표</span>
+        </a>
+          <div id="collapseGoal" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+           <h6 class="collapse-header">목표</h6>
+            <a class="collapse-item" href="/moamore/goals/myGoalList.moa">진행중인 목표</a>
+            <a class="collapse-item" href="/moamore/goals/completeGoalList.moa">완료한 목표</a>
+          </div>
+        </div>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
@@ -158,7 +174,7 @@ $(document).ready(function(){
       
       <!-- 예산 탭 끝 -->
       <!-- 커뮤니티탭 시작 -->
-      <c:if test="${path.indexOf('/team/') >= 0}" >
+      <c:if test="${path.indexOf('/team/') >= 0 || path.indexOf('/closing/') >= 0}" >
 		 <!-- Heading -->
       <div class="sidebar-heading">
         커뮤니티
@@ -195,7 +211,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="/moamore/closing/closingAccountList.moa">
           <i class="fas fa-fw fa-list-ul"></i>
           <span>결산 게시판</span></a>
       </li>
@@ -230,6 +246,7 @@ $(document).ready(function(){
           </button>
           
           <!-- 상단 메뉴 (예산 / 커뮤니티) -->
+          
 			<div class="input-group" style="width:100%">
 				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/dashboard.moa'"><span class="text">예산</span></button>
 				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;"onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
@@ -237,7 +254,7 @@ $(document).ready(function(){
 			
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
-          <li class="nav-item mx-5">
+          <li class="nav-item mx-5" id="ranking">
                 <jsp:include page="./realTimeRankingForMobile.jsp"/>
             </li>
             
@@ -247,7 +264,7 @@ $(document).ready(function(){
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.memId}</span>
-	                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+	                <img class="img-profile rounded-circle" src="/moamore/save/${sessionScope.memImg}">
 	              </a>
 	              <!-- Dropdown - User Information -->
 	              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -272,3 +289,15 @@ $(document).ready(function(){
 
         </nav>
         <!-- End of Topbar -->
+        
+<div id="loading" style="display: none;justify-content: center;background: rgba(0, 0, 0, .7);align-items: center;position: fixed;top: 0;left: 0;width: 100%;height: 100%;z-index: 1;backdrop-filter: blur(4px);-webkit-backdrop-filter: blur(4px);">
+	<div style="text-align:center;">
+		<img src="/moamore/resources/img/Loading_2.gif" style="width:60px"/>
+		<br/>
+		&nbsp;
+		<br/>
+		<div>
+			<h4 style="color:white;">데이터를 불러오고 있습니다.</h4>
+		</div>
+	</div>
+</div>

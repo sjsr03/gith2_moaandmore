@@ -33,4 +33,11 @@ public class BudgetDetailDTO {
 	public void setImg(String img) {
 		this.img = img;
 	}
+	@Override
+	public String toString() {
+		return "BudgetDetailDTO [budget_outcome_no=" + budget_outcome_no + ", content=" + content + ", memo=" + memo
+				+ ", img=" + img + "]";
+	}
+	
+	
 }

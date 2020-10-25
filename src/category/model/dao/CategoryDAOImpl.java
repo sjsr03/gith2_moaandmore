@@ -184,7 +184,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException {
 
 		List outcomeCategoryNames = sqlSession.selectList("category.selectOutcomeCategoryName",id);
-		
+																
 		return outcomeCategoryNames;
 	}
 	

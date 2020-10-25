@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,16 +19,22 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 
 import budget.model.dao.RecordBudgetDAO;
 import budget.model.dao.RecordBudgetDAOImpl;
@@ -36,6 +43,7 @@ import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
 import budget.model.dto.NoBudgetDetailDTO;
+import budget.model.dto.RecordModifyDTO;
 import budget.model.dto.RecordPageDTO;
 import budget.model.dto.SearchForRecordDTO;
 import budget.service.bean.BudgetService;
@@ -50,6 +58,7 @@ import category.service.bean.CategoryService;
 @RequestMapping("/record/")
 public class RecordBean {
 
+	
 	@Autowired
 	private RecordService recordService = null;	
 	@Autowired
@@ -108,8 +117,12 @@ public class RecordBean {
 	// ajax로 회원 예산 카테고리 가져오기
 	@RequestMapping(value="budgetCategory.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public @ResponseBody Map budgetCategory(HttpServletRequest request, String date, String id) throws SQLException{
-		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
+		// moneyLog에서 사용할 경우 아이디 없이옴 
+		if(id == "") {
+			id = (String)request.getSession().getAttribute("memId");
+		}
 		
+		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
 		Timestamp dateTime = Timestamp.valueOf(newDate);
@@ -124,8 +137,6 @@ public class RecordBean {
 		
 		// categories에 예산 번호 추가해주기   
 		categories.put("budgetNum", budgetNum);	
-	
-		
 		return categories;	
 	}
 	
@@ -139,9 +150,10 @@ public class RecordBean {
 		noBudgetDTO.setId(id);
 	
 		int category_no = Integer.parseInt(request.getParameter("category_no"));
+		// 일단 카테고리 정보 전부다 채워서 보낸 후에 서비스에서 나눠서 처리
 		budgetDTO.setCategory_no(category_no);
-		noBudgetDTO.setCategory_no(category_no);
-		
+		noBudgetDTO.setIncome_category_no(category_no);
+		noBudgetDTO.setOutcome_category_no(category_no);
 		String oldDate = request.getParameter("date") + " "+ request.getParameter("time")+":00";
 		Timestamp date = Timestamp.valueOf(oldDate);
 		
@@ -152,43 +164,26 @@ public class RecordBean {
 	}
 	//------------------------------------------------------------------------
 	
-	// 수입지출목록 보여주기
-	@RequestMapping("moneyLog.moa")
-	public String moneyLog(HttpServletRequest request, Model model, String pageNum)throws SQLException {
-		String id = (String)request.getSession().getAttribute("memId");
-		
-		// 현재 날짜+시간 받아오기(기본으로 현재 진행중인 예산의 지출 목록 보여줄 것임)
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date currTime = new Date();
-		String now = sdf.format(currTime);
-		Timestamp dateTime = Timestamp.valueOf(now);
-		
-		// 날짜랑 아이디로 해당 예산 번호 가져오기
-		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
-		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum);
-
-		model.addAttribute("recordPage", recordPage);
-		return "budget/moneyLog";
-	}
-	
 	@RequestMapping("moneyRecord.moa")
 	public String moneyRecord(HttpServletRequest request, Model model, SearchForRecordDTO searchForRecordDTO)throws SQLException{
 		
 		System.out.println("타입확인 >>> : " + searchForRecordDTO.getType());
 		System.out.println("날짜확인 >>> : " + searchForRecordDTO.getSearchDate());
 		System.out.println("페이지넘 >>> : " + searchForRecordDTO.getPageNum());
+	
 		model.addAttribute("searchForRecordDTO", searchForRecordDTO);
 		return "budget/moneyRecord";
 	}
 	
-	// 예산 내역 삭제
+	// 내역 삭제
 	@RequestMapping("budgetRecordDelete.moa")
-	public void budgetRecordDelete(String budget_outcome_no, HttpServletResponse response) throws IOException, SQLException {
-		System.out.println("타입 : " + budget_outcome_no);
+	public void budgetRecordDelete(int number, String type, HttpServletResponse response) throws IOException, SQLException {
+		System.out.println("타입 : " + number);
 		int result = 0;
 		ObjectMapper mapper = new ObjectMapper();
 		response.setContentType("application/json;charset=UTF-8");
-		result = recordService.budgetRecordDelete(budget_outcome_no);
+		// 서비스에 통으로 보내서 type으로 나눈 후  분기처리해줄 것임
+		result = recordService.deleteRecord(number, type); 
 		// result가 0이면 실패 1이면 성공
 		if(result == 0 ) {
 			response.getWriter().print(mapper.writeValueAsString("Fail"));
@@ -214,36 +209,34 @@ public class RecordBean {
 			System.out.println("검색날짜 ::: " + searchForRecordDTO.getSearchDate());
 			String newDate = searchForRecordDTO.getSearchDate() + " 00:00:00";
 			dateTime = Timestamp.valueOf(newDate);
-			searchForRecordDTO.setTimeStampDate(dateTime);
+			searchForRecordDTO.setTimeStampDate(dateTime);	
 			
 			// 예산 번호 뽑아오기
 			int budgetNum = budgetService.selectBudgetNum(searchForRecordDTO.getId(), dateTime);
 			System.out.println("컨트롤러 버겟 넘 : "+budgetNum);
 			// 카테고리 번호 뽑아오기
 			List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
-			
 			// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
-			HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
-			
+			HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);		
 			// 예산번호로 예산 지출 내역 가져오기 
-			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum());
+			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum(), searchForRecordDTO.getKeyword());
 			String searchDate = searchForRecordDTO.getSearchDate();
 			model.addAttribute("searchDate", searchDate);
+			
+			System.out.println("빈에서 !! :" + recordPage.getRecordList().size());
 			recordPage.setType(searchForRecordDTO.getType());
 			// model로 다 보내주기
 			model.addAttribute("categories", categories);
 			model.addAttribute("recordPage", recordPage);
-			System.out.println("아아아아" + recordPage.getCount());
-		
-			
-		}else{ // 해당 예산이 없으면  가져올 내역이 없다는 말임 없으면..뭘보내주지;?
+			System.out.println("아아아아" + recordPage.getCount());		
+		}else{
 		}
+		
 		
 		return "budget/moneyLog";
 	}
 	
 	// 예산외
-	// 아이디랑 pageNum, type, 시작날짜 끝나는날짜로 가져오기.................
 	// 아이디로 예산외 수입/지출 카테고리 정보 DTO 담은 리스트 가져오기
 	@RequestMapping(value="selectNoBudgetRecord.moa")
 	public String selectNoBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{
@@ -251,29 +244,31 @@ public class RecordBean {
 		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		
+		// 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
+		Map<Integer, String> categories = new HashMap();
+		System.out.println("타입확인!!!>> " + recordPage.getType());
 		
-		
-		// 아이디당 수입/지출 카테고리 통으로 가져오기	
-		List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
-		List incomeCategoryList= categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
-		Map<Integer, String> incomeCategories = new HashMap();
+		// 해당 카테고리 가져오기
+		if(recordPage.getType().equals("income")){
+			List incomeCategoryList= categoryService.selectAllIncomeCategoryById(searchForRecordDTO.getId());
 
-		for(int i = 0; i < incomeCategoryList.size(); i++) {
-			incomeCategories.put(((income_categoryDTO)incomeCategoryList.get(i)).getCategory_no(), ((income_categoryDTO)incomeCategoryList.get(i)).getCategory_name());		
+			for(int i = 0; i < incomeCategoryList.size(); i++) {
+				categories.put(((income_categoryDTO)incomeCategoryList.get(i)).getCategory_no(), ((income_categoryDTO)incomeCategoryList.get(i)).getCategory_name());
+			}				
+		}else if(recordPage.getType().equals("outcome")){
+			List outcomeCategoryList = categoryService.selectAllById(searchForRecordDTO.getId());
+			for(int i = 0; i < outcomeCategoryList.size(); i++) {
+				categories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
+				System.out.println("ddd:"+((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no());
+			}
 		}
 		
-		Map<Integer, String> outcomeCategories = new HashMap();
-		for(int i = 0; i < outcomeCategoryList.size(); i++) {
-			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
-		}
 		
-		
-		model.addAttribute("searchDate",  searchForRecordDTO.getSearchDate());
+		model.addAttribute("searchDate", searchForRecordDTO.getSearchDate());
 		model.addAttribute("recordPage", recordPage);
-		model.addAttribute("incomeCategories", incomeCategories);
-		model.addAttribute("outcomeCategoryList", outcomeCategoryList);
+		model.addAttribute("categories", categories);
 		
 		return "budget/moneyLog";
 	}
@@ -283,6 +278,8 @@ public class RecordBean {
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		String type = searchForRecordDTO.getType();
+		
+		// 타입에 들어있는 만큼 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
 		
@@ -300,21 +297,41 @@ public class RecordBean {
 			outcomeCategories.put(((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_no(), ((outcome_categoryDTO)outcomeCategoryList.get(i)).getCategory_name());		
 		}
 		
-		System.out.println("아ㅠ : " + type);
+		//System.out.println("타입확인 : " + type);
 		recordPage.setType(type);
 
-		System.out.println("개빡침..." + recordPage.getType());
+		System.out.println("recordPage 내의 Type 확인 :" + recordPage.getType());
 		model.addAttribute("incomeCategories", incomeCategories);
-		model.addAttribute("outcomeCategoryList", outcomeCategoryList);
+		model.addAttribute("outcomeCategories", outcomeCategories);
 		model.addAttribute("recordPage", recordPage);
-		System.out.println("개빡침...???" + recordPage.getType());
 		return "budget/moneyLog";
 	}
-	@RequestMapping(value="selectDetail.moa")
-	public String selectDetail()throws SQLException{
+
+	// 내역 수정  , produces = "application/json;charset=utf-8"
+	// MultipartHttpServletRequest request
+	@ResponseBody
+	@RequestMapping(value="modifyRecord.moa", method = RequestMethod.POST)  
+	public void modifyRecord(RecordModifyDTO recordModifyDTO, @RequestParam("image") MultipartFile file) throws Exception{
+		System.out.println("??? : " + recordModifyDTO.getUniqueNum());
 		
-		return "";
+		//String id = (String)request.getSession().getAttribute("memId");
+		//recordModifyDTO.setId(id);
+		//System.out.println(request.getParameter("image"));
+		
+		
+		System.out.println(recordModifyDTO.toString());
+		
+		recordService.modifyRecord(recordModifyDTO, file);
+		System.out.println("파일 : "+ file);
+		// mapper 사용해서 map -> json string으로 변환해서 리턴해주기
+		/*
+		ObjectMapper mapper = new ObjectMapper();
+		String json2 = "";
+		
+		Map<String, Object> map2 = new HashMap<String, Object>();
+		*/
+		// json2 = mapper.writeValueAsString(map2);
+		
 	}
-	
 	
 }

@@ -32,6 +32,8 @@
 	 			/WEB-INF/controller/main-controller.xml
 	 			/WEB-INF/controller/report-controller.xml
 	 			/WEB-INF/controller/ranking-controller.xml
+	 			/WEB-INF/controller/closing-controller.xml
+	 			/WEB-INF/controller/search-controller.xml
 	 		</param-value>
 	 	</init-param>
 	</servlet>	 

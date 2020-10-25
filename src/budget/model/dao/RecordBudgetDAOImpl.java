@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
+import budget.model.dto.SearchForRecordDTO;
 
 @Repository
 public class RecordBudgetDAOImpl implements RecordBudgetDAO {
@@ -60,8 +61,39 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		return count;
 	}
 	
+	// 예산번호, 키워드로 예산 내역 가져오기 
 	@Override
-	public int budgetRecordDelete(String budget_outcome_no) throws SQLException {
+	public List selectAllBudgetByNum(int budgetNum, int startRow, int endRow, String keyword) throws SQLException {		
+		List budgetRecordList = new ArrayList();
+		
+		Map para = new HashMap();
+		System.out.println("DAO에서 startRow : " + startRow);
+		System.out.println("DAO에서 endRow : " + endRow);
+		para.put("budgetNum", budgetNum);
+		para.put("startRow", startRow);
+		para.put("endRow", endRow);
+		para.put("keyword", keyword);
+		
+		budgetRecordList = sqlSession.selectList("record.selectBudgetRecordByKeyword", para); 
+		return budgetRecordList;
+	}
+	
+	
+	// 예산번호, 키워드로 개수 가져오기 
+	@Override
+	public int countAllBudgetByNum(int budgetNum, String keyword) throws SQLException {
+		System.out.println("걸리냐");
+		System.out.println("키워드 확인 >>>" + keyword);
+		int count = 0;
+		Map para = new HashMap();
+		para.put("budgetNum", budgetNum);
+		para.put("keyword", keyword);
+		count = sqlSession.selectOne("record.countBudgetRecordByKeyword", para);
+		return count;
+	}
+	
+	@Override
+	public int deleteBudgetRecord(int budget_outcome_no) throws SQLException {
 		int result = 0;
 		result = sqlSession.delete("record.deleteBudgetRecord", budget_outcome_no);
 		return result;
@@ -75,10 +107,22 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 			return sqlSession.selectOne("record.selectSumFromDateAndCatNo", map);
 		}
 	}
+	@Override
+	public void modifyBudgetRecord(BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO) throws SQLException {
+		int result = 0;
+		System.out.println(budgetDTO.toString());
+		System.out.println(budgetDetailDTO.toString());
+		
+		sqlSession.selectOne("record.modifyBudgetRecord", budgetDTO);
+		sqlSession.selectOne("record.modifyBudgetDetailRecord", budgetDetailDTO);
+		
+	}
 	
-	
-	
-	
-
+	// 아이디로 예산 기록 총 개수 가져오기
+	@Override
+	public int CountBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
+		int count = sqlSession.selectOne("record.countBudgetRecordById", searchForRecordDTO);
+		return count;
+	}
 	
 }

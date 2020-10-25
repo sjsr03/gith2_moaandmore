@@ -14,6 +14,11 @@
 	
 	<select id="selectAllByPublicCh" parameterType="java.util.HashMap" resultType="goalsDTO">
 		select * from goals where id=#{id} and public_ch=#{public_ch} 
+		
+		<if test='list_type.equals("complete")'> and saving >= target_money</if>
+		<if test='list_type.equals("proceeding")'> <![CDATA[ and saving < target_money ]]></if>
+		
+		
 		<if test='sorting.equals("public")'> and public_type = '1'</if>
 		<if test='sorting.equals("private")'> and public_type = '0'</if>
 		<choose>
@@ -65,6 +70,14 @@
 		]]>
 	</select>
 	
+	<!-- 남은돈 전환가능한 개인목표 -->
+	<select id="selectPersonalTransferPossibleGoals" parameterType="string" resultType="hashmap">
+		SELECT goal_no, SUBJECT , (TARGET_MONEY-SAVING) AS rest FROM GOALS WHERE id=#{value} AND PUBLIC_CH =0 AND target_money!=saving
+	</select>
+	<!-- 남은돈 전환가능한 그룹목표 -->
+	<select id="selectTeamTransferPossibleGoals" parameterType="string" resultType="hashmap">
+		SELECT goal_no, SUBJECT , (TARGET_MONEY-SAVING) AS rest FROM GOALS WHERE id=#{value} AND PUBLIC_CH =1 AND target_money!=saving
+	</select>
 	
 
 </mapper>

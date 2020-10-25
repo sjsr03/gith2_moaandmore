@@ -19,15 +19,12 @@ public class CalendarDAOImpl implements CalendarDAO{
 	//id로 버겟 테이블에 데이터가 있는 날짜 가져오기
 	@Override
 	public List selectBudgetDatebyId(String id) throws SQLException {
-		
 		List budget = sqlSession.selectList("calendar.selectBudgetDatebyId",id);
-		
 		return budget;
 	}
 
 	@Override
 	public List selectBudgetAmount(String id, List budgetAlldate) throws SQLException {
-		
 		
 			Map map = new HashMap();
 			map.put("id", id);
@@ -47,8 +44,6 @@ public class CalendarDAOImpl implements CalendarDAO{
 		List noBudget = sqlSession.selectList("calendar.selectNoBudgetExpenseDatebyId",id);
 		return noBudget;
 		
-		
-		
 	}
 	
 	@Override
@@ -66,7 +61,6 @@ public class CalendarDAOImpl implements CalendarDAO{
 		Map map = new HashMap();
 		map.put("id", id);
 		map.put("nobudgetAlldate", nobudgetAlldate);
-		
 		
 		
 		List AllNobudgetExpenseAmount = sqlSession.selectList("calendar.selectNoBudgetExpenseAmountBydate",map);

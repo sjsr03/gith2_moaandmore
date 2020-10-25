@@ -9,7 +9,7 @@
 <body>
 	<c:if test="${result==1 }" >
 		<script>
-			var url = "/moamore/team/teamDetail.moa?team_no=${team_no}&nickname=${sessionScope.memName}";
+			var url = "/moamore/team/teamDetail.moa?team_no=${team_no}";
 			window.location.href=url;
 		</script>
 	</c:if>

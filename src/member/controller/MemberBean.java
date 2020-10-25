@@ -21,6 +21,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -57,7 +60,7 @@ public class MemberBean {
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String loginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
 		
@@ -69,6 +72,7 @@ public class MemberBean {
 			
 			session.setAttribute("memId", id);	//세션 만들고
 			session.setAttribute("memName", nickname);
+			session.setAttribute("memImg", dto.getProfile_img());
 			
 			if(auto != null) {	//자동로그인 체크면 쿠키 추가
 				Cookie c1 = new Cookie("autoId", id);
@@ -159,25 +163,43 @@ public class MemberBean {
 	
 					
 	@RequestMapping("signupPro.moa")
-	public String signupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
+	public String NLCsignupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
 	
+			
+			
 			
 			memberService.insertMember(dto,request);
 			
-		
+			
 			
 			return "member/loginForm";
 		}
 	
+	
+	//아이디 유효성 검사
+	@RequestMapping(value = "idCheck.moa", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheck(@RequestParam("userId") String user_id) throws SQLException{
+
 		
+		return memberService.userIdCheck(user_id);
+	}
 	
 	
+	//닉네임 유효성 검사
+	@RequestMapping(value = "nicknameCheck.moa", method = RequestMethod.GET)
+	@ResponseBody
+	public int nicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
+
+		
+		return memberService.nicknameCheck(nickname);
+	}
 	
 	@RequestMapping("updateMember.moa")
-	public String LCupdateMember(HttpServletRequest request,Model model)throws SQLException{
+	public String LCupdateMember(Model model)throws SQLException{
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
 		
-		HttpSession session = request.getSession();
-		String id = (String)session.getAttribute("memId");
 		
 		MemberDTO dto = memberService.selectOne(id);
 		
@@ -194,8 +216,13 @@ public class MemberBean {
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		dto.setId(id);
 		
-		  memberService.modifyMember(dto,request,eximage);
-		  dto = memberService.selectOne(id);
+		memberService.modifyMember(dto,request,eximage);
+		dto = memberService.selectOne(id);
+		  
+		request.getSession().setAttribute("memImg", dto.getProfile_img());
+		
+		
+		
 		
 		  model.addAttribute("dto", dto);
 		  

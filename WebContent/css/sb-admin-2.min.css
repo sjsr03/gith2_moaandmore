@@ -298,6 +298,7 @@ input[type="checkbox"] {
 textarea {
   overflow: auto;
   resize: vertical;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 fieldset {
@@ -552,6 +553,9 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+#ranking {
+	display:none;
+}
 
 @media (min-width: 576px) {
   .container {
@@ -563,17 +567,26 @@ pre code {
   .container {
     max-width: 720px;
   }
+  #ranking {
+  	display:block;
+  }
 }
 
 @media (min-width: 992px) {
   .container {
     max-width: 960px;
   }
+  #ranking {
+  	display:block;
+  }
 }
 
 @media (min-width: 1200px) {
   .container {
     max-width: 1140px;
+  }
+  #ranking {
+	display:block
   }
 }
 
@@ -10804,7 +10817,7 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://source.unsplash.com/K4mSJ7kc0As/600x800");
+  background: url("/moamore/save/loginForm.png");
   background-position: center;
   background-size: cover;
 }

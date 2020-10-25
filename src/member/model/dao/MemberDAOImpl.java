@@ -89,6 +89,26 @@ public class MemberDAOImpl implements MemberDAO {
 	public TotalBudgetDTO selectOutClose(String id) throws SQLException {
 		return sqlSession.selectOne("totalBudget.selectOutClose", id);
 	}
+
+
+	@Override
+	public int checkOverId(String user_id) throws SQLException {
+		
+		int checkId=sqlSession.selectOne("member.checkOverId",user_id);
+		
+		
+		return checkId;
+	}
+
+
+	@Override
+	public int checkOverNick(String nickname) throws SQLException {
+		
+		int checkNick=sqlSession.selectOne("member.checkOverNick",nickname);
+		
+		
+		return checkNick;
+	}
 	
 	
 	

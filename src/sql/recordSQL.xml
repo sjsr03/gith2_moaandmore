@@ -13,9 +13,18 @@
   	<insert id="insertBudgetDetail" parameterType="budgetDetailDTO">
   		insert into budget_detail values(#{budget_outcome_no}, #{content}, #{memo}, #{img})
   	</insert>
-  	<!-- 예산 외 내역 입력하기(noBudget) -->
+  	<!-- 예산 외 내역 입력하기(noBudget) 수입/지출에 따라 태그 이름 변경해줘야함 -->
   	<insert id="insertNoBudget" parameterType="noBudgetDTO" useGeneratedKeys="true" keyProperty="nobudget_no" keyColumn="nobudget_no">
-  		insert into nobudget values(nobudget_no_seq.nextVal, #{id}, #{type}, #{category_no}, #{amount}, #{reg})
+  		insert into nobudget
+  		<choose>
+			<when test="type.equals('income')">
+				(nobudget_no, id, type, income_category_no, amount, reg) values(nobudget_no_seq.nextVal, #{id}, #{type}, #{income_category_no}, #{amount}, #{reg})
+			</when>		
+			<otherwise>
+				(nobudget_no, id, type, outcome_category_no, amount, reg) values(nobudget_no_seq.nextVal, #{id}, #{type}, #{outcome_category_no}, #{amount}, #{reg})
+			</otherwise>
+		</choose>
+		
   	</insert>
   	<!-- 예산 외 세부내역 입력하기 -->
   	<insert id="insertNoBudgetDetail" parameterType="noBudgetDetailDTO">
@@ -24,28 +33,66 @@
  
  	<!-- 예산번호로 예산 지출 내역 리스트 가져오기 -->
   	<select id="selectBudgetRecord" parameterType="hashmap" resultType="allRecordDTO">
-  		<![CDATA[SELECT t2.* from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT * FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
+  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
   	</select>
   	  	
+  	 <!-- 예산번호로 예산 지출 내역 리스트 가져오기 (키워드가 있는 경우) -->
+  	<select id="selectBudgetRecordByKeyword" parameterType="hashmap" resultType="allRecordDTO">
+  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND content LIKE '%'||#{keyword}||'%') ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
+  	</select>
+  	 	
   	<!-- 예산번호로 예산지출 내역 총 개수 가져오기 -->
   	<select id="countBudgetRecord" parameterType="int" resultType="int">
   		select count(*) from budget where budget_no=#{value}
   	</select>
   	
+  	<!-- 예산번호로 예산지출 내역 총 개수 가져오기 (키워드가 있는 경우)-->
+  	<select id="countBudgetRecordByKeyword" parameterType="map" resultType="int">
+  		SELECT count(*) FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND content LIKE '%${keyword}%'
+  	</select>
+  	
   	<!-- 예산 지출 고유 번호로 해당 예산 내역 삭제 -->
-  	<delete id="deleteBudgetRecord" parameterType="string" >
+  	<delete id="deleteBudgetRecord" parameterType="int" >
   		delete from budget where budget_outcome_no=#{value}
   	</delete>
+  	
+  	<!-- 예산외 수입/지출 고유 번호로 해당 내역 삭제 -->
+  	<delete id="deleteNoBudgetRecord" parameterType="int">
+  		delete from nobudget where nobudget_no=#{value}
+  	</delete>
+  	
+  	
+  	
+  	<!-- 아래의 두개는수입or지출 월별로 가져옴 -->
   	
   	<!-- 예산 외 수입or지출 내역 총 개수 가져오기 -->
   	<select id="countNoBudgetRecord" parameterType="searchForRecordDTO" resultType="int">
   		SELECT count(*) FROM NOBUDGET WHERE id=#{id} and type=#{type} AND TO_CHAR(reg,'YYYY-MM')=#{searchDate}
   	</select>
   	
-  	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기 -->
+  	<!-- 아이디, 타입으로 예산 외 수입or지출내역 리스트로 가져오기  월!!!!별로!! 날짜로@@@@@@@@@@@@@@@@@2 이거 고치기-->
   	<select id="selectNoBudgetRecord" parameterType="searchForRecordDTO" resultType="allRecordDTO">  	
 		<![CDATA[SELECT t2.* from(SELECT rownum r, t1.* FROM(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]> 
   	</select>
+  	
+  	
+  	
+  	
+  	
+  	
+  	
+  	<!-- 예산 외 수입or지출 내역 총 개수 가져오기  날짜로 가져와라 (키워드가 있는 경우) @@@@@@@@@@  이거 수정@@@@ 날짜 포함해서 가져와야한다 -->
+  	<select id="countNoBudgetRecordByKeyword" parameterType="searchForRecordDTO" resultType="int">
+  		SELECT count(*) FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type} AND content LIKE '%${keyword}%'
+  	</select>
+  	
+  	<!-- 아이디, 타입 날짜로으로 예산 외 수입or지출내역 리스트로 가져오기  (키워드가 있는 경우) @@@@@@@@@@  이거 수정@@@@ 날짜 포함해서 가져와야한다-->
+  	<select id="selectNoBudgetRecordByKeyword" parameterType="searchForRecordDTO" resultType="allRecordDTO">  	
+		<![CDATA[SELECT t2.* from(SELECT rownum r, t1.* FROM(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type} AND content LIKE '%'||#{keyword}||'%') ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]> 
+  	</select>
+  	
+  	
+  	
   	
   	<!-- 예산지출시 총예산 current값에서 차감 -->
   	<update id="updateCurrentBudget" parameterType="budgetDTO">
@@ -55,7 +102,7 @@
   	<!-- 예산+예산외 내역들 리스트로 가져오기(type으로 체크) -->
   	<select id="selectRecord" parameterType="searchForRecordDTO" resultType="allRecordDTO">
 	  	SELECT t2.* FROM(SELECT rownum r, t1.* FROM(SELECT * FROM(
-		SELECT n.NOBUDGET_NO, n.CATEGORY_NO, n.AMOUNT, n.reg, nd.CONTENT, nd.MEMO, nd.IMG, n."TYPE" 
+		SELECT n.NOBUDGET_NO, n.INCOME_CATEGORY_NO, n.OUTCOME_CATEGORY_NO, n.AMOUNT, n.reg, nd.CONTENT, nd.MEMO, nd.IMG, n."TYPE" 
 		FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} 
 		<choose>
 			<when test="type.equals('budgetincomeoutcome')">
@@ -66,22 +113,26 @@
 			</otherwise>
 		</choose>
 		UNION ALL
-		SELECT b.BUDGET_OUTCOME_NO, b.CATEGORY_NO, b.AMOUNT, b.REG, bd.CONTENT, bd.MEMO, bd.IMG, NULL AS "type" 
+		SELECT b.BUDGET_OUTCOME_NO, NULL AS "INCOME_CATEGORY_NO", b.CATEGORY_NO, b.AMOUNT, b.REG, bd.CONTENT, bd.MEMO, bd.IMG, 'budget' AS "TYPE" 
 		FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE id=#{id})
 		 ORDER BY reg DESC)t1)t2 <![CDATA[WHERE r >=#{startRow} AND r <=#{endRow}]]>
   	</select>
   	
-  	<!-- 수입+지출 내역 리스트 아이디로 가져오기 -->
-  	<select id="selectNobudgetRecord" parameterType="searchForRecordDTO" resultType="allRecordDTO">
+
+
+  	<!-- 수입+지출 내역 리스트 아이디로 가져오기  -->
+  	<select id="selectNobudgetRecordAllType" parameterType="searchForRecordDTO" resultType="allRecordDTO">
   		SELECT t2.* from(SELECT rownum r, t1.* FROM
 		(SELECT * FROM (SELECT * FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id}) 
 		ORDER BY reg DESC)t1)t2 <![CDATA[WHERE r >=#{startRow} AND r <=#{endRow}]]>
   	</select>
+
+  	
   	<!-- 아이디로 예산 총 개수 가져오기 -->
   	<select id="countBudgetRecordById" parameterType="searchForRecordDTO" resultType="int">
   		select count(*) from budget where id=#{id}
   	</select>
-  	<!-- 아이디로 예산외 총 개수 가져오기 -->
+  	<!-- 아이디랑 타입으로  예산외 총 개수 가져오기 (수입+지출 한번에 가져오기 가능 가능 )-->
   	<select id="countNoBudgetRecordById" parameterType="searchForRecordDTO" resultType="int">
   		select count(*) from nobudget where id=#{id} 
   		<choose>
@@ -107,5 +158,34 @@
 	  		select sum(amount) from budget where category_no=#{category_no} and to_char(reg, 'yyyy-MM-dd') >= #{startDay} and reg<=sysdate
   		]]>
   	</select>
+  	
+  	<!-- 예산 내역 수정 -->
+  	<update id="modifyBudgetRecord" parameterType="budgetDTO">
+  		update budget set budget_no=#{budget_no}, category_no=#{category_no}, amount=#{amount}, reg=#{reg} where budget_outcome_no=#{budget_outcome_no}
+  	</update>
+  	<!-- 예산 상세내역 수정 -->
+  	<update id="modifyBudgetDetailRecord" parameterType="budgetDetailDTO">
+  		update budget_detail set content=#{content}, memo=#{memo}, img=#{img} where budget_outcome_no=#{budget_outcome_no}
+  	</update>
+  	
+  	<!-- 예산 외 내역 수정 -->
+  	<update id="modifyNoBudgetRecord" parameterType="noBudgetDTO">
+  		update nobudget set type=#{type}, 
+  		<choose>
+  			<when test='type.equals("income")'>
+  			income_category_no=#{income_category_no}, 
+  			</when>
+  			<otherwise>
+  			outcome_category_no=#{outcome_category_no}, 
+  			</otherwise>
+  		</choose>
+  		amount=#{amount}, reg=#{reg} where nobudget_no=#{nobudget_no}
+  	</update>
+  	<!-- 예산 외 상세내역 수정 -->
+  	<update id="modifyNoBudgetDetailRecord" parameterType="noBudgetDetailDTO">
+  		update nobudget_detail set content=#{content}, memo=#{memo}, img=#{img} where nobudget_no=#{nobudget_no}
+  	</update>
+  	
+  	<!-- 아이디, 키워드로 예산 내역 총 개수 가져오기 countBudgetRecordByIdKeyword -->
   	
   </mapper>

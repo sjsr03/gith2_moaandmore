@@ -28,7 +28,6 @@ public class GoalBean {
 	@Autowired
 	private GoalsServiceImpl goalsService = null;
 	
-	
 	@RequestMapping("myGoalList.moa")
 	public String myGoalsList(HttpServletRequest request,Model model) {
 		int public_ch = 0;
@@ -36,6 +35,7 @@ public class GoalBean {
 		String public_ch_str = request.getParameter("public_ch");
 		if(public_ch_str != null && public_ch_str.equals("1")) {
 			public_ch = 1;
+			
 		}
 		
 		
@@ -44,11 +44,24 @@ public class GoalBean {
 		return "goals/myGoalList";
 	}
 	
-	@RequestMapping("getMyGoalList.moa")
-	public @ResponseBody List<GoalsDTO> myGoalList (int public_ch, String sorting) throws SQLException {
-		//아이디별 리스트. 세션으로 id받아오기
+	@RequestMapping("completeGoalList.moa")
+	public String completeGoalList(HttpServletRequest request,Model model) {
+		int public_ch = 0;
 		
-		return goalsService.selectAllByPublicCh(public_ch, sorting);
+		String public_ch_str = request.getParameter("public_ch");
+		if(public_ch_str != null && public_ch_str.equals("1")) {
+			public_ch = 1;
+			
+		}
+		
+		model.addAttribute("public_ch", public_ch);
+		return "goals/completeGoalList";
+	}
+	
+	@RequestMapping("getMyGoalList.moa")
+	public @ResponseBody List<GoalsDTO> myGoalList (int public_ch, String sorting, String list_type) throws SQLException {
+		//아이디별 리스트. 세션으로 id받아오기
+		return goalsService.selectAllByPublicCh(public_ch, sorting, list_type);
 	}
 	
 	

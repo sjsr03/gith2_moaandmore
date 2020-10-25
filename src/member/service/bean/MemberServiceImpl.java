@@ -40,8 +40,8 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void insertMember(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException {
 		
-		
-		
+			
+			
 				MultipartFile mf = null;
 				String newName = null;
 				try { 
@@ -65,12 +65,6 @@ public class MemberServiceImpl implements MemberService {
 					dto.setNickname(dto.getNickname());
 				//이미지가 안들어 왔으면 
 				}else {
-					System.out.println(1);
-					//String path = request.getRealPath("save");
-		
-					//String imgPath = path + "\\" +"";
-					///File copyFile = new File(imgPath);
-					//mf.transferTo(copyFile);
 					
 					dto.setProfile_img("defaultImg.gif");
 				}
@@ -86,16 +80,10 @@ public class MemberServiceImpl implements MemberService {
 			categoryDAO.outcomeInsertCategory(dto.getId());
 			categoryDAO.incomeInsertCategory(dto.getId());
 			
+			
 	}
 		
 		
-	
-	@Override
-	public int confirmId(String id) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	
 	@Override
 	public void deleteMember(String id) throws SQLException {
@@ -120,31 +108,30 @@ public class MemberServiceImpl implements MemberService {
 		String newName = null;
 		try {
 		
-		mf = request.getFile("image");
+			mf = request.getFile("image");
 		
-		//사진수정
-		if(mf.getSize() >0) {
+			//사진수정
+			if(mf.getSize() >0) {
+				
+				String path = request.getRealPath("save");
+				String orgName = mf.getOriginalFilename(); 
+				String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+				String ext = orgName.substring(orgName.lastIndexOf('.'));
+				long date = System.currentTimeMillis();
+				 newName = imgName+date+ext; 
 			
-			String path = request.getRealPath("save");
-			String orgName = mf.getOriginalFilename(); 
-			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
-			String ext = orgName.substring(orgName.lastIndexOf('.'));
-			long date = System.currentTimeMillis();
-			 newName = imgName+date+ext; 
-		
+				
+				String imgPath = path + "\\" + newName;
+				File copyFile = new File(imgPath);
+				mf.transferTo(copyFile);
+				
+				dto.setProfile_img(newName);
 			
-			String imgPath = path + "\\" + newName;
-			File copyFile = new File(imgPath);
-			mf.transferTo(copyFile);
+			// 이전 사진 불러오기
+			}else {
+				dto.setProfile_img(eximage);
+			}
 			
-			dto.setProfile_img(newName);
-		
-		// 이전 사진 불러오기
-		}else {
-			
-			dto.setProfile_img(eximage);
-		}
-		
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -178,5 +165,26 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public void updateClose(String id) throws SQLException {
 		
+	}
+
+
+	//아이디 중복검사 
+	@Override
+	public int userIdCheck(String user_id) throws SQLException {
+		
+		
+		 int checkId= memberDAO.checkOverId(user_id);
+		
+		return checkId;
+	}
+
+
+	//닉네임 중복검사
+	@Override
+	public int nicknameCheck(String nickname) throws SQLException {
+			
+		int checkNick= memberDAO.checkOverNick(nickname);
+		
+		return checkNick;
 	}
 }

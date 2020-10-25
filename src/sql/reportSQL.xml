@@ -31,6 +31,13 @@
 		]]>
 	</select>
 	
+	<!-- 날짜와 아이디로 지출액 합산 -->
+	<select id="selectOutcomeSumByRegAndId" parameterType="hashmap" resultType="int" >
+		<![CDATA[
+			select sum(amount) from budget where id=#{id} and to_char(reg,'yyyy-MM-dd')=#{reg} 
+		]]>
+	</select>
+	
 	<!-- 지출횟수로 Top3 -->
 	<select id="selectTop3Count" parameterType="int" resultType="hashmap" >
 		<![CDATA[
@@ -43,6 +50,11 @@
 		<![CDATA[
 			select * from (SELECT content, sum(amount) AS tsum, count(content) AS cnt FROM (SELECT bd.CONTENT, b.AMOUNT FROM BUDGET b join BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE b.BUDGET_NO=#{value}) t1 GROUP BY content ORDER BY tsum desc) where rownum <= 3
 		]]>
+	</select>
+	
+	<!-- 최초의 예산 시작일은? -->
+	<select id="selectFirstStartDay" parameterType="string" resultType="string">
+		select min(start_day) from total_budget where id=#{value}
 	</select>
   </mapper>
  

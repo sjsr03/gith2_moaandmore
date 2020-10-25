@@ -5,12 +5,15 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>로그인</title>
 </head>
 <body>
+
 	<c:if test="${result==1 }" >
 		<script>
-			window.location='/moamore/main.moa';
+			//window.location='/moamore/main.moa';
+			var referrer = document.referrer;
+			window.location.href = referrer;
 		</script>
 	</c:if>
 	<c:if test="${result!=1 }">
@@ -19,5 +22,6 @@
 			history.go(-1);
 		</script>
 	</c:if>
+
 </body>
 </html>

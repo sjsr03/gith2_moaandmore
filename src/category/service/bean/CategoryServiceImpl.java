@@ -38,42 +38,115 @@ public class CategoryServiceImpl implements CategoryService{
 	
 	//수입 카테고리 추가하기
 	@Override
-	public void addIncomeCategory(String category_name,String id) throws SQLException {
+	public int addIncomeCategory(String category_name,String id) throws SQLException {
+		
+		List incomeCategoryNames = categoryDAO.selectIncomeCategoryNamesbyId(id); //ok
+		
+		int already = 0;
+		
+		//수입카테고리 이름 겹치는지 검사
+		for(int i=0;i<incomeCategoryNames.size(); i++) {
+			String incomeCategoryName = (String)incomeCategoryNames.get(i);
+			
+			if(incomeCategoryName.equals(category_name)) {
+				
+				already = 1;
+				break;
+			}
+		}
+		//이름이 안겹치면 수정 가능
+		if(already ==0) {
+			categoryDAO.addIncomeCategory(category_name,id);
+		}		
 		
 		
-		
-		categoryDAO.addIncomeCategory(category_name,id);
+		return already;
 	}
 	
 	//지출 카테고리 추가하기
 	@Override
-	public void addOutcomeCategory(String category_name,String id) throws SQLException {
+	public int addOutcomeCategory(String category_name,String id) throws SQLException {
 		
-		categoryDAO.addOutcomeCategory(category_name,id); 
+		List outcomeCategoryNames = categoryDAO.selectOutcomeCategoryNamesbyId(id); //ok
+		//지출카테고리 이름 겹치는지 검사
+		int already = 0;
+		
+		for(int i=0;i<outcomeCategoryNames.size(); i++) {
+				String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
+			
+			if(outcomeCategoryName.equals(category_name)) {
+
+				already = 1;
+				break;
+			}
+		}
+		
+		//이름이 안겹치면 수정 가능
+		if(already == 0) {
+			categoryDAO.addOutcomeCategory(category_name,id);
+		}
+		 
+	
+		return already;
 	}
+	
+	
+	
+	
 	
 	//지출 카테고리 이름 수정하기
 	@Override
-	public void updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
+	public int updateoutcomeCategory(int category_no, String newName,String id) throws SQLException {
 		
-		List outcomeCategoryNames = categoryDAO.selectAllById(id);
+		List outcomeCategoryNames = categoryDAO.selectOutcomeCategoryNamesbyId(id);
 		
-		categoryDAO.updateoutcomeCategory(category_no,newName,id);
-		
+		int already = 0;
+		//지출카테고리 이름 겹치는지 검사
+		for(int i=0;i<outcomeCategoryNames.size(); i++) {
+			String outcomeCategoryName = (String)outcomeCategoryNames.get(i);
+			
+			if(outcomeCategoryName.equals(newName)) {
+				already =1;
+			}
+		}
+		//이름이 안겹치면 수정 가능
+		if(already==0) {
+			
+			categoryDAO.updateoutcomeCategory(category_no,newName,id);
+			
+		}	
+		System.out.println("already"+already);
+		return already;
 		
 	}
 	//수입 카테고리 이름 수정하기
 	@Override
-	public void updateincomeCategory(int category_no, String newName, String id) throws SQLException {
+	public int updateincomeCategory(int category_no, String newName, String id) throws SQLException {
 		
-		categoryDAO.updateincomeCategory(category_no,newName,id);
+		List incomeCategoryNames = categoryDAO.selectIncomeCategoryNamesbyId(id);
+		int already = 0;
+		//수입카테고리 이름 겹치는지 검사
+		for(int i=0;i<incomeCategoryNames.size(); i++) {
+			String incomeCategoryName = (String)incomeCategoryNames.get(i);
+			
+			if(incomeCategoryName.equals(newName)) {
+				already = 1;
+			}
+		
+		}
+		//이름이 안겹치면 수정 가능
+		if(already==0){
+			categoryDAO.updateincomeCategory(category_no,newName,id);
+			
+		}
+		System.out.println(already);
+		return already;
 		
 	}
 	
 	// 카테고리 번호로 카테고리 이름을 뽑아오기
 	@Override
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
-		System.out.println("cate"+categoryNums);
 		HashMap categoryNames = categoryDAO.selectBudgetCategoryNames(categoryNums);
 		
 		
@@ -87,6 +160,7 @@ public class CategoryServiceImpl implements CategoryService{
 		// 각각 해당 테이블에 category_no 내역이 있는지 확인하기 (있으면 삭제 불가) 
 		int budgetCount = categoryDAO.selectBudgetInfo(category_no,id);
 		int nobudgetCount = categoryDAO.selectNobudgetInfo(category_no,id);
+							
 		int totalBudgetDetailcount = categoryDAO.selectTotalBudgetDetailInfo(category_no);
 		
 		int exist = 0;
@@ -139,7 +213,6 @@ public class CategoryServiceImpl implements CategoryService{
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException {
 		
 		List outcomeCategoryNames = categoryDAO.selectOutcomeCategoryNamesbyId(id);
-		System.out.println("selectOutcomeCategoryNamesbyId : "+ outcomeCategoryNames);
 		
 		return outcomeCategoryNames;
 	}
@@ -149,7 +222,7 @@ public class CategoryServiceImpl implements CategoryService{
 	public List selectIncomeCategoryNamesbyId(String id) throws SQLException {
 		
 		List incomeCategoryNames = categoryDAO.selectIncomeCategoryNamesbyId(id);
-		System.out.println("selectIncomeCategoryNamesbyId : "+ incomeCategoryNames);
+		
 		
 		return incomeCategoryNames;
 		

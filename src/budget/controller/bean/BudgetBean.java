@@ -55,7 +55,12 @@ public class BudgetBean {
 		if(currentTBudget != null) {	//현재 진행중인 예산이 있다면
 			model.addAttribute("currentTBudget", currentTBudget);
 			model.addAttribute("detailList", budgetService.selectAllbyBudgetNum(currentTBudget.getBudget_no()));
-			
+			if(currentTBudget.getPeriod()==30) {
+				int firstOfMonth = (currentTBudget.getEnd_day().getDate()+1);
+				model.addAttribute("firstOfMonth", firstOfMonth);
+			} else {
+				model.addAttribute("firstOfMonth", 1);
+			}
 			return "budget/updateBudget";
 		} else {	//진행중인 예산이 없다면 
 			return "budget/setBudget";
@@ -95,19 +100,25 @@ public class BudgetBean {
 		
 		
 		//회원의 목표 리스트 가져오기
-		List<GoalsDTO> goals = goalsService.selectAllById();
+		List goals = goalsService.selectTransferPossibleGoals(id);
+		model.addAttribute("personalGoals", (List)goals.get(0));
+		model.addAttribute("teamGoals", (List)goals.get(1));
+		
 		
 		
 		// 남은돈 정보
 		
 		List leftMoneyList = budgetService.selectLeftMoneyById(id);
-		
+		int LMSum = 0;
+		for(Object obj:leftMoneyList) {
+			LMSum+= ((LeftMoneyDTO)obj).getAmount();
+		}
 		
 		model.addAttribute("leftMoney", leftMoneyList);
+		model.addAttribute("LMSum", LMSum);
 		model.addAttribute("categories", categories);
 		model.addAttribute("TBdto", TBdto);
 		model.addAttribute("BDdtoList", BDdtoList);
-		model.addAttribute("goals", goals);
 		model.addAttribute("period", period);
 		
 		List todayData = budgetService.selectTodayBudget(id);
