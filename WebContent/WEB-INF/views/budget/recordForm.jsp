@@ -92,7 +92,7 @@ ul{
 <!-- 버튼 관련 템플릿 -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
-
+<body>
 
 <!-- 본문내용 시작 -->
  	<div class="container-fluid">
@@ -125,7 +125,7 @@ ul{
 							</div>
 						</div>
 						<div class="content">
-							<ul id>
+							<ul>
 								<li>
 								<!-- 날짜 시간  -->
 									<div>
@@ -204,9 +204,9 @@ ul{
 		</div>
 		</div>
 	</div>
-</div>
-</div>
-
+	</div>
+	</div>
+</body>
 <script>
 	// 체크박스 상태 확인(체크된 상태면 nobudget 아니면 budget)
 	$(document).ready(function(){
