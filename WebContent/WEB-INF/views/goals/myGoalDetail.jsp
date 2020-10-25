@@ -96,7 +96,6 @@ $(document).ready(function(){
 				$(document).snowfall({
 			 		 image : "/moamore/resources/img/money"+i+".png",
 			         minSize: 40, 
-			         maxSize: 60, 
 			         flakeIndex : i,
 			         flakeCount:10
 			    });

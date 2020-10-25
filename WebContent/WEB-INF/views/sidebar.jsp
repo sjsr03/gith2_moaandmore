@@ -174,7 +174,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/search/searchForm.moa">
           <i class="fas fa-fw fa-search"></i>
           <span>검색</span></a>
       </li>
