@@ -34,7 +34,7 @@ public class MainBean {
 	
 	
 	@RequestMapping("main.moa")
-	public String NLmain(HttpServletRequest request, Model model) throws SQLException {
+	public String main(HttpServletRequest request, Model model) throws SQLException {
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("memId");
 		
