@@ -38,6 +38,9 @@ public interface RecordBudgetDAO {
 	// 내역 수정
 	public void modifyBudgetRecord(BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO)throws SQLException;
 	
-	// 아이디, 타입으로 예산내역 총 개수 가져오기
+	// 아이디로 예산내역 총 개수 가져오기
 	public int CountBudgetRecordById(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+
+	// 아이디와 키워드로 예산 내역 총 개수 가져오기
+	public int CountBudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO)throws SQLException;
 }

@@ -120,8 +120,7 @@ public class RecordBean {
 		// moneyLog에서 사용할 경우 아이디 없이옴 
 		if(id == "") {
 			id = (String)request.getSession().getAttribute("memId");
-		}
-		
+		}	
 		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
@@ -130,7 +129,6 @@ public class RecordBean {
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
-		
 		
 		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
@@ -164,26 +162,6 @@ public class RecordBean {
 	}
 	//------------------------------------------------------------------------
 	
-	// 수입지출목록 보여주기 
-	/* 이거 이제 안쓰는것같음...확인후 지우셈
-	@RequestMapping("moneyLog.moa")
-	public String moneyLog(HttpServletRequest request, Model model, String pageNum)throws SQLException {
-		String id = (String)request.getSession().getAttribute("memId");
-		String keyword ="";
-		// 현재 날짜+시간 받아오기(기본으로 현재 진행중인 예산의 지출 목록 보여줄 것임)
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date currTime = new Date();
-		String now = sdf.format(currTime);
-		Timestamp dateTime = Timestamp.valueOf(now);
-		
-		// 날짜랑 아이디로 해당 예산 번호 가져오기
-		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
-		RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, pageNum, keyword);
-		System.out.println("빈에서 !! :");
-		model.addAttribute("recordPage", recordPage);
-		return "budget/moneyLog";
-	}
-	*/
 	@RequestMapping("moneyRecord.moa")
 	public String moneyRecord(HttpServletRequest request, Model model, SearchForRecordDTO searchForRecordDTO)throws SQLException{
 		
@@ -256,7 +234,7 @@ public class RecordBean {
 		return "budget/moneyLog";
 	}
 	
-	// 예산외
+	// 예산외 
 	// 아이디로 예산외 수입/지출 카테고리 정보 DTO 담은 리스트 가져오기
 	@RequestMapping(value="selectNoBudgetRecord.moa")
 	public String selectNoBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{

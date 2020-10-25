@@ -60,7 +60,7 @@ public class MemberBean {
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
 		
@@ -86,8 +86,12 @@ public class MemberBean {
 				response.addCookie(c3);
 			}
 		}
+		
 		model.addAttribute("result",result);
+		model.addAttribute("referrer",referrer);
+		System.out.println("referrer : " + referrer);
 
+		
 		//현재 진행중인 예산이 있다면
 		if(budgetService.selectCurrentOne(id)!=null) {
 			//예산 만료되었는지 확인
@@ -150,7 +154,7 @@ public class MemberBean {
 			if(c.getName().equals("autoPw")) c.setMaxAge(0);
 			if(c.getName().equals("autoCh")) c.setMaxAge(0);
 		}
-		return "main";
+		return "redirect:../main.moa";
 	}
 	
 	@RequestMapping("signupForm.moa")
