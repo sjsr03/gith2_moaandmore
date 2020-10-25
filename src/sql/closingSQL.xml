@@ -22,9 +22,9 @@
 		]]>
 	</select>
 	
-	<select id="selectProfileImgsForComment" parameterType="hashmap" resultType="closingAccountCommentDTO">
+	<select id="selectProfileImgsForComment" parameterType="hashmap" resultType="hashmap">
 		<![CDATA[
-		SELECT profile_img FROM MEMBER WHERE id IN (SELECT id FROM(select * FROM (SELECT rownum r,comment_no,article_no,content,id,write_day FROM (SELECT * FROM closing_account_comment where article_no=4 order by comment_no asc)) where r >= #{start} and r <= #{end} order by r ASC))
+		SELECT id, NICKNAME, profile_img FROM MEMBER WHERE id IN (SELECT id FROM(select * FROM (SELECT rownum r,comment_no,article_no,content,id,write_day FROM (SELECT * FROM closing_account_comment where article_no=#{article_no} order by comment_no asc)) where r >= #{start} and r <= #{end} order by r ASC))
 		]]>
 	</select>
 	

@@ -85,9 +85,10 @@ public class ClosingAccountBean {
 		int number = 0;	//게시판 상의 글번호 뿌려줄 변수 미리 선언
 
 		List articleList = null;
-		
+		List profileImgList = null;
 		if(count>0) {
 			articleList = closingService.getClosingCommentArticles(article_no, startRow, endRow);
+			profileImgList = closingService.selectProfileImgsForComment(article_no, startRow, endRow);
 		}
 		
 		number = count-(currPage-1)*pageSize;
@@ -99,6 +100,7 @@ public class ClosingAccountBean {
 		model.addAttribute("endRow", new Integer(endRow));
 		model.addAttribute("number", new Integer(number));
 		model.addAttribute("articleList", articleList);
+		model.addAttribute("profileImgList", profileImgList);
 		model.addAttribute("count", new Integer(count));
 		
 		
