@@ -556,15 +556,6 @@ pre code {
 #ranking {
 	display:none;
 }
-@media (max-width: 576px) {
-	.sidebar {
-		position:fixed;
-		z-index:1;
-		background: rgba(0, 0, 0, .7);
-		backdrop-filter: blur(4px);
- 		-webkit-backdrop-filter: blur(4px);
-	}
-}
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
@@ -10472,14 +10463,6 @@ a:focus {
   font-size: 0.65rem;
 }
 
-@media (max-width: 376px) {
-	.sidebar {
-    width: 100% !important;
-  	z-index: 1;
-  }
-	
-}
-
 @media (min-width: 768px) {
   .sidebar {
     width: 14em !important;
@@ -11251,4 +11234,12 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
+}
+
+@media (max-width: 576px) {
+	.sidebar {
+ 		display:none;
+		position:fixed;
+		z-index:1;
+	}
 }

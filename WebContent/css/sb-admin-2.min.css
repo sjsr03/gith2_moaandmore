@@ -556,18 +556,6 @@ pre code {
 #ranking {
 	display:none;
 }
-@media (max-width: 576px) {
-	.sidebar {
-		position:fixed;
-		z-index:1;
-		background: rgba(0, 0, 0, .7);
-		backdrop-filter: blur(4px);
- 		-webkit-backdrop-filter: blur(4px);
-	}
-	#content-wrapper {
-		opacity:1;
-	}
-}
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
@@ -10319,8 +10307,9 @@ a:focus {
 }
 
 .sidebar {
-  width: 6.5rem;
+  width: 6.5em;
   min-height: 100vh;
+  position: fixed;
 }
 
 .sidebar .nav-item {
@@ -10476,7 +10465,7 @@ a:focus {
 
 @media (min-width: 768px) {
   .sidebar {
-    width: 14rem !important;
+    width: 14em !important;
   }
   .sidebar .nav-item .collapse {
     position: relative;
@@ -11245,4 +11234,12 @@ footer.sticky-footer .copyright {
 
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
+}
+
+@media (max-width: 576px) {
+	.sidebar {
+ 		display:none;
+		position:fixed;
+		z-index:1;
+	}
 }

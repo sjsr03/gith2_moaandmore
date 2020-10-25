@@ -36,6 +36,7 @@ $(document).ready(function(){
 	if(screenWidth < 576) {
 		$("#page-top").addClass('toggled');
 		$('.sidebar').addClass('toggled');
+		$('.sidebar').css('display','flex');
 		
 		$(document).mouseup(function(e){
 			var container = $('.sidebar');
@@ -175,16 +176,24 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="/moamore/goals/myGoalList.moa">
-          <i class="fas fa-fw fa-crosshairs"></i>
-          <span>목표</span></a>
+       <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseGoal" aria-expanded="true" aria-controls="#collapseGoal">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>목표</span>
+        </a>
+          <div id="collapseGoal" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+           <h6 class="collapse-header">목표</h6>
+            <a class="collapse-item" href="/moamore/goals/myGoalList.moa">진행중인 목표</a>
+            <a class="collapse-item" href="/moamore/goals/completeGoalList.moa">완료한 목표</a>
+          </div>
+        </div>
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="/moamore/category/setCategory.moa">
           <i class="fas fa-fw fa-cog"></i>
           <span>설정</span></a>
-      </li>
+      </li>	   
       
 	</c:if>
       
