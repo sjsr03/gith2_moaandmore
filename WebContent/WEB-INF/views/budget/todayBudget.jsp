@@ -475,9 +475,8 @@ var teamGoals=[];
 			if(ans == true) {
 				if($('input:radio:checked').val()=="goals") {
 					var goal_no = $("#targetGoal option:selected").val();
-					var rest = $('#targetGoal option:selected').prop('class').split(' ')[1];
-					
-					if($('#transSum').text() > rest) {
+					var rest = $('#targetGoal option:selected').prop('class').split(' ')[$('#targetGoal option:selected').prop('class').split(' ').length-1];
+					if(Number($('#transSum').text()) > Number(rest)) {
 						alert(subSelect + "달성까지 " + rest + "원 남았습니다.\n달성액을 초과할 수 없습니다.");
 						return;
 					}
