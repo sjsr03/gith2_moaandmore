@@ -13,7 +13,7 @@
   <meta name="author" content="">
 
   <title>로그인</title>
-
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <!-- Custom fonts for this template-->
   <link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -22,7 +22,13 @@
   <link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
 
 </head>
-
+<script>
+	$(document).ready(function(){
+		var referrer = document.referrer;
+		$("#referrer").val(referrer);
+		console.log(referrer);
+	});
+</script>
 <body class="bg-gradient-primary">
 
   <div class="container">
@@ -43,6 +49,7 @@
                     <h1 class="h4 text-gray-900 mb-4">로그인하세요</h1>
                   </div>
                   <form method="post" action="/moamore/member/loginPro.moa" class="user">
+                  <input type="hidden" name="referrer" id="referrer"/>
                     <div class="form-group">
                       <input type="text" name="id" required class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="이메일 아이디">
                     </div>

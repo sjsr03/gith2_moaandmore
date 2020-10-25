@@ -58,7 +58,7 @@
 
             <!-- 예산기간 -->
             <div class="col-xl-6 col-md-8 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card border-left-primary shadow h-100 py-2" >
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -120,6 +120,24 @@
 				<!-- 두번째줄 왼쪽컬럼 -->
 				<div class="col-lg-6">
 				
+				<c:choose>
+              			<c:when test="${todaySum == 0 }">
+              			<div class="card shadow mb-4" style="display:flex;height:96%" >
+			                <div class="card-header py-3 justify-content-between d-sm-flex align-items-center ">
+			                  <h6 class="m-0 font-weight-bold text-primary" style="display:inline-block">오늘의 예산</h6>	
+			                 </div>
+		                  
+			                  <div class="card-body">
+		                		<div style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;vertical-align:middle; text-align:center;">
+			                		<h4>남은 예산 잔액이 없습니다.</h4>
+		                		</div>
+	                		</div>
+                		
+                		</div>
+                		
+                	</c:when>
+                	<c:otherwise>
+				
 				
 				
 				
@@ -165,7 +183,8 @@
 	             	 </div>
             	
             	
-            	
+            	</c:otherwise>
+           	</c:choose>
             	
             	
             	
@@ -245,9 +264,9 @@
 							
 							if(${i.recommend} > ${i.actual }) {	//권장액 미만일 시 파란색
 								var max = ${i.recommend};
-								var backgroundColor="#4e73df";
+								var backgroundColor="#229abe";
 							    var hoverBackgroundColor= "#2e59d9";
-							    var borderColor= "#4e73df";
+							    var borderColor= "#229abe";
 							} else {	//권장액 초과시 빨간색
 								var max = ${i.actual};
 								var backgroundColor="#df4e4e";
@@ -303,15 +322,20 @@
 			<div style="display:inline;text-align:right;"><h2 style="display:inline">남은 돈 전환하기</h2>
 			<button onclick="$('#popup1').css('display','none')">X</button></div>
 			<form action="/moamore/budget/LeftMoneyTransfer.moa" method="post">
-				<div>
-					<table id="leftMoneyList">
-						<tr>
-							<td><input type="checkbox" id="allChk"/></td>
-							<td>항목</td>
-							<td>잔액</td>
-							<td>전환할 금액</td>
-							<td>전환 후 남은 금액</td>
-						</tr>
+			<div class="table-responsive">
+				<div class="col-lg-12 dataTables_wrapper dt-bootstrap4" >
+					<div class="row">
+						<table class="table table-bordered" id="leftMoneyList" >
+							<thead>
+								<tr>
+									<td><input type="checkbox" id="allChk"/></td>
+									<td>항목</td>
+									<td>잔액</td>
+									<td>전환할 금액</td>
+									<td>전환 후 남은 금액</td>
+								</tr>
+							</thead>
+							<tbody>
 					<c:forEach items="${leftMoney}" var="i" >
 						<tr>
 							<td><input type="checkbox" class="chk" name="category" value="${i.category_no}"/></td>
@@ -324,7 +348,10 @@
 						<tr>
 							<td colspan="5">전환할 총 금액 : <span id="transSum">0</span>원</td>
 						</tr>
+						</tbody>
 					</table>
+					</div>
+				</div>
 					<div style="display:inline-block">
 						<label><input type="radio" name="target_table" value="budget" checked/>현재예산에 재분배</label>
 						<br/>

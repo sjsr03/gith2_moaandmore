@@ -11,7 +11,6 @@
 <!-- 제이쿼리 -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="/moamore/js/snowfall.jquery.js"></script>
-
 	<!-- Custom fonts for this template-->
 	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -25,10 +24,38 @@
 	ul.toggled > #BudgetState {
 		display:none;
 	}
-	#ranking{}	
+	
+		
+	
+	
 </style>
 <script>
 $(document).ready(function(){
+	var screenWidth = screen.width;
+	
+	if(screenWidth < 576) {
+		$("#page-top").addClass('toggled');
+		$('#accordionSidebar').addClass('toggled');
+		$('#accordionSidebar').css('display','block');
+		
+		$(document).mouseup(function(e){
+			var container = $('#accordionSidebar');
+			
+			if(container.has(e.target).length===0){
+				$('#accordionSidebar').addClass('toggled');
+				$("#content-wrapper").css('opacity', 1);
+				$("#page-top").addClass('toggled');
+			}
+		});
+		
+		$("#sidebarToggleTop").on('click', function(){
+			if($('#accordionSidebar').hasClass('toggled') == false) {
+				$('#accordionSidebar').removeClass('toggled');
+				$("#content-wrapper").css('opacity', 0.4);
+			}
+		});
+	}
+	
 	$.ajax({	//사이드바 그래프 불러오기
 		url:"/moamore/getBudgetState.moa",
 		type:"post",
@@ -53,18 +80,20 @@ $(document).ready(function(){
 });
 </script>
 
-<body id="page-top" >
+<body id="page-top">
 	<c:set var="path" value="${requestScope['javax.servlet.forward.servlet_path']}" /> 
 
   <!-- Page Wrapper -->
   <div id="wrapper">
+
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion " id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/main.moa">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+          <!-- <i class="fas fa-laugh-wink"></i> -->
+          <img src="/moamore/resources/img/whitepigF.png" width="50" height="50" />
         </div>
         <div class="sidebar-brand-text mx-3">모아 & More</div>
       </a>
@@ -145,7 +174,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/search/searchForm.moa">
           <i class="fas fa-fw fa-search"></i>
           <span>검색</span></a>
       </li>
@@ -168,7 +197,7 @@ $(document).ready(function(){
         <a class="nav-link" href="/moamore/category/setCategory.moa">
           <i class="fas fa-fw fa-cog"></i>
           <span>설정</span></a>
-      </li>
+      </li>	   
       
 	</c:if>
       

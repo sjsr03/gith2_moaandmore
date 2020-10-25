@@ -4,10 +4,8 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <!-- namespace -->
   <mapper namespace="search">
-  	<select id="CountAllBudgetRecordByKeyword">
-  		select count(*)
+  	<select id="SelectSearchList" parameterType="map" resultType="searchDTO">
+  		<![CDATA[SELECT * FROM(SELECT b.BUDGET_NO, b.CATEGORY_NO, b.AMOUNT, b.REG, bd.CONTENT FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE id=#{id} AND b.CATEGORY_NO = #{search_category} AND reg >= to_date(#{startday}) AND reg < to_date(#{endday})+1 AND content=#{search_content}) ORDER BY reg DESC]]>
   	</select>
-  	<select id="CountAllBudgetRecordByKeyword">
-  		select count(*)
-  	</select>
+  	
   </mapper>

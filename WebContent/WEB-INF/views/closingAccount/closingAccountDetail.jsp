@@ -108,7 +108,7 @@ $(document).ready(function(){
 	            </div>
             
               <div class="card-body">
-              
+              	<!-- 
 					<div class="table-responsive">
 						<div class="col-lg-12 dataTables_wrapper dt-bootstrap4" >
 							<div class="row">
@@ -129,7 +129,47 @@ $(document).ready(function(){
 							</div>
 						</div>
 					</div>
-								
+					 -->
+				<c:choose>
+					
+			 		<c:when test="${articleList == null }">
+						<div class="row" style="justify-content:center;">
+							<h4>댓글이 없습니다</h4>
+						</div>
+					</c:when>
+					<c:otherwise>
+					
+					
+				 <hr/>
+					 <c:forEach var="article" items="${articleList}" varStatus="status">
+					 	<div class="row">
+					 	
+					 	
+						 	<c:forEach var="i" items="${profileImgList }" varStatus="st">
+							 	<c:if test="${i.ID == article.id }">
+									 <div class="col-md-1" style="text-align:right;">
+									 	<img src="/moamore/save/${i.PROFILE_IMG}" style="width:70px; height:70px; border-radius:40px;"/>
+									 </div>
+									 <div class="col-md-11">
+									 
+									 	<div class="row" style="justify-content:space-between; width:100%; display:flex;">
+										 	<span class="text text-primary">${i.NICKNAME}</span>
+										 	<span style="right:10px;">${fn:substring(article.write_day,0,19)}</span>
+									 	</div>
+									 	
+									 	<div class="row" >
+										 	${article.content}
+									 	</div>
+									 	
+								 	</div>
+								 </c:if>
+						 	</c:forEach>
+					 	</div>
+					 	<hr/>
+					 </c:forEach>
+					 
+					 </c:otherwise>
+				 </c:choose>
 		<%-- 댓글 페이지 번호 뷰어 설정 --%>
 		<div class="row">
 			<div class="col-sm-12 col-md-12"  style="justify-content:center">

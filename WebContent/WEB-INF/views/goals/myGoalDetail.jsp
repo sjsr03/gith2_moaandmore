@@ -96,7 +96,6 @@ $(document).ready(function(){
 				$(document).snowfall({
 			 		 image : "/moamore/resources/img/money"+i+".png",
 			         minSize: 40, 
-			         maxSize: 60, 
 			         flakeIndex : i,
 			         flakeCount:10
 			    });
@@ -174,7 +173,7 @@ $(window).resize(function(){
 	</div>
 	<div class="row" >
 		<div id="run-animation" class="col-12 pl-0 pr-0">
-			<img src="/moamore/resources/img/pg_character.png"/>
+			<img src="/moamore/resources/img/running_pig_sm.gif"/>
 		</div>	
 	</div>	
 	<div class="row" id="pg"></div>

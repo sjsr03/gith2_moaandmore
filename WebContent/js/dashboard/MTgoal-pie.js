@@ -84,7 +84,7 @@ var myPieChart = new Chart(ctx, {
     labels: ["달성액", "남은 금액"],
     datasets: [{
       data: dataSet,
-      backgroundColor: ['#4e73df', '#e6e6e6'],
+      backgroundColor: ['#229abe', '#e6e6e6'],
       hoverBackgroundColor: ['#2e59d9', '#e6e6e6'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
@@ -108,7 +108,7 @@ var myPieChart = new Chart(ctx, {
     elements:{
     	center:{
     		text: ratio.toFixed() + "% 달성", 
-    		color:"#4e73df",
+    		color:"#229abe",
     		sidePadding: 15 //Default 20 (as a percentage)
     	},
     },
