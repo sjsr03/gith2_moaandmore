@@ -19,7 +19,7 @@ function checkForm(){
 	
 }
 
-function get_searchInfo(){
+function get_searchInfo(){	
 	var queryString = $("form[name=searchForm]").serialize();
 	queryString = decodeURIComponent(queryString);
 	$.ajax({
@@ -29,10 +29,13 @@ function get_searchInfo(){
 		data : queryString,
 		dataType : 'json',
 		success : function(data){
+			$('#search-wrapper').css('display','block');
+			$('#search_info').css('display','none');
+			$('#search_info2').css('display','none');
 			var cnt = data.length;//총 건수
 			var totalAmount = 0;//총 금액
-			var maxAmount =data[0].amount; //최고금액
-			var minAmount = data[0].amount;//최저금액
+			
+			
 			
 
 			var st = new Date($('#startday').val());
@@ -50,8 +53,13 @@ function get_searchInfo(){
 				$('#search_keyword').append("<span class='text'>검색결과가 없습니다.</span>")
 				return;
 			}else{
+				$('#search_info').css('display','flex');
+				$('#search_info2').css('display','flex');
+				
+				var maxAmount = data[0].amount; //최고금액
+				var minAmount = data[0].amount;//최저금액
 				$('#search_keyword').text(data[0].content);
-				$('#search_info').append("<span class='text'>"+cnt+"</span>")
+			
 				
 				var addHtml ="";
 				addHtml = "<thead><tr><th>날짜</th>금액<th></th></tr></thead>";
@@ -64,11 +72,19 @@ function get_searchInfo(){
 					if(data[i].amount < minAmount) minAmount = data[i].amount;
 				}
 				
-				var avgAmount = (totalAmount/cnt).toFixed(0);//건당 평균액				
+				var avgAmount = (totalAmount/cnt).toFixed(0); //건당 평균액				
 				
 				addHtml+="</tbody>"
 				$("#searchList").append(addHtml);
-				$('#search_info').append("<span class='text'>"+totalAmount+"</span>")
+				
+				//검색정보 append
+				$('#search_info').append("<span class='text'>총 "+diffDay+"일간,</span>");
+				$('#search_info').append("<span class='text'>총 "+cnt+"회,</span>");
+				$('#search_info').append("<span class='text'>총액 "+totalAmount+"원</span>");
+				$('#search_info2').append("<span class='text'>평균빈도수 "+avgDay+"일/</span>");
+				$('#search_info2').append("<span class='text'>건당평균액 "+avgAmount+"원/</span>");
+				$('#search_info2').append("<span class='text'>최저금액 "+minAmount+"원/</span>");
+				$('#search_info2').append("<span class='text'>최대금액 "+maxAmount+"원</span>");
 				
 			}//end else
 			
@@ -102,13 +118,11 @@ function get_searchInfo(){
 		</form>
 	
 	</div>
-	<div class="row card shadow mb-4" >
-		<h3 class="h2 card-body" id="search_keyword" style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;vertical-align:middle; text-align:center;"></h3>
-		<span></span>
+	<div class="row card shadow mb-4" id="search-wrapper" style="display:none;">
+		<h3 class="h2 card-body mt-2" id="search_keyword" style="display:flex; align-items: center; justify-content: center;vertical-align:middle; text-align:center;"></h3>
+		<div class="card-body" style="display:none; align-items: center; justify-content: center;vertical-align:middle; text-align:center;" id="search_info" style="display:none;"></div>
+		<div class="card-body" style="display:none; align-items: center; justify-content: center;vertical-align:middle; text-align:center;" id="search_info2" style="display:none;"></div>
 	</div>
-	<div class="row card-body" style="vertical-align:middle" id="search_info">
-	</div>
-		
 	<div class="row">
 		<table class="table" id="searchList">
 		
