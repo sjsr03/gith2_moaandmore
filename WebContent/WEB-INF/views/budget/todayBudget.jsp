@@ -58,7 +58,7 @@
 
             <!-- 예산기간 -->
             <div class="col-xl-6 col-md-8 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card border-left-primary shadow h-100 py-2" >
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
@@ -120,6 +120,24 @@
 				<!-- 두번째줄 왼쪽컬럼 -->
 				<div class="col-lg-6">
 				
+				<c:choose>
+              			<c:when test="${todaySum == 0 }">
+              			<div class="card shadow mb-4" style="display:flex;height:96%" >
+			                <div class="card-header py-3 justify-content-between d-sm-flex align-items-center ">
+			                  <h6 class="m-0 font-weight-bold text-primary" style="display:inline-block">오늘의 예산</h6>	
+			                 </div>
+		                  
+			                  <div class="card-body">
+		                		<div style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;vertical-align:middle; text-align:center;">
+			                		<h4>남은 예산 잔액이 없습니다.</h4>
+		                		</div>
+	                		</div>
+                		
+                		</div>
+                		
+                	</c:when>
+                	<c:otherwise>
+				
 				
 				
 				
@@ -165,7 +183,8 @@
 	             	 </div>
             	
             	
-            	
+            	</c:otherwise>
+           	</c:choose>
             	
             	
             	

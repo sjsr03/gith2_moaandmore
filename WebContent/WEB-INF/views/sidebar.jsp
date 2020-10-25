@@ -24,11 +24,33 @@
 		display:none;
 	}
 	
-	#ranking{
-	}
+		
+	
+	
 </style>
 <script>
 $(document).ready(function(){
+	var screenWidth = screen.width;
+	
+	if(screenWidth < 576) {
+		$("#page-top").addClass('toggled');
+		$('.sidebar').addClass('toggled');
+		
+		$(document).mouseup(function(e){
+			var container = $('.sidebar');
+			
+			if(container.has(e.target).length===0){
+				$('.sidebar').addClass('toggled');
+				$("#content-wrapper").css('opacity', 1);
+				$("#page-top").addClass('toggled');
+			}
+		});
+		
+		$("#sidebarToggleTop").on('click', function(){
+			$("#content-wrapper").css('opacity', 0.4);
+		});
+	}
+	
 	$.ajax({	//사이드바 그래프 불러오기
 		url:"/moamore/getBudgetState.moa",
 		type:"post",

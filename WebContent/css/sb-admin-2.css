@@ -556,7 +556,15 @@ pre code {
 #ranking {
 	display:none;
 }
-
+@media (max-width: 576px) {
+	.sidebar {
+		position:fixed;
+		z-index:1;
+		background: rgba(0, 0, 0, .7);
+		backdrop-filter: blur(4px);
+ 		-webkit-backdrop-filter: blur(4px);
+	}
+}
 @media (min-width: 576px) {
   .container {
     max-width: 540px;

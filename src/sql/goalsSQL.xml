@@ -56,12 +56,12 @@
 	
 	<select id="selectMostPersonalGoal" parameterType="string" resultType="hashmap" >
 		<![CDATA[
-			select (saving/target_money*100) as rate, subject, TARGET_MONEY , saving from goals where id=#{value} AND public_ch=0 AND rownum=1 ORDER BY rate DESC
+			select (saving/target_money*100) as rate, subject, TARGET_MONEY , saving from goals where id=#{value} AND public_ch=0 AND rownum=1 and target_money!=saving ORDER BY rate DESC
 		]]>
 	</select>
 	<select id="selectMostTeamGoal" parameterType="string" resultType="hashmap" >
 		<![CDATA[
-			select (saving/target_money*100) as rate, subject, TARGET_MONEY , saving from goals where id=#{value} AND public_ch=1 AND end_day > sysdate and START_DAY <= sysdate AND rownum=1 ORDER BY rate DESC
+			select (saving/target_money*100) as rate, subject, TARGET_MONEY , saving from goals where id=#{value} AND public_ch=1 and target_money!=saving AND end_day > sysdate and START_DAY <= sysdate AND rownum=1 ORDER BY rate DESC
 		]]>
 	</select>
 	

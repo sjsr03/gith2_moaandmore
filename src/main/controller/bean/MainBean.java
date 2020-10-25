@@ -34,7 +34,7 @@ public class MainBean {
 	
 	
 	@RequestMapping("main.moa")
-	public String main(HttpServletRequest request, Model model) throws SQLException {
+	public String NLmain(HttpServletRequest request, Model model) throws SQLException {
 		HttpSession session = request.getSession();
 		String id = (String) session.getAttribute("memId");
 		
@@ -59,7 +59,7 @@ public class MainBean {
 	
 	@RequestMapping("getBudgetState.moa")
 	@ResponseBody
-	public HashMap getBudgetState(String id) throws SQLException {
+	public HashMap NLgetBudgetState(String id) throws SQLException {
 		HashMap map = new HashMap();
 		TotalBudgetDTO totalBudget = budgetService.selectCurrentOne(id);
 		
@@ -106,7 +106,7 @@ public class MainBean {
 		//회원의 목표 중 달성도가 가장 높은 것
 		List goalsList = mainService.selectMostGoals(id);
 		
-		//
+		//오늘의 예산 총합
 		int todaySum = budgetService.selectSumTodayBudget(id);
 		
 		model.addAttribute("TBdto", TBdto);
