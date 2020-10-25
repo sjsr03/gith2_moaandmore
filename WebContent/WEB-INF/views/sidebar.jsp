@@ -35,21 +35,24 @@ $(document).ready(function(){
 	
 	if(screenWidth < 576) {
 		$("#page-top").addClass('toggled');
-		$('.sidebar').addClass('toggled');
-		$('.sidebar').css('display','flex');
+		$('#accordionSidebar').addClass('toggled');
+		$('#accordionSidebar').css('display','block');
 		
 		$(document).mouseup(function(e){
-			var container = $('.sidebar');
+			var container = $('#accordionSidebar');
 			
 			if(container.has(e.target).length===0){
-				$('.sidebar').addClass('toggled');
+				$('#accordionSidebar').addClass('toggled');
 				$("#content-wrapper").css('opacity', 1);
 				$("#page-top").addClass('toggled');
 			}
 		});
 		
 		$("#sidebarToggleTop").on('click', function(){
-			$("#content-wrapper").css('opacity', 0.4);
+			if($('#accordionSidebar').hasClass('toggled') == false) {
+				$('#accordionSidebar').removeClass('toggled');
+				$("#content-wrapper").css('opacity', 0.4);
+			}
 		});
 	}
 	

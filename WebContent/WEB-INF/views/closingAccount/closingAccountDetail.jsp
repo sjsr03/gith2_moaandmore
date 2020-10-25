@@ -108,7 +108,7 @@ $(document).ready(function(){
 	            </div>
             
               <div class="card-body">
-              
+              	<!-- 
 					<div class="table-responsive">
 						<div class="col-lg-12 dataTables_wrapper dt-bootstrap4" >
 							<div class="row">
@@ -129,7 +129,13 @@ $(document).ready(function(){
 							</div>
 						</div>
 					</div>
-								
+					 -->
+					 
+					 <hr/>
+					 <div>
+					 	<img src=""/>
+					 </div>
+					 			
 		<%-- 댓글 페이지 번호 뷰어 설정 --%>
 		<div class="row">
 			<div class="col-sm-12 col-md-12"  style="justify-content:center">
