@@ -140,8 +140,8 @@ $(document).ready(function(){
 					<c:otherwise>
 					
 					
-				 <hr/>
-					 <c:forEach var="article" items="${articleList}" varStatus="status">
+				 	<hr/>
+					<c:forEach var="article" items="${articleList}" varStatus="status">
 					 	<div class="row">
 					 	
 					 	

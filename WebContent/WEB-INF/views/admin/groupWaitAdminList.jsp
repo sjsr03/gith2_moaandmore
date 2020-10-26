@@ -2,8 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
-<html>
 <head>
 	<meta charset="UTF-8">
 	<title>그룹 신청 승인 페이지</title>
@@ -17,9 +15,9 @@
 		    border-collapse: collapse;
 		}
 	</style>
-</head>
-<body>
-	<div class="middle" style="width: 100%;text-align: center;">
+<jsp:include page="../sidebar.jsp"/>
+<div class="container-fluid">
+	<div class="middle" style="width: 100%;" align="center">
 			<table>
 				<tr>
 					<td>신청자</td>
@@ -86,5 +84,5 @@
 			</c:if>
 		</c:if>
 	</div>
-</body>
-</html>
+</div>
+<jsp:include page="../footer.jsp"/>

@@ -94,7 +94,6 @@ public class TeamBean {
 					if(tmpStatus != autoChangeList.get(i).getStatus()) {
 						autoChangeList.get(i).setStatus(tmpStatus);
 						
-						//소진
 						teamService.updateTeamStatus(autoChangeList.get(i));
 					}
 				}
