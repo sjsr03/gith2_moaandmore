@@ -350,5 +350,23 @@ function selectRecordByTypeDateKeyword(){
 			searchDate="";
 		}
 	}
+	
+	// 입력 버튼 클릭하면 입력 폼 팝업창으로 띄워주기
+	function popupRecordForm(){
+		var url="recordForm.moa";
+		
+		var popupX = (window.screen.width/2) - (500/2);
+		//&nbsp;만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
+
+		var popupY= (window.screen.height/2) - (600/2);
+		//&nbsp;만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
+		
+		console.log("원본 크기 좌우  : " + document.body.offsetWidth );
+		console.log("원본 크기 상하 :  " + window.screen.height);
+		console.log("좌우 크기 반!!!: " + popupX);
+		console.log("상하 크기 반!!!: " + popupY);
+		window.open(url, '', 'status=no, height=600, width=500, left='+ popupX + ', top='+ popupY);
+
+	}
 </script>
 </html>

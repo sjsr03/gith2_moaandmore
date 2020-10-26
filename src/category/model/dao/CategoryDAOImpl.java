@@ -146,7 +146,7 @@ public class CategoryDAOImpl implements CategoryDAO {
 	public HashMap selectBudgetCategoryNames(List categoryNums) throws SQLException {
 		
 		Collections.sort(categoryNums);
-		
+		System.out.println("카테고리번호 @@ 에서 카테고리Nums 사이즈 " + categoryNums.size());
 		List categoryNames = sqlSession.selectList("category.selectBudgetCategoryNames", categoryNums);
 		HashMap categories = new HashMap();
 		for(int i = 0; i < categoryNames.size(); i++) {
