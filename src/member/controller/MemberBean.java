@@ -181,6 +181,7 @@ public class MemberBean {
 				for(Cookie c : coo) {
 					if(c.getName().equals("autoId")) {
 						c.setMaxAge(0);
+
 						c.setPath("/moamore/");
 						response.addCookie(c);
 					}
@@ -192,6 +193,7 @@ public class MemberBean {
 					if(c.getName().equals("autoImg")) {
 						c.setMaxAge(0);
 						c.setPath("/moamore/");
+
 						response.addCookie(c);
 					}
 				}
@@ -216,6 +218,7 @@ public class MemberBean {
 			for(Cookie c : coo) {
 				if(c.getName().equals("autoId")) {
 					c.setMaxAge(0);
+
 					c.setPath("/moamore/");
 					response.addCookie(c);
 				}
@@ -227,6 +230,7 @@ public class MemberBean {
 				if(c.getName().equals("autoImg")) {
 					c.setMaxAge(0);
 					c.setPath("/moamore/");
+
 					response.addCookie(c);
 				}
 			}

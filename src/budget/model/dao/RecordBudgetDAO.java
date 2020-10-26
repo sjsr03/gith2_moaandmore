@@ -43,4 +43,7 @@ public interface RecordBudgetDAO {
 
 	// 아이디와 키워드로 예산 내역 총 개수 가져오기
 	public int CountBudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO)throws SQLException;
+	
+	// budget_outcome_no으로 해당 기록 가져오기
+	public BudgetDTO selectRecordByNo(int num) throws SQLException;
 }

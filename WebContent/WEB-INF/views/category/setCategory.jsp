@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html>
 <head>
 <meta charset="UTF-8">
 <title>set category</title>
@@ -14,22 +12,30 @@
 
 <style>
 
- @media (max-width: 500px){
-        .td{
-        	width:50px !important;
-        	height:50px !important;
-        }
-       	
+ 
+  @media (max-width: 800px){
+      
+    
+   		
     }
     
- @media (max-width: 370px){
-    .td{
+    @media (max-width: 500px){
+       .my_td{
         	width:50px !important;
         	height:50px !important;
+        	font-size:1em !important;
+        	;
         }
     
- }
-
+    }
+    
+    @media (max-width: 370px){
+        
+    
+   		
+    }
+  
+ 
 a{text-decoration: none;color: #737271;}
     i{font-size: 20px;}
     .cat_btn{
@@ -49,7 +55,7 @@ a{text-decoration: none;color: #737271;}
     .cat_text{
     	text-align:center;
     	top:-20%;
-    	font-size: 30px;
+    	font-size: 1em;
     }
     .my_sub{
         position: absolute;
@@ -62,8 +68,6 @@ a{text-decoration: none;color: #737271;}
         display: none;      /*화면에 보이지 않게 하기 위해 display:none;을 사용.*/
     }
     .cat_btn .my_sub.on{display: block;}    /*클릭시 추가해줄 on 클래스 미리 만들어둠.*/
-
-
 .categorymodal { 
          position: fixed; 
          left: 0; 
@@ -78,7 +82,6 @@ a{text-decoration: none;color: #737271;}
     	 
      } 
      
-
 .categorymodal-content { 
          position: absolute; 
          top: 50%; 
@@ -98,26 +101,20 @@ a{text-decoration: none;color: #737271;}
          transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; 
    		 
      }  
-
-
 .my_tab{
 	border-collapse:separate;
 	border-spacing:26px;
 	
 }
-
 .my_td{
 	width:250px;
 	height:100px;
 	border-radius: 10px;
 	
 }
-
 .modify{
 	cursor:pointer;
 }
-
-
 button{
 	/* display: inline-block; */
     padding: .5em .75em;
@@ -133,24 +130,18 @@ button{
     text-align: center;
 	
 }
-
 .close-button{
 	float:right;
 	cursor:pointer;
 }
-
-
 .btn-gradient {
 	margin: 5px;
 }
-
 .buttonDiv{
 	float:right;
 	padding:5px;
 	
 }
-
-
 </style>
 <c:if test="${already==1}">
 	<script>
@@ -201,13 +192,13 @@ button{
 		</div>
 	</div>
 	 <div class="card-body">
-		<h3>[지출]</h3>
+		<h4 class="mb-0 text-gray-800">지출 카테고리</h4>
 		<form class='allExpense'>
 		</form>
 	</div>
 	
 	 <div class="card-body">
-		<h3>[수입]</h3>
+		<h4>[수입]</h4>
 		<form class='allIncome'>
 		</form>
 	</div>
@@ -232,9 +223,7 @@ button{
  </div> 
  <jsp:include page="../footer.jsp"/>
 <script type="text/javascript">	
-
 var inOrOut = '';
-
 $(document).ready(function(){
 	
 	//페이지 시작할때 카테고리 목록 불러오기
@@ -244,7 +233,7 @@ $(document).ready(function(){
 		
 	setTimeout(function() {
 		 updateAndDelete(); 
-	},1000);
+	 },1000);
 
 	//수정창 x누를때 
 	$(".close-button").on('click',function(){
@@ -283,8 +272,6 @@ $(document).ready(function(){
 	});    
 });	
 	
-
-
 function getExpenseCategory(){
 	//지출 카테고리 불러오기
     $.ajax({
@@ -305,7 +292,6 @@ function getExpenseCategory(){
       					html += "</tr>";
       					html +="<tr>";		
       				}
-
 	            	html += "<td class='my_td border-left-primary shadow'>";
 	            	html += "<div class='cat_btn'>";
 	            	html += "<i class='fas fa-ellipsis-v'></i>";
@@ -316,7 +302,7 @@ function getExpenseCategory(){
 	           		html += "</p>"; 
 	            	html += "</div>"; 
 	            	html += "</div>";
-	            	html += "<div class='cat_text font-weight-bold text-gray-800'>";
+	            	html += "<div class='cat_text font-weight-bold'>";
 	            	html += outcome[i].category_name;
 	            	html += "</div>";
 	            	html += "<input type='hidden' name='category_no' class='category_no' value='"+outcome[i].category_no+"' />";
@@ -332,7 +318,6 @@ function getExpenseCategory(){
         
     });
 }
-
 function getIncomeCategory(){
 	//지출 카테고리 불러오기
     $.ajax({
@@ -354,7 +339,6 @@ function getIncomeCategory(){
       					html += "</tr>";
       					html +="<tr>";		
       				}
-
 	            	html += "<td class='my_td border-left-warning shadow'>";
 	            	html += "<div class='cat_btn'>";
 	            	html += "<i class='fas fa-ellipsis-v'></i>";
@@ -381,8 +365,8 @@ function getIncomeCategory(){
        
     });
 }
-
 //수정 삭제 창이 열려있을때 창밖을 클릭하면 remove 클래스 
+
 $(document).mouseup(function(e){
 	console.log(4);
 	var container = $('.my_sub');
@@ -421,7 +405,6 @@ function updateAndDelete(){
 		});
 		
 }
-
 //수정하기 모달창 보여주기
 function cateogryModify(category_no,inorout){
 	
@@ -434,6 +417,7 @@ function cateogryModify(category_no,inorout){
 	});
 	
 }
+
 
 function toggleWin() {
 	$(".cat_btn").on('click', function(){
@@ -463,8 +447,4 @@ function modifyAction(category_no,inorout){
 	
 	});
 }
-
-
 </script>
-
-</html>
