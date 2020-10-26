@@ -19,7 +19,7 @@
 	<c:if test="${result!=1 }">
 		<script>
 			alert("아이디 비밀번호가 일치하지 않습니다.");
-			history.go(-1);
+			window.location="/moamore/member/loginForm.moa";
 		</script>
 	</c:if>
 
