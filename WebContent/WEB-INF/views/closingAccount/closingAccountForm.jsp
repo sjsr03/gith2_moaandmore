@@ -102,7 +102,7 @@
 								<tr>
 									<td> 내용 </td>
 									<!-- <td><input type="text" name="content"  /></td> -->
-									<td><textarea style="width:100%; min-height:200px; height:auto;"></textarea></td>
+									<td><textarea name="content" style="width:100%; min-height:200px; height:auto;"></textarea></td>
 								</tr>
 								<tr>
 									<td colspan="2" style="text-align: center;">

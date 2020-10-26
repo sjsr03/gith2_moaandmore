@@ -107,6 +107,8 @@ public class RecordServiceImpl implements RecordService{
 				int budget_outcome_no = budgetDTO.getBudget_outcome_no();
 				budgetDetailDTO.setBudget_outcome_no(budget_outcome_no);
 				
+				
+				
 				//현재예산이고 과거날짜일때는 leftmoney에서 차감
 				TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(budgetDTO.getId());
 				Date today = new Date();
