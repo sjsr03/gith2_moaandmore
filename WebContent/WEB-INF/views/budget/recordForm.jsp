@@ -226,7 +226,7 @@ ul{
 		$("#incomebtn").hide();
 		
 		$("#checkbox").change(function(){
-			if($("#checkbox").is(":checked")){
+			if($("#checkbox").is(":checked")){ // 예산외 선택에 체크가 되어있으면
 				// 예산 관련된거 없어져야함
 				$("#incomebtn").show();	
 				$("#outcomebtn").show();	
@@ -243,8 +243,10 @@ ul{
 		$("#date").on('change',function(){
 			if($("#checkbox").is(":checked")){
 			}else{
-				// 예산일 때만 달력 체크하면 값 가져오게 처리
-				$("#type").val("budgetOutcome");
+				// 예산일 달력 체크하면 값 가져오게 처리
+				//$("#type").val("budgetOutcome");
+				$("#type").val("budget");
+				
 				console.log("date에서 타입 : "+$("#type").val());
 
 				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax				
@@ -335,7 +337,8 @@ ul{
 
 		});
 		$("#check").click(function(){
-				
+			//////////////////////////////////////
+			//console.log("타입체크 : "+$("#type").val());
 			// budgetNum도 hidden으로 보내주기
 			if(budget_no != 0){
 				var intBudget_no = Number(budget_no);
@@ -343,8 +346,10 @@ ul{
 				$("#budget_no").val(intBudget_no);
 			}
 			// category_no 예산일 때만 카테고리 넘버 보내주기 
-			if($("#type").val() == "type"){
-				$("#type").val("type");
+			if($("#type").val() == "budget"){
+
+				//$("#type").val("type");
+				type="budget";
 				var selectedOption = $("#category option:selected").val(); 
 				var numberOption = Number(selectedOption);
 				$("#category_no").val(numberOption);
