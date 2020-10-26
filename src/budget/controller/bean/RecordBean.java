@@ -120,8 +120,7 @@ public class RecordBean {
 		// moneyLog에서 사용할 경우 아이디 없이옴 
 		if(id == "") {
 			id = (String)request.getSession().getAttribute("memId");
-		}
-		
+		}	
 		// budgetdetail 테이블에 있는 예산 번호 가져와야함 
 		// string으로 넘어온 날짜에 시간 임의로 넣어서 timeStamp로 형변환
 		String newDate = date + " 00:00:00";
@@ -130,7 +129,6 @@ public class RecordBean {
 		int budgetNum = budgetService.selectBudgetNum(id, dateTime);
 		// 카테고리 번호 뽑아오기
 		List categoryNums = budgetService.selectBudgetCategoryNums(budgetNum);
-		
 		
 		// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
 		HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);
@@ -236,7 +234,7 @@ public class RecordBean {
 		return "budget/moneyLog";
 	}
 	
-	// 예산외
+	// 예산외 
 	// 아이디로 예산외 수입/지출 카테고리 정보 DTO 담은 리스트 가져오기
 	@RequestMapping(value="selectNoBudgetRecord.moa")
 	public String selectNoBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{

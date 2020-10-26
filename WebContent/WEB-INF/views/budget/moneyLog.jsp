@@ -67,19 +67,15 @@ a:hover { color: blue; text-decoration: underline;}
 
 <body>
 <br />
-<div align="center">
-	<button onclick="popupRecordForm()">입출력 입력</button><br />
-</div>
+
 <%-- 입출력 내역 테이블 시작--%>
 <div class="boardcss_list_table" align="center">
 	<br />
 	<table class="list_table">
 		<c:if test="${recordPage.count == 0}">
+			내역이 존재하지않습니다.
 		</c:if>
 		<c:if test="${recordPage.count > 0}">
-		
-			<caption>입출력 내역 보기</caption>
-			
 			<colgroup>
 				<col /> 
 				<col /> 

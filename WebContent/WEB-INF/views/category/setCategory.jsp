@@ -13,21 +13,31 @@
 </head>
 
 <style>
- @media (max-width: 500px){
-        .td{
-        	width:50px !important;
-        	height:50px !important;
-        }
-       	
+
+ 
+  @media (max-width: 800px){
+      
+    
+   		
     }
     
- @media (max-width: 370px){
-    .td{
+    @media (max-width: 500px){
+       .my_td{
         	width:50px !important;
         	height:50px !important;
+        	font-size:1em !important;
+        	;
         }
     
- }
+    }
+    
+    @media (max-width: 370px){
+        
+    
+   		
+    }
+  
+ 
 a{text-decoration: none;color: #737271;}
     i{font-size: 20px;}
     .cat_btn{
@@ -217,13 +227,16 @@ button{
 <script type="text/javascript">	
 var inOrOut = '';
 $(document).ready(function(){
+	
 	//페이지 시작할때 카테고리 목록 불러오기
 	 getExpenseCategory();
 	 getIncomeCategory();
 	 
-	 setTimeout(function() {
+		
+	setTimeout(function() {
 		 updateAndDelete(); 
 	 },1000);
+
 	//수정창 x누를때 
 	$(".close-button").on('click',function(){
 			$(this).parent().parent().parent().toggleClass('show-categorymodal');
@@ -291,7 +304,7 @@ function getExpenseCategory(){
 	           		html += "</p>"; 
 	            	html += "</div>"; 
 	            	html += "</div>";
-	            	html += "<div class='cat_text font-weight-bold text-gray-800'>";
+	            	html += "<div class='cat_text font-weight-bold'>";
 	            	html += outcome[i].category_name;
 	            	html += "</div>";
 	            	html += "<input type='hidden' name='category_no' class='category_no' value='"+outcome[i].category_no+"' />";
@@ -350,20 +363,23 @@ function getIncomeCategory(){
       		html +="</tr>";
             html += "</table>";
             $(".allIncome").html(html);
-           
         }
        
     });
 }
 //수정 삭제 창이 열려있을때 창밖을 클릭하면 remove 클래스 
-	$(document).mouseup(function(e){
-		console.log(4);
-		var container = $('.my_sub');
-		if(container.has(e.target).length===0 && $('.cat_btn').has(e.target).length===0){
-			console.log("창밖");
-			$('.my_sub').removeClass('on');
-		}
-	});
+
+$(document).mouseup(function(e){
+	console.log(4);
+	var container = $('.my_sub');
+	
+	if(container.has(e.target).length===0 && $('.cat_btn').has(e.target).length===0){
+		console.log("창밖");
+		$('.my_sub').removeClass('on');
+	}
+});
+
+
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
 		$('.cat_btn i').each(function(){
@@ -373,7 +389,7 @@ function updateAndDelete(){
 				if($(this).next().closest('.my_sub').hasClass('on')){
 					console.log(2.5);
 					//수정.삭제 창에 on클래스가 있으면 on클래스 없애주기 
-					$(this).next().closest('.my_sub').removeClass('on')
+					$(this).next().closest('.my_sub').removeClass('on');
 						
 				}else{
 					console.log(3);
@@ -403,6 +419,20 @@ function cateogryModify(category_no,inorout){
 	});
 	
 }
+
+
+function toggleWin() {
+	$(".cat_btn").on('click', function(){
+		alert($(this).children('.my_sub').hasClass("on"));
+		if($(this).children('.my_sub').hasClass("on")==true) {
+			$(this).children('.my_sub').removeClass('on');
+		} else {
+			$(this).children('.my_sub').addClass('on');
+		}
+	});
+};
+
+
 //카테고리 수정하기
 function modifyAction(category_no,inorout){
 	$('.modifyCategory').click(function(event){

@@ -556,7 +556,6 @@ pre code {
 #ranking {
 	display:none;
 }
-
 @media (min-width: 576px) {
   .container {
     max-width: 540px;
@@ -576,17 +575,11 @@ pre code {
   .container {
     max-width: 960px;
   }
-  #ranking {
-  	display:block;
-  }
 }
 
 @media (min-width: 1200px) {
   .container {
     max-width: 1140px;
-  }
-  #ranking {
-	display:block
   }
 }
 
@@ -628,7 +621,6 @@ pre code {
   margin-right: -0.75rem;
   margin-left: -0.75rem;
 }
-
 
 .no-gutters {
   margin-right: 0;
@@ -10308,9 +10300,8 @@ a:focus {
 }
 
 .sidebar {
-  width: 6.5em;
+  width: 6.5rem;
   min-height: 100vh;
-  position: fixed;
 }
 
 .sidebar .nav-item {
@@ -10464,17 +10455,9 @@ a:focus {
   font-size: 0.65rem;
 }
 
-@media (max-width: 376px) {
-	.sidebar {
-    width: 100% !important;
-  	z-index: 1;
-  }
-	
-}
-
 @media (min-width: 768px) {
   .sidebar {
-    width: 14em !important;
+    width: 14rem !important;
   }
   .sidebar .nav-item .collapse {
     position: relative;

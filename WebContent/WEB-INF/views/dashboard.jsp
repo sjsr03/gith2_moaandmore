@@ -49,30 +49,38 @@
 		                  </div>
 		                </div>
 		                <div class="card-body"  style="vertical-align:middle">
-		                	<c:forEach items="${todayData }" var="i">
-		                		<c:if test="${i.category_no != 0 }" >
-		                		<div class="row">
-			                		<div class="col-lg-9">
-					                  <h4 class="small font-weight-bold">${categories[i.category_no] }<span class="float-right"><fmt:formatNumber value="${i.actual / i.recommend * 100}" pattern="#,###" />%</span></h4>
-					                  <div class="progress mb-4">
-					                    <div class="progress-bar 
-						                    <c:if test="${(i.actual / i.recommend * 100) > 100}">
-						                    	 bg-danger
-						                    </c:if>"
-					                    role="progressbar" style="width: ${i.actual / i.recommend * 100}%" aria-valuenow="${i.actual / i.recommend * 100}" aria-valuemin="0" aria-valuemax="100"></div>
-					                  </div>
-				                  	</div>
-				                  	<div class="col-lg-3" >
-				                  		<h4 class="small" style="margin-top:0.8em">총 <strong><fmt:formatNumber value="${i.recommend }" pattern="#,###" /></strong>원 중<br/>
-				                  		<strong><fmt:formatNumber value="${i.actual }" pattern="#,###" /></strong>원 사용</h4>
-				                  	</div>
-				                  </div>
-				                  <c:if test="${i.category_no == 0 }">
-				                  	<hr/>
-				                  </c:if>
-			                  </c:if>
-		                	</c:forEach>
-		                
+		                	<c:choose>
+			                	<c:when test="${todaySum == 0 }">
+			                		<div style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;vertical-align:middle; text-align:center;">
+				                		<h4>남은 예산 잔액이 없습니다.</h4>
+			                		</div>
+			                	</c:when>
+			                	<c:otherwise>
+				                	<c:forEach items="${todayData }" var="i">
+				                		<c:if test="${i.category_no != 0 }" >
+				                		<div class="row">
+					                		<div class="col-lg-9">
+							                  <h4 class="small font-weight-bold">${categories[i.category_no] }<span class="float-right"><fmt:formatNumber value="${i.actual / i.recommend * 100}" pattern="#,###" />%</span></h4>
+							                  <div class="progress mb-4">
+							                    <div class="progress-bar 
+								                    <c:if test="${(i.actual / i.recommend * 100) > 100}">
+								                    	 bg-danger
+								                    </c:if>"
+							                    role="progressbar" style="width: ${i.actual / i.recommend * 100}%" aria-valuenow="${i.actual / i.recommend * 100}" aria-valuemin="0" aria-valuemax="100"></div>
+							                  </div>
+						                  	</div>
+						                  	<div class="col-lg-3" >
+						                  		<h4 class="small" style="margin-top:0.8em">총 <strong><fmt:formatNumber value="${i.recommend }" pattern="#,###" /></strong>원 중<br/>
+						                  		<strong><fmt:formatNumber value="${i.actual }" pattern="#,###" /></strong>원 사용</h4>
+						                  	</div>
+						                  </div>
+						                  <c:if test="${i.category_no == 0 }">
+						                  	<hr/>
+						                  </c:if>
+					                  </c:if>
+				                	</c:forEach>
+			                	</c:otherwise>
+		                	</c:choose>
 		                </div>
 	             	 </div>
 	             	 </div>
@@ -204,7 +212,7 @@
                  
 	            <!-- 현재 하루 지출 -->
 	            <div class="col-xl-4 col-lg-4">
-	              <div class="card shadow mb-4">
+	              <div class="card shadow mb-4" style="height:96%;">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 	                  <h6 class="m-0 font-weight-bold text-primary">현재 하루 지출</h6>
@@ -219,6 +227,15 @@
 	                </div>
 	                <!-- Card Body -->
 	                <div class="card-body" style="text-align:center;">
+	                		<c:choose>
+	                			<c:when test="${todaySum == 0 }">
+			                		<div style="width:100%; height:100%; display:flex; align-items: center; justify-content: center;vertical-align:middle; text-align:center;">
+				                		<h4>남은 예산 잔액이 없습니다.</h4>
+			                		</div>
+			                	</c:when>
+			                	<c:otherwise>
+	                
+	                
 				            <div class="chart-pie pt-4 pb-2"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
 			                    <canvas id="myHalfPieChart" width="200" height="100" class="chartjs-render-monitor" style="display: block; width: 10vw; height: 10vh;"></canvas>
 		                    </div>
@@ -246,6 +263,9 @@
 	                    	}
 	                    </script>
 	                    <script src="/moamore/js/dashboard/todaybudget-halfpie.js"></script>
+	                    
+	                     	</c:otherwise>
+		                	</c:choose>
                   </div>
                   </div>
                  </div><!-- 현재 하루 지출 카드 끝 -->

@@ -103,7 +103,7 @@
 $(document).ready(function () {
 	
 	//처음에 회원가입 클릭 안되게 
-	$("#reg_submit").attr("disabled", true);
+	//$("#reg_submit").attr("disabled", true);
 	var idsuccess = 0;
 	var pwsuccess = 0;
 	var nicksuccess = 0;
@@ -111,6 +111,7 @@ $(document).ready(function () {
 $("#user_id").keyup(function() {
 	var idJ = /[0-9a-zA-Z]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 	var user_id = $('#user_id').val();
+	console.log(user_id);
 	$.ajax({
 		url : 'idCheck.moa?userId='+ user_id,
 		type : 'get',
@@ -192,7 +193,7 @@ $("#user_id").keyup(function() {
 	   if(pw != pwch){
 		   $("#pw_alert").text("비밀번호가 일치하지 않습니다.");
 			$("#pw_alert").css("color", "red");
-			$("#reg_submit").attr("disabled", true);
+			$("#reg_submit").attr("disabled", false);
 		    	
 	    }else{
 	    	$("#pw_alert").text("비밀번호가 일치합니다.");
