@@ -102,7 +102,7 @@
 							<option value="30" <c:if test="${currentTBudget.period==30}">selected</c:if>>한달</option>
 						</select>
 					</li>
-					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${firstOfMonth}"/>일
+					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" id="inputSD" value="${firstOfMonth}"/>일  <br/><span style="color:blue">0부터 28까지의 값만 입력할 수 있습니다.</span>
 					</li>
 				</ul>
 			</div>
@@ -376,6 +376,12 @@
 				calDay($(this));
 			});
 			reSum();
+		});
+		
+		$('#inputSD').on('keyup', function(){
+			if($(this).val()>28) {
+				$(this).val(28);
+			}
 		});
 		
 	});

@@ -81,7 +81,7 @@
 					<jsp:useBean id="now" class="java.util.Date" />
 					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
 					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
-					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
+					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" id="inputSD" value="${todayDate }"/>일<br/><span style="color:blue">0부터 28까지의 값만 입력할 수 있습니다.</span>
 						<br/>
 					</li>
 					<li>
@@ -331,6 +331,11 @@
 				calDay($(this));
 			});
 			reSum();
+		});
+		$('#inputSD').on('keyup', function(){
+			if($(this).val()>28) {
+				$(this).val(28);
+			}
 		});
 		
 	});

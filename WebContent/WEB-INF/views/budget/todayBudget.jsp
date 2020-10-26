@@ -64,7 +64,7 @@
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">예산 기간</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
                       <fmt:formatDate value="${TBdto.start_day}" pattern="yyyy년 MM월 dd일"/> ~ 
-                      <fmt:formatDate value="${TBdto.end_day}" pattern="yyyy년 MM월 dd일"/> (일)</div>
+                      <fmt:formatDate value="${TBdto.end_day}" pattern="yyyy년 MM월 dd일"/> (${period}일)</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
