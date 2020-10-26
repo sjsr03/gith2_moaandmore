@@ -11,14 +11,14 @@
 
 	<c:if test="${result==1 }" >
 		<c:choose>
-			<c:when test="${referrer != ''}">
+			<c:when test="${referrer == 'main' || referrer=='' }">
 				<script>
-					window.location="${referrer}";
+					window.location="../main.moa";
 				</script>
 			</c:when>
 			<c:otherwise>
 				<script>
-					window.location="../main.moa";
+					window.location="${referrer}";
 				</script>
 			</c:otherwise>
 		</c:choose>

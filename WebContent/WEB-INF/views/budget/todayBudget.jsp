@@ -264,9 +264,9 @@
 							
 							if(${i.recommend} > ${i.actual }) {	//권장액 미만일 시 파란색
 								var max = ${i.recommend};
-								var backgroundColor="#229abe";
-							    var hoverBackgroundColor= "#2e59d9";
-							    var borderColor= "#229abe";
+								var backgroundColor="#0071a1";
+							    var hoverBackgroundColor= "#2e9cdb";
+							    var borderColor= "#0071a1";
 							} else {	//권장액 초과시 빨간색
 								var max = ${i.actual};
 								var backgroundColor="#df4e4e";

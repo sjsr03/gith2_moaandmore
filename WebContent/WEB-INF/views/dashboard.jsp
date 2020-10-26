@@ -250,8 +250,8 @@
 	                    	var ratio = ${(todayData[0].actual/todayData[0].recommend)*100} ;
 	                    	if (ratio < 80) {
 	                    		var status = "여유";
-	                    		var color = "#229abe";
-	                    		var hoverBackgroundColor = "#2e59d9";
+	                    		var color = "#0071a1";
+	                    		var hoverBackgroundColor = "#2e9cdb";
 	                    	} else if (ratio < 100) {
 	                    		var status = "주의";
 	                    		var color = "#dfc44e";
