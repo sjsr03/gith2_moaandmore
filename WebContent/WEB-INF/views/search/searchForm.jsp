@@ -8,18 +8,72 @@
 </style>
 <script>
 //+start,endday 형식 검사해주는 함수
-function check_stday(){
-	
-}
-function check_edday(){
-	
-}
+
+
 
 function checkForm(){
+	var res = true;
+	var inputSt = $("#startday").val();
+	var inputEd=$("#endday").val();
+	var inputCt = $("#search_content").val();
+	
+	if(inputSt == "" || inputEd ==""|| inputCt ==""){
+		alert("검색조건을 모두 입력해야 합니다.");
+		res= false;
+	}
+	return res;
+}
+
+//숫자 자릿수 포맷(3자리수마다 ,) 
+Number.prototype.format = function(){
+	if(this ==0) return 0;
+	
+	var reg = /(^[+-]?\d+)(\d{3})/;
+	var n = (this +'');
+	
+	while(reg.test(n)) n = n.replace(reg, '$1'+','+'$2');
+	
+	return n;
+}
+
+//문자 자릿수 포맷(3자리수마다 ,) 
+String.prototype.format = function(){
+	var num = parseFloat(this);
+	if(isNaN(num)) return "0";
+	
+	return num.format();
 	
 }
 
+//데이트 포맷바꾸기 
+function getFormatDate(str){
+	var date = new Date(str);
+	var year = date.getFullYear();
+	var month = (1 + date.getMonth());
+	month = month >= 10 ? month : '0'+month;
+	var day = date.getDate();
+	day= day>=10 ? day : '0'+day;
+	return year + '.' +month + '.' + day;
+}
+
+function longToDate(val){  
+	  var date = new Date(val);
+	  var yyyy=date.getFullYear().toString(); 
+	  var mm = (date.getMonth()+1).toString();
+	  var dd = date.getDate().toString();
+
+	  var Str = '';
+
+	  Str += yyyy + '-' + (mm[1] ? mm : '0' + mm[0]) + '-' +(dd[1] ? dd : '0' + dd[0]);
+	  return Str;
+	}
+
+
 function get_searchInfo(){	
+	var chForm = checkForm();
+	
+	if(chForm == false){ return};
+	
 	var queryString = $("form[name=searchForm]").serialize();
 	queryString = decodeURIComponent(queryString);
 	$.ajax({
@@ -62,17 +116,19 @@ function get_searchInfo(){
 			
 				
 				var addHtml ="";
-				addHtml = "<thead><tr><th>날짜</th>금액<th></th></tr></thead>";
+				addHtml = "<thead><tr><th>날짜</th><th>금액</th></tr></thead>";
 				$("#searchList").append(addHtml);
 				addHtml = "<tbody>"
 				for(var i = 0 ;i <data.length; i++){
-					addHtml+= "<tr><td>"+data[i].reg+"</td><td>"+data[i].amount+"원</td></tr>";
+					var dt = longToDate(data[i].reg);
+					var amt = data[i].amount;
+					addHtml+= "<tr><td>"+dt+"</td><td>"+amt.format()+"원</td></tr>";
 					totalAmount += data[i].amount;
 					if(data[i].amount > maxAmount) maxAmount = data[i].amount;
 					if(data[i].amount < minAmount) minAmount = data[i].amount;
 				}
 				
-				var avgAmount = (totalAmount/cnt).toFixed(0); //건당 평균액				
+				var avgAmount = (totalAmount /cnt).toFixed(0); //건당 평균액				
 				
 				addHtml+="</tbody>"
 				$("#searchList").append(addHtml);
@@ -80,11 +136,11 @@ function get_searchInfo(){
 				//검색정보 append
 				$('#search_info').append("<span class='text'>총 "+diffDay+"일간,</span>");
 				$('#search_info').append("<span class='text'>총 "+cnt+"회,</span>");
-				$('#search_info').append("<span class='text'>총액 "+totalAmount+"원</span>");
+				$('#search_info').append("<span class='text'>총액 "+totalAmount.format()+"원</span>");
 				$('#search_info2').append("<span class='text'>평균빈도수 "+avgDay+"일/</span>");
-				$('#search_info2').append("<span class='text'>건당평균액 "+avgAmount+"원/</span>");
-				$('#search_info2').append("<span class='text'>최저금액 "+minAmount+"원/</span>");
-				$('#search_info2').append("<span class='text'>최대금액 "+maxAmount+"원</span>");
+				$('#search_info2').append("<span class='text'>건당평균액 "+avgAmount.format()+"원/</span>");
+				$('#search_info2').append("<span class='text'>최저금액 "+minAmount.format()+"원/</span>");
+				$('#search_info2').append("<span class='text'>최대금액 "+maxAmount.format()+"원</span>");
 				
 			}//end else
 			
@@ -96,24 +152,27 @@ function get_searchInfo(){
 	
 }
 
+
+
 </script>
 </head>
 
 <jsp:include page="../sidebar.jsp"/>
+
 <div class="container-fluid">
 	<div class="row">
 		<h5 class="h5">*예산외 내역은 제외되고 검색됩니다.</h5>
 	</div>
 	<div class="row">
 		<form name="searchForm" id="searchForm" >
-			<span class="text">시작일</span><input id="startday" type="text" name="startday" placeholder="ex)2020.10.20"/> <span class="text">종료일</span><input name="endday" id="endday" type="text" placeholder="ex)2020.10.25"/>
-			<span class="text">분류</span>
+			<span class="text">시작일</span><input id="startday" type="text" name="startday" placeholder="ex)2020.10.20" size="13"/><br/><span class="text">종료일</span><input name="endday" id="endday" type="text" placeholder="ex)2020.10.25" size="12"/>
+			<br/><span class="text">분류</span>
 			<select id="search_category" name="search_category">
-				<c:forEach var="category" items="${outcomeCategoryList}">
-					<option value="${category.category_no}"><c:out value="${category.category_name}"></c:out></option>
-				</c:forEach>
+			<c:forEach var="category" items="${outcomeCategoryList}">
+				<option value="${category.category_no}"><c:out value="${category.category_name}"></c:out></option>
+			</c:forEach>
 			</select>
-			<span class="text">검색명</span><input id="search_content" name="search_content" type="text" placeholder="검색 항목을 입력하세요."/>
+			<br/><span class="text">검색명</span><input id="search_content" name="search_content" type="text" placeholder="검색 항목을 입력하세요."/>
 			<button type="button" onclick="get_searchInfo()">검색</button>
 		</form>
 	
@@ -125,7 +184,6 @@ function get_searchInfo(){
 	</div>
 	<div class="row">
 		<table class="table" id="searchList">
-		
 		</table>
 	
 		
@@ -133,4 +191,24 @@ function get_searchInfo(){
 </div>
 	
 <jsp:include page="../footer.jsp"/>
+<script>
+$('#startday').focusout(function() {
+	var inputSt = $("#startday").val()
+	//2020.10.25
+	if(inputSt.length != 10 || inputSt.charAt(4) != '.' || inputSt.charAt(7) != '.'){
+		alert("시작일은 YYYY.MM.dd 형태로 입력해야합니다.");
+		$("#startday").val("");
+	}
+	
+});
+$('#endday').focusout(function() {
+	var inputEd = $("#endday").val()
+	//2020.10.25
+	if(inputEd.length != 10 || inputEd.charAt(4) != '.' || inputEd.charAt(7) != '.'){
+		alert("종료일은 YYYY.MM.dd 형태로 입력해야합니다.");
+		$("#endday").val("");
+	}
+	
+});
 
+</script>
