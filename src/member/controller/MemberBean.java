@@ -1,7 +1,13 @@
 package member.controller;
 
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +23,19 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import budget.model.dto.BudgetDTO;
+import budget.model.dto.TotalBudgetDTO;
+import budget.service.bean.BudgetService;
 import category.service.bean.CategoryService;
 import member.model.dto.MemberDTO;
-import member.service.bean.CalendarService;
+
 import member.service.bean.MemberService;
 
 
@@ -38,24 +49,26 @@ public class MemberBean {
 	
 	@Autowired
 	private MemberService memberService = null;
-	
-	
 	@Autowired
-	private CalendarService calendarService = null;
+	private BudgetService budgetService = null;
 	
+
 
 
 	@RequestMapping("loginForm.moa")
-	public String NLCloginForm() throws SQLException {
-		
+	public String NLCloginForm() {
 
 		
 		return "member/loginForm"; 		
 	}
 	@RequestMapping("loginPro.moa")
-	public String NLCloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
+		if(session.getAttribute("memId") != null) {
+			model.addAttribute("referrer",referrer);
+			return "member/loginPro"; 
+		}
 		
 		if(result==1) {	//아이디 비밀번호 일치하면
 			
@@ -65,11 +78,15 @@ public class MemberBean {
 			
 			session.setAttribute("memId", id);	//세션 만들고
 			session.setAttribute("memName", nickname);
+			session.setAttribute("memImg", dto.getProfile_img());
 			
 			if(auto != null) {	//자동로그인 체크면 쿠키 추가
 				Cookie c1 = new Cookie("autoId", id);
-				Cookie c2 = new Cookie("autoPw", pw);
-				Cookie c3 = new Cookie("autoCh", auto);
+				Cookie c2 = new Cookie("autoName", URLEncoder.encode(nickname, "UTF-8"));
+				Cookie c3 = new Cookie("autoImg", URLEncoder.encode(dto.getProfile_img(), "UTF-8"));
+			    c1.setPath("/moamore/");
+			    c2.setPath("/moamore/");
+			    c3.setPath("/moamore/");
 				c1.setMaxAge(60*60*24);
 				c2.setMaxAge(60*60*24);
 				c3.setMaxAge(60*60*24);
@@ -77,19 +94,25 @@ public class MemberBean {
 				response.addCookie(c2);
 				response.addCookie(c3);
 			}
-			
-			return "main";
-			
-		} else {
-			response.setCharacterEncoding("UTF-8"); 
-			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<script>alert('아이디 비밀번호가 일치하지 않습니다');</script>");
-			out.flush();
-			
-			return "member/loginForm";
 		}
+		
+		model.addAttribute("result",result);
+		model.addAttribute("referrer",referrer);
+		System.out.println("referrer : " + referrer);
 
+		
+		//현재 진행중인 예산이 있다면
+		if(budgetService.selectCurrentOne(id)!=null) {
+			//예산 만료되었는지 확인
+			budgetService.updateNewTB(id);
+			//남은돈 계산
+			budgetService.calLeftMoney(id);
+			//오늘의 예산 계산하기
+			budgetService.calTodayBudget(id);
+			
+		}
+		
+		return "member/loginPro";
 	}
 	
 	@RequestMapping("deleteForm.moa")
@@ -98,7 +121,7 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("deletePro.moa")
-	public String LCdeletePro(String pw, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public String deletePro(String pw, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		String id = (String)request.getSession().getAttribute("memId");
 		int result = memberService.idPwCheck(id, pw);
 		response.setCharacterEncoding("UTF-8"); 
@@ -116,8 +139,8 @@ public class MemberBean {
 			Cookie[] coo = request.getCookies();
 			for(Cookie c : coo) {
 				if(c.getName().equals("autoId")) c.setMaxAge(0);
-				if(c.getName().equals("autoPw")) c.setMaxAge(0);
-				if(c.getName().equals("autoCh")) c.setMaxAge(0);
+				if(c.getName().equals("autoName")) c.setMaxAge(0);
+				if(c.getName().equals("autoImg")) c.setMaxAge(0);
 			}
 			
 			return "main";
@@ -130,20 +153,21 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String LClogout(HttpServletRequest request) throws SQLException {
+	public String logout(HttpServletRequest request){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
+		session.removeAttribute("memName");	//세션 삭제
 		Cookie[] coo = request.getCookies();
 		for(Cookie c : coo) {
 			if(c.getName().equals("autoId")) c.setMaxAge(0);
-			if(c.getName().equals("autoPw")) c.setMaxAge(0);
-			if(c.getName().equals("autoCh")) c.setMaxAge(0);
+			if(c.getName().equals("autoName")) c.setMaxAge(0);
+			if(c.getName().equals("autoImg")) c.setMaxAge(0);
 		}
-		return "main";
+		return "redirect:../main.moa";
 	}
 	
 	@RequestMapping("signupForm.moa")
-	public String signupForm() {
+	public String NLCsignupForm() {
 
 		
 		return "member/signupForm";
@@ -152,25 +176,43 @@ public class MemberBean {
 	
 					
 	@RequestMapping("signupPro.moa")
-	public String signupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
+	public String NLCsignupPro(MemberDTO dto,MultipartHttpServletRequest request) throws SQLException{ 	
 	
+			
+			
 			
 			memberService.insertMember(dto,request);
 			
-		
+			
 			
 			return "member/loginForm";
 		}
 	
+	
+	//아이디 유효성 검사
+	@RequestMapping(value = "idCheck.moa", method = RequestMethod.GET)
+	@ResponseBody
+	public int idCheck(@RequestParam("userId") String user_id) throws SQLException{
+
 		
+		return memberService.userIdCheck(user_id);
+	}
 	
 	
+	//닉네임 유효성 검사
+	@RequestMapping(value = "nicknameCheck.moa", method = RequestMethod.GET)
+	@ResponseBody
+	public int nicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
+
+		
+		return memberService.nicknameCheck(nickname);
+	}
 	
 	@RequestMapping("updateMember.moa")
-	public String updateMember(HttpServletRequest request,Model model)throws SQLException{
+	public String LCupdateMember(Model model)throws SQLException{
+		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
 		
-		HttpSession session = request.getSession();
-		String id = (String)session.getAttribute("memId");
 		
 		MemberDTO dto = memberService.selectOne(id);
 		
@@ -187,8 +229,13 @@ public class MemberBean {
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		dto.setId(id);
 		
-		  memberService.modifyMember(dto,request,eximage);
-		  dto = memberService.selectOne(id);
+		memberService.modifyMember(dto,request,eximage);
+		dto = memberService.selectOne(id);
+		  
+		request.getSession().setAttribute("memImg", dto.getProfile_img());
+		
+		
+		
 		
 		  model.addAttribute("dto", dto);
 		  
@@ -196,31 +243,7 @@ public class MemberBean {
 	}
 	
 	
-	@RequestMapping("calendar.moa")
-	public String calendar(Model model) throws SQLException{
-		
-		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
-
-		//id로 budget테이블에서 데이터가 있는 날짜 가져오기
-		List<String> budgetAlldate = calendarService.selectBudgetDatebyId(id);
-		
-		//id랑 날짜(list)로 날짜에 해당하는 총 지출액 합계 가져오기
-		List<Integer> AllbudgetAmount = calendarService.selectBudgetAmount(id,budgetAlldate);
-		
-		Map map = new HashMap();
-		
-		for(int i = 0; i<budgetAlldate.size(); i++) {
-
-			map.put(budgetAlldate.get(i), AllbudgetAmount.get(i));
-			
-		}
-		
-		System.out.println(map);
-		
-		
-		
-		return "calendar/calendar";
-	}
+	
 	
 	
 	

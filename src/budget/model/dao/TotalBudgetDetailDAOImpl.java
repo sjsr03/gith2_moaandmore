@@ -37,6 +37,7 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	
 	@Override
 	public List selectAllbyBudgetNum(int num) {
+		System.out.println(num);
 		List list = sqlSession.selectList("totalBudgetDetail.selectAllbyBudgetNum", num);
 		return list;
 	}
@@ -45,8 +46,14 @@ public class TotalBudgetDetailDAOImpl implements TotalBudgetDetailDAO {
 	public List selectBudgetCategoryNums(int budgetNum) throws SQLException {
 		List categoryList = new ArrayList();
 		//리스트처리
+		
 		categoryList = sqlSession.selectList("totalBudgetDetail.selectBudgetCategoryNums", budgetNum);
 		return categoryList;
+	}
+	
+	@Override
+	public void updateMinusCurrent(TotalBudgetDetailDTO TBDdto) {
+		sqlSession.update("totalBudgetDetail.updateMinusCurrent", TBDdto);
 	}
 	
 }

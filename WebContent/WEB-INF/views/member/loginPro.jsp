@@ -5,13 +5,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>로그인</title>
 </head>
 <body>
+
 	<c:if test="${result==1 }" >
-		<script>
-			window.location='/moamore/member/main.moa';
-		</script>
+		<c:choose>
+			<c:when test="${referrer != ''}">
+				<script>
+					window.location="${referrer}";
+				</script>
+			</c:when>
+			<c:otherwise>
+				<script>
+					window.location="../main.moa";
+				</script>
+			</c:otherwise>
+		</c:choose>
 	</c:if>
 	<c:if test="${result!=1 }">
 		<script>
@@ -19,5 +29,6 @@
 			history.go(-1);
 		</script>
 	</c:if>
+
 </body>
 </html>

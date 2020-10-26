@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import budget.model.dto.RecordGoalsDTO;
 import budget.model.dto.RecordTransferDTO;
 import budget.model.dto.TotalBudgetDetailDTO;
+import goals.model.dto.GoalsDTO;
+import team.model.dto.TeamMemberDTO;
 
 @Repository
 public class RecordTransferDAOImpl implements RecordTransferDAO {
@@ -28,10 +30,30 @@ public class RecordTransferDAOImpl implements RecordTransferDAO {
 	@Override
 	public void insertRecordGoals(RecordGoalsDTO dto) {
 		sqlSession.insert("recordGoals.insertRecordGoal",dto);
+		GoalsDTO Gdto = sqlSession.selectOne("goals.selectOne", dto.getGoal_no());
+		int public_ch = Gdto.getPublic_ch();
+		if(public_ch == 1) { //그룹목표인경우
+			TeamMemberDTO TMdto = new TeamMemberDTO();
+			TMdto.setId(dto.getId());
+			TMdto.setSaving(dto.getAmount());
+			TMdto.setTeam_no(Gdto.getTeam_no());
+			
+			sqlSession.update("recordGoals.updateTeamMemberSaving", TMdto);
+		}
 	};
 	
 	@Override
-	public void updateRecordTBD(TotalBudgetDetailDTO dto) {
-		sqlSession.update("recordTransfer.updatePlusRecordTBD", dto);
+	public int updateRecordTBD(TotalBudgetDetailDTO target) {
+		sqlSession.update("recordTransfer.updatePlusRecordTBD", target);
+		return sqlSession.selectOne("recordTransfer.selectCategoryCurrentAfterTrans", target);
+	}
+	
+	@Override
+	public int selectLeftMoneySum(String id) {
+		if(sqlSession.selectOne("recordGoals.selectLeftMoneySum", id) == null) {
+			return 0;
+		} else {
+			return sqlSession.selectOne("recordGoals.selectLeftMoneySum", id);
+		}
 	}
 }

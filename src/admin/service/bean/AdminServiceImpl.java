@@ -48,7 +48,6 @@ public class AdminServiceImpl implements AdminService{
 		memberList.setPageNum(pageNum);
 		memberList.setCurrPage(currPage);
 		memberList.setEndRow(endRow);
-		memberList.setPageNum(pageNum);
 		memberList.setPageSize(pageSize);
 		memberList.setStartRow(startRow);
 		memberList.setMembers(members);

@@ -8,7 +8,7 @@
   	<select id="selectAllById" resultType="outcome_categoryDTO" parameterType="string">
   		select * from outcome_category where id=#{value} order by category_no
   	</select>
-  	
+  	<!-- 회원 아이디로 수입 카테고리 전체 가져오기-->
   	<select id="selectAllIncomeCategoryById" resultType="income_categoryDTO" parameterType="string">
   		select * from income_category where id=#{value} order by category_no
   	</select>
@@ -59,12 +59,13 @@
   
   	
   	<!-- 회원 아이디와 카테고리 num 으로 카테고리 이름 가져오기 -->
-  	<select id="selectBudgetCategoryNames" resultType="string">
-  		select category_name from outcome_category where category_no in
-  		<foreach collection='list' index='index' item='num' open='(' close=')' separator=','>
-  		#{num}
+  	<select id="selectBudgetCategoryNames" parameterType="java.util.List" resultType="string">
+  		select category_name from outcome_category where category_no in 
+  		<foreach collection='list' index='index' item='item' open='(' close=')' separator=','>
+  		#{item}
   		</foreach>
   	</select>
+  	
   	
   	<!-- 지출 카테고리 삭제하기 -->
 	<delete id="deleteOutcomeCategory" parameterType="map">
@@ -87,15 +88,23 @@
 		select category_name from income_category where id=#{id}
 	</select>
 	
-	<!-- 카테고리 넘으로 budget테이블 정보 갖고오기 -->
+	<!-- 카테고리 넘으로 budget 테이블에 해당 카테고리 내역 있는지 확인하기  -->
 	<select id="selectBudgetInfo" parameterType="map" resultType="int">
 		select count(*) from budget where id=#{id} and category_no=#{category_no}
 	</select>
 	
-	<!-- 카테고리 넘으로 Nobudget테이블 정보 갖고오기 -->
+	<!-- 카테고리 넘으로 nobudget 테이블에 해당 카테고리 내역 있는지 확인하기  -->
 	<select id="selectNoBudgetInfo" parameterType="map" resultType="int">
-		select count(*) from nobudget where id=#{id} and category_no=#{category_no}
+		select count(*) from nobudget where id=#{id} and (outcome_category_no=#{category_no} OR INCOME_CATEGORY_NO=#{category_no})
 	</select>
+	
+	
+	<!-- 카테고리 넘으로 totalbudgetDEtail 테이블에 해당 카테고리 내역 있는지 확인하기  -->
+	<select id="selectTotalDetailCategoryInfo" parameterType="int" resultType="int">
+		select count(*) from total_budget_detail where category_no=#{category_no}
+	</select>
+	
+	
   </mapper>
 
  

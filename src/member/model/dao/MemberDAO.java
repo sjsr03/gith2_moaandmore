@@ -4,6 +4,7 @@ package member.model.dao;
 import java.sql.SQLException;
 import java.util.List;
 
+import budget.model.dto.TotalBudgetDTO;
 import member.model.dto.MemberDTO;
 
 public interface MemberDAO {
@@ -22,5 +23,17 @@ public interface MemberDAO {
 	public MemberDTO selectOne(String id) throws SQLException;
 	//닉네임으로 아이디 가져오기
 	public String selectOneByNick(String nickname) throws SQLException;
+	
+	//close=0인것 종료일 지났으면 종료
+	public void updateClose(String id) throws SQLException;
+	
+	//현재 예산이 종료일이 지났는지 확인
+	public TotalBudgetDTO selectOutClose(String id) throws SQLException;
+	//아이디 중복검사 
+	public int checkOverId(String user_id) throws SQLException;
+	//닉네임 중복검사
+	public int checkOverNick(String nickname) throws SQLException;
+	
+	
 	
 }

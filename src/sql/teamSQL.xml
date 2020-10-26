@@ -2,31 +2,217 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="team">
-	<select id="countOpenAll" resultType="int">
-		SELECT count(*) FROM TEAM WHERE STATUS=2 AND ISOPEN=1
+
+
+	<select id="selectTeamUpdateTime" resultType="string">
+		select lastdate from update_table_reg where table_name='team'
 	</select>
 	
-	<select id="selectOpenAll" parameterType="hashmap" resultType="teamDTO">
-		<![CDATA[
-		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people from team where status=2 and ISOPEN=1 order by team_no desc) where r >= #{start} and r <= #{end} order by r asc
-		]]>
+	<update id="updateTeamUpdateTime" parameterType="string">
+		update update_table_reg set lastdate=#{value}
+	</update>
+	
+	
+	<select id="countMyComeInviteTeamAll" parameterType="string" resultType="int">
+		SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{value} AND A.ISOPEN=0 AND b.IS_JOIN=0 AND a.STATUS!=-1 and a.status!=0
 	</select>
+	
+	<select id="selectAllComeInviteTeam" parameterType="hashmap" resultType="teamDTO">
+	<![CDATA[
+		select * from (select rownum r,team_no,subject,content,amount,start_day,end_day,people from (SELECT a.team_no,a.subject,a.content,a.amount,a.start_day,a.end_day,a.people FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND A.ISOPEN=0 AND b.IS_JOIN=0 AND a.STATUS!=-1 and a.status!=0 order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+	]]>
+	</select>
+	
+	
+	
+	<select id="countMyOkTeamAll" parameterType="hashmap" resultType="int">
+		SELECT count(*) FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND (A.ISOPEN=1 OR (A.ISOPEN=0 AND b.IS_JOIN=1)) AND a.STATUS=#{pageStatus}
+
+		<if test="isSearch == 1">
+			and A.subject like '%'||#{search}||'%'
+		</if>
+	</select>
+	
+	<select id="selectMyOkTeamAll" parameterType="hashmap" resultType="teamDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people,ISOPEN FROM (SELECT A.TEAM_NO, A.SUBJECT, A.AMOUNT, A.START_DAY, A.END_DAY, A.PEOPLE, A.ISOPEN FROM TEAM A LEFT OUTER JOIN TEAM_MEMBER B ON A.TEAM_NO = B.TEAM_NO WHERE B.NICKNAME=#{nickname} AND (A.ISOPEN=1 OR (A.ISOPEN=0 AND b.IS_JOIN=1)) AND a.STATUS=#{pageStatus}
+		]]>
+		
+		<if test="isSearch == 1">
+			and subject like '%'||#{search}||'%'
+		</if>
+		<if test="range == 0">
+			<![CDATA[
+				order by a.team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 1">
+			<![CDATA[
+				order by a.team_no asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 2">
+			<![CDATA[
+				order by a.amount desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 3">
+			<![CDATA[
+				order by a.amount asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 4">
+			<![CDATA[
+				order by a.start_day asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 5">
+			<![CDATA[
+				order by a.start_day desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 6">
+			<![CDATA[
+				order by a.end_day asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 7">
+			<![CDATA[
+				order by a.end_day desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 8">
+			<![CDATA[
+				order by a.people desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 9">
+			<![CDATA[
+				order by a.people asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		
+	</select>
+	
+	
+
+
+	<select id="countTeamAll" parameterType="hashmap" resultType="int">
+		SELECT count(*) FROM TEAM WHERE STATUS=#{pageStatus} AND ISOPEN=1
+	
+		<if test="isSearch == 1">
+			and subject like '%'||#{search}||'%'
+		</if>
+	</select>
+	
+	<select id="selectTeamAll" resultType="teamDTO">
+		select * from team where status=1 or status=2 or status=3
+	</select>
+	
+	
+	
+	<select id="selectTeamAllCon" parameterType="hashmap" resultType="teamDTO">
+		<![CDATA[
+		select * FROM (SELECT rownum r,team_no,subject,amount,start_day,end_day,people FROM (SELECT team_no,subject,amount,start_day,end_day,people from team where status=#{pageStatus} and ISOPEN=1
+		]]>
+		
+		<if test="isSearch == 1">
+			and subject like '%'||#{search}||'%'
+		</if>
+		<if test="range == 0">
+			<![CDATA[
+				order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 1">
+			<![CDATA[
+				order by team_no asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 2">
+			<![CDATA[
+				order by amount desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 3">
+			<![CDATA[
+				order by amount asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 4">
+			<![CDATA[
+				order by start_day asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 5">
+			<![CDATA[
+				order by start_day desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 6">
+			<![CDATA[
+				order by end_day asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 7">
+			<![CDATA[
+				order by end_day desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 8">
+			<![CDATA[
+				order by people desc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		<if test="range == 9">
+			<![CDATA[
+				order by people asc)) where r >= #{start} and r <= #{end} order by r asc
+			]]>
+		</if>
+		
+	</select>
+
 	
 	<select id="selectOne" parameterType="int" resultType="teamDTO">
 		select * from team where team_no=#{value}
 	</select>
 	
+	
+	
+	<select id="countAllTeamMyRequest" parameterType="string" resultType="int">
+		SELECT count(*) FROM TEAM WHERE leader=#{value}
+	</select>
+	
+	<select id="selectAllTeamMyRequest" parameterType="hashmap" resultType="teamDTO">
+	<![CDATA[
+		select * from (select rownum r,team_no,subject,content,amount,start_day,end_day,people,status,isopen,password from (SELECT team_no,subject,content,amount,start_day,end_day,people,status,isopen,password from team where leader=#{leader} order by team_no desc)) where r >= #{start} and r <= #{end} order by r asc
+	]]>
+	</select>
+	
+	
+	
 	<insert id="insertTeamArticle" parameterType="teamDTO">
-		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}, #{password})
+		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}
+		<if test="password==null">
+		,null
+		</if>
+		<if test="password!=null">
+		,#{password}
+		</if>
+		)
 		<selectKey keyProperty="team_no" resultType="int" order="AFTER">
 			select team_seq.currVal from dual
 		</selectKey>
-	</insert>
-	<insert id="insertTeamArticleNoPw" parameterType="teamDTO">
-		insert into team values(team_seq.nextVal, #{subject}, #{content}, #{amount}, to_date(#{start_day},'YYYYMMDD'), to_date(#{end_day},'YYYYMMDD'), #{leader}, #{people}, 0, #{isopen}, null)
 	</insert>
 	
 	<update id="updateTeamStatus" parameterType="teamDTO">
 		update team set status=#{status} where team_no=#{team_no}
 	</update>
+	
+	
+	
+	
+	<select id="checkPw" resultType="int" parameterType="hashmap" >
+ 		select count(*) from team where team_no=#{team_no} and password=#{pw}
+ 	</select>
 </mapper>

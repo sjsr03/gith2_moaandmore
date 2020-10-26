@@ -18,15 +18,18 @@ public interface MemberService {
 	public void modifyMember(MemberDTO dto,MultipartHttpServletRequest request,String eximage) throws SQLException;
 	//회원탈퇴
 	public void deleteMember(String id) throws SQLException;
-	//아이디 중복검사
-	public int confirmId(String id) throws SQLException;
+	
+	//public int confirmId(String id) throws SQLException;
 	//로그아웃
 	public void logout(String sessionName) throws SQLException;
 	//닉네임으로 아이디 가져오기
 	public String selectOneByNick(String nickname) throws SQLException;
 
-
-
-
+	//close=0인것 종료일 지났으면 종료
+	public void updateClose(String id) throws SQLException;
+	// 아이디 중복검사
+	public int userIdCheck(String user_id) throws SQLException;
+	//닉네임 중복검사
+	public int nicknameCheck(String nickname) throws SQLException;
 
 }

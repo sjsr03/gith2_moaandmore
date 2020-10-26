@@ -1,94 +1,198 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <head>
-<meta charset="UTF-8">
 <title>예산 설정</title>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
-<body>
+<style>
+	#popup1 {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, .7);
+		z-index: 1;
+		backdrop-filter: blur(4px);
+ 		-webkit-backdrop-filter: blur(4px);
+	}
+	.popup {
+		padding: 20px;
+		background: #fff;
+		border-radius: 5px;
+		box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+	}
+	p span {
+		color:red;
+	}
+	input[type=number] {
+		width:100px;
+	}
+	.helpSpan {
+		color:blue;
+		font-size:0.8em;
+	}
+	#setTB li{
+		margin-bottom : 10px;
+	}
+</style>
+<body id="page-top">
+<jsp:include page="../sidebar.jsp"/>
 	
-	<form action="/moamore/budget/setBudgetPro.moa" method="post" >
-	
-	<div style="width:600px;height:1000px;overflow:hidden;position:absolute;left:0px;">
-		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:0px;" id="firstStep">
-			<ul>
-				<li>
-					총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
-				</li>
-				<li>
-					기간 단위 : 
-					<select name="period" id="period">
-						<option value="7">7일</option>
-						<option value="14">14일</option>
-						<option value="30">한달</option>
-					</select>
-				</li>
-				<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="1"/>일
-				</li>
-			</ul>
-			<input type="button" value="세부설정 >" onclick="nextStep()"/>
-		</div>
-		<div style="width:600px;height:1000px;display:inline-block;position:absolute;transition: .5s;left:600px;" id="secondStep">
-			<input type="button" value="<이전단계" onclick="preStep()"/>
-			<input type="button" value="추가" id="insertLine"/>
-			
-			<table id="detailBudget">
-				<tr>
-					<td>카테고리</td>
-					<td>금액</td>
-					<td>비율</td>
-					<td>하루 예산</td>
-					<td>&nbsp;</td>
-				</tr>
-				<tr>
-					<td>
-						<select name="category_name" class="category_name" required>
-							<option class="none" disabled selected>==카테고리 선택==</option>
-							<c:forEach items="${categoryList}" var="i">
-								<option value="${i.category_name }">${i.category_name }</option>
-							</c:forEach>
+        <!-- 본문내용 시작 -->
+        <div class="container-fluid">
+
+          <!-- 페이지 이름 -->
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">예산 설정</h1>
+            </div>
+            
+    <div id="popup1">
+		<div class="popup">
+			<h2>예산 설정하기</h2>
+			<hr/>
+			<br/>
+			<div id="step1" style="transition:.5s;" class="animated--fade-in">
+				<p>현재 진행중인 예산이 없습니다!</p>
+				<p>예산설정을 완료해주세요.</p>
+				<button id="nextBtn1">새로운 예산 만들기</button>
+			</div>
+			<form action="/moamore/budget/setBudgetPro.moa" method="post" >
+			<div id="step2" style="transition:.5s;display:none;" class="animated--fade-in">
+				<ul id="setTB">
+					<li>
+						<div>
+						기간 단위 : 
+						<select name="period" id="period">
+							<option value="7">7일</option>
+							<option value="14">14일</option>
+							<option value="30">한달</option>
 						</select>
-					</td>
-					<td>
-						<input type="number" name="amount" min="0" required class="amount"/>
-					</td>
-					<td>
-						<input type="number" readonly class="rate"/>%
-					</td>
-					<td>
-						<input type="number" readonly class="dayAmount"/>%
-					</td>
-					<!-- 맨위라인은 삭제 안되게
-					<td>
-						<input type="button" class="deleteBtn" value="삭제"/>
-					</td>
-					 -->
-					
-				</tr>
-			</table>
+						<br/>
+						<span class="helpSpan">(예산 기간을 고르세요.)</span>
+						</div>
+					</li>
+					<li>
+						<div>
+						총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
+						<br/>
+						<span class="helpSpan">(총예산 금액을 입력하세요.)</span>
+						</div>
+					</li>
+					<jsp:useBean id="now" class="java.util.Date" />
+					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
+					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
+					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
+						<br/>
+					</li>
+				</ul>
+				<input type="button" value="세부설정 >" id="nextBtn2" />
+			</div>
+			<div id="step3" style="transition:.5s;display:none;" class="animated--fade-in">
+				
+				<input type="button" value="추가" id="insertLine"/>
+				
+				<table id="detailBudget">
+					<tr>
+						<td>카테고리</td>
+						<td>금액</td>
+						<td>비율</td>
+						<td>하루 예산</td>
+						<td>&nbsp;</td>
+					</tr>
+					<tr>
+						<td>
+							<select name="category_name" class="category_name" required>
+								<option class="none" disabled selected>==카테고리 선택==</option>
+								<c:forEach items="${categoryList}" var="i">
+									<option value="${i.category_name }">${i.category_name }</option>
+								</c:forEach>
+							</select>
+						</td>
+						<td>
+							<input type="number" name="amount" min="0" required class="amount"/>
+						</td>
+						<td>
+							<input type="number" class="rate"/>%
+						</td>
+						<td>
+							<input type="number" readonly class="dayAmount"/>원
+						</td>
+						<!-- 맨위라인은 삭제 안되게
+						<td>
+							<input type="button" class="deleteBtn" value="삭제"/>
+						</td>
+						 -->
+						
+					</tr>
+				</table>
 			<hr>
 			카테고리별 예산 합계 : <strong id="amountSum"></strong>원<br/>
 			총 예산 : <strong id="TbudgetPrint"></strong>원
 			<br/>
 			카테고리별 예산 합계와 총 예산이 동일하도록 설정하세요
 			<br/>
+			<input type="hidden" value="1" name="isNewBudget" />
+			<input type="button" value="<이전 단계" id="prevBtn" />
 			<input type="hidden" value="새로운 예산 생성" id="createBudget" />
+			</div>
+		</form>
 		</div>
 	</div>
-	</form>
-</body>
-
+            
+            
+    
+	
+	
+	</div>
+	
+	<jsp:include page="../footer.jsp"/>
+	
 <script>
 	
 	var x = document.getElementById("firstStep");
 	var y = document.getElementById("secondStep");
 	
 	$(document).ready(function(){
+		$("#nextBtn1").on("click", function(){
+			$("#step1").css("display", "none");
+			$("#step2").css("display", "block");
+			
+		});
+		$("#nextBtn2").on("click", function(){
+			if($('#totalBudget').val() != 0) {
+				$("#step2").css("display", "none");
+				$("#step3").css("display", "block");
+			} else {
+				alert('총 예산 값을 입력하세요!');
+			}
+		});
+		$("#prevBtn").on("click", function(){
+			$("#step2").css("display", "block");
+			$("#step3").css("display", "none");
+		});
+		
+		//월 시작일을 변경하는 경우
+		$('#startday > input').on('change', function(){
+			$.ajax({
+				type:"post",
+				url:"getWarnMessage.moa",
+				data: {
+					firstOfMonth:$(this).val()
+				},
+				success: function(data){
+					$("#warn").text(data);
+				}
+				
+			})
+		});
+		
 		$('#insertLine').on('click', function(){ //라인 추가
-			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
+			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
 			
 			//삭제버튼 기능
@@ -113,6 +217,12 @@
 			//비율 및 총합 자동계산
 			$('.amount').on('keyup', function(){
 				reRate($(this));
+				reSum();
+				calDay($(this));
+			});
+			//비율 및 총합 자동계산
+			$('.rate').on('keyup', function(){
+				reCalRate($(this));
 				reSum();
 				calDay($(this));
 			});
@@ -165,11 +275,22 @@
 			reSum();
 			calDay($(this));
 		});
+		//비율 및 총합 자동계산
+		$('.rate').on('keyup', function(){
+			reCalRate($(this));
+			reSum();
+			calDay($(this));
+		});
 		
 		//비율 자동계산
 		function reRate(i){
 			var rate = i.val()/$('#totalBudget').val()*100;
 			i.parent().next().children('.rate').val(rate.toFixed(1));
+		};
+		//금액 자동계산
+		function reCalRate(i){
+			var amount = $('#totalBudget').val()*i.val()/100;
+			i.parent().prev().children('.amount').val(amount.toFixed());
 		};
 		
 		//총합 자동계산
@@ -208,19 +329,4 @@
 		
 	});
 	
-	//단계 이동
-	function nextStep() {
-		if($('#totalBudget').val() != 0) {
-			x.style.left="-600px";
-			y.style.left="0px";
-		} else {
-			alert('총 예산 값을 입력하세요!');
-		}
-	}
-	function preStep() {
-		x.style.left="0px";
-		y.style.left="600px";
-	}
-	
 </script>
-</html>

@@ -15,5 +15,46 @@
   		update left_money set amount=(amount-#{amount}) where id=#{id} and category_no=#{category_no}
   	</update>
   	
+  	
+  	<!-- 마지막 로그인(전환기록 날짜) 가져오기 -->
+  	<select id="selectLastLoginReg" parameterType="string" resultType="string">
+  		select max(reg) from left_money where id=#{value}
+  	</select>
+  	
+  	<!-- 예산 생성 : zero값 넣어주기 -->
+  	<insert id="insertZero" parameterType="hashmap" >
+  		insert into left_money values(#{id}, #{category_no}, 0, (select start_day from total_budget where budget_no=#{budget_no}))
+  	</insert>
+  	
+  	<!-- 예산 종료 : leftmoney 데이터 지우기 -->
+  	<delete id="deleteLeftMoneyById" parameterType="string" >
+  		delete from left_money where id=#{value}
+  	</delete>
+  	
+  	<!-- 해당 카테고리에 남은돈 추가 -->
+  	<update id="updateLeftMoney" parameterType="hashmap">
+  		update left_money set amount=(amount+#{amount}), reg=sysdate where category_no=#{category_no} and id=#{id}
+  	</update>
+  	
+  	<!-- 남은돈 합산 -->
+  	<select id="selectCurrentLeftMoneySum" parameterType="string" resultType="int">
+  		select sum(amount) from left_money where id=#{value}
+  	</select>
+  	
+  	<!-- 회원의 leftmoney에 있는 카테고리 번호 가져오기 -->
+  	<select id="selectCatNoById" parameterType="string" resultType="int">
+  		select category_no from left_money where id=#{value}
+  	</select>
+  	
+  	<!--  -->
+  	<update id="updateRegToStartDay" parameterType="string">
+  		UPDATE LEFT_MONEY SET reg=(SELECT START_day FROM TOTAL_BUDGET WHERE id=#{value} AND CLOSE=0) WHERE id=#{value}
+  	</update>
+  	
+  	<!-- 회원의 leftmoney에 담긴 내역 모두 삭제 -->
+  	<delete id="deleteLeftMoney" parameterType="string">
+  		delete from left_money where id=#{value}
+  	</delete>
+  	
   </mapper>
  

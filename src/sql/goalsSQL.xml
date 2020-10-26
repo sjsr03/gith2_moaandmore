@@ -11,6 +11,25 @@
 	<select id="selectAllById" parameterType="String" resultType="goalsDTO">
 		select * from goals where id=#{value}
 	</select>
+	
+	<select id="selectAllByPublicCh" parameterType="java.util.HashMap" resultType="goalsDTO">
+		select * from goals where id=#{id} and public_ch=#{public_ch} 
+		
+		<if test='list_type.equals("complete")'> and saving >= target_money</if>
+		<if test='list_type.equals("proceeding")'> <![CDATA[ and saving < target_money ]]></if>
+		
+		
+		<if test='sorting.equals("public")'> and public_type = '1'</if>
+		<if test='sorting.equals("private")'> and public_type = '0'</if>
+		<choose>
+			<when test='sorting.equals("startday_asc")'> order by start_day asc</when>
+			<when test='sorting.equals("startday_desc")'> order by start_day desc</when>
+			<when test='sorting.equals("achievement_asc")'>order by saving/target_money asc</when>
+			<when test='sorting.equals("achievement_desc")'>order by saving/target_money desc</when>
+			<when test='sorting.equals("endday_asc")'>order by end_day asc</when>
+			<when test='sorting.equals("endday_desc")'>order by end_day desc</when>
+		</choose>
+	</select>
 
 	<insert id="insertGoal" parameterType="goalsDTO">
 		<selectKey keyProperty="goal_no" resultType="int" order="BEFORE">
@@ -22,10 +41,43 @@
 	<update id="modifyGoal" parameterType="goalsDTO">
 		update goals set subject=#{subject}, target_money=#{target_money} where goal_no = #{goal_no}
 	</update>
-	<delete id="deleteGoal" parameterType="int">
-		delete from goals where goal_no=#{value}
+	
+	<delete id="deleteGoal" parameterType="java.util.HashMap">
+		{call
+		declare
+		begin
+			delete from goals where goal_no=#{goal_no};
+			<if test="public_ch = '1'">
+				delete from team_member where team_no =#{team_no} and id=#{id}
+			</if>
+		end
+		}
+		
 	</delete>
 	
-
+	<update id="updateSaving" parameterType="java.util.HashMap">
+		update goals set saving = saving+#{sum} where goal_no = #{goal_no}
+	</update>
+	
+	<select id="selectMostPersonalGoal" parameterType="string" resultType="hashmap" >
+		<![CDATA[
+			select (saving/target_money*100) as rate, subject, TARGET_MONEY , saving from goals where id=#{value} AND public_ch=0 AND rownum=1 and target_money!=saving ORDER BY rate DESC
+		]]>
+	</select>
+	<select id="selectMostTeamGoal" parameterType="string" resultType="hashmap" >
+		<![CDATA[
+			select (saving/target_money*100) as rate, subject, TARGET_MONEY , saving from goals where id=#{value} AND public_ch=1 and target_money!=saving AND end_day > sysdate and START_DAY <= sysdate AND rownum=1 ORDER BY rate DESC
+		]]>
+	</select>
+	
+	<!-- 남은돈 전환가능한 개인목표 -->
+	<select id="selectPersonalTransferPossibleGoals" parameterType="string" resultType="hashmap">
+		SELECT goal_no, SUBJECT , (TARGET_MONEY-SAVING) AS rest FROM GOALS WHERE id=#{value} AND PUBLIC_CH =0 AND target_money!=saving
+	</select>
+	<!-- 남은돈 전환가능한 그룹목표 -->
+	<select id="selectTeamTransferPossibleGoals" parameterType="string" resultType="hashmap">
+		SELECT goal_no, SUBJECT , (TARGET_MONEY-SAVING) AS rest FROM GOALS WHERE id=#{value} AND PUBLIC_CH =1 AND target_money!=saving
+	</select>
+	
 
 </mapper>

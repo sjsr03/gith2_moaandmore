@@ -9,7 +9,7 @@ public class BudgetDTO {
 	private String id;
 	private int category_no;
 	private int amount;
-	private Timestamp date;
+	private Timestamp reg;
 	
 	public int getBudget_outcome_no() {
 		return budget_outcome_no;
@@ -41,12 +41,18 @@ public class BudgetDTO {
 	public void setAmount(int amount) {
 		this.amount = amount;
 	}
-	public Timestamp getDate() {
-		return date;
+	public Timestamp getReg() {
+		return reg;
 	}
-	public void setDate(Timestamp date) {
-		this.date = date;
+	public void setReg(Timestamp reg) {
+		this.reg = reg;
 	}
+	@Override
+	public String toString() {
+		return "BudgetDTO [budget_outcome_no=" + budget_outcome_no + ", budget_no=" + budget_no + ", id=" + id
+				+ ", category_no=" + category_no + ", amount=" + amount + ", reg=" + reg + "]";
+	}
+
 	
 	
 }

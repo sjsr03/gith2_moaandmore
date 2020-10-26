@@ -33,7 +33,7 @@ public interface CategoryDAO {
 	public void deleteOutcomeCategory(int category_no,String id) throws SQLException;
 	//수입 카테고리 삭제하기
 	public void deleteIncomeCategory(int category_no,String id) throws SQLException;
-	//회원 한명의 수출 카테고리명 다 가져오기
+	//회원 한명의 지출 카테고리명 다 가져오기
 	public List selectOutcomeCategoryNamesbyId(String id) throws SQLException;
 	//회원 한명의 수입 카테고리명 다 가져오기
 	public List selectIncomeCategoryNamesbyId(String id) throws SQLException;
@@ -41,4 +41,9 @@ public interface CategoryDAO {
 	public int selectBudgetInfo(int category_no,String id)throws SQLException;
 	//카테고리 넘으로 nobudget테이블 개수 가져오기(for 삭제막기)
 	public int selectNobudgetInfo(int category_no,String id) throws SQLException;
+    //카테고리 넘으로 totalbudgetDetail 개수 가져오기 
+	public int selectTotalBudgetDetailInfo(int category_no) throws SQLException;
+	
+	
+	
 }

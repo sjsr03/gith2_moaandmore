@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import budget.model.dto.TotalBudgetDTO;
 import member.model.dto.MemberDTO;
 
 @Repository
@@ -71,7 +72,43 @@ public class MemberDAOImpl implements MemberDAO {
 	}
 
 	
+	@Override
+	public void updateClose(String id) throws SQLException {
+		TotalBudgetDTO dto = sqlSession.selectOne("totalBudget.selectOutClose", id);
+		
+		if(dto!=null) {	
+			sqlSession.update("totalBudget.updateTBClose", id);	//기존 1을 2로 바꾸고
+			
+			sqlSession.update("totalBudget.updateClose", id);	//기존 0을 1로
+
+		}
+		
+	}
 	
+	@Override
+	public TotalBudgetDTO selectOutClose(String id) throws SQLException {
+		return sqlSession.selectOne("totalBudget.selectOutClose", id);
+	}
+
+
+	@Override
+	public int checkOverId(String user_id) throws SQLException {
+		
+		int checkId=sqlSession.selectOne("member.checkOverId",user_id);
+		
+		
+		return checkId;
+	}
+
+
+	@Override
+	public int checkOverNick(String nickname) throws SQLException {
+		
+		int checkNick=sqlSession.selectOne("member.checkOverNick",nickname);
+		
+		
+		return checkNick;
+	}
 	
 	
 	

@@ -11,7 +11,7 @@
 
 
 
-<c:redirect url="/category/setCategory.moa?already=${already}" />
+<c:redirect url="/category/setCategory.moa?already=${already}&exist=${exist}" />
 
 </body>
 </html>

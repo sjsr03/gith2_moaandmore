@@ -18,6 +18,21 @@ public interface TotalBudgetDAO {
 	//총예산 금액 변경
 	public void updateTotalBudget(TotalBudgetDTO dto) throws SQLException;
 	
-	// 회원의 모든 예산 정보 가져오기
-	public List selectAllTotalBudgetById(String id)throws SQLException;
+	// 회원의 현재 예산의 마지막날, 지난예산의 시작날짜 가져오기
+	public List selectBudgetDate(String id)throws SQLException;
+	
+	//직전예산정보 가져오기
+	public TotalBudgetDTO selectLastTB(String id) throws SQLException;
+	
+	//예산 번호로 전체 정보 가져오기
+	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException;
+	
+	//현재 예산 기간이 며칠 남았는지 
+	public int calLeftDaysCurrentTB(String id) throws SQLException;
+	
+	//예산 현재금액 수정
+	public void updateCurrentBudget(int budget_no) throws SQLException;
+	
+	//아이디로 해당 사용자 예산들 가져오기
+	public List<TotalBudgetDTO> selectBudgetAllByID(String id) throws SQLException;
 }
