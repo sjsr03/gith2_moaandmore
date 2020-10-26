@@ -160,7 +160,7 @@ public class RecordBean {
 		System.out.println("amount : " + budgetDTO.getAmount());
 		recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBudgetDetailDTO, date);
 		
-		return "budget/moneyLog";
+		return "budget/recordPro";
 	}
 	//------------------------------------------------------------------------
 	
