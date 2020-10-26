@@ -76,18 +76,18 @@
 						<span class="helpSpan">(예산 기간을 고르세요.)</span>
 						</div>
 					</li>
+					<jsp:useBean id="now" class="java.util.Date" />
+					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
+					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
+					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
+						<br/>
+					</li>
 					<li>
 						<div>
 						총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
 						<br/>
 						<span class="helpSpan">(총예산 금액을 입력하세요.)</span>
 						</div>
-					</li>
-					<jsp:useBean id="now" class="java.util.Date" />
-					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
-					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
-					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
-						<br/>
 					</li>
 				</ul>
 				<input type="button" value="세부설정 >" id="nextBtn2" />
@@ -192,7 +192,7 @@
 		});
 		
 		$('#insertLine').on('click', function(){ //라인 추가
-			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
+			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
 			
 			//삭제버튼 기능
@@ -224,7 +224,7 @@
 			$('.rate').on('keyup', function(){
 				reCalRate($(this));
 				reSum();
-				calDay($(this));
+				calDay($(this).parent().prev().children('.amount'));
 			});
 			
 			//카테고리명이 change일 때 옵션 속성 변경
@@ -279,7 +279,7 @@
 		$('.rate').on('keyup', function(){
 			reCalRate($(this));
 			reSum();
-			calDay($(this));
+			calDay($(this).parent().prev().children('.amount'));
 		});
 		
 		//비율 자동계산

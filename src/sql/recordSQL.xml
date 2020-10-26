@@ -103,7 +103,7 @@
 		FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} 
 		<choose>
 			<when test="type.equals('budgetincomeoutcome')">
-				AND TYPE='income' OR TYPE='outcome' 
+				AND (TYPE='income' OR TYPE='outcome') 
 			</when>		
 			<otherwise>
 				AND TYPE=#{type}
@@ -241,5 +241,9 @@
   		update nobudget_detail set content=#{content}, memo=#{memo}, img=#{img} where nobudget_no=#{nobudget_no}
   	</update>
  
+ 	<!-- budget_outcome_no으로 해당 기록 가져오기 -->
+ 	<select id="selectRecordByNo" parameterType="int" resultType="budgetDTO">
+ 		select * from budget where budget_outcome_no=#{value}
+ 	</select>
   	
   </mapper>

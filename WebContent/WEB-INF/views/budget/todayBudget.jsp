@@ -9,7 +9,6 @@
 </head>
 <style>
 	#popup1 {
-		display: flex;
 		justify-content: center;
 		align-items: center;
 		position: fixed;
@@ -319,10 +318,10 @@
 	<!-- 남은돈 전환 창 -->
 	<div id="popup1">
 		<div class="popup">
-			<div style="display:inline;text-align:right;"><h2 style="display:inline">남은 돈 전환하기</h2>
-			<button onclick="$('#popup1').css('display','none')">X</button></div>
+			<div class="d-sm-flex align-items-center justify-content-between" style="display:inline;"><h2 style="display:inline">남은 돈 전환하기</h2>
+			<button onclick="$('#popup1').css('display','none')" style="border:0; background:rgb(0,0,0,0);">X</button></div>
 			<form action="/moamore/budget/LeftMoneyTransfer.moa" method="post">
-			<div class="table-responsive">
+			<div class="table-responsive" style="overflow:visible">
 				<div class="col-lg-12 dataTables_wrapper dt-bootstrap4" >
 					<div class="row">
 						<table class="table table-bordered" id="leftMoneyList" >
@@ -352,14 +351,16 @@
 					</table>
 					</div>
 				</div>
-					<div style="display:inline-block">
+			</div> <!-- table responsive 끝 -->
+			<div class="row justify-content-between"> 
+					<div class="cols-md-6">
 						<label><input type="radio" name="target_table" value="budget" checked/>현재예산에 재분배</label>
 						<br/>
 						<label><input type="radio" name="target_table" value="goals" />목표로 보내기</label>
 					</div>
-					<div style="display:inline-block; width:300px; height:50px; border:1px solid #ccc">
+					<div class="cols-md-6" style="text-align:right;" >
 						<div id="subCat">
-							<span>재분배할 카테고리</span>
+							<span>재분배할 카테고리</span><br/>
 							<select id="targetCat" name="subSel">
 								<c:forEach items="${BDdtoList }" var="j">
 									<option value=${j.category_no } class="${categories[j.category_no] }">${categories[j.category_no] }</option>
@@ -367,7 +368,7 @@
 							</select>
 						</div>
 						<div id="subGoal" style="display:none;">
-							<span>목표 선택</span>
+							<span>목표 선택</span><br/>
 							<select id="targetGoal" name="subSel">
 								<c:if test="${personalGoals==null && teamGoals==null}" >
 									<option disabled>목표가 없습니다</option>
@@ -390,9 +391,9 @@
 							</select>
 						</div>
 					</div>
-					<div>
-						<input type="button" id="trans" value="전환하기">
-					</div>
+				</div>
+				<div class="row justify-content-center">
+					<input type="button" id="trans" class="btn btn-primary" value="전환하기">
 				</div>
 				</form>
 		</div>
@@ -513,10 +514,10 @@ var teamGoals=[];
 		
 		if(target == 'budget') {
 			$('#subGoal').css('display','none');
-			$('#subCat').css('display','flex');
+			$('#subCat').css('display','block');
 		} else {
 			$('#subCat').css('display','none');
-			$('#subGoal').css('display','flex');
+			$('#subGoal').css('display','block');
 		}
 	}
 	

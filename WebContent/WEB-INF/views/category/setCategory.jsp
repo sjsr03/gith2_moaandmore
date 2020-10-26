@@ -2,8 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>
-<html>
 <head>
 <meta charset="UTF-8">
 <title>set category</title>
@@ -14,22 +12,64 @@
 
 <style>
 
- @media (max-width: 500px){
-        .td{
+ 
+  @media (max-width: 800px){
+      my_td{
         	width:50px !important;
         	height:50px !important;
+        	
+        	
         }
-       	
+       .my_tab{
+       	border-spacing: 10px !important;
+       }
+       
+       .cat_text{
+       		text-align:center;
+       		font-size:1em !important;
+       	}
+    
+   		
     }
     
- @media (max-width: 370px){
-    .td{
+    @media (max-width: 500px){
+       .my_td{
         	width:50px !important;
         	height:50px !important;
+        	
+        	
         }
+       .my_tab{
+       	border-spacing: 10px !important;
+       }
+       
+       .cat_text{
+       		text-align:center;
+       		font-size:1em !important;
+       	}
     
- }
-
+    }
+    
+    @media (max-width: 370px){
+        my_td{
+        	width:50px !important;
+        	height:50px !important;
+        	
+        	
+        }
+       .my_tab{
+       	border-spacing: 10px !important;
+       }
+       
+       .cat_text{
+       		text-align:center;
+       		font-size:1em !important;
+       	}
+    
+   		
+    }
+  
+ 
 a{text-decoration: none;color: #737271;}
     i{font-size: 20px;}
     .cat_btn{
@@ -49,7 +89,7 @@ a{text-decoration: none;color: #737271;}
     .cat_text{
     	text-align:center;
     	top:-20%;
-    	font-size: 30px;
+    	font-size: 1em;
     }
     .my_sub{
         position: absolute;
@@ -62,8 +102,6 @@ a{text-decoration: none;color: #737271;}
         display: none;      /*화면에 보이지 않게 하기 위해 display:none;을 사용.*/
     }
     .cat_btn .my_sub.on{display: block;}    /*클릭시 추가해줄 on 클래스 미리 만들어둠.*/
-
-
 .categorymodal { 
          position: fixed; 
          left: 0; 
@@ -78,7 +116,6 @@ a{text-decoration: none;color: #737271;}
     	 
      } 
      
-
 .categorymodal-content { 
          position: absolute; 
          top: 50%; 
@@ -98,26 +135,20 @@ a{text-decoration: none;color: #737271;}
          transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s; 
    		 
      }  
-
-
 .my_tab{
 	border-collapse:separate;
 	border-spacing:26px;
 	
 }
-
 .my_td{
 	width:250px;
 	height:100px;
 	border-radius: 10px;
 	
 }
-
 .modify{
 	cursor:pointer;
 }
-
-
 button{
 	/* display: inline-block; */
     padding: .5em .75em;
@@ -133,24 +164,18 @@ button{
     text-align: center;
 	
 }
-
 .close-button{
 	float:right;
 	cursor:pointer;
 }
-
-
 .btn-gradient {
 	margin: 5px;
 }
-
 .buttonDiv{
 	float:right;
 	padding:5px;
 	
 }
-
-
 </style>
 <c:if test="${already==1}">
 	<script>
@@ -174,7 +199,6 @@ button{
  		<!-- 페이지 이름 -->
          <div class="d-sm-flex align-items-center justify-content-between mb-4">
            <h1 class="h3 mb-0 text-gray-800">카테고리 설정</h1>
-           	${already}
            </div>	
 	
 	
@@ -201,13 +225,13 @@ button{
 		</div>
 	</div>
 	 <div class="card-body">
-		<h3>[지출]</h3>
+		<h4 class="mb-0 text-gray-800">지출 카테고리</h4>
 		<form class='allExpense'>
 		</form>
 	</div>
 	
 	 <div class="card-body">
-		<h3>[수입]</h3>
+		<h4>수입 카테고리</h4>
 		<form class='allIncome'>
 		</form>
 	</div>
@@ -232,9 +256,7 @@ button{
  </div> 
  <jsp:include page="../footer.jsp"/>
 <script type="text/javascript">	
-
 var inOrOut = '';
-
 $(document).ready(function(){
 	
 	//페이지 시작할때 카테고리 목록 불러오기
@@ -244,7 +266,7 @@ $(document).ready(function(){
 		
 	setTimeout(function() {
 		 updateAndDelete(); 
-	},1000);
+	 },1000);
 
 	//수정창 x누를때 
 	$(".close-button").on('click',function(){
@@ -262,7 +284,6 @@ $(document).ready(function(){
 			event.preventdefault();
 			
 		}else{
-			console.log(12);
 			$.ajax({
 				type : "POST",
 				url : "setCategoryPro.moa",
@@ -273,7 +294,6 @@ $(document).ready(function(){
 					
 				},
 				success : function(data){		
-					console.log("success");
 					 getExpenseCategory();
 					getIncomeCategory();
 				}
@@ -283,8 +303,6 @@ $(document).ready(function(){
 	});    
 });	
 	
-
-
 function getExpenseCategory(){
 	//지출 카테고리 불러오기
     $.ajax({
@@ -305,7 +323,6 @@ function getExpenseCategory(){
       					html += "</tr>";
       					html +="<tr>";		
       				}
-
 	            	html += "<td class='my_td border-left-primary shadow'>";
 	            	html += "<div class='cat_btn'>";
 	            	html += "<i class='fas fa-ellipsis-v'></i>";
@@ -316,7 +333,7 @@ function getExpenseCategory(){
 	           		html += "</p>"; 
 	            	html += "</div>"; 
 	            	html += "</div>";
-	            	html += "<div class='cat_text font-weight-bold text-gray-800'>";
+	            	html += "<div class='cat_text font-weight-bold'>";
 	            	html += outcome[i].category_name;
 	            	html += "</div>";
 	            	html += "<input type='hidden' name='category_no' class='category_no' value='"+outcome[i].category_no+"' />";
@@ -332,7 +349,6 @@ function getExpenseCategory(){
         
     });
 }
-
 function getIncomeCategory(){
 	//지출 카테고리 불러오기
     $.ajax({
@@ -354,7 +370,6 @@ function getIncomeCategory(){
       					html += "</tr>";
       					html +="<tr>";		
       				}
-
 	            	html += "<td class='my_td border-left-warning shadow'>";
 	            	html += "<div class='cat_btn'>";
 	            	html += "<i class='fas fa-ellipsis-v'></i>";
@@ -381,32 +396,26 @@ function getIncomeCategory(){
        
     });
 }
-
 //수정 삭제 창이 열려있을때 창밖을 클릭하면 remove 클래스 
+
 $(document).mouseup(function(e){
-	console.log(4);
 	var container = $('.my_sub');
 	
 	if(container.has(e.target).length===0 && $('.cat_btn').has(e.target).length===0){
-		console.log("창밖");
 		$('.my_sub').removeClass('on');
 	}
 });
-
 
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
 		$('.cat_btn i').each(function(){
 			$(this).on('click', function(){
-				console.log("수정하기 삭제하기 창 띄어주기");
 				
 				if($(this).next().closest('.my_sub').hasClass('on')){
-					console.log(2.5);
 					//수정.삭제 창에 on클래스가 있으면 on클래스 없애주기 
 					$(this).next().closest('.my_sub').removeClass('on');
 						
 				}else{
-					console.log(3);
 					//버튼 누를때 수정삭제 창에 클래스 'on' 넣어주기 
 					$(this).next().closest('.my_sub').addClass('on');
 				}
@@ -421,19 +430,18 @@ function updateAndDelete(){
 		});
 		
 }
-
 //수정하기 모달창 보여주기
 function cateogryModify(category_no,inorout){
 	
-	$('.modify').each(function(category_no,inorout){
+	$('.modify').each(function(){
 		$(this).on('click', function(){
 			$('.categorymodal').addClass("show-categorymodal");
-			  console.log("수정하기 모달창");
 			modifyAction(category_no,inorout);
 		});	
 	});
 	
 }
+
 
 function toggleWin() {
 	$(".cat_btn").on('click', function(){
@@ -449,22 +457,15 @@ function toggleWin() {
 
 //카테고리 수정하기
 function modifyAction(category_no,inorout){
-	$('.modifyCategory').click(function(event){
+	$('.modifyCategory').unbind("click").bind("click",function(){
 		var newName = $('.newName').val();
-		console.log("카테고리 수정하기");
 		if(newName == ""){
-			console.log("alert");
 			alert("카테고리를 입력해주세요");
 		}else{
 		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no+"&inorout="+inorout;
-		//event.preventDefault();
 		getExpenseCategory();
 		}
 	
 	});
 }
-
-
 </script>
-
-</html>

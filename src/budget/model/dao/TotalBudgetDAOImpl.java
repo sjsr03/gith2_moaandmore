@@ -68,9 +68,10 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	public List selectBudgetDate(String id) throws SQLException {
 		List budgetDate = new ArrayList();
 		String start = sqlSession.selectOne("totalBudget.selectBudgetStartDate", id);
+		System.out.println("토탈budget에서 startDate : " +  start);
 		
 		String end = sqlSession.selectOne("totalBudget.selectBudgetEndDate", id);
-		
+		System.out.println("토탈budget에서 endDate : " + end);
 		if(start == null) {
 			start = sqlSession.selectOne("totalBudget.selectCurrBudgetStartDate", id);		
 		}
@@ -102,7 +103,7 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		
 		TotalBudgetDTO TBdto = selectCurrentOne(id);
 		long lt = TBdto.getEnd_day().getTime()-today.getTime();
-		int period = (int)Math.round(lt/(1000*60*60*24));
+		int period = (int)Math.ceil(lt/(1000*60*60*24));
 		return period;
 	}
 	@Override

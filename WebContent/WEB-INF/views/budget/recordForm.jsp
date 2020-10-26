@@ -170,7 +170,8 @@ ul{
 								</li>
 								<li>
 									<div>
-										<input class="form-control form-control-user input" type="number" placeholder="금액을 입력하세요" id="amount" name="amount" />
+		
+										<input class="form-control form-control-user input" type="text" placeholder="금액을 입력하세요" id="amount" name="amount" />
 									</div>
 								</li>			
 								<li>
@@ -183,8 +184,8 @@ ul{
 									<div class="form-group" style="margin:8px 0 8px;">
 										<input id="fileName" class="inputBox" value="파일선택"  disabled="disabled" style="width:65%; display: inline" class="btn btn-light"/>
 											<div class="fileRegiBtn">
-												<label  for="image">파일등록</label>
-												<input type="file" id="image"/>
+												<label for="image">파일등록</label>
+												<input type="file" id="image" name="image"/>
 											</div>
 										<!--  커버 이미지 들어오븐 부분(임시로 이미지 넣어줌) -->
 										<div class="selectCover" style="padding-left: 0;">
@@ -210,6 +211,7 @@ ul{
 <script>
 	// 체크박스 상태 확인(체크된 상태면 nobudget 아니면 budget)
 	$(document).ready(function(){
+		
 		// input 태그 중 date 에도 기본값으로 오늘 날짜 넣어주기 
 		$("#date").val("${today}");
 		getTime();
@@ -224,7 +226,7 @@ ul{
 		$("#incomebtn").hide();
 		
 		$("#checkbox").change(function(){
-			if($("#checkbox").is(":checked")){
+			if($("#checkbox").is(":checked")){ // 예산외 선택에 체크가 되어있으면
 				// 예산 관련된거 없어져야함
 				$("#incomebtn").show();	
 				$("#outcomebtn").show();	
@@ -241,9 +243,11 @@ ul{
 		$("#date").on('change',function(){
 			if($("#checkbox").is(":checked")){
 			}else{
-				// 예산일 때만 달력 체크하면 값 가져오게 처리
-				$("#type").val("budgetOutcome");
-				console.log($("#type").val());
+				// 예산일 달력 체크하면 값 가져오게 처리
+				//$("#type").val("budgetOutcome");
+				$("#type").val("budget");
+				
+				console.log("date에서 타입 : "+$("#type").val());
 
 				// 예산 카테고리 가져오기위해 컨트롤러로 값 보내기 ajax				
 				$(document).ready(function(){
@@ -253,7 +257,12 @@ ul{
 					console.log("start 날짜 : " + start);
 					console.log("end 날짜 : " + end);
 					console.log("selectedDay 날짜 : " + selectedDay);
-					if((start >=selectedDay) && (end <= selectedDay)){
+					///////////////////////////////////////////////////////////////////////////////
+					console.log("결과>> : " + (start <= selectedDay) && (end >= selectedDay));
+					console.log("첫번째결과>> : " + (start <= selectedDay));
+					console.log("두번째결과>> : " + (end >= selectedDay));
+					
+					if((start <= selectedDay) && (end >= selectedDay)){
 						$.ajax({
 							type : "POST",
 							url : "budgetCategory.moa",
@@ -290,6 +299,8 @@ ul{
 				});
 			}
 		});
+		
+
 		// 버튼 누를 때마다 카테고리 나타내기/숨기기
 		$("#outcomebtn").click(function(){ // 지출 카테고리로 세팅 
 			$("#outcomebtn").attr('class','btn btn-primary');
@@ -326,7 +337,8 @@ ul{
 
 		});
 		$("#check").click(function(){
-				
+			//////////////////////////////////////
+			//console.log("타입체크 : "+$("#type").val());
 			// budgetNum도 hidden으로 보내주기
 			if(budget_no != 0){
 				var intBudget_no = Number(budget_no);
@@ -334,8 +346,10 @@ ul{
 				$("#budget_no").val(intBudget_no);
 			}
 			// category_no 예산일 때만 카테고리 넘버 보내주기 
-			if($("#type").val() == "type"){
-				$("#type").val("type");
+			if($("#type").val() == "budget"){
+
+				//$("#type").val("type");
+				type="budget";
 				var selectedOption = $("#category option:selected").val(); 
 				var numberOption = Number(selectedOption);
 				$("#category_no").val(numberOption);
@@ -344,7 +358,7 @@ ul{
 			}
 			
 			console.log($("#category_no").val());
-			
+			console.log($("#image").val());
 			$("#recordForm").submit();
 		});
 		
@@ -388,6 +402,7 @@ function leadingZeros(n, digits) {
   }
   return zero + n;
 }
+
 </script>
 
 <!-- Bootstrap core JavaScript-->

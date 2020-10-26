@@ -133,4 +133,9 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		return count;
 	}
 	
+	@Override
+	public BudgetDTO selectRecordByNo(int num) throws SQLException {
+		return sqlSession.selectOne("record.selectRecordByNo", num);
+	}
+	
 }

@@ -52,7 +52,12 @@ public class MemberBean {
 	@Autowired
 	private BudgetService budgetService = null;
 	
-
+	@RequestMapping("tutorial.moa")
+	public String tutorial() {
+		
+		
+		return "member/tutorial";
+	}
 
 
 	@RequestMapping("loginForm.moa")
@@ -61,53 +66,16 @@ public class MemberBean {
 		
 		return "member/loginForm"; 		
 	}
+	
 	@RequestMapping("loginPro.moa")
-	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		HttpSession session = request.getSession();
-//		model.addAttribute("referrer",referrer);
-//		if(id==null && pw==null) {
-//			Cookie[] coo = request.getCookies();
-//			if(coo != null) {
-//				for(Cookie c:coo) {
-//					if(c.getName().equals("autoId")) {
-//						session.setAttribute("memId", c.getValue());
-//						System.out.println(c.getValue());
-//						c.setMaxAge(60*60*24);
-//						response.addCookie(c);
-//					}
-//					if(c.getName().equals("autoName")) {
-//						session.setAttribute("memName", URLDecoder.decode(c.getValue()));
-//						c.setMaxAge(60*60*24);
-//						response.addCookie(c);
-//					}
-//					if(c.getName().equals("autoImg")) {
-//						session.setAttribute("memImg", URLDecoder.decode(c.getValue()));
-//						c.setMaxAge(60*60*24);
-//						response.addCookie(c);
-//					}
-//				}
-//				id = (String)session.getAttribute("memId");
-//			} else {
-//				return "loginForm.moa";
-//			}
-//			
-//			if(id != null) {
-//				return "../main.moa";
-//			}
-//		}
-//		
-//		
 		
 		
 		int result = memberService.idPwCheck(id, pw);
 		
-		if(referrer == null) {
-			referrer = "main";
-		}
-		
 		if(session.getAttribute("memId") != null) {
-			model.addAttribute("referrer",referrer);
-			return "member/loginPro"; 
+			return "main"; 
 		}
 		
 		if(result==1) {	//아이디 비밀번호 일치하면
@@ -137,8 +105,6 @@ public class MemberBean {
 		}
 		
 		model.addAttribute("result",result);
-		model.addAttribute("referrer",referrer);
-		System.out.println("referrer : " + referrer);
 
 		
 		//현재 진행중인 예산이 있다면
@@ -181,6 +147,7 @@ public class MemberBean {
 				for(Cookie c : coo) {
 					if(c.getName().equals("autoId")) {
 						c.setMaxAge(0);
+
 						c.setPath("/moamore/");
 						response.addCookie(c);
 					}
@@ -192,6 +159,7 @@ public class MemberBean {
 					if(c.getName().equals("autoImg")) {
 						c.setMaxAge(0);
 						c.setPath("/moamore/");
+
 						response.addCookie(c);
 					}
 				}
@@ -216,6 +184,7 @@ public class MemberBean {
 			for(Cookie c : coo) {
 				if(c.getName().equals("autoId")) {
 					c.setMaxAge(0);
+
 					c.setPath("/moamore/");
 					response.addCookie(c);
 				}
@@ -227,6 +196,7 @@ public class MemberBean {
 				if(c.getName().equals("autoImg")) {
 					c.setMaxAge(0);
 					c.setPath("/moamore/");
+
 					response.addCookie(c);
 				}
 			}
@@ -260,9 +230,7 @@ public class MemberBean {
 	//아이디 유효성 검사
 	@RequestMapping(value = "idCheck.moa", method = RequestMethod.GET)
 	@ResponseBody
-	public int idCheck(@RequestParam("userId") String user_id) throws SQLException{
-
-		
+	public int NLidCheck(String user_id) throws SQLException{
 		return memberService.userIdCheck(user_id);
 	}
 	
@@ -270,7 +238,7 @@ public class MemberBean {
 	//닉네임 유효성 검사
 	@RequestMapping(value = "nicknameCheck.moa", method = RequestMethod.GET)
 	@ResponseBody
-	public int nicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
+	public int NLnicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
 
 		
 		return memberService.nicknameCheck(nickname);
@@ -301,8 +269,6 @@ public class MemberBean {
 		dto = memberService.selectOne(id);
 		  
 		request.getSession().setAttribute("memImg", dto.getProfile_img());
-		
-		
 		
 		
 		  model.addAttribute("dto", dto);

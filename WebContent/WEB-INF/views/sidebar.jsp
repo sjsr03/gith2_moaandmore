@@ -251,11 +251,13 @@ $(document).ready(function(){
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
-
+		
+	<div style="width:100%; display:flex; justify-content:center;" >
       <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline" style="width:100%;display:flex;">
+      <div class="text-center d-none d-md-inline" style="">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
+    </div>
 
     </ul>
     <!-- End of Sidebar -->
@@ -278,13 +280,14 @@ $(document).ready(function(){
           
 			<div class="input-group" style="width:100%">
 				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/dashboard.moa'"><span class="text">예산</span></button>
-				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;"onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0em 0em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="window.location.href='/moamore/member/tutorial.moa'"><span class="text">도움말</span></button>	
 			</div>
 			
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-5" id="ranking">
-                <jsp:include page="./realTimeRankingForMobile.jsp"/>
+                <jsp:include page="./realTimeRanking.jsp"/>
             </li>
             
 			<!-- 로그인 상태일 때 -->
