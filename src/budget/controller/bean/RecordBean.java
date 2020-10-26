@@ -168,7 +168,8 @@ public class RecordBean {
 		System.out.println("타입확인 >>> : " + searchForRecordDTO.getType());
 		System.out.println("날짜확인 >>> : " + searchForRecordDTO.getSearchDate());
 		System.out.println("페이지넘 >>> : " + searchForRecordDTO.getPageNum());
-	
+		System.out.println("키워드 >>> : " + searchForRecordDTO.getKeyword());
+		
 		model.addAttribute("searchForRecordDTO", searchForRecordDTO);
 		return "budget/moneyRecord";
 	}
@@ -197,6 +198,7 @@ public class RecordBean {
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
 		System.out.println("타입나와라.... : " + searchForRecordDTO.getType());
+		System.out.println("키워드나와라.... : " + searchForRecordDTO.getKeyword());
 		Timestamp dateTime;
 
 		// 현재 진행중인 예산의 끝나는 날짜와 지난 예산의 시작 날짜를 가져오기
@@ -221,9 +223,11 @@ public class RecordBean {
 			String searchDate = searchForRecordDTO.getSearchDate();
 			model.addAttribute("searchDate", searchDate);
 			
-			System.out.println("빈에서 !! :" + recordPage.getRecordList().size());
+			//System.out.println("빈에서 !! :" + recordPage.getRecordList().size());
+			
 			recordPage.setType(searchForRecordDTO.getType());
 			// model로 다 보내주기
+			model.addAttribute("keyword", searchForRecordDTO.getKeyword());
 			model.addAttribute("categories", categories);
 			model.addAttribute("recordPage", recordPage);
 			System.out.println("아아아아" + recordPage.getCount());		
@@ -265,6 +269,7 @@ public class RecordBean {
 		
 		
 		model.addAttribute("searchDate", searchForRecordDTO.getSearchDate());
+		model.addAttribute("keyword", searchForRecordDTO.getKeyword());
 		model.addAttribute("recordPage", recordPage);
 		model.addAttribute("categories", categories);
 		
@@ -276,7 +281,8 @@ public class RecordBean {
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		String type = searchForRecordDTO.getType();
-		
+		System.out.println("-----------------------");
+		System.out.println("selectRecords에서 키워드 :" + searchForRecordDTO.getKeyword());
 		// 타입에 들어있는 만큼 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
 		recordPage.setType(searchForRecordDTO.getType());
@@ -297,8 +303,9 @@ public class RecordBean {
 		
 		//System.out.println("타입확인 : " + type);
 		recordPage.setType(type);
-
-		System.out.println("recordPage 내의 Type 확인 :" + recordPage.getType());
+			
+		System.out.println("recordPage 내의 Type 확인 :" + recordPage.getType());		
+		model.addAttribute("keyword", searchForRecordDTO.getKeyword());
 		model.addAttribute("incomeCategories", incomeCategories);
 		model.addAttribute("outcomeCategories", outcomeCategories);
 		model.addAttribute("recordPage", recordPage);

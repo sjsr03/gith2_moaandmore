@@ -91,8 +91,9 @@ $(document).ready(function(){
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/moamore/main.moa">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+          <!-- <i class="fas fa-laugh-wink"></i> -->
+          <img src="/moamore/resources/img/whitepigF.png" width="50" height="50" />
         </div>
         <div class="sidebar-brand-text mx-3">모아 & More</div>
       </a>
@@ -173,7 +174,7 @@ $(document).ready(function(){
       </li>
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.html">
+        <a class="nav-link" href="/moamore/search/searchForm.moa">
           <i class="fas fa-fw fa-search"></i>
           <span>검색</span></a>
       </li>

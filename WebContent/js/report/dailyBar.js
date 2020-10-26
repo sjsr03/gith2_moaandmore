@@ -35,9 +35,9 @@ var myBarChart = new Chart(ctx, {
 	    labels: labelList,
 	    datasets: [{
 	      label: "지출액",
-	      backgroundColor: "#4e73df",
+	      backgroundColor: "#229abe",
 	      hoverBackgroundColor: "#2e59d9",
-	      borderColor: "#4e73df",
+	      borderColor: "#229abe",
 	      data: dataList,
 	    }],
 	  },

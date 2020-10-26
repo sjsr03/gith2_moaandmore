@@ -1,6 +1,8 @@
 package member.controller;
 
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -68,6 +70,10 @@ public class MemberBean {
 	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
+		if(session.getAttribute("memId") != null) {
+			model.addAttribute("referrer",referrer);
+			return "member/loginPro"; 
+		}
 		
 		if(result==1) {	//아이디 비밀번호 일치하면
 			
@@ -81,8 +87,11 @@ public class MemberBean {
 			
 			if(auto != null) {	//자동로그인 체크면 쿠키 추가
 				Cookie c1 = new Cookie("autoId", id);
-				Cookie c2 = new Cookie("autoPw", pw);
-				Cookie c3 = new Cookie("autoCh", auto);
+				Cookie c2 = new Cookie("autoName", URLEncoder.encode(nickname, "UTF-8"));
+				Cookie c3 = new Cookie("autoImg", URLEncoder.encode(dto.getProfile_img(), "UTF-8"));
+			    c1.setPath("/moamore/");
+			    c2.setPath("/moamore/");
+			    c3.setPath("/moamore/");
 				c1.setMaxAge(60*60*24);
 				c2.setMaxAge(60*60*24);
 				c3.setMaxAge(60*60*24);
@@ -135,8 +144,8 @@ public class MemberBean {
 			Cookie[] coo = request.getCookies();
 			for(Cookie c : coo) {
 				if(c.getName().equals("autoId")) c.setMaxAge(0);
-				if(c.getName().equals("autoPw")) c.setMaxAge(0);
-				if(c.getName().equals("autoCh")) c.setMaxAge(0);
+				if(c.getName().equals("autoName")) c.setMaxAge(0);
+				if(c.getName().equals("autoImg")) c.setMaxAge(0);
 			}
 			
 			return "main";
@@ -156,8 +165,8 @@ public class MemberBean {
 		Cookie[] coo = request.getCookies();
 		for(Cookie c : coo) {
 			if(c.getName().equals("autoId")) c.setMaxAge(0);
-			if(c.getName().equals("autoPw")) c.setMaxAge(0);
-			if(c.getName().equals("autoCh")) c.setMaxAge(0);
+			if(c.getName().equals("autoName")) c.setMaxAge(0);
+			if(c.getName().equals("autoImg")) c.setMaxAge(0);
 		}
 		return "redirect:../main.moa";
 	}

@@ -7,9 +7,18 @@
 <head>
 <meta charset="UTF-8">
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
-<title>입출력 내역</title>
-
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<!-- Custom fonts for this template-->
+	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+	
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<!-- Custom styles for this template-->
+	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
+	<!-- 버튼 관련 템플릿 -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
 </head>
 <style>
 
@@ -69,122 +78,153 @@ a:hover { color: blue; text-decoration: underline;}
 <br />
 
 <%-- 입출력 내역 테이블 시작--%>
-<div class="boardcss_list_table" align="center">
+
+<div class="container-fluid">
 	<br />
-	<table class="list_table">
-		<c:if test="${recordPage.count == 0}">
-			내역이 존재하지않습니다.
-		</c:if>
-		<c:if test="${recordPage.count > 0}">
-			<colgroup>
-				<col /> 
-				<col /> 
-				<col /> 
-				<col /> 
-			</colgroup>
-			<thead>
-				<tr>
-					<th>날짜/시간</th>
-					<th>카테고리</th>
-					<th>내역</th>
-					<th>금액</th>
-				</tr>
-				
-			</thead>
-			<tbody>
-				
-				<c:forEach var="records" items="${recordPage.recordList}" varStatus="status" >		
-				<tr>		
-					<td>
-						<fmt:formatDate value="${records.reg}" pattern="yyyy-MM-dd HH:mm"/>
-					</td>
-					<td id="category">
-					<c:set var="recordCate" value="" />
-			
-					<%-- c:set 이용해서 변수에 계속 담아 준 후 마지막에 a태그에 넣어줌 --%>
-					<c:if test="${not empty categories}">
-						<c:choose>
-							<c:when test="${records.type eq 'income'}">
-								<c:set var="recordCate" value="${categories[records.income_category_no]}" />
-								<c:set var="recordCateNum" value="${records.income_category_no}" />
-								${categories[records.income_category_no]}
-							</c:when>
-							<c:otherwise>
-								<c:set var="recordCate" value="${categories[records.outcome_category_no]}" />
-								<c:set var="recordCateNum" value="${records.outcome_category_no}" />
-								${categories[records.outcome_category_no]}
-							</c:otherwise>
-						</c:choose>	
+	<%-- 첫번째 줄 --%>
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="card shadow mb-4">
+				<div class="card-body"> 
+					<%--내역이 없을 때  --%>	
+					<c:if test="${recordPage.count == 0}">
+						내역이 존재하지않습니다.
 					</c:if>
-					<c:if test="${not empty incomeCategories}">
-						<c:choose>
-							<c:when test="${records.type eq 'income'}">
-								<c:set var="recordCate" value="${incomeCategories[records.income_category_no]}" />
-								<c:set var="recordCateNum" value="${records.income_category_no}" />
-								${incomeCategories[records.income_category_no]}
-							</c:when>
-							<c:otherwise>
-								<c:set var="recordCate" value="${outcomeCategories[records.outcome_category_no]}" />
-								<c:set var="recordCateNum" value="${records.outcome_category_no}" />
-								${outcomeCategories[records.outcome_category_no]}
-							</c:otherwise>
-						</c:choose>
-					</c:if>	
-						<input type="hidden" id="hiddenType" value="${records.type}" />
-					</td>
-					<td class="content"> 
-						<a href="javascript:void(0)" onclick="goDetail('${recordCateNum}','${records.budget_outcome_no}','${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
-					</td>
-					<td>
-						<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
-					</td>
-					<td>
-						<c:set var="budget_outcome_no" value="${records.budget_outcome_no}" />
-						<c:set var="nobudget_no" value="${records.nobudget_no}" />
-						<c:choose>
-						<c:when test="${not empty budget_outcome_no}">
-							<input type="hidden" value="${records.budget_outcome_no}" class="num">
-						</c:when>
-						<c:otherwise>
-							<input type="hidden" value="${records.nobudget_no}" class="num">
-						</c:otherwise>
-						</c:choose>
-					</td>		
-				</tr>		
-				</c:forEach>
-			</tbody>
-		</c:if>
-	</table>
-</div>
+					<%-- 내역이 있을 때  --%>
+					<c:if test="${recordPage.count >= 0}">
+					<div class="table-responsive">
+						<div  class="col-lg-12 dataTables_wrapper dt-bootstrap4">
+							<div class="row">
+								<table class="table table-bordered">	
+										<thead>
+											<tr>
+												<th class="forManyType" style="width:8%">구분</th>
+												<th style="width:20%">날짜/시간</th>
+												<th style="width:20%">카테고리</th>
+												<th style="width:30%">내역</th>
+												<th style="width:12%">금액</th>
+											</tr>
+											
+										</thead>
+										<tbody>
+											
+											<c:forEach var="records" items="${recordPage.recordList}" varStatus="status" >		
+											<tr>
+												<td class="forManyType">
+													<c:if test="${records.type eq 'income'}">수입</c:if>
+													<c:if test="${records.type eq 'outcome'}">지출</c:if>
+													<c:if test="${records.type eq 'budget'}">예산</c:if>		
+												</td>		
+												<td>
+													<fmt:formatDate value="${records.reg}" pattern="yyyy-MM-dd HH:mm"/>
+												</td>
+												<td id="category">
+												<c:set var="recordCate" value="" />
+										
+												<%-- c:set 이용해서 변수에 계속 담아 준 후 마지막에 a태그에 넣어줌 --%>
+												<c:if test="${not empty categories}">
+													<c:choose>
+														<c:when test="${records.type eq 'income'}">
+															<c:set var="recordCate" value="${categories[records.income_category_no]}" />
+															<c:set var="recordCateNum" value="${records.income_category_no}" />
+															${categories[records.income_category_no]}
+														</c:when>
+														<c:otherwise>
+															<c:set var="recordCate" value="${categories[records.outcome_category_no]}" />
+															<c:set var="recordCateNum" value="${records.outcome_category_no}" />
+															${categories[records.outcome_category_no]}
+														</c:otherwise>
+													</c:choose>	
+												</c:if>
+												<c:if test="${not empty incomeCategories}">
+													<c:choose>
+														<c:when test="${records.type eq 'income'}">
+															<c:set var="recordCate" value="${incomeCategories[records.income_category_no]}" />
+															<c:set var="recordCateNum" value="${records.income_category_no}" />
+															${incomeCategories[records.income_category_no]}
+														</c:when>
+														<c:otherwise>
+															<c:set var="recordCate" value="${outcomeCategories[records.outcome_category_no]}" />
+															<c:set var="recordCateNum" value="${records.outcome_category_no}" />
+															${outcomeCategories[records.outcome_category_no]}
+														</c:otherwise>
+													</c:choose>
+												</c:if>	
+													<input type="hidden" id="hiddenType" value="${records.type}" />
+												</td>
+												<td class="content"> 
+													<a href="javascript:void(0)" class="nav-link" style="color:#858796;" onclick="goDetail('${recordCateNum}','${records.budget_outcome_no}','${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+												</td>
+												<td>
+													<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
+												</td>
+												<c:set var="budget_outcome_no" value="${records.budget_outcome_no}" />
+												<c:set var="nobudget_no" value="${records.nobudget_no}" />
+												<c:choose>
+												<c:when test="${not empty budget_outcome_no}">
+													<input type="hidden" value="${records.budget_outcome_no}" class="num">
+												</c:when>
+												<c:otherwise>
+													<input type="hidden" value="${records.nobudget_no}" class="num">
+												</c:otherwise>
+												</c:choose>					
+											</tr>		
+											</c:forEach>
+										</tbody>
+									
+								</table>
+							</div>
+						</div>
+					</div>
+					</c:if>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+<div class="my-2"></div>
 <%-- 입출력 내역 테이블 종료 --%>
 
 <%-- 페이지 번호 처리 --%>
 <br /><br />
-<div align="center">
-	<c:if test="${recordPage.count > 0}">
-		<fmt:parseNumber var="res" value="${recordPage.count / recordPage.pageSize}" integerOnly="true"/>
-		
-		<fmt:parseNumber var="pageCount" value="${res + (recordPage.count % recordPage.pageSize == 0 ? 0 : 1 )} "/>
-		<c:set var="pageBlock" value="10" />
-		
-		<fmt:parseNumber var="result" value="${(recordPage.currPage-1)/pageBlock}" integerOnly="true"/>
-		<fmt:parseNumber var="startPage" value="${result*pageBlock + 1}"/>
-		<fmt:parseNumber var="endPage" value="${startPage + pageBlock - 1}"/>
-		<c:if test="${endPage > pageCount}">
-		<c:set var="endPage" value="${pageCount}"/>
-		</c:if>
-		<c:if test="${startPage>pageBlock}">
-			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage-pageBlock}"> %lt;</a>
-		</c:if>
-		<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
-		<a href="/moamore/record/moneyRecord.moa?pageNum=${i}&type=${recordPage.type}&searchDate=${searchDate}" class="pageNums"> &nbsp; ${i} &nbsp; </a>	
-		</c:forEach>
-		<c:if test="${endPage<pageCount}">
-			<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage+pageBlock }"> &gt; </a>	  
-		</c:if>
-	</c:if>
+	<div class="row">
+		<div class="col-sm-12 col-md-12"  style="justify-content:center">
+			<div class="dataTables_paginate paging_simple_numbers" id="dataTable_paginate"  style="justify-content:center">
+				<c:if test="${recordPage.count > 0}">
+					<ul class="pagination" style="justify-content:center">
+						<fmt:parseNumber var="res" value="${recordPage.count / recordPage.pageSize}" integerOnly="true"/>
+						
+						<fmt:parseNumber var="pageCount" value="${res + (recordPage.count % recordPage.pageSize == 0 ? 0 : 1 )} "/>
+						<c:set var="pageBlock" value="10" />
+						
+						<fmt:parseNumber var="result" value="${(recordPage.currPage-1)/pageBlock}" integerOnly="true"/>
+						<fmt:parseNumber var="startPage" value="${result*pageBlock + 1}"/>
+						<fmt:parseNumber var="endPage" value="${startPage + pageBlock - 1}"/>
+						<c:if test="${endPage > pageCount}">
+							<c:set var="endPage" value="${pageCount}"/>
+						</c:if>
+						
+						<c:if test="${startPage>pageBlock}">
+							<li class="paginate_button page-item">
+								<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage-pageBlock}"> %lt;</a>
+							</li>
+						</c:if>
+						<c:forEach var="i" begin="${startPage}" end="${endPage }" step="1">
+							<li class="paginate_button page-item <c:if test='${i == searchForRecordDTO.pageNum }'>active</c:if>">
+								<a href="/moamore/record/moneyRecord.moa?pageNum=${i}&type=${recordPage.type}&searchDate=${searchDate}&keyword=${keyword}" class="pageNums page-link"> &nbsp; ${i} &nbsp; </a>	
+							</li>
+						</c:forEach>
+						<c:if test="${endPage<pageCount}">
+							<li class="paginate_button page-item">
+								<a href="/moamore/record/moneyRecord.moa?pageNum=${startPage+pageBlock }"> &gt; </a>	  
+							</li>
+						</c:if>
+					</ul>
+				</c:if>
+			</div>
+		</div>
+	</div>
 </div>
-
 <div style="height:1000px;"></div>
 <!-- 팝업뜰 때 배경 -->
 <div id="mask"></div>
@@ -258,8 +298,8 @@ a:hover { color: blue; text-decoration: underline;}
 						<td>금액</td>	
 					</tr>
 					<tr>
-						<td><input type="date" id="date"/><input type="time" id="time"/><td>
-						<td><input type="number" id="amount" value=0 /></td>	
+						<td><input type="date" id="date"/><input type="time" id="time"/></td>
+						<td><input type="number" id="amount" value=0 style="width:40px;"/></td>	
 					</tr>
 					<tr>
 						<td colspan="2">제목</td>
@@ -300,10 +340,17 @@ var budgetDate;
 var budgetReg;
 var budget_no = 0;
 var uniqueNum =0;
-console.log("레코드페이지 안의 타임 : " + type);
-	$(document).ready(function(){
-		
-		
+console.log("***moneyLog 안의 타입 : " + type);
+	$(document).ready(function(){	
+		if(type =="income" || type =="outcome" || type =="budget"){
+			
+			//$(".forManyType").css("display", "none"); 
+			$(".forManyType").hide();
+		}else{
+			//$(".forManyType").css("display", "block"); 	
+			$(".forManyType").show();
+		}		
+
 		console.log("레코드페이지 안의 타입222 :" + type);
 
 		
@@ -549,18 +596,21 @@ console.log("레코드페이지 안의 타임 : " + type);
 			$("#budgetcategory").css("display", "block"); 
 			$("#incomecategory").css("display", "none"); 
 			$("#outcomecategory").css("display", "none"); 
+			//$(".forManyType").css("display", "none"); 
 		}else if($("#recordType").val() == "income"){
 			console.log("수입")
 			cateType="incomecategory";
 			$("#incomecategory").css("display", "block"); 
 			$("#budgetcategory").css("display", "none");
 			$("#outcomecategory").css("display", "none"); 
+		//	$(".forManyType").css("display", "none"); 
 		}else if($("#recordType").val() == "outcome"){
 			console.log("지출")
 			cateType="outcomecategory";
 			$("#outcomecategory").css("display", "block"); 
 			$("#incomecategory").css("display", "none"); 
 			$("#budgetcategory").css("display", "none");
+			//$(".forManyType").css("display", "none"); 
 		}// 끝
 
 		

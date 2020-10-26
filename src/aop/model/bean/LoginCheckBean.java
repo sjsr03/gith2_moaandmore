@@ -1,7 +1,11 @@
 package aop.model.bean;
 
 import java.io.PrintWriter;
+import java.net.CookieStore;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -32,13 +36,45 @@ public class LoginCheckBean {
 		String id = (String)session.getAttribute("memId");
 		
 		if(id == null) {	//비로그인 상태면
+			//String value = URLDecoder.decode(cookie.getValue(), "UTF-8");
+			//Cookie cookie = new Cookie(name, URLEncoder.encode(value, "UTF-8"));
+			System.out.println("쿠키체크 시작");
+			//쿠키 체크
+			Cookie[] coo = request.getCookies();
+			if(coo != null) {
+				for(Cookie c:coo) {
+					if(c.getName().equals("autoId")) {
+						session.setAttribute("memId", c.getValue());
+						System.out.println(c.getValue());
+						c.setMaxAge(60*60*24);
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoName")) {
+						session.setAttribute("memName", URLDecoder.decode(c.getValue()));
+						c.setMaxAge(60*60*24);
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoImg")) {
+						session.setAttribute("memImg", URLDecoder.decode(c.getValue()));
+						c.setMaxAge(60*60*24);
+						response.addCookie(c);
+					}
+				}
+				id = (String)session.getAttribute("memId");
+			}
+		}
+		
+		if(id == null) {	
+			
+			/*
 			response.setCharacterEncoding("UTF-8"); 
 			response.setContentType("text/html; charset=UTF-8");
 			PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인 후 이용하세요!');</script>");
             out.flush();
 			return "member/loginForm";	//로그인페이지로 이동
-			
+			*/
+			return "main";
 		} else {	//로그인 상태인데
 //			TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(id);
 //			if(TBdto == null) {	//현재 설정된 예산이 없으면

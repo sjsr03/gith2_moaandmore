@@ -21,4 +21,6 @@ public interface ClosingAccountService {
 	public void insertClosingAccountComment(ClosingAccountCommentDTO dto) throws SQLException;
 	//결산 게시물 등록
 	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException;
+	//댓글의 프로필이미지 리스트
+	public List selectProfileImgsForComment(int article_no, int start, int end) throws SQLException;
 }

@@ -264,9 +264,9 @@
 							
 							if(${i.recommend} > ${i.actual }) {	//권장액 미만일 시 파란색
 								var max = ${i.recommend};
-								var backgroundColor="#4e73df";
+								var backgroundColor="#229abe";
 							    var hoverBackgroundColor= "#2e59d9";
-							    var borderColor= "#4e73df";
+							    var borderColor= "#229abe";
 							} else {	//권장액 초과시 빨간색
 								var max = ${i.actual};
 								var backgroundColor="#df4e4e";
@@ -475,9 +475,8 @@ var teamGoals=[];
 			if(ans == true) {
 				if($('input:radio:checked').val()=="goals") {
 					var goal_no = $("#targetGoal option:selected").val();
-					var rest = $('#targetGoal option:selected').prop('class').split(' ')[1];
-					
-					if($('#transSum').text() > rest) {
+					var rest = $('#targetGoal option:selected').prop('class').split(' ')[$('#targetGoal option:selected').prop('class').split(' ').length-1];
+					if(Number($('#transSum').text()) > Number(rest)) {
 						alert(subSelect + "달성까지 " + rest + "원 남았습니다.\n달성액을 초과할 수 없습니다.");
 						return;
 					}

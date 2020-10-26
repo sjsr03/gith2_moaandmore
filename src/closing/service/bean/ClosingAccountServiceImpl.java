@@ -50,5 +50,10 @@ public class ClosingAccountServiceImpl implements ClosingAccountService{
 	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException {
 		closingDao.insertClosingAccount(dto);
 	}
+	
+	@Override
+	public List selectProfileImgsForComment(int article_no, int start, int end) throws SQLException {
+		return closingDao.selectProfileImgsForComment(article_no, start, end);
+	}
 
 }

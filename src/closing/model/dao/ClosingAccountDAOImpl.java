@@ -71,5 +71,17 @@ public class ClosingAccountDAOImpl implements ClosingAccountDAO{
 	public void insertClosingAccount(ClosingAccountDTO dto) throws SQLException {
 		sqlSession.insert("closing.insertClosingAccount", dto);
 	}
+	
+	@Override
+	public List selectProfileImgsForComment(int article_no, int start, int end) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("start", start);
+		map.put("end", end);
+		map.put("article_no", article_no);
+		
+		List list = sqlSession.selectList("closing.selectProfileImgsForComment", map);
+
+		return list;
+	}
 
 }

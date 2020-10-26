@@ -60,5 +60,6 @@ public class RecordPageDTO {
 	public void setType(String type) {
 		this.type = type;
 	}
+
 	
 }

@@ -7,10 +7,20 @@
 <head>
 <meta charset="UTF-8">
 <title>memberList</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
+<script>
+	$(document).ready(function(){
+		if("${memId}" != "admin"){
+			alert("관리자 전용 페이지입니다.");
+			history.go(-1);
+		}
+	});
+	
+</script>
 <body id="page-top">
 <jsp:include page="../sidebar.jsp"/>	
-
+	
 	<!-- 본문 내용 시작  -->
 	<div class="container-fluid">
 	
@@ -19,7 +29,7 @@
 			<h1 class="h3 mb-0 text-gray-80"> 회원 목록 </h1>
 		</div>
 		
-		
+		<c:if test="${memId eq 'admin'}">
 		<!-- 첫번째 줄 -->
 		<div class="row">
 			<div class="col-lg-12">
@@ -131,6 +141,7 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 	</div>
 	<jsp:include page="../footer.jsp"/>
 
