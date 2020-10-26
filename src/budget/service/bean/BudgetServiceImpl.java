@@ -500,7 +500,13 @@ public class BudgetServiceImpl implements BudgetService {
 			TotalBudgetDetailDTO TBDdto = (TotalBudgetDetailDTO) TBDList.get(i);
 			//기록된 현재 예산값은
 			int current = TBDdto.getCategory_current();
-			int dailyBudget = (int)Math.round(current / (lastPeriod-1));
+			int dailyBudget = 0;
+			
+			if(lastPeriod == 1) {
+				dailyBudget = current;
+			} else {
+				dailyBudget = (int)Math.round(current / (lastPeriod-1));
+			}
 			
 			//소비했다고 가정하는 액수
 			int assumed = dailyBudget*period;
