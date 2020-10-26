@@ -160,22 +160,25 @@ function get_searchInfo(){
 <jsp:include page="../sidebar.jsp"/>
 
 <div class="container-fluid">
-	<div class="row">
+	<div class="row ml-3 mt-3">
 		<h5 class="h5">*예산외 내역은 제외되고 검색됩니다.</h5>
 	</div>
-	<div class="row">
+	<div class="row ml-3">
 		<form name="searchForm" id="searchForm" >
-			<span class="text">시작일</span><input id="startday" type="text" name="startday" placeholder="ex)2020.10.20" size="13"/><br/><span class="text">종료일</span><input name="endday" id="endday" type="text" placeholder="ex)2020.10.25" size="12"/>
-			<br/><span class="text">분류</span>
-			<select id="search_category" name="search_category">
-			<c:forEach var="category" items="${outcomeCategoryList}">
-				<option value="${category.category_no}"><c:out value="${category.category_name}"></c:out></option>
-			</c:forEach>
-			</select>
-			<br/><span class="text">검색명</span><input id="search_content" name="search_content" type="text" placeholder="검색 항목을 입력하세요."/>
-			<button type="button" onclick="get_searchInfo()">검색</button>
+			<div class="mb-1"><span class="text mr-2">기  간 </span><input id="startday" type="text" name="startday" placeholder="YYYY.mm.dd" size="10"/>-<input name="endday" id="endday" type="text" placeholder="YYYY.mm.dd" size="10"/></div>
+			<div class="mb-1">
+				<span class="text mr-2">분  류</span>
+					<select id="search_category" name="search_category">
+					<c:forEach var="category" items="${outcomeCategoryList}">
+						<option value="${category.category_no}"><c:out value="${category.category_name}"></c:out></option>
+					</c:forEach>
+					</select>
+			</div>
+			<div class="mb-1">
+				<span class="text">검색명 </span><input id="search_content" name="search_content" type="text" size="17" placeholder="검색 항목을 입력하세요."/>
+				<button type="button" class="btn btn-primary" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:1px solid #ccc; border-right:1px solid #ccc;" onclick="get_searchInfo()"><span class="text">검색</span></button>
+			</div>
 		</form>
-	
 	</div>
 	<div class="row card shadow mb-4" id="search-wrapper" style="display:none;">
 		<h3 class="h2 card-body mt-2" id="search_keyword" style="display:flex; align-items: center; justify-content: center;vertical-align:middle; text-align:center;"></h3>
