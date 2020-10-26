@@ -59,7 +59,9 @@
 			<div id="step1" style="transition:.5s;" class="animated--fade-in">
 				<p>현재 진행중인 예산이 없습니다!</p>
 				<p>예산설정을 완료해주세요.</p>
-				<button id="nextBtn1">새로운 예산 만들기</button>
+				<div style="text-align:center;">
+					<button id="nextBtn1" class="btn btn-primary">새로운 예산 만들기</button>
+				</div>
 			</div>
 			<form action="/moamore/budget/setBudgetPro.moa" method="post" >
 			<div id="step2" style="transition:.5s;display:none;" class="animated--fade-in">
@@ -90,11 +92,15 @@
 						</div>
 					</li>
 				</ul>
-				<input type="button" value="세부설정 >" id="nextBtn2" />
+				<div style="text-align:center">
+					<input type="button" value="세부설정 >" id="nextBtn2" class="btn btn-primary"/>
+				</div>
 			</div>
 			<div id="step3" style="transition:.5s;display:none;" class="animated--fade-in">
-				
-				<input type="button" value="추가" id="insertLine"/>
+				<input type="button" value="<이전 단계" id="prevBtn" class="btn btn-secondary" />
+				<div style="text-align:right;">
+					<input type="button" value="추가" id="insertLine" class="btn btn-primary"/>
+				</div>
 				
 				<table id="detailBudget">
 					<tr>
@@ -137,8 +143,8 @@
 			카테고리별 예산 합계와 총 예산이 동일하도록 설정하세요
 			<br/>
 			<input type="hidden" value="1" name="isNewBudget" />
-			<input type="button" value="<이전 단계" id="prevBtn" />
-			<input type="hidden" value="새로운 예산 생성" id="createBudget" />
+			
+			<input type="hidden" value="새로운 예산 생성" id="createBudget" class="btn btn-primary"/>
 			</div>
 		</form>
 		</div>
