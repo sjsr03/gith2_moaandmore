@@ -52,7 +52,12 @@ public class MemberBean {
 	@Autowired
 	private BudgetService budgetService = null;
 	
-
+	@RequestMapping("tutorial.moa")
+	public String tutorial() {
+		
+		
+		return "member/tutorial";
+	}
 
 
 	@RequestMapping("loginForm.moa")
@@ -61,6 +66,7 @@ public class MemberBean {
 		
 		return "member/loginForm"; 		
 	}
+	
 	@RequestMapping("loginPro.moa")
 	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		HttpSession session = request.getSession();
@@ -303,8 +309,6 @@ public class MemberBean {
 		dto = memberService.selectOne(id);
 		  
 		request.getSession().setAttribute("memImg", dto.getProfile_img());
-		
-		
 		
 		
 		  model.addAttribute("dto", dto);

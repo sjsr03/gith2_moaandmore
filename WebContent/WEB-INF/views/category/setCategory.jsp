@@ -14,7 +14,20 @@
 
  
   @media (max-width: 800px){
-      
+      my_td{
+        	width:50px !important;
+        	height:50px !important;
+        	
+        	
+        }
+       .my_tab{
+       	border-spacing: 10px !important;
+       }
+       
+       .cat_text{
+       		text-align:center;
+       		font-size:1em !important;
+       	}
     
    		
     }
@@ -23,14 +36,35 @@
        .my_td{
         	width:50px !important;
         	height:50px !important;
-        	font-size:1em !important;
-        	;
+        	
+        	
         }
+       .my_tab{
+       	border-spacing: 10px !important;
+       }
+       
+       .cat_text{
+       		text-align:center;
+       		font-size:1em !important;
+       	}
     
     }
     
     @media (max-width: 370px){
-        
+        my_td{
+        	width:50px !important;
+        	height:50px !important;
+        	
+        	
+        }
+       .my_tab{
+       	border-spacing: 10px !important;
+       }
+       
+       .cat_text{
+       		text-align:center;
+       		font-size:1em !important;
+       	}
     
    		
     }
@@ -165,7 +199,6 @@ button{
  		<!-- 페이지 이름 -->
          <div class="d-sm-flex align-items-center justify-content-between mb-4">
            <h1 class="h3 mb-0 text-gray-800">카테고리 설정</h1>
-           	${already}
            </div>	
 	
 	
@@ -198,7 +231,7 @@ button{
 	</div>
 	
 	 <div class="card-body">
-		<h4>[수입]</h4>
+		<h4>수입 카테고리</h4>
 		<form class='allIncome'>
 		</form>
 	</div>
@@ -251,7 +284,6 @@ $(document).ready(function(){
 			event.preventdefault();
 			
 		}else{
-			console.log(12);
 			$.ajax({
 				type : "POST",
 				url : "setCategoryPro.moa",
@@ -262,7 +294,6 @@ $(document).ready(function(){
 					
 				},
 				success : function(data){		
-					console.log("success");
 					 getExpenseCategory();
 					getIncomeCategory();
 				}
@@ -368,29 +399,23 @@ function getIncomeCategory(){
 //수정 삭제 창이 열려있을때 창밖을 클릭하면 remove 클래스 
 
 $(document).mouseup(function(e){
-	console.log(4);
 	var container = $('.my_sub');
 	
 	if(container.has(e.target).length===0 && $('.cat_btn').has(e.target).length===0){
-		console.log("창밖");
 		$('.my_sub').removeClass('on');
 	}
 });
-
 
 //수정하기,삭제하기 창 띄워주기
 function updateAndDelete(){
 		$('.cat_btn i').each(function(){
 			$(this).on('click', function(){
-				console.log("수정하기 삭제하기 창 띄어주기");
 				
 				if($(this).next().closest('.my_sub').hasClass('on')){
-					console.log(2.5);
 					//수정.삭제 창에 on클래스가 있으면 on클래스 없애주기 
 					$(this).next().closest('.my_sub').removeClass('on');
 						
 				}else{
-					console.log(3);
 					//버튼 누를때 수정삭제 창에 클래스 'on' 넣어주기 
 					$(this).next().closest('.my_sub').addClass('on');
 				}
@@ -408,10 +433,9 @@ function updateAndDelete(){
 //수정하기 모달창 보여주기
 function cateogryModify(category_no,inorout){
 	
-	$('.modify').each(function(category_no,inorout){
+	$('.modify').each(function(){
 		$(this).on('click', function(){
 			$('.categorymodal').addClass("show-categorymodal");
-			  console.log("수정하기 모달창");
 			modifyAction(category_no,inorout);
 		});	
 	});
@@ -433,15 +457,12 @@ function toggleWin() {
 
 //카테고리 수정하기
 function modifyAction(category_no,inorout){
-	$('.modifyCategory').click(function(event){
+	$('.modifyCategory').unbind("click").bind("click",function(){
 		var newName = $('.newName').val();
-		console.log("카테고리 수정하기");
 		if(newName == ""){
-			console.log("alert");
 			alert("카테고리를 입력해주세요");
 		}else{
 		window.location.href="/moamore/category/updateCategory.moa?newName="+newName+"&category_no="+category_no+"&inorout="+inorout;
-		//event.preventDefault();
 		getExpenseCategory();
 		}
 	
