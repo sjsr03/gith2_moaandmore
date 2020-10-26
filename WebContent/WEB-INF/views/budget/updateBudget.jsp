@@ -210,7 +210,7 @@
 		
 		
 		$('#insertLine').on('click', function(){ //라인 추가
-			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
+			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
 			
 			//삭제버튼 기능
@@ -242,7 +242,7 @@
 			$('.rate').on('keyup', function(){
 				reCalRate($(this));
 				reSum();
-				calDay($(this));
+				calDay($(this).parent().prev().children('.amount'));
 			});
 			
 			//카테고리명이 change일 때 옵션 속성 변경
@@ -272,7 +272,7 @@
 		$('.rate').on('keyup', function(){
 			reCalRate($(this));
 			reSum();
-			calDay($(this));
+			calDay($(this).parent().prev().children('.amount'));
 		});
 		
 		//삭제버튼 기능
