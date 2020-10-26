@@ -10,26 +10,11 @@
 <body>
 
 	<c:if test="${result==1 }" >
-	
-	<!-- 
-	
-		<c:choose>
-			<c:when test="${referrer == 'main' || referrer=='' }">
-	 -->
-	 
-				<script>
-					window.location="../main.moa";
-				</script>
+
+		<script>
+			window.location="/moamore/main.moa";
+		</script>
 				
-	<!-- 
-			</c:when>
-			<c:otherwise>
-				<script>
-					window.location="${referrer}";
-				</script>
-			</c:otherwise>
-		</c:choose>
-	 -->
 	</c:if>
 	<c:if test="${result!=1 }">
 		<script>

@@ -587,9 +587,6 @@ pre code {
   .container {
     max-width: 720px;
   }
-  #ranking {
-  	display:block;
-  }
 }
 
 @media (min-width: 992px) {
@@ -602,6 +599,11 @@ pre code {
   .container {
     max-width: 1140px;
   }
+}
+@media (min-width:1380px) {
+	#ranking {
+		display:block;
+	}
 }
 
 .container-fluid, .container-sm, .container-md, .container-lg, .container-xl {

@@ -68,52 +68,14 @@ public class MemberBean {
 	}
 	
 	@RequestMapping("loginPro.moa")
-	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		HttpSession session = request.getSession();
-//		model.addAttribute("referrer",referrer);
-//		if(id==null && pw==null) {
-//			Cookie[] coo = request.getCookies();
-//			if(coo != null) {
-//				for(Cookie c:coo) {
-//					if(c.getName().equals("autoId")) {
-//						session.setAttribute("memId", c.getValue());
-//						System.out.println(c.getValue());
-//						c.setMaxAge(60*60*24);
-//						response.addCookie(c);
-//					}
-//					if(c.getName().equals("autoName")) {
-//						session.setAttribute("memName", URLDecoder.decode(c.getValue()));
-//						c.setMaxAge(60*60*24);
-//						response.addCookie(c);
-//					}
-//					if(c.getName().equals("autoImg")) {
-//						session.setAttribute("memImg", URLDecoder.decode(c.getValue()));
-//						c.setMaxAge(60*60*24);
-//						response.addCookie(c);
-//					}
-//				}
-//				id = (String)session.getAttribute("memId");
-//			} else {
-//				return "loginForm.moa";
-//			}
-//			
-//			if(id != null) {
-//				return "../main.moa";
-//			}
-//		}
-//		
-//		
 		
 		
 		int result = memberService.idPwCheck(id, pw);
 		
-		if(referrer == null) {
-			referrer = "main";
-		}
-		
 		if(session.getAttribute("memId") != null) {
-			model.addAttribute("referrer",referrer);
-			return "member/loginPro"; 
+			return "main"; 
 		}
 		
 		if(result==1) {	//아이디 비밀번호 일치하면
@@ -143,8 +105,6 @@ public class MemberBean {
 		}
 		
 		model.addAttribute("result",result);
-		model.addAttribute("referrer",referrer);
-		System.out.println("referrer : " + referrer);
 
 		
 		//현재 진행중인 예산이 있다면
