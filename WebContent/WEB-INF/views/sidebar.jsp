@@ -251,11 +251,13 @@ $(document).ready(function(){
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
-
+		
+	<div style="width:100%; display:flex; justify-content:center;" >
       <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline" style="width:100%;display:flex;">
+      <div class="text-center d-none d-md-inline" style="">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
+    </div>
 
     </ul>
     <!-- End of Sidebar -->
@@ -285,7 +287,7 @@ $(document).ready(function(){
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-5" id="ranking">
-                <jsp:include page="./realTimeRankingForMobile.jsp"/>
+                <jsp:include page="./realTimeRanking.jsp"/>
             </li>
             
 			<!-- 로그인 상태일 때 -->

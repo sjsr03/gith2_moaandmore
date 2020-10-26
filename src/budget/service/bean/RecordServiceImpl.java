@@ -22,8 +22,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import budget.model.dao.LeftMoneyDAO;
 import budget.model.dao.RecordBudgetDAO;
 import budget.model.dao.RecordNoBudgetDAO;
+import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
@@ -31,6 +33,7 @@ import budget.model.dto.NoBudgetDetailDTO;
 import budget.model.dto.RecordModifyDTO;
 import budget.model.dto.RecordPageDTO;
 import budget.model.dto.SearchForRecordDTO;
+import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
 import category.model.dto.income_categoryDTO;
 import category.model.dto.outcome_categoryDTO;
@@ -44,6 +47,10 @@ public class RecordServiceImpl implements RecordService{
 	private RecordNoBudgetDAO recordNoBudgetDAO = null;
 	@Autowired
 	private CategoryDAO categoryDAO = null;
+	@Autowired
+	private TotalBudgetDAO totalBudgetDAO = null;
+	@Autowired
+	private LeftMoneyDAO leftMoneyDAO = null;
 	
 	// 수입/지출내역 insert 메서드  
 	@Override
@@ -110,6 +117,22 @@ public class RecordServiceImpl implements RecordService{
 			int budget_outcome_no = budgetDTO.getBudget_outcome_no();
 			budgetDetailDTO.setBudget_outcome_no(budget_outcome_no);
 			
+			
+			
+			//현재예산이고 과거날짜일때는 leftmoney에서 차감
+			TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(budgetDTO.getId());
+			Date today = new Date();
+			today.setHours(0);
+			today.setMinutes(0);
+			today.setSeconds(0);
+			
+			Date newDate = new Date(date.getTime());
+			
+			if(budgetDTO.getBudget_no()==TBdto.getBudget_no() && newDate.before(today)) {
+				leftMoneyDAO.updateLeftMoney(budgetDTO.getAmount(), budgetDTO.getCategory_no(), budgetDTO.getId());
+			}
+			
+			
 			recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);			
 		}	
 	}
@@ -174,6 +197,21 @@ public class RecordServiceImpl implements RecordService{
 	public int deleteRecord(int number, String type) throws SQLException {
 		int result = 0;
 		if(type.equals("budget")){ // 예산이면 예산 삭제
+			BudgetDTO dto = recordBudgetDAO.selectRecordByNo(number);
+			int amount = dto.getAmount();
+			int category_no = dto.getCategory_no();
+			String id = dto.getId();
+			
+			Date today = new Date();
+			today.setHours(0);
+			today.setMinutes(0);
+			today.setSeconds(0);
+			
+			Date dtoReg = new Date(dto.getReg().getTime());
+			if(dtoReg.before(today)) {
+				leftMoneyDAO.updateLeftMoney(amount, category_no, id);
+			}
+			
 			result = recordBudgetDAO.deleteBudgetRecord(number);
 		}else { // 예산외 삭제
 			result = recordNoBudgetDAO.DeleteNoBudgetRecord(number);
@@ -550,6 +588,78 @@ public class RecordServiceImpl implements RecordService{
 			
 			System.out.println(budgetDTO.toString());
 			System.out.println(budgetDetailDTO.toString());
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			//예산 내 기록 수정시 totalBudget 건드리기(지예)
+			//기존에 기록되어있던 정보 불러오기
+			BudgetDTO oriRecord = recordBudgetDAO.selectRecordByNo(budgetDTO.getBudget_outcome_no());
+			TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(budgetDTO.getId());
+			String id = TBdto.getId();
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = new Date();
+			today.setHours(0);
+			today.setMinutes(0);
+			today.setSeconds(0);
+			
+			int oriBudgetNo = oriRecord.getBudget_no();
+			
+			Date newReg = new Date(budgetDTO.getReg().getTime());
+			Date oriReg = new Date(oriRecord.getReg().getTime());
+			
+			int oriAmount = oriRecord.getAmount();
+			int newAmount = budgetDTO.getAmount();
+			
+			int oriCat = oriRecord.getCategory_no();
+			int newCat = budgetDTO.getCategory_no();
+			
+			
+			
+			
+			//둘 중 하나라도 과거날짜일때만
+			if(newReg.before(today) || oriReg.before(today)) {
+				if(budgetDTO.getBudget_no() == TBdto.getBudget_no() && oriBudgetNo == TBdto.getBudget_no()) {	//둘다 현재예산인 경우
+					//둘 중 하나가 오늘날짜인지?
+					if(newReg.after(today)) {	//새로운 날짜가 오늘~미래날짜
+						//원래날짜의 기록은 더해주기
+						//해당 금액만큼 leftmoney에 더해주기
+						leftMoneyDAO.updateLeftMoney(oriAmount, oriCat, id);
+						//새로운 날짜 기록은 무시
+					} else if (oriReg.after(today)) {	//원래 날짜가 오늘~미래 날짜
+						//원래날짜 기록은 무시
+						//새로운 날짜가 과거일 때 
+						if(oriReg.after(newReg)) {
+							//새로운 기록만큼 빼주기
+							leftMoneyDAO.updateLeftMoney(0-newAmount, newCat, id);
+						}
+					} else { //둘다 오늘날짜 아님
+						//원래날짜의 기록은 더해주기
+						leftMoneyDAO.updateLeftMoney(oriAmount, oriCat, id);
+						//새로운 기록은 빼주기
+						leftMoneyDAO.updateLeftMoney(0-newAmount, newCat, id);
+					}
+					
+				} else if(budgetDTO.getBudget_no() == TBdto.getBudget_no()) {	//새로 수정된 기록만 현재 예산인 경우
+					if(newReg.before(today)) {//새로운 날짜가 과거날짜일 때
+						leftMoneyDAO.updateLeftMoney(0-newAmount, newCat, id);
+					}
+				} else if(oriBudgetNo == TBdto.getBudget_no()) {	//예전 기록만 현재 예산인 경우
+					if(oriReg.before(today)) {	//기존 날짜가 과거날짜일 때
+						leftMoneyDAO.updateLeftMoney(oriAmount, oriCat, id);
+					}
+				}
+			}
+			
+			
+			
+			
+			
 			
 			
 			recordBudgetDAO.modifyBudgetRecord(budgetDTO, budgetDetailDTO);

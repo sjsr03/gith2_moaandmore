@@ -102,7 +102,7 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 		
 		TotalBudgetDTO TBdto = selectCurrentOne(id);
 		long lt = TBdto.getEnd_day().getTime()-today.getTime();
-		int period = (int)Math.round(lt/(1000*60*60*24));
+		int period = (int)Math.ceil(lt/(1000*60*60*24));
 		return period;
 	}
 	@Override
