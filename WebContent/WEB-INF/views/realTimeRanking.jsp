@@ -106,7 +106,6 @@
 }
 	
 </style>
-
 <script>
 
 $(function(){

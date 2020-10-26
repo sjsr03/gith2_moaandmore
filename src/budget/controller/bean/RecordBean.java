@@ -150,6 +150,8 @@ public class RecordBean {
 		noBudgetDTO.setId(id);
 		System.out.println("빈에서 카테고리 넘" + request.getParameter("category_no"));
 		int category_no = Integer.parseInt(request.getParameter("category_no"));
+		System.out.println("ㅅㅈ카테고리no : "+category_no);
+		
 		// 일단 카테고리 정보 전부다 채워서 보낸 후에 서비스에서 나눠서 처리
 		budgetDTO.setCategory_no(category_no);
 		noBudgetDTO.setIncome_category_no(category_no);
@@ -160,7 +162,7 @@ public class RecordBean {
 		System.out.println("amount : " + budgetDTO.getAmount());
 		recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBudgetDetailDTO, date);
 		
-		return "budget/moneyLog";
+		return "budget/recordPro";
 	}
 	//------------------------------------------------------------------------
 	

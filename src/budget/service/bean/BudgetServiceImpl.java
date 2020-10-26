@@ -156,6 +156,7 @@ public class BudgetServiceImpl implements BudgetService {
 		todayBudgetDAO.insertTodayBudget(today_zero);
 		
 		//////////////여기까지 총예산 세부내용 설정//////////////////
+		totalBudgetDAO.updateCurrentBudget(TBdto.getBudget_no());
 		
 	}
 	

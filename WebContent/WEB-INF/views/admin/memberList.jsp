@@ -11,7 +11,7 @@
 </head>
 <script>
 	$(document).ready(function(){
-		if("${memId}" != "admin"){
+		if("${memId}" != "admin@naver.com"){
 			alert("관리자 전용 페이지입니다.");
 			history.go(-1);
 		}

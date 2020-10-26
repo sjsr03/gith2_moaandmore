@@ -100,6 +100,7 @@ function get_searchInfo(){
 			
 			
 			$('#search_info').empty();
+			$('#search_info2').empty();
 			$('#search_keyword').empty();
 			$("#searchList").empty();
 			

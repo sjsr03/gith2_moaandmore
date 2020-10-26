@@ -9,7 +9,6 @@
 </head>
 <style>
 	#popup1 {
-		display: flex;
 		justify-content: center;
 		align-items: center;
 		position: fixed;
@@ -65,7 +64,7 @@
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">예산 기간</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
                       <fmt:formatDate value="${TBdto.start_day}" pattern="yyyy년 MM월 dd일"/> ~ 
-                      <fmt:formatDate value="${TBdto.end_day}" pattern="yyyy년 MM월 dd일"/> (일)</div>
+                      <fmt:formatDate value="${TBdto.end_day}" pattern="yyyy년 MM월 dd일"/> (${period}일)</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar-check fa-2x text-gray-300"></i>
@@ -319,10 +318,10 @@
 	<!-- 남은돈 전환 창 -->
 	<div id="popup1">
 		<div class="popup">
-			<div style="display:inline;text-align:right;"><h2 style="display:inline">남은 돈 전환하기</h2>
+			<div class="d-sm-flex align-items-center justify-content-between" style="display:inline;"><h2 style="display:inline">남은 돈 전환하기</h2>
 			<button onclick="$('#popup1').css('display','none')" style="border:0; background:rgb(0,0,0,0);">X</button></div>
 			<form action="/moamore/budget/LeftMoneyTransfer.moa" method="post">
-			<div class="table-responsive">
+			<div class="table-responsive" style="overflow:visible">
 				<div class="col-lg-12 dataTables_wrapper dt-bootstrap4" >
 					<div class="row">
 						<table class="table table-bordered" id="leftMoneyList" >
@@ -352,12 +351,14 @@
 					</table>
 					</div>
 				</div>
-					<div style="display:inline-block">
+			</div> <!-- table responsive 끝 -->
+			<div class="row justify-content-between"> 
+					<div class="cols-md-6">
 						<label><input type="radio" name="target_table" value="budget" checked/>현재예산에 재분배</label>
 						<br/>
 						<label><input type="radio" name="target_table" value="goals" />목표로 보내기</label>
 					</div>
-					<div style="display:inline-block; width:300px; height:50px; border:0px solid #ccc; justify-content:right;">
+					<div class="cols-md-6" style="text-align:right;" >
 						<div id="subCat">
 							<span>재분배할 카테고리</span><br/>
 							<select id="targetCat" name="subSel">
@@ -390,9 +391,9 @@
 							</select>
 						</div>
 					</div>
-					<div>
-						<input type="button" id="trans" value="전환하기">
-					</div>
+				</div>
+				<div class="row justify-content-center">
+					<input type="button" id="trans" class="btn btn-primary" value="전환하기">
 				</div>
 				</form>
 		</div>

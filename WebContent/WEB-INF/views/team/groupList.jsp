@@ -144,10 +144,12 @@
 													<div class="pie-chart pie-chart1" style="background: conic-gradient(#8b22ff 0% ${articleMemberAvgList[1][stat.index]}%, #BDBDBD ${articleMemberAvgList[1][stat.index]}% 100%);"><span class="center"></span><span class="big">${articleMemberAvgList[1][stat.index]}%</span><span class="mini">평균달성률</span></span></div>
 												</c:if>
 												<c:if test="${pageStatus==1}">
-													<c:set var="tmp" value="${fn:substring(article.start_day,0,10)}" />
-													<c:set var="startday" value="${fn:replace(tmp,'-', '')}"/>
-													<fmt:parseNumber var="i" integerOnly="true" type="number" value="${startday}" />
-													<div class="pie-chart pie-chart1"><span class="center"></span><span class="mini">남은 날짜</span><span class="big">D-<c:out value="${i-today}" /></span></span></div>
+													<c:set var="startday" value="${fn:substring(article.start_day,0,10)}" />
+													<fmt:parseDate value="${startday}" var="startday" pattern="yyyy-MM-dd"/>
+													<fmt:parseNumber value="${startday.time / (1000*60*60*24)}" integerOnly="true" var="start_day"></fmt:parseNumber>
+													<fmt:parseDate value="${today}" var="today2" pattern="yyyy-MM-dd"/>
+													<fmt:parseNumber value="${today2.time / (1000*60*60*24)}" integerOnly="true" var="today_day"></fmt:parseNumber>
+													<div class="pie-chart pie-chart1"><span class="center"></span><span class="mini">남은 날짜</span><span class="big">D-<c:out value="${start_day-today_day}" /></span></span></div>
 												</c:if>
 											</center>
 										</div>

@@ -25,7 +25,7 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 	@Override
 	public int insertBudget(BudgetDTO budgetDTO) throws SQLException {
 
-		
+		System.out.println("Budgetcategoryno : " + budgetDTO.getCategory_no());
 		sqlSession.update("record.updateCurrentBudget", budgetDTO);	//총예산 현재값에서 차감
 
 		
