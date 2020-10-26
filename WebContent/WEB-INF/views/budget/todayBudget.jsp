@@ -320,7 +320,7 @@
 	<div id="popup1">
 		<div class="popup">
 			<div style="display:inline;text-align:right;"><h2 style="display:inline">남은 돈 전환하기</h2>
-			<button onclick="$('#popup1').css('display','none')">X</button></div>
+			<button onclick="$('#popup1').css('display','none')" style="border:0; background:rgb(0,0,0,0);">X</button></div>
 			<form action="/moamore/budget/LeftMoneyTransfer.moa" method="post">
 			<div class="table-responsive">
 				<div class="col-lg-12 dataTables_wrapper dt-bootstrap4" >
@@ -357,9 +357,9 @@
 						<br/>
 						<label><input type="radio" name="target_table" value="goals" />목표로 보내기</label>
 					</div>
-					<div style="display:inline-block; width:300px; height:50px; border:1px solid #ccc">
+					<div style="display:inline-block; width:300px; height:50px; border:0px solid #ccc; justify-content:right;">
 						<div id="subCat">
-							<span>재분배할 카테고리</span>
+							<span>재분배할 카테고리</span><br/>
 							<select id="targetCat" name="subSel">
 								<c:forEach items="${BDdtoList }" var="j">
 									<option value=${j.category_no } class="${categories[j.category_no] }">${categories[j.category_no] }</option>
@@ -367,7 +367,7 @@
 							</select>
 						</div>
 						<div id="subGoal" style="display:none;">
-							<span>목표 선택</span>
+							<span>목표 선택</span><br/>
 							<select id="targetGoal" name="subSel">
 								<c:if test="${personalGoals==null && teamGoals==null}" >
 									<option disabled>목표가 없습니다</option>
@@ -513,10 +513,10 @@ var teamGoals=[];
 		
 		if(target == 'budget') {
 			$('#subGoal').css('display','none');
-			$('#subCat').css('display','flex');
+			$('#subCat').css('display','block');
 		} else {
 			$('#subCat').css('display','none');
-			$('#subGoal').css('display','flex');
+			$('#subGoal').css('display','block');
 		}
 	}
 	
