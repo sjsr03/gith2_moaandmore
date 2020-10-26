@@ -63,8 +63,48 @@ public class MemberBean {
 	}
 	@RequestMapping("loginPro.moa")
 	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-		int result = memberService.idPwCheck(id, pw);
 		HttpSession session = request.getSession();
+//		model.addAttribute("referrer",referrer);
+//		if(id==null && pw==null) {
+//			Cookie[] coo = request.getCookies();
+//			if(coo != null) {
+//				for(Cookie c:coo) {
+//					if(c.getName().equals("autoId")) {
+//						session.setAttribute("memId", c.getValue());
+//						System.out.println(c.getValue());
+//						c.setMaxAge(60*60*24);
+//						response.addCookie(c);
+//					}
+//					if(c.getName().equals("autoName")) {
+//						session.setAttribute("memName", URLDecoder.decode(c.getValue()));
+//						c.setMaxAge(60*60*24);
+//						response.addCookie(c);
+//					}
+//					if(c.getName().equals("autoImg")) {
+//						session.setAttribute("memImg", URLDecoder.decode(c.getValue()));
+//						c.setMaxAge(60*60*24);
+//						response.addCookie(c);
+//					}
+//				}
+//				id = (String)session.getAttribute("memId");
+//			} else {
+//				return "loginForm.moa";
+//			}
+//			
+//			if(id != null) {
+//				return "../main.moa";
+//			}
+//		}
+//		
+//		
+		
+		
+		int result = memberService.idPwCheck(id, pw);
+		
+		if(referrer == null) {
+			referrer = "main";
+		}
+		
 		if(session.getAttribute("memId") != null) {
 			model.addAttribute("referrer",referrer);
 			return "member/loginPro"; 
@@ -137,10 +177,24 @@ public class MemberBean {
 			HttpSession session = request.getSession();
 			session.removeAttribute("memId");	//세션 삭제
 			Cookie[] coo = request.getCookies();
-			for(Cookie c : coo) {
-				if(c.getName().equals("autoId")) c.setMaxAge(0);
-				if(c.getName().equals("autoName")) c.setMaxAge(0);
-				if(c.getName().equals("autoImg")) c.setMaxAge(0);
+			if(coo != null) {
+				for(Cookie c : coo) {
+					if(c.getName().equals("autoId")) {
+						c.setMaxAge(0);
+						c.setPath("/moamore/");
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoName")) {
+						c.setMaxAge(0);
+						c.setPath("/moamore/");
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoImg")) {
+						c.setMaxAge(0);
+						c.setPath("/moamore/");
+						response.addCookie(c);
+					}
+				}
 			}
 			
 			return "main";
@@ -153,15 +207,29 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String logout(HttpServletRequest request){
+	public String logout(HttpServletRequest request,HttpServletResponse response){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		session.removeAttribute("memName");	//세션 삭제
 		Cookie[] coo = request.getCookies();
-		for(Cookie c : coo) {
-			if(c.getName().equals("autoId")) c.setMaxAge(0);
-			if(c.getName().equals("autoName")) c.setMaxAge(0);
-			if(c.getName().equals("autoImg")) c.setMaxAge(0);
+		if(coo != null) {
+			for(Cookie c : coo) {
+				if(c.getName().equals("autoId")) {
+					c.setMaxAge(0);
+					c.setPath("/moamore/");
+					response.addCookie(c);
+				}
+				if(c.getName().equals("autoName")) {
+					c.setMaxAge(0);
+					c.setPath("/moamore/");
+					response.addCookie(c);
+				}
+				if(c.getName().equals("autoImg")) {
+					c.setMaxAge(0);
+					c.setPath("/moamore/");
+					response.addCookie(c);
+				}
+			}
 		}
 		return "redirect:../main.moa";
 	}
