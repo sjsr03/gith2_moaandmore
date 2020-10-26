@@ -59,7 +59,9 @@
 			<div id="step1" style="transition:.5s;" class="animated--fade-in">
 				<p>현재 진행중인 예산이 없습니다!</p>
 				<p>예산설정을 완료해주세요.</p>
-				<button id="nextBtn1">새로운 예산 만들기</button>
+				<div style="text-align:center;">
+					<button id="nextBtn1" class="btn btn-primary">새로운 예산 만들기</button>
+				</div>
 			</div>
 			<form action="/moamore/budget/setBudgetPro.moa" method="post" >
 			<div id="step2" style="transition:.5s;display:none;" class="animated--fade-in">
@@ -79,7 +81,7 @@
 					<jsp:useBean id="now" class="java.util.Date" />
 					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
 					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
-					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
+					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" id="inputSD" value="${todayDate }"/>일<br/><span style="color:blue">0부터 28까지의 값만 입력할 수 있습니다.</span>
 						<br/>
 					</li>
 					<li>
@@ -90,11 +92,15 @@
 						</div>
 					</li>
 				</ul>
-				<input type="button" value="세부설정 >" id="nextBtn2" />
+				<div style="text-align:center">
+					<input type="button" value="세부설정 >" id="nextBtn2" class="btn btn-primary"/>
+				</div>
 			</div>
 			<div id="step3" style="transition:.5s;display:none;" class="animated--fade-in">
-				
-				<input type="button" value="추가" id="insertLine"/>
+				<input type="button" value="<이전 단계" id="prevBtn" class="btn btn-secondary" />
+				<div style="text-align:right;">
+					<input type="button" value="추가" id="insertLine" class="btn btn-primary"/>
+				</div>
 				
 				<table id="detailBudget">
 					<tr>
@@ -137,8 +143,8 @@
 			카테고리별 예산 합계와 총 예산이 동일하도록 설정하세요
 			<br/>
 			<input type="hidden" value="1" name="isNewBudget" />
-			<input type="button" value="<이전 단계" id="prevBtn" />
-			<input type="hidden" value="새로운 예산 생성" id="createBudget" />
+			
+			<input type="hidden" value="새로운 예산 생성" id="createBudget" class="btn btn-primary"/>
 			</div>
 		</form>
 		</div>
@@ -325,6 +331,11 @@
 				calDay($(this));
 			});
 			reSum();
+		});
+		$('#inputSD').on('keyup', function(){
+			if($(this).val()>28) {
+				$(this).val(28);
+			}
 		});
 		
 	});

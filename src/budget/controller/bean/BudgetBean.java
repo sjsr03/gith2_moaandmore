@@ -56,8 +56,12 @@ public class BudgetBean {
 			model.addAttribute("currentTBudget", currentTBudget);
 			model.addAttribute("detailList", budgetService.selectAllbyBudgetNum(currentTBudget.getBudget_no()));
 			if(currentTBudget.getPeriod()==30) {
-				int firstOfMonth = (currentTBudget.getEnd_day().getDate()+1);
-				model.addAttribute("firstOfMonth", firstOfMonth);
+				if(currentTBudget.getEnd_day().getDate() >= 28) {
+					model.addAttribute("firstOfMonth", 1);
+				} else {
+					int firstOfMonth = (currentTBudget.getEnd_day().getDate()+1);
+					model.addAttribute("firstOfMonth", firstOfMonth);
+				}
 			} else {
 				model.addAttribute("firstOfMonth", 1);
 			}
@@ -103,6 +107,7 @@ public class BudgetBean {
 		List goals = goalsService.selectTransferPossibleGoals(id);
 		model.addAttribute("personalGoals", (List)goals.get(0));
 		model.addAttribute("teamGoals", (List)goals.get(1));
+		model.addAttribute("period", period);
 		
 		
 		
