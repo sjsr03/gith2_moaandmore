@@ -234,12 +234,6 @@ $(document).ready(function(){
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-list-ul"></i>
-          <span>랭킹 보기</span></a>
-      </li>
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
         <a class="nav-link" href="/moamore/closing/closingAccountList.moa">
           <i class="fas fa-fw fa-list-ul"></i>
           <span>결산 게시판</span></a>
@@ -295,7 +289,7 @@ $(document).ready(function(){
 	            <!-- Nav Item - User Information -->
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.memId}</span>
+	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.memName}</span>
 	                <img class="img-profile rounded-circle" src="/moamore/save/${sessionScope.memImg}">
 	              </a>
 	              <!-- Dropdown - User Information -->
