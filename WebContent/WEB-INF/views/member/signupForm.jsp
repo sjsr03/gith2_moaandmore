@@ -111,12 +111,17 @@ $(document).ready(function () {
 $("#user_id").keyup(function() {
 	var idJ = /[0-9a-zA-Z]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
 	var user_id = $('#user_id').val();
+	console.log("user_id : " + user_id);
+	console.log(typeof(user_id));
 	$.ajax({
-		url : 'idCheck.moa?userId='+ user_id,
+		url : 'idCheck.moa',
+		data : {
+			'user_id' : user_id
+		},
 		type : 'get',
 		success : function(data) {
-			
-			if (data == 1) { 
+			console.log(data);
+			if (data == null) { 
 					// 1 : 아이디가 중복되는 문구
 					$("#id_check").text("이미 사용중인 아이디입니다");
 					$("#id_check").css("color", "red");

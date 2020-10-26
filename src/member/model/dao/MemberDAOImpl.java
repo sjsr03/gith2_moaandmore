@@ -93,11 +93,7 @@ public class MemberDAOImpl implements MemberDAO {
 
 	@Override
 	public int checkOverId(String user_id) throws SQLException {
-		
-		int checkId=sqlSession.selectOne("member.checkOverId",user_id);
-		
-		
-		return checkId;
+		return sqlSession.selectOne("member.checkOverId",user_id);
 	}
 
 

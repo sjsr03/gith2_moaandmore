@@ -264,9 +264,7 @@ public class MemberBean {
 	//아이디 유효성 검사
 	@RequestMapping(value = "idCheck.moa", method = RequestMethod.GET)
 	@ResponseBody
-	public int idCheck(@RequestParam("userId") String user_id) throws SQLException{
-
-		
+	public int NLidCheck(String user_id) throws SQLException{
 		return memberService.userIdCheck(user_id);
 	}
 	
@@ -274,7 +272,7 @@ public class MemberBean {
 	//닉네임 유효성 검사
 	@RequestMapping(value = "nicknameCheck.moa", method = RequestMethod.GET)
 	@ResponseBody
-	public int nicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
+	public int NLnicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
 
 		
 		return memberService.nicknameCheck(nickname);
