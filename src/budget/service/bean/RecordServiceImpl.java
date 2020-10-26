@@ -24,6 +24,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import budget.model.dao.RecordBudgetDAO;
 import budget.model.dao.RecordNoBudgetDAO;
+import budget.model.dao.TotalBudgetDAO;
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.BudgetDetailDTO;
 import budget.model.dto.NoBudgetDTO;
@@ -31,6 +32,7 @@ import budget.model.dto.NoBudgetDetailDTO;
 import budget.model.dto.RecordModifyDTO;
 import budget.model.dto.RecordPageDTO;
 import budget.model.dto.SearchForRecordDTO;
+import budget.model.dto.TotalBudgetDTO;
 import category.model.dao.CategoryDAO;
 import category.model.dto.income_categoryDTO;
 import category.model.dto.outcome_categoryDTO;
@@ -44,6 +46,8 @@ public class RecordServiceImpl implements RecordService{
 	private RecordNoBudgetDAO recordNoBudgetDAO = null;
 	@Autowired
 	private CategoryDAO categoryDAO = null;
+	@Autowired
+	private TotalBudgetDAO totalBudgetDAO = null;
 	
 	// 수입/지출내역 insert 메서드  
 	@Override
@@ -550,6 +554,77 @@ public class RecordServiceImpl implements RecordService{
 			
 			System.out.println(budgetDTO.toString());
 			System.out.println(budgetDetailDTO.toString());
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			//예산 내 기록 수정시 totalBudget 건드리기(지예)
+			//기존에 기록되어있던 정보 불러오기
+			BudgetDTO oriRecord = recordBudgetDAO.selectRecordByNo(budgetDTO.getBudget_outcome_no());
+			TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(budgetDTO.getId());
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date today = new Date();
+			
+			int oriBudgetNo = oriRecord.getBudget_no();
+			
+			Date newReg = new Date(budgetDTO.getReg().getTime());
+			Date oriReg = new Date(oriRecord.getReg().getTime());
+			
+			int oriAmount = oriRecord.getAmount();
+			int newAmount = budgetDTO.getAmount();
+			
+			int oriCat = oriRecord.getCategory_no();
+			int newCat = budgetDTO.getCategory_no();
+			
+			
+			
+			int confirm = 0;
+
+			if(budgetDTO.getBudget_no() == TBdto.getBudget_no() && oriBudgetNo == TBdto.getBudget_no()) {	//둘다 현재예산인 경우
+				//둘 중 하나가 오늘날짜인지?
+				if(sdf.format(newReg).equals(sdf.format(today))) {	//새로운 날짜가 오늘 날짜
+					//원래날짜의 기록은 더해주기
+					//예산의 현재값
+					
+					//새로운 날짜 기록은 무시
+				} else if (sdf.format(oriReg).equals(sdf.format(today))) {	//원래 날짜가 오늘 날짜
+					
+				} else { //둘다 오늘날짜 아님
+					
+				}
+				
+			} else if(budgetDTO.getBudget_no() == TBdto.getBudget_no()) {	//새로 수정된 기록만 현재 예산인 경우
+				confirm = 1;
+			} else if(oriBudgetNo == TBdto.getBudget_no()) {	//예전 기록만 현재 예산인 경우
+				confirm = -1;
+			}
+			
+			if(confirm == 2) {
+				
+			}
+			
+			if(oriBudgetNo == budgetDTO.getBudget_no()) {	//budget_no
+				
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 			
 			recordBudgetDAO.modifyBudgetRecord(budgetDTO, budgetDetailDTO);
