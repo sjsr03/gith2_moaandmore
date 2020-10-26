@@ -153,7 +153,7 @@ a:hover { color: blue; text-decoration: underline;}
 													<input type="hidden" id="hiddenType" value="${records.type}" />
 												</td>
 												<td class="content"> 
-													<a href="javascript:void(0)" onclick="goDetail('${recordCateNum}','${records.budget_outcome_no}','${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+													<a href="javascript:void(0)" class="nav-link" style="color:#858796;" onclick="goDetail('${recordCateNum}','${records.budget_outcome_no}','${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
 												</td>
 												<td>
 													<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원

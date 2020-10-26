@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,9 +38,11 @@ public class AdminBean {
 	
 	
 	@RequestMapping("memberList.moa")
-	public String selectAll(Model model, String pageNum) throws SQLException {
+	public String selectAll(Model model, String pageNum, HttpServletRequest request) throws SQLException {
+		String id = (String)request.getSession().getAttribute("memId");
 		MemberListDTO memberList = new MemberListDTO();
 		memberList = adminService.selectAll(pageNum);
+		model.addAttribute("memId", id);
 		model.addAttribute("memberList", memberList);
 		return "admin/memberList";
 	}
