@@ -1,4 +1,4 @@
-/*!
+ /*!
  * Start Bootstrap - SB Admin 2 v4.1.1 (https://startbootstrap.com/themes/sb-admin-2)
  * Copyright 2013-2020 Start Bootstrap
  * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin-2/blob/master/LICENSE)
@@ -10830,7 +10830,7 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("/moamore/save/loginForm.png");
+  background: url("/moamore/save/loginFormGIF.gif");
   background-position: center;
   background-size: cover;
 }
