@@ -48,70 +48,63 @@ public class RecordServiceImpl implements RecordService{
 	// 수입/지출내역 insert 메서드  
 	@Override
 	public void insertRecord(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO, Timestamp date) throws SQLException, IOException {
+		System.out.println("1111111");
+		System.out.println("이미지이미지이미징 : " +  request.getFile("image"));
+		MultipartFile mf = null;
+		String newName = null;
 		
-		
-		// 이미지 저장처리 			
-		MultipartFile mf = request.getFile("image");
-		if(mf.getSize() > 0) {
-			String path = request.getRealPath("save"); // 저장할 폴더 경로
-			String orgName = mf.getOriginalFilename(); 
-			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
-			// 이미지 파일 확장자만 추출
-			String ext = orgName.substring(orgName.lastIndexOf('.'));
+		try { 
 			
-			// 이름에 실행되는 시간 넣어주기 
-			long now = System.currentTimeMillis();
-			// 새로운 이름 만들기
-			String newName = imgName+now+ext;
+			mf = request.getFile("image");
+			if(mf.getSize() > 0) {
+				String path = request.getRealPath("save");
+				String orgName = mf.getOriginalFilename(); 
+				String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+				String ext = orgName.substring(orgName.lastIndexOf('.'));
+				long date1 = System.currentTimeMillis();
+				newName = imgName+date1+ext; 
 			
-			// imgPath 다시 만들어주기(newName사용)
-			String imgPath = path + "\\" + newName;
-			
-			// 저장해주기
-			File file = new File(imgPath);
-			File copyFile = new File(imgPath);
-			
-			mf.transferTo(copyFile);
-			
-			// dto에 세팅까지해주기
-			noBudgetDetailDTO.setImg(newName);
-			budgetDetailDTO.setImg(newName);
-			
-		}else { // 이미지가 없을 땐 default값 넣어주기.
-			noBudgetDetailDTO.setImg("default.gif");
-			budgetDetailDTO.setImg("default.gif");
+				String imgPath = path + "\\" + newName;
+				File copyFile = new File(imgPath);
+				mf.transferTo(copyFile);
+				
+				//dto에 이미지 세팅
+				noBudgetDetailDTO.setImg(orgName);
+				budgetDetailDTO.setImg(orgName);
+						
+			//이미지가 안들어 왔으면 
+			}else {
+				noBudgetDetailDTO.setImg("defaultImg.gif");
+				budgetDetailDTO.setImg("defaultImg.gif");
+			}
+
+			// dto에 세팅 
+			String type = request.getParameter("type");
+			if(type.equals("outcome") || type.equals("income")){ // 예산외 수입/지출 일 떄
+				noBudgetDTO.setReg(date);
+				
+				System.out.println("서비스에서 타입 ;;;: "+ noBudgetDTO.getType());
+				recordNoBudgetDAO.insertNoBudget(noBudgetDTO);
+				
+				int nobudget_no = noBudgetDTO.getNobudget_no();
+				// 예산 외 내역 insert해준 후  구분번호 예산외 세부내역dto에 다시 세팅해주기 
+				noBudgetDetailDTO.setNobudget_no(nobudget_no);
+				recordNoBudgetDAO.insertNoBudgetDetailDTO(noBudgetDetailDTO);	
+				
+			}else { // 예산일 때 
+
+				budgetDTO.setReg(date);
+				
+				// 예산 내역 insert해준 후  구분번호 예산세부내역dto에 다시 세팅해주기 
+				recordBudgetDAO.insertBudget(budgetDTO);
+				int budget_outcome_no = budgetDTO.getBudget_outcome_no();
+				budgetDetailDTO.setBudget_outcome_no(budget_outcome_no);
+				
+				recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);			
+			}	
+		}catch(Exception e) {
+			e.printStackTrace();
 		}
-		
-		
-		
-		// dto에 세팅 
-		String type = request.getParameter("type");
-		if(type.equals("outcome") || type.equals("income")){ // 예산외 수입/지출 일 떄
-			noBudgetDTO.setReg(date);
-			
-			System.out.println("서비스에서 타입 ;;;: "+ noBudgetDTO.getType());
-			recordNoBudgetDAO.insertNoBudget(noBudgetDTO);
-			
-			int nobudget_no = noBudgetDTO.getNobudget_no();
-			// 예산 외 내역 insert해준 후  구분번호 예산외 세부내역dto에 다시 세팅해주기 
-			noBudgetDetailDTO.setNobudget_no(nobudget_no);
-			recordNoBudgetDAO.insertNoBudgetDetailDTO(noBudgetDetailDTO);	
-			
-		}else { // 예산일 때 
-
-			//budgetDTO.setDate(date);
-			
-
-			budgetDTO.setReg(date);
-
-			
-			// 예산 내역 insert해준 후  구분번호 예산세부내역dto에 다시 세팅해주기 
-			recordBudgetDAO.insertBudget(budgetDTO);
-			int budget_outcome_no = budgetDTO.getBudget_outcome_no();
-			budgetDetailDTO.setBudget_outcome_no(budget_outcome_no);
-			
-			recordBudgetDAO.insertBudgetDetail(budgetDetailDTO);			
-		}	
 	}
 	// 예산번호로 해당 예산 기록 목록 가져오기(키워드가 있으면 키워드에 해당하는 내역 가져오기)
 	@Override
@@ -129,7 +122,7 @@ public class RecordServiceImpl implements RecordService{
 		int count = 0;
 			
 		List recordList = null;
-		System.out.println("키워드@@@@ "+ keyword);
+		//System.out.println("키워드@@@@ "+ keyword);
 		// 검색키워드가 있는 경우, 없는 경우 체크해서 처리 
 		if(keyword == null) { // 키워드가 비어있으면 전체로 가져오기
 			System.out.println("키워드 값 X ");
@@ -238,112 +231,6 @@ public class RecordServiceImpl implements RecordService{
 		return recordPage;	
 	}
 	
-	/*
-	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 
-	@Override
-	public RecordPageDTO selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
-		RecordPageDTO recordPage = new RecordPageDTO();
-		
-		if(searchForRecordDTO.getPageNum() == "") {
-			searchForRecordDTO.setPageNum("1");
-		}
-		// 페이지 정보 담기
-		int pageSize = 10;
-		int currPage = Integer.parseInt(searchForRecordDTO.getPageNum());
-		int startRow = (currPage - 1) * pageSize + 1;
-		int endRow = currPage*pageSize;
-		int count = 0;
-		
-		List recordList = null;
-		searchForRecordDTO.setStartRow(startRow);
-		searchForRecordDTO.setEndRow(endRow);
-
-		
-		// 여기서 타입 체크 후 dao 각각 불러줘야함!
-		// 타입 체크  + 키워드 유무 체크 후 각각 해당하는 dao 호출
-		String type=searchForRecordDTO.getType();
-		if(type.equals("budgetincome")) {
-			System.out.println("222222222222");
-			System.out.println("타입확인 : "+type);
-			searchForRecordDTO.setType("income");
-			//예산+수입이면
-			System.out.println("예산+수입");
-			count = recordBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
-			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
-			
-			if(count >0) { // 내역이 하나라도 있으면 
-				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
-			}
-		}else if(type.equals("budgetoutcome")){
-			searchForRecordDTO.setType("outcome");
-			//예산+지출이면
-			System.out.println("예산+지출");
-			count = recordBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
-			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
-			
-			if(count >0) { // 내역이 하나라도 있으면 
-				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
-			}
-		}else if(type.equals("budgetincomeoutcome")){ //예산+수입+지출이면
-			System.out.println("예산+수입+지출");
-			count = recordBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
-			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
-			if(count>0) {
-				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
-			}
-		}else{ //수입+지출이면
-			System.out.println("수입+지출");
-			count = recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
-			
-			if(count>0) {
-				recordList = recordNoBudgetDAO.selectNobudgetRecord(searchForRecordDTO);
-			}
-		}
-		
-		if(type.equals("incomeoutcome")) { //수입+지출이면
-			System.out.println("수입+지출");
-			count = recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
-			if(count>0) {
-				recordList = recordNoBudgetDAO.selectNobudgetRecord(searchForRecordDTO);
-			}
-		}else {
-			if(type.equals("budgetincome")) { //예산+수입이면
-				searchForRecordDTO.setType("income");
-				
-			}else if(type.equals("budgetoutcome")){//예산+지출이면
-				searchForRecordDTO.setType("outcome");
-				
-			}else if(type.equals("budgetincomeoutcome")){//예산+수입+지출이면
-				
-			}
-			count = recordBudgetDAO.CountBudgetRecordById(searchForRecordDTO);
-			count += recordNoBudgetDAO.CountNoBudgetRecordById(searchForRecordDTO);
-			
-			if(count >0) { // 내역이 하나라도 있으면 
-				recordList = recordNoBudgetDAO.selectAllRecord(searchForRecordDTO);
-			}
-			
-			// 한번에 호출
-			
-		}
-		
-		
-		System.out.println("결과는???  : " + recordList.size());
-		System.out.println("결과 count ??  : " + count);
-		
-		
-		recordPage.setCount(count);
-		recordPage.setCurrPage(currPage);
-		recordPage.setEndRow(endRow);
-		recordPage.setPageNum(searchForRecordDTO.getPageNum());
-		recordPage.setPageSize(pageSize);
-		recordPage.setRecordList(recordList);
-		recordPage.setStartRow(startRow);
-		recordPage.setRecordList(recordList);
-		
-		return recordPage;	
-	}
-	*/
 	
 	// 아이디랑 타입으로 나눠서 예산, 예산외 기록들 가져오기 (수입+지출+예산) 날짜 상관없음 
 	@Override
@@ -420,8 +307,8 @@ public class RecordServiceImpl implements RecordService{
 			}	
 		}
 		
-		System.out.println("결과는???  : " + recordList.size());
-		System.out.println("결과 count ??  : " + count);
+		//System.out.println("결과는???  : " + recordList.size());
+		//System.out.println("결과 count ??  : " + count);
 		
 		
 		recordPage.setCount(count);
@@ -437,23 +324,7 @@ public class RecordServiceImpl implements RecordService{
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	// 날짜비교 
 	@Override
@@ -503,27 +374,7 @@ public class RecordServiceImpl implements RecordService{
 			String saveFileName = getSaveFileName(originFileName);
 			
 			writeFile(imgfile, saveFileName);
-			/*
-			String path = request.getRealPath("save"); // 저장할 폴더 경로
-			String orgName = imgfile.getOriginalFilename(); 
-			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
-			// 이미지 파일 확장자만 추출
-			String ext = orgName.substring(orgName.lastIndexOf('.'));
 			
-			// 이름에 실행되는 시간 넣어주기 
-			long now = System.currentTimeMillis();
-			// 새로운 이름 만들기
-			String newName = imgName+now+ext;
-			
-			// imgPath 다시 만들어주기(newName사용)
-			String imgPath = path + "\\" + newName;
-			
-			// 저장해주기
-			File file = new File(imgPath);
-			File copyFile = new File(imgPath);
-			
-			 ((MultipartFile) file).transferTo(copyFile);	
-			 */	
 			// dto에 세팅까지해주기
 			noBudgetDetailDTO.setImg(originFileName);
 			budgetDetailDTO.setImg(originFileName);	
