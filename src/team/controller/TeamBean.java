@@ -61,10 +61,12 @@ public class TeamBean {
 
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat ( "yyyyMMdd");
+		SimpleDateFormat dateFormat2 = new SimpleDateFormat ( "yyyy-MM-dd");
 		
 		Date tmpToday = new Date();
 				
 		int today = Integer.parseInt(dateFormat.format(tmpToday));
+		String today2 = dateFormat2.format(tmpToday);
 		
 		int lastUpdateDate = Integer.parseInt(teamService.getTeamUpdateTime().substring(0, 10).replaceAll("-", ""));
 		
@@ -132,7 +134,7 @@ public class TeamBean {
 		
 		model.addAttribute("pageNum", pageNum);
 		model.addAttribute("pageStatus", pageStatus);
-		model.addAttribute("today", today);
+		model.addAttribute("today", today2);
 		model.addAttribute("isMyTeam", isMyTeam);
 		model.addAttribute("isSearch", isSearch);
 		model.addAttribute("search", search);
