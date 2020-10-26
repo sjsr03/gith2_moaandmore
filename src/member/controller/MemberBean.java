@@ -52,12 +52,7 @@ public class MemberBean {
 	@Autowired
 	private BudgetService budgetService = null;
 	
-	@RequestMapping("tutorial.moa")
-	public String tutorial() {
-		
-		
-		return "member/tutorial";
-	}
+
 
 
 	@RequestMapping("loginForm.moa")
@@ -142,10 +137,21 @@ public class MemberBean {
 			HttpSession session = request.getSession();
 			session.removeAttribute("memId");	//세션 삭제
 			Cookie[] coo = request.getCookies();
-			for(Cookie c : coo) {
-				if(c.getName().equals("autoId")) c.setMaxAge(0);
-				if(c.getName().equals("autoName")) c.setMaxAge(0);
-				if(c.getName().equals("autoImg")) c.setMaxAge(0);
+			if(coo != null) {
+				for(Cookie c : coo) {
+					if(c.getName().equals("autoId")) {
+						c.setMaxAge(0);
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoName")) {
+						c.setMaxAge(0);
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoImg")) {
+						c.setMaxAge(0);
+						response.addCookie(c);
+					}
+				}
 			}
 			
 			return "main";
@@ -158,15 +164,26 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String logout(HttpServletRequest request){
+	public String logout(HttpServletRequest request,HttpServletResponse response){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		session.removeAttribute("memName");	//세션 삭제
 		Cookie[] coo = request.getCookies();
-		for(Cookie c : coo) {
-			if(c.getName().equals("autoId")) c.setMaxAge(0);
-			if(c.getName().equals("autoName")) c.setMaxAge(0);
-			if(c.getName().equals("autoImg")) c.setMaxAge(0);
+		if(coo != null) {
+			for(Cookie c : coo) {
+				if(c.getName().equals("autoId")) {
+					c.setMaxAge(0);
+					response.addCookie(c);
+				}
+				if(c.getName().equals("autoName")) {
+					c.setMaxAge(0);
+					response.addCookie(c);
+				}
+				if(c.getName().equals("autoImg")) {
+					c.setMaxAge(0);
+					response.addCookie(c);
+				}
+			}
 		}
 		return "redirect:../main.moa";
 	}
@@ -199,7 +216,6 @@ public class MemberBean {
 	@ResponseBody
 	public int idCheck(@RequestParam("userId") String user_id) throws SQLException{
 
-		System.out.println(user_id);
 		
 		return memberService.userIdCheck(user_id);
 	}
@@ -209,8 +225,7 @@ public class MemberBean {
 	@RequestMapping(value = "nicknameCheck.moa", method = RequestMethod.GET)
 	@ResponseBody
 	public int nicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
-		System.out.println(1);
-		System.out.println(nickname);
+
 		
 		return memberService.nicknameCheck(nickname);
 	}

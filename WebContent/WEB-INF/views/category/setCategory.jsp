@@ -57,7 +57,7 @@ a{text-decoration: none;color: #737271;}
     .cat_text{
     	text-align:center;
     	top:-20%;
-    	font-size: 30px;
+    	font-size: 1em;
     }
     .my_sub{
         position: absolute;
