@@ -278,7 +278,8 @@ $(document).ready(function(){
           
 			<div class="input-group" style="width:100%">
 				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/dashboard.moa'"><span class="text">예산</span></button>
-				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;"onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0em 0em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="window.location.href='/moamore/member/tutorial.moa'"><span class="text">도움말</span></button>	
 			</div>
 			
           <!-- Topbar Navbar -->

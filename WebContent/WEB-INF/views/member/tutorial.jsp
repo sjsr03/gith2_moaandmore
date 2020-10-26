@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,13 +25,9 @@
 
 
 
-
-
-
-
 body{
 
-	background-color:#4e73df;
+	background-color:#0071a1;
 	}
 
 
@@ -90,9 +88,10 @@ img{
 	<div class="sitetop"> 
 		<div class="welcome"><h1 class="text-gray-900 mb-1"> Welcome to Moa & More</h1></div>
 		<div class="wel_Title"><p class="mb-4"> 예산을 설정하고, 돈을 모아 목표를 달성하세요!</p></div>
-	
+	 	 <c:if test="${sessionScope.memName == null }" >
+               <div class="tu_btn"><button class="sign_btn btn" onclick="location.href='signupForm.moa' ">회원가입 하러 가기</button></div>
+          </c:if>
 	</div> 
-      	  <div class="tu_btn"><button class="sign_btn btn">회원가입 하러 가기</button></div>
 	  <div class="totalImgBox">
 	  		<div class="imgbox">
 	  			<div class="tu_img shadow h-100 py-2"><img src="/moamore/resources/img/setBudget.png" /></div>
