@@ -32,6 +32,7 @@ public class CategoryBean {
 	public String setCategory(Model model,HttpServletRequest request) throws SQLException{
 		
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
+
 		
 	
 		String already = request.getParameter("already");
@@ -39,7 +40,10 @@ public class CategoryBean {
 		System.out.println("setCategory의 already : "+already);
 		
 		model.addAttribute("already", already);
+
+
 		model.addAttribute("exist", exist);
+
 		
 		return "category/setCategory";
 	}
@@ -51,11 +55,9 @@ public class CategoryBean {
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		List outcome = categoryService.selectAllById(id);
 
+
 		return outcome;
 	}
-	
-	
-	//수입 카테고리 불러오기
 	@RequestMapping("getIncomeCategoryList.moa")
 	public @ResponseBody List getIncomeCategoryList() throws SQLException{
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
@@ -64,11 +66,11 @@ public class CategoryBean {
 		
 		return income;
 	}
-	
-	
+
 	//카테고리 추가하기
 	@RequestMapping(value="setCategoryPro.moa", method= {RequestMethod.GET, RequestMethod.POST})
 	public String setCategoryPro(String category_name,String categoryOption,Model model) throws SQLException{
+
 	
 		String id= (String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		//카테고리명 안겹치는지 확인
@@ -83,14 +85,21 @@ public class CategoryBean {
 			
 		}
 		
-		
-		//model.addAttribute("already",already);
-		
-	
+
+
+		model.addAttribute("already",already);
+
 		return "category/setCategoryPro";
 
 	}
 	
+
+	
+	
+
+		
+
+
 	//카테고리 수정하기
 	@RequestMapping("updateCategory.moa")
 	public String updateCategory(Model model,String inorout,int category_no,String newName) throws SQLException {

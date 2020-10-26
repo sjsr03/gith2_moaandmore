@@ -52,7 +52,12 @@ public class MemberBean {
 	@Autowired
 	private BudgetService budgetService = null;
 	
-
+	@RequestMapping("tutorial.moa")
+	public String tutorial() {
+		
+		
+		return "member/tutorial";
+	}
 
 
 	@RequestMapping("loginForm.moa")
@@ -61,13 +66,16 @@ public class MemberBean {
 		
 		return "member/loginForm"; 		
 	}
+	
 	@RequestMapping("loginPro.moa")
-	public String NLloginPro(String id, String pw, String auto, String referrer, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
-		int result = memberService.idPwCheck(id, pw);
+	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
 		HttpSession session = request.getSession();
+		
+		
+		int result = memberService.idPwCheck(id, pw);
+		
 		if(session.getAttribute("memId") != null) {
-			model.addAttribute("referrer",referrer);
-			return "member/loginPro"; 
+			return "main"; 
 		}
 		
 		if(result==1) {	//아이디 비밀번호 일치하면
@@ -97,8 +105,6 @@ public class MemberBean {
 		}
 		
 		model.addAttribute("result",result);
-		model.addAttribute("referrer",referrer);
-		System.out.println("referrer : " + referrer);
 
 		
 		//현재 진행중인 예산이 있다면
@@ -137,10 +143,26 @@ public class MemberBean {
 			HttpSession session = request.getSession();
 			session.removeAttribute("memId");	//세션 삭제
 			Cookie[] coo = request.getCookies();
-			for(Cookie c : coo) {
-				if(c.getName().equals("autoId")) c.setMaxAge(0);
-				if(c.getName().equals("autoName")) c.setMaxAge(0);
-				if(c.getName().equals("autoImg")) c.setMaxAge(0);
+			if(coo != null) {
+				for(Cookie c : coo) {
+					if(c.getName().equals("autoId")) {
+						c.setMaxAge(0);
+
+						c.setPath("/moamore/");
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoName")) {
+						c.setMaxAge(0);
+						c.setPath("/moamore/");
+						response.addCookie(c);
+					}
+					if(c.getName().equals("autoImg")) {
+						c.setMaxAge(0);
+						c.setPath("/moamore/");
+
+						response.addCookie(c);
+					}
+				}
 			}
 			
 			return "main";
@@ -153,15 +175,31 @@ public class MemberBean {
 
 
 	@RequestMapping("logout.moa")
-	public String logout(HttpServletRequest request){
+	public String logout(HttpServletRequest request,HttpServletResponse response){
 		HttpSession session = request.getSession();
 		session.removeAttribute("memId");	//세션 삭제
 		session.removeAttribute("memName");	//세션 삭제
 		Cookie[] coo = request.getCookies();
-		for(Cookie c : coo) {
-			if(c.getName().equals("autoId")) c.setMaxAge(0);
-			if(c.getName().equals("autoName")) c.setMaxAge(0);
-			if(c.getName().equals("autoImg")) c.setMaxAge(0);
+		if(coo != null) {
+			for(Cookie c : coo) {
+				if(c.getName().equals("autoId")) {
+					c.setMaxAge(0);
+
+					c.setPath("/moamore/");
+					response.addCookie(c);
+				}
+				if(c.getName().equals("autoName")) {
+					c.setMaxAge(0);
+					c.setPath("/moamore/");
+					response.addCookie(c);
+				}
+				if(c.getName().equals("autoImg")) {
+					c.setMaxAge(0);
+					c.setPath("/moamore/");
+
+					response.addCookie(c);
+				}
+			}
 		}
 		return "redirect:../main.moa";
 	}
@@ -192,9 +230,7 @@ public class MemberBean {
 	//아이디 유효성 검사
 	@RequestMapping(value = "idCheck.moa", method = RequestMethod.GET)
 	@ResponseBody
-	public int idCheck(@RequestParam("userId") String user_id) throws SQLException{
-
-		
+	public int NLidCheck(String user_id) throws SQLException{
 		return memberService.userIdCheck(user_id);
 	}
 	
@@ -202,7 +238,7 @@ public class MemberBean {
 	//닉네임 유효성 검사
 	@RequestMapping(value = "nicknameCheck.moa", method = RequestMethod.GET)
 	@ResponseBody
-	public int nicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
+	public int NLnicknameCheck(@RequestParam("nickname") String nickname) throws SQLException{
 
 		
 		return memberService.nicknameCheck(nickname);
@@ -233,8 +269,6 @@ public class MemberBean {
 		dto = memberService.selectOne(id);
 		  
 		request.getSession().setAttribute("memImg", dto.getProfile_img());
-		
-		
 		
 		
 		  model.addAttribute("dto", dto);

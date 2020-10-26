@@ -230,7 +230,6 @@ $(document).ready(function () {
 							console.log("error");
 						},
 			   			success: function(alldata) {
-			   				console.log(date);
 							$('.contentTable').append("<tr><td>" +'유형' + "</td><td>" +'금액'+ "</td><td>"+'제목'+"</td><td>"+'메모'+"</td></tr>");
 			   				for (var i = 0; i < alldata.length; i+=4) {
 			   					

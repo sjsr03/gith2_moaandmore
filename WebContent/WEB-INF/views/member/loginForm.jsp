@@ -23,13 +23,18 @@
 
 </head>
 <script>
+	window.history.forward();
+	function noBack(){
+		window.history.forward();
+	}
+	
 	$(document).ready(function(){
 		var referrer = document.referrer;
 		$("#referrer").val(referrer);
 		console.log(referrer);
 	});
 </script>
-<body class="bg-gradient-primary">
+<body class="bg-gradient-primary" onload="noBack();" onpageshow="if(event.persisted) noBack();" onunload="">
 
   <div class="container">
 

@@ -241,5 +241,9 @@
   		update nobudget_detail set content=#{content}, memo=#{memo}, img=#{img} where nobudget_no=#{nobudget_no}
   	</update>
  
+ 	<!-- budget_outcome_no으로 해당 기록 가져오기 -->
+ 	<select id="selectRecordByNo" parameterType="int" resultType="budgetDTO">
+ 		select * from budget where budget_outcome_no=#{value}
+ 	</select>
   	
   </mapper>

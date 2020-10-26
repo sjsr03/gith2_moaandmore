@@ -14,6 +14,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -34,6 +35,7 @@ public class LoginCheckBean {
 		HttpServletResponse response = sa.getResponse();
 		HttpSession session = request.getSession();
 		String id = (String)session.getAttribute("memId");
+		
 		
 		if(id == null) {	//비로그인 상태면
 			//String value = URLDecoder.decode(cookie.getValue(), "UTF-8");
@@ -72,9 +74,8 @@ public class LoginCheckBean {
 			PrintWriter out = response.getWriter();
             out.println("<script>alert('로그인 후 이용하세요!');</script>");
             out.flush();
-			return "member/loginForm";	//로그인페이지로 이동
-			*/
-			return "main";
+			 */
+			return "member/loginForm";
 		} else {	//로그인 상태인데
 //			TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(id);
 //			if(TBdto == null) {	//현재 설정된 예산이 없으면

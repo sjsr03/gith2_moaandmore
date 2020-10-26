@@ -10,18 +10,11 @@
 <body>
 
 	<c:if test="${result==1 }" >
-		<c:choose>
-			<c:when test="${referrer != ''}">
-				<script>
-					window.location="${referrer}";
-				</script>
-			</c:when>
-			<c:otherwise>
-				<script>
-					window.location="../main.moa";
-				</script>
-			</c:otherwise>
-		</c:choose>
+
+		<script>
+			window.location="/moamore/main.moa";
+		</script>
+				
 	</c:if>
 	<c:if test="${result!=1 }">
 		<script>

@@ -23,7 +23,7 @@
 	width:100%;
 }
 .ranking-container {
-	width:800px;
+	width:700px;
 	margin:0 auto;
 	margin-top:10px;
 }
@@ -52,7 +52,7 @@
 }
 
 #best_search {
-	width:740px;
+	width:700px;
 	margin:0 auto;
 	text-align:center;
 }

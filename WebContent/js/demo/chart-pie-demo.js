@@ -10,8 +10,8 @@ var myPieChart = new Chart(ctx, {
     labels: ["지예", "겨리", "응디"],
     datasets: [{
       data: [50, 30, 20],
-      backgroundColor: ['#229abe', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      backgroundColor: ['#0071a1', '#1cc88a', '#36b9cc'],
+      hoverBackgroundColor: ['#2e9cdb', '#17a673', '#2c9faf'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },

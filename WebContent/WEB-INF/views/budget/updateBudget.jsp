@@ -33,7 +33,6 @@
 		width:100px;
 	}
 </style>
-<body id="page-top">
 <jsp:include page="../sidebar.jsp"/>
 	
         <!-- 본문내용 시작 -->
@@ -52,8 +51,8 @@
 			<div>
 				<p>예산 설정을 변경할 시 기존의 예산은 종료되며, 오늘부터 새로운 예산이 시작됩니다.<br/>설정을 변경하시겠습니까?</p>
 			</div>
-			<button id="PeChOk">확인</button>
-			<button id="PeChCancel">취소</button>
+			<button id="PeChOk" class="btn btn-secondary">확인</button>
+			<button id="PeChCancel" class="btn btn-secondary">취소</button>
 		</div>
 	</div>
 
