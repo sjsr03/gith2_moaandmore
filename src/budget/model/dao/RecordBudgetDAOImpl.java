@@ -28,6 +28,15 @@ public class RecordBudgetDAOImpl implements RecordBudgetDAO {
 		
 		sqlSession.update("record.updateCurrentBudget", budgetDTO);	//총예산 현재값에서 차감
 
+		
+		System.out.println("체크");
+		System.out.println("budget에서 금액 :  "+budgetDTO.getAmount());
+		System.out.println("budget에서 budget_no :  "+budgetDTO.getBudget_no());
+		System.out.println("budget에서 outcome_no :  "+budgetDTO.getBudget_outcome_no());
+		System.out.println("budget에서 id :  "+budgetDTO.getId());
+		System.out.println("budget에서 reg :  "+budgetDTO.getReg());
+		System.out.println("budget에서 카테고리 :  "+budgetDTO.getCategory_no());
+		
 		sqlSession.insert("record.insertBudget", budgetDTO);
 		// budget 테이블의 예산 구분번호 리턴(방금 +1된 시퀀스값)
 		int budget_outcome_no = budgetDTO.getBudget_outcome_no();

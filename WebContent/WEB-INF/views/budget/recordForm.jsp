@@ -211,7 +211,7 @@ ul{
 <script>
 	// 체크박스 상태 확인(체크된 상태면 nobudget 아니면 budget)
 	$(document).ready(function(){
-		
+		console.log("타입 :"  + $("#type").val()); 
 		// input 태그 중 date 에도 기본값으로 오늘 날짜 넣어주기 
 		$("#date").val("${today}");
 		getTime();
@@ -227,11 +227,13 @@ ul{
 		
 		$("#checkbox").change(function(){
 			if($("#checkbox").is(":checked")){ // 예산외 선택에 체크가 되어있으면
+				
 				// 예산 관련된거 없어져야함
 				$("#incomebtn").show();	
 				$("#outcomebtn").show();	
 				$("#category").css("display", "none");
 			}else{
+				$("#type").val("budget");
 				$("#outcomebtn").hide();	
 				$("#incomebtn").hide();	
 				$("#category").css("display", "block");
@@ -338,7 +340,10 @@ ul{
 		});
 		$("#check").click(function(){
 			//////////////////////////////////////
-			//console.log("타입체크 : "+$("#type").val());
+			console.log("타입체크 : "+$("#type").val());
+			if($("#type").val() == "type"){
+				$("#type").val("budget");
+			}
 			// budgetNum도 hidden으로 보내주기
 			if(budget_no != 0){
 				var intBudget_no = Number(budget_no);
@@ -350,7 +355,9 @@ ul{
 
 				//$("#type").val("type");
 				type="budget";
+				console.log("카테고리 : " +  $("#category option:selected").val());
 				var selectedOption = $("#category option:selected").val(); 
+				
 				var numberOption = Number(selectedOption);
 				$("#category_no").val(numberOption);
 				console.log(typeof numberOption);

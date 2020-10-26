@@ -148,7 +148,7 @@ public class RecordBean {
 		String id = (String)request.getSession().getAttribute("memId");
 		budgetDTO.setId(id);
 		noBudgetDTO.setId(id);
-	
+		System.out.println("빈에서 카테고리 넘" + request.getParameter("category_no"));
 		int category_no = Integer.parseInt(request.getParameter("category_no"));
 		// 일단 카테고리 정보 전부다 채워서 보낸 후에 서비스에서 나눠서 처리
 		budgetDTO.setCategory_no(category_no);
@@ -283,7 +283,7 @@ public class RecordBean {
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		String type = searchForRecordDTO.getType();
-		System.out.println("-----------------------");
+		
 		System.out.println("selectRecords에서 키워드 :" + searchForRecordDTO.getKeyword());
 		// 타입에 들어있는 만큼 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
