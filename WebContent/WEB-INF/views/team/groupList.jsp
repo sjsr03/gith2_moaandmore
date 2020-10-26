@@ -80,16 +80,16 @@
 		<div class="row" style="display:flex;">
 			<div class="col-xl-6 col-lg-6">
 				<c:if test="${sessionScope.memName != null}">
-					<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; background-color:#4374D9;" onclick="window.location='/moamore/team/groupOpenForm.moa'"><span class="text"><a style="color: white;">개설 신청</a></span></button>	
+					<button class="col-xl-2 col-lg-2" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:0px solid #ccc; background-color:#4374D9;" onclick="window.location='/moamore/team/groupOpenForm.moa'"><span class="text"><a style="color: white;">개설 신청</a></span></button>	
 				</c:if>
 				<c:if test="${sessionScope.memName == null}">
 					<button onclick="alert('로그인을 해주세요.');document.location.href='/moamore/member/loginForm.moa'">개설 신청</button>
 				</c:if>
 			</div>
 			<div class="col-xl-6 col-lg-6" style="text-align: right;">
-				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc;" onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=2&range=${range}'"><span class="text">진행중</span></button>
-				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc;" onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=3&range=${range}'"><span class="text">종료</span></button>
-				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc;" onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=1&range=${range}'"><span class="text">개설예정</span></button>
+				<button class="col-xl-2 col-lg-2" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc; background-color: white;" onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=2&range=${range}'"><span class="text">진행중</span></button>
+				<button class="col-xl-2 col-lg-2" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc; background-color: white;" onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=3&range=${range}'"><span class="text">종료</span></button>
+				<button class="col-xl-2 col-lg-2" style="border-radius:0.35em 0.35em 0.35em 0.35em; border:2px solid #ccc; background-color: white;" onclick="location='/moamore/team/groupList.moa?isMyTeam=${isMyTeam}&pageStatus=1&range=${range}'"><span class="text">개설예정</span></button>
 			</div>
 		</div>
 		<div class="row" style="text-align: center; margin-top: 10px;">
@@ -120,11 +120,6 @@
 				
 					<div class="row" style="display:flex;">
 						<c:forEach var="article" items="${articleList}" varStatus="stat">
-							<c:if test="${fn:length(articleList) == 4}">
-								<c:if test="${stat.index == 2}">
-									<br/>
-								</c:if>
-							</c:if>
 							<div class="col-xl-4 col-lg-4">
 								<div class="chartjs-render-monitor" style="border: 1px solid #ccc; margin:5px; padding:15px; display: block;" onclick="window.location.href='/moamore/team/teamDetail.moa?team_no=${article.team_no}'">
 									<div style="border: 1px solid white; text-align: center;">
