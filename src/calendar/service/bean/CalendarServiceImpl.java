@@ -191,22 +191,27 @@ public class CalendarServiceImpl implements CalendarService{
 		String id=(String)RequestContextHolder.getRequestAttributes().getAttribute("memId", RequestAttributes.SCOPE_SESSION);
 		
 		List alldata = new ArrayList();
-		
+
 		List budgetDetail = calendarDAO.getBudgetDetail(id,date);
+		List budgetList = new ArrayList();
+
+
+		
+
 		for(int i = 0; i<budgetDetail.size(); i++) {
 			AllRecordDTO budget = (AllRecordDTO)budgetDetail.get(i);
-			
+
 			alldata.add("지출");
 			alldata.add(budget.getAmount());
 			alldata.add(budget.getContent());
 			alldata.add(budget.getMemo());
 
-		
 		}
 		
 		
 		List nobudgetExpenseDetail= calendarDAO.getNobudgetExpenseDetail(id,date);
 		
+
 		for(int i=0; i<nobudgetExpenseDetail.size(); i++) {
 			AllRecordDTO nobudget = (AllRecordDTO)nobudgetExpenseDetail.get(i);
 		
@@ -228,9 +233,8 @@ public class CalendarServiceImpl implements CalendarService{
 				alldata.add(nobudget.getMemo());
 				
 			}
-			
-			
-			
+
+				
 		calendarDAO.getNobudgetIncomeDetail(id,date);
 		
 		

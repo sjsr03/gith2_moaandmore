@@ -142,12 +142,16 @@ public class RecordBean {
 	
 	@RequestMapping(value="recordPro.moa", method=RequestMethod.POST)
 	public String recordPro(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO) throws Exception{
-
+		
+		
+		
 		String id = (String)request.getSession().getAttribute("memId");
 		budgetDTO.setId(id);
 		noBudgetDTO.setId(id);
-	
+		System.out.println("빈에서 카테고리 넘" + request.getParameter("category_no"));
 		int category_no = Integer.parseInt(request.getParameter("category_no"));
+		System.out.println("ㅅㅈ카테고리no : "+category_no);
+		
 		// 일단 카테고리 정보 전부다 채워서 보낸 후에 서비스에서 나눠서 처리
 		budgetDTO.setCategory_no(category_no);
 		noBudgetDTO.setIncome_category_no(category_no);
@@ -155,20 +159,20 @@ public class RecordBean {
 		String oldDate = request.getParameter("date") + " "+ request.getParameter("time")+":00";
 		Timestamp date = Timestamp.valueOf(oldDate);
 		
-		
+		System.out.println("amount : " + budgetDTO.getAmount());
 		recordService.insertRecord(request, budgetDTO, budgetDetailDTO, noBudgetDTO, noBudgetDetailDTO, date);
 		
-		return "budget/moneyLog";
+		return "budget/recordPro";
 	}
 	//------------------------------------------------------------------------
 	
 	@RequestMapping("moneyRecord.moa")
 	public String moneyRecord(HttpServletRequest request, Model model, SearchForRecordDTO searchForRecordDTO)throws SQLException{
 		
-		System.out.println("타입확인 >>> : " + searchForRecordDTO.getType());
-		System.out.println("날짜확인 >>> : " + searchForRecordDTO.getSearchDate());
-		System.out.println("페이지넘 >>> : " + searchForRecordDTO.getPageNum());
-		System.out.println("키워드 >>> : " + searchForRecordDTO.getKeyword());
+		//System.out.println("타입확인 >>> : " + searchForRecordDTO.getType());
+		//System.out.println("날짜확인 >>> : " + searchForRecordDTO.getSearchDate());
+		//System.out.println("페이지넘 >>> : " + searchForRecordDTO.getPageNum());
+		//System.out.println("키워드 >>> : " + searchForRecordDTO.getKeyword());
 		
 		model.addAttribute("searchForRecordDTO", searchForRecordDTO);
 		return "budget/moneyRecord";
@@ -243,8 +247,8 @@ public class RecordBean {
 	@RequestMapping(value="selectNoBudgetRecord.moa")
 	public String selectNoBudgetRecord(SearchForRecordDTO searchForRecordDTO, HttpServletRequest request, Model model) throws Exception{
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
-		System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
-		System.out.println("타이입" + searchForRecordDTO.getType());
+		//System.out.println("날짜확인하셈! : " + searchForRecordDTO.getSearchDate());
+		//System.out.println("타이입" + searchForRecordDTO.getType());
 		
 		// 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllNoBudget(searchForRecordDTO);
@@ -281,7 +285,7 @@ public class RecordBean {
 		searchForRecordDTO.setId((String)request.getSession().getAttribute("memId"));
 		System.out.println("타이입" + searchForRecordDTO.getType());
 		String type = searchForRecordDTO.getType();
-		System.out.println("-----------------------");
+		
 		System.out.println("selectRecords에서 키워드 :" + searchForRecordDTO.getKeyword());
 		// 타입에 들어있는 만큼 내역 가져오기
 		RecordPageDTO recordPage = recordService.selectAllRecord(searchForRecordDTO);
@@ -328,7 +332,8 @@ public class RecordBean {
 		
 		recordService.modifyRecord(recordModifyDTO, file);
 		System.out.println("파일 : "+ file);
-		// mapper 사용해서 map -> json string으로 변환해서 리턴해주기
+		
+		// mapper 사용해서 map -> json string으로 변환해서 리턴해주기 
 		/*
 		ObjectMapper mapper = new ObjectMapper();
 		String json2 = "";

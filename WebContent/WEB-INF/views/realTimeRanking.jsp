@@ -23,7 +23,7 @@
 	width:100%;
 }
 .ranking-container {
-	width:800px;
+	width:700px;
 	margin:0 auto;
 	margin-top:10px;
 }
@@ -52,7 +52,7 @@
 }
 
 #best_search {
-	width:740px;
+	width:700px;
 	margin:0 auto;
 	text-align:center;
 }
@@ -106,8 +106,6 @@
 }
 	
 </style>
-
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 
 $(function(){

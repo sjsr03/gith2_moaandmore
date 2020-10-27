@@ -35,7 +35,7 @@
 <div class="container-fluid">
 	<div class="content">
 		<div class="row" style="display:flex;" align="center">
-			<table class="col-sm-12">
+			<table class="col-sm-12" style="margin-top: 40px;">
 				<tr style="background-color: #C6C6C6;">
 					<td style="width:10%">목표명</td>
 					<td style="width:20%">목표내용</td>

@@ -10,23 +10,16 @@
 <body>
 
 	<c:if test="${result==1 }" >
-		<c:choose>
-			<c:when test="${referrer != ''}">
-				<script>
-					window.location="${referrer}";
-				</script>
-			</c:when>
-			<c:otherwise>
-				<script>
-					window.location="../main.moa";
-				</script>
-			</c:otherwise>
-		</c:choose>
+
+		<script>
+			window.location="/moamore/main.moa";
+		</script>
+				
 	</c:if>
 	<c:if test="${result!=1 }">
 		<script>
 			alert("아이디 비밀번호가 일치하지 않습니다.");
-			history.go(-1);
+			window.location="/moamore/member/loginForm.moa";
 		</script>
 	</c:if>
 

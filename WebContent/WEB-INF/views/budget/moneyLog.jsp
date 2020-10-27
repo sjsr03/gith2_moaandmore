@@ -2,40 +2,35 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<!DOCTYPE html>
-<html>
+
 <head>
 <meta charset="UTF-8">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<!-- Custom fonts for this template-->
-	<link href="/moamore/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-	
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<!-- Custom styles for this template-->
-	<link href="/moamore/css/sb-admin-2.min.css" rel="stylesheet">
-	<!-- 버튼 관련 템플릿 -->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/moonspam/NanumSquare/master/nanumsquare.css">
+
 </head>
 <style>
 
 #mask {
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: 999;
-    background-color: #000000;
-    display: none; }
+    display: none;
+	justify-content: center;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, .7);
+	z-index: 9999;
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	display:none; 
+}
 
 .layerpop {
-    display: none;
-    z-index: 1000;
-    border: 2px solid #ccc;
-    background: #fff;
-    cursor: move; }
+    padding: 20px;
+	background: #fff;
+	border-radius: 5px;
+	box-shadow: 1px 1px 3px rgba(0, 0, 0, .3);
+}
 
 .layerpop_area .title {
     padding: 10px 10px 10px 10px;
@@ -49,8 +44,6 @@
 .layerpop_area .layerpop_close {
     width: 25px;
     height: 25px;
-    display: block;
-    position: absolute;
     top: 10px;
     right: 10px;
    	
@@ -64,17 +57,16 @@
     color: #828282; }
 .btn{
 	display: block;
-    position: absolute;
-    top: 10px;
-    right: 5px; }
+}
     
+
 a:link { color: red; text-decoration: none;}
 a:visited { color: black; text-decoration: none;}
 a:hover { color: blue; text-decoration: underline;}
 
 </style>
 
-<body>
+
 <br />
 
 <%-- 입출력 내역 테이블 시작--%>
@@ -109,7 +101,7 @@ a:hover { color: blue; text-decoration: underline;}
 										<tbody>
 											
 											<c:forEach var="records" items="${recordPage.recordList}" varStatus="status" >		
-											<tr>
+											<tr style="cursor:pointer;" onclick="goDetail('${recordCateNum}','${records.budget_outcome_no}','${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">
 												<td class="forManyType">
 													<c:if test="${records.type eq 'income'}">수입</c:if>
 													<c:if test="${records.type eq 'outcome'}">지출</c:if>
@@ -153,7 +145,7 @@ a:hover { color: blue; text-decoration: underline;}
 													<input type="hidden" id="hiddenType" value="${records.type}" />
 												</td>
 												<td class="content"> 
-													<a href="javascript:void(0)" class="nav-link" style="color:#858796;" onclick="goDetail('${recordCateNum}','${records.budget_outcome_no}','${records.nobudget_no}', '${records.type}', '${recordCate}','${records.content}','${records.reg}','${records.amount}','${records.memo}','${records.img}');">${records.content}</a>
+													${records.content}
 												</td>
 												<td>
 													<fmt:formatNumber type="number" maxFractionDigits="3"  value="${records.amount}"/>원
@@ -225,19 +217,16 @@ a:hover { color: blue; text-decoration: underline;}
 		</div>
 	</div>
 </div>
-<div style="height:1000px;"></div>
 <!-- 팝업뜰 때 배경 -->
-<div id="mask"></div>
+<div id="mask">
 <!-- 팝업창  -->
 <!-- 상세내역을 form 형식으로 보여주기 -->
-<div id="layerbox" class="layerpop" style="width: 400px; height: 500px;">
+<div id="layerbox" class="layerpop">
     <div class="layerpop_area">
 	    <div class="title">상세내역
-		    <button class="btn" id="btn_modify" name="btn_modify">수정</button>
-			<button class="btn" id="btn_delete" name="btn_delete">삭제</button>
+			<a href="javascript:popupClose();" class="layerpop_close" id="layerbox_close" style="color:#858796; justify-content:flex-end;">X</a>
 	    </div>   
-	    <a href="javascript:popupClose();" class="layerpop_close"
-	        id="layerbox_close">X</a> <br>
+	    
 	    <div class="formContent">
 	    	<form action="#" method="post" id="recordDetail" enctype="multipart/form-data">
 	    	<input type="hidden" id="id" value="${sessionScope.memId}"/>
@@ -294,13 +283,14 @@ a:hover { color: blue; text-decoration: underline;}
 						</td>	
 					</tr>
 					<tr>
-						<td>날짜,시간</td>
+						<td>일시</td>
 						<td>금액</td>	
 					</tr>
 					<tr>
+					
 						<td><input type="date" id="date"/><input type="time" id="time"/></td>
-						<td><input type="number" id="amount" value=0 style="width:40px;"/></td>	
-					</tr>
+						<td><input type="text" id="amount" value=0 style="max-width:100px;" onkeyup="numberWithCommas(this.value)"/></td>	
+					</tr> 
 					<tr>
 						<td colspan="2">제목</td>
 					</tr>
@@ -325,13 +315,14 @@ a:hover { color: blue; text-decoration: underline;}
 					</tr>
 			   </table>
 		   </form>
-
+			<button class="btn" id="btn_modify" name="btn_modify" >수정</button>
+			<button class="btn" id="btn_delete" name="btn_delete">삭제</button>
 	    </div>
     </div>
 </div>
+</div>
 
 
-</body>
 <script>
 var type;
 var cateType;
@@ -525,20 +516,14 @@ console.log("***moneyLog 안의 타입 : " + type);
 	    console.log( "window 사이즈:"+ $(window).width() + "*" + $(window).height());        
 	
 	    //마스크의 높이와 너비를 화면 것으로 만들어 전체 화면을 채운다.
-	    $('#mask').css({
-	        'width' : maskWidth,
-	        'height' : maskHeight
-	    });	
+	    $('#mask').css('display', 'flex');	
 	    //애니메이션 효과
 	    //$('#mask').fadeIn(1000);      
-	    $('#mask').fadeTo("slow", 0.5);
+	    //$('#mask').fadeTo("slow", 0.5);
 	}
 	
 	function popupOpen() {
-	    $('.layerpop').css("position", "absolute");
 	    //영역 가운에데 레이어를 뛰우기 위해 위치 계산 
-	    $('.layerpop').css("top",(($(window).height() - $('.layerpop').outerHeight()) / 2) + $(window).scrollTop());
-	    $('.layerpop').css("left",(($(window).width() - $('.layerpop').outerWidth()) / 2) + $(window).scrollLeft());
 	    $('#layerbox').show();
 	}
 	
@@ -619,19 +604,11 @@ console.log("***moneyLog 안의 타입 : " + type);
 	    popupOpen(); //레이어 팝업창 오픈 
 	    wrapWindowByMask(); //화면 마스크 효과 
 	}
-	// 입력 버튼 클릭하면 입력 폼 팝업창으로 띄워주기
-	function popupRecordForm(){
-		var url="recordForm.moa";
-		
-		var popupX = (document.body.offsetWidth/2) - (200/2);
-		//&nbsp;만들 팝업창 좌우 크기의 1/2 만큼 보정값으로 빼주었음
-
-		var popupY= (window.screen.height/2) - (300/2);
-		//&nbsp;만들 팝업창 상하 크기의 1/2 만큼 보정값으로 빼주었음
-
-		window.open(url, '', 'status=no, height=600, width=500, left='+ popupX + ', top='+ popupY);
-
+	
+	// 수정창에서 금액 입력받을 때 콤마 찍어주기
+	function numberWithCommas(x){
+		x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
+		x = x.replace(/,/g,'');          // ,값 공백처리
+		$("#amount").val(x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // 정규식을 이용해서 3자리 마다 , 추가 
 	}
-
 </script>
-</html>

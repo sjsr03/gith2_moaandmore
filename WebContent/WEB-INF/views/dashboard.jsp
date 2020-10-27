@@ -93,7 +93,7 @@
             	
             	<!-- 목표 -->
             	<div class="col-xl-6 col-lg-6">
-	              <div class="card shadow mb-4">
+	              <div class="card shadow mb-4"  style="height:96%">
 	                <!-- Card Header - Dropdown -->
 	                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
 	                  <h6 class="m-0 font-weight-bold text-primary">나의 목표</h6>
@@ -250,8 +250,8 @@
 	                    	var ratio = ${(todayData[0].actual/todayData[0].recommend)*100} ;
 	                    	if (ratio < 80) {
 	                    		var status = "여유";
-	                    		var color = "#229abe";
-	                    		var hoverBackgroundColor = "#2e59d9";
+	                    		var color = "#0071a1";
+	                    		var hoverBackgroundColor = "#2e9cdb";
 	                    	} else if (ratio < 100) {
 	                    		var status = "주의";
 	                    		var color = "#dfc44e";

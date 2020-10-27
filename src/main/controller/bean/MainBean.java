@@ -50,7 +50,7 @@ public class MainBean {
 				return "redirect:dashboard.moa";
 			}
 		} else {
-			return "nonMemberMain";
+			return "main";
 		}
 		
 		

@@ -234,12 +234,6 @@ $(document).ready(function(){
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="#">
-          <i class="fas fa-fw fa-list-ul"></i>
-          <span>랭킹 보기</span></a>
-      </li>
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
         <a class="nav-link" href="/moamore/closing/closingAccountList.moa">
           <i class="fas fa-fw fa-list-ul"></i>
           <span>결산 게시판</span></a>
@@ -251,11 +245,13 @@ $(document).ready(function(){
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
-
+		
+	<div style="width:100%; display:flex; justify-content:center;" >
       <!-- Sidebar Toggler (Sidebar) -->
-      <div class="text-center d-none d-md-inline">
+      <div class="text-center d-none d-md-inline" style="">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>
       </div>
+    </div>
 
     </ul>
     <!-- End of Sidebar -->
@@ -278,13 +274,14 @@ $(document).ready(function(){
           
 			<div class="input-group" style="width:100%">
 				<button class="btn btn-light btn-icon-split" style="border-radius:0.35em 0em 0em 0.35em; border:2px solid #ccc; border-right:1px solid #ccc;" onclick="window.location.href='/moamore/dashboard.moa'"><span class="text">예산</span></button>
-				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;"onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0em 0em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="window.location.href='/moamore/team/groupList.moa'"><span class="text">커뮤니티</span></button>		
+				<button class="btn btn-light btn-icon-split" style="border-radius:0em 0.35em 0.35em 0em; border:2px solid #ccc; border-left:1px solid #ccc;" onclick="window.location.href='/moamore/member/tutorial.moa'"><span class="text">도움말</span></button>	
 			</div>
 			
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-5" id="ranking">
-                <jsp:include page="./realTimeRankingForMobile.jsp"/>
+                <jsp:include page="./realTimeRanking.jsp"/>
             </li>
             
 			<!-- 로그인 상태일 때 -->
@@ -292,7 +289,7 @@ $(document).ready(function(){
 	            <!-- Nav Item - User Information -->
 	            <li class="nav-item dropdown no-arrow">
 	              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.memId}</span>
+	                <span class="mr-2 d-none d-lg-inline text-gray-600 small">${sessionScope.memName}</span>
 	                <img class="img-profile rounded-circle" src="/moamore/save/${sessionScope.memImg}">
 	              </a>
 	              <!-- Dropdown - User Information -->
@@ -301,6 +298,12 @@ $(document).ready(function(){
 	                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  정보수정
 	                </a>
+	                <c:if test="${sessionScope.memId == 'admin@naver.com'}">
+	                	<a class="dropdown-item" href="/moamore/admin/groupWaitAdminList.moa">
+	                  <i class="fas fa-align-left fa-sm fa-fw mr-2 text-gray-400"></i>
+	                  그룹승인
+	                </a>
+	                </c:if>
 	                <div class="dropdown-divider"></div>
 	                <a class="dropdown-item" href="/moamore/member/logout.moa" data-toggle="modal" data-target="#logoutModal">
 	                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

@@ -59,7 +59,9 @@
 			<div id="step1" style="transition:.5s;" class="animated--fade-in">
 				<p>현재 진행중인 예산이 없습니다!</p>
 				<p>예산설정을 완료해주세요.</p>
-				<button id="nextBtn1">새로운 예산 만들기</button>
+				<div style="text-align:center;">
+					<button id="nextBtn1" class="btn btn-primary">새로운 예산 만들기</button>
+				</div>
 			</div>
 			<form action="/moamore/budget/setBudgetPro.moa" method="post" >
 			<div id="step2" style="transition:.5s;display:none;" class="animated--fade-in">
@@ -76,6 +78,12 @@
 						<span class="helpSpan">(예산 기간을 고르세요.)</span>
 						</div>
 					</li>
+					<jsp:useBean id="now" class="java.util.Date" />
+					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
+					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
+					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" id="inputSD" value="${todayDate }"/>일<br/><span style="color:blue">0부터 28까지의 값만 입력할 수 있습니다.</span>
+						<br/>
+					</li>
 					<li>
 						<div>
 						총 예산 : <input type="number" name="totalBudget" id="totalBudget"/>원
@@ -83,18 +91,16 @@
 						<span class="helpSpan">(총예산 금액을 입력하세요.)</span>
 						</div>
 					</li>
-					<jsp:useBean id="now" class="java.util.Date" />
-					<fmt:formatDate value="${now}" pattern="dd" var="todayDate" />
-					<fmt:formatDate value="${now}" pattern="yyyy년 MM월 dd일" var="today" />
-					<li id="startday" style="display:none">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${todayDate }"/>일
-						<br/>
-					</li>
 				</ul>
-				<input type="button" value="세부설정 >" id="nextBtn2" />
+				<div style="text-align:center">
+					<input type="button" value="세부설정 >" id="nextBtn2" class="btn btn-primary"/>
+				</div>
 			</div>
 			<div id="step3" style="transition:.5s;display:none;" class="animated--fade-in">
-				
-				<input type="button" value="추가" id="insertLine"/>
+				<input type="button" value="<이전 단계" id="prevBtn" class="btn btn-secondary" />
+				<div style="text-align:right;">
+					<input type="button" value="추가" id="insertLine" class="btn btn-primary"/>
+				</div>
 				
 				<table id="detailBudget">
 					<tr>
@@ -137,8 +143,8 @@
 			카테고리별 예산 합계와 총 예산이 동일하도록 설정하세요
 			<br/>
 			<input type="hidden" value="1" name="isNewBudget" />
-			<input type="button" value="<이전 단계" id="prevBtn" />
-			<input type="hidden" value="새로운 예산 생성" id="createBudget" />
+			
+			<input type="hidden" value="새로운 예산 생성" id="createBudget" class="btn btn-primary"/>
 			</div>
 		</form>
 		</div>
@@ -192,7 +198,7 @@
 		});
 		
 		$('#insertLine').on('click', function(){ //라인 추가
-			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
+			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
 			
 			//삭제버튼 기능
@@ -224,7 +230,7 @@
 			$('.rate').on('keyup', function(){
 				reCalRate($(this));
 				reSum();
-				calDay($(this));
+				calDay($(this).parent().prev().children('.amount'));
 			});
 			
 			//카테고리명이 change일 때 옵션 속성 변경
@@ -279,7 +285,7 @@
 		$('.rate').on('keyup', function(){
 			reCalRate($(this));
 			reSum();
-			calDay($(this));
+			calDay($(this).parent().prev().children('.amount'));
 		});
 		
 		//비율 자동계산
@@ -325,6 +331,11 @@
 				calDay($(this));
 			});
 			reSum();
+		});
+		$('#inputSD').on('keyup', function(){
+			if($(this).val()>28) {
+				$(this).val(28);
+			}
 		});
 		
 	});

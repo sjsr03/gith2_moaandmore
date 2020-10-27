@@ -156,6 +156,7 @@ public class BudgetServiceImpl implements BudgetService {
 		todayBudgetDAO.insertTodayBudget(today_zero);
 		
 		//////////////여기까지 총예산 세부내용 설정//////////////////
+		totalBudgetDAO.updateCurrentBudget(TBdto.getBudget_no());
 		
 	}
 	
@@ -358,13 +359,15 @@ public class BudgetServiceImpl implements BudgetService {
 			int resultCur = recordTransferDAO.updateRecordTBD(target);
 			
 			
-			
+			System.out.println("resultCur : " + resultCur);
 			
 			
 			//오늘의 예산 재계산
 			int period = totalBudgetDAO.calLeftDaysCurrentTB(id);
+			System.out.println("period : " + period);
 			//남은 일수로 나눈 하루치 값
 			int daily = (int)(Math.round((double)resultCur / period));
+			System.out.println("daily : " + daily);
 			
 			TodayBudgetDTO todayDTO = new TodayBudgetDTO();
 			todayDTO.setBudget_no(target.getBudget_no());

@@ -141,12 +141,21 @@ public class ReportServiceImpl implements ReportService {
 		Date firstStartDay = Timestamp.valueOf(reportDAO.selectFirstStartDay(id));
 		Date today = new Date();
 		
+		//1년치 이상이면 1년치만
+		Date tmp = new Date();
+		tmp.setYear(tmp.getYear()-1);
+		if(firstStartDay.before(tmp)) {
+			firstStartDay = tmp;
+		}
+		
+		
+		
 		List outcomeDataList = new ArrayList();
 		List outcomeDataDateList = new ArrayList();
 		String outcomeDataX = "[ ";
 		String outcomeDataY = "[ ";
 		
-		while(firstStartDay.before(today)) {
+		while(!firstStartDay.after(today)) {
 			String date = sdf.format(firstStartDay);
 			int outcome = selectOutcomeSumByRegAndId(id, sdf.format(firstStartDay));
 			
@@ -184,7 +193,6 @@ public class ReportServiceImpl implements ReportService {
 		
 		while(startDay.before(endDay)) {
 			predictAmountF += lr.predictValue((float)startDay.getTime());
-			
 			
 			startDay.setDate(startDay.getDate()+1);
 		}
@@ -252,7 +260,6 @@ public class ReportServiceImpl implements ReportService {
 				while(testAmount < restAmount) {
 					todayDate += 1;
 					testAmount += lr.predictValue(todayDate);
-					System.out.println(testAmount);
 				}
 				
 				Date predictedDate = new Date((long)todayDate*(1000*60*60*24));

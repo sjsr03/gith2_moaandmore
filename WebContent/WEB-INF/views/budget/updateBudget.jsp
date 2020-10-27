@@ -33,7 +33,6 @@
 		width:100px;
 	}
 </style>
-<body id="page-top">
 <jsp:include page="../sidebar.jsp"/>
 	
         <!-- 본문내용 시작 -->
@@ -52,8 +51,8 @@
 			<div>
 				<p>예산 설정을 변경할 시 기존의 예산은 종료되며, 오늘부터 새로운 예산이 시작됩니다.<br/>설정을 변경하시겠습니까?</p>
 			</div>
-			<button id="PeChOk">확인</button>
-			<button id="PeChCancel">취소</button>
+			<button id="PeChOk" class="btn btn-secondary">확인</button>
+			<button id="PeChCancel" class="btn btn-secondary">취소</button>
 		</div>
 	</div>
 
@@ -103,7 +102,7 @@
 							<option value="30" <c:if test="${currentTBudget.period==30}">selected</c:if>>한달</option>
 						</select>
 					</li>
-					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" value="${firstOfMonth}"/>일
+					<li id="startday" style="display:<c:if test="${currentTBudget.period==30}">block</c:if><c:if test="${currentTBudget.period!=30}">none</c:if>">월 시작일 : 매월 <input type="number" min="1" max="28" name="firstOfMonth" id="inputSD" value="${firstOfMonth}"/>일  <br/><span style="color:blue">0부터 28까지의 값만 입력할 수 있습니다.</span>
 					</li>
 				</ul>
 			</div>
@@ -211,7 +210,7 @@
 		
 		
 		$('#insertLine').on('click', function(){ //라인 추가
-			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" readonly class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
+			$('#detailBudget').append('<tr><td><select name="category_name" class="category_name" required><option class="none" disabled selected>==카테고리 선택==</option><c:forEach items="${categoryList}" var="i"><option value="${i.category_name }">${i.category_name }</option></c:forEach></select></td><td><input type="number" name="amount" min="0" required class="amount"/></td><td><input type="number" class="rate"/>%</td><td><input type="number" readonly class="dayAmount"/>원</td><td><input type="button" class="deleteBtn" value="삭제"/></td></tr>');
 			optControl();
 			
 			//삭제버튼 기능
@@ -243,7 +242,7 @@
 			$('.rate').on('keyup', function(){
 				reCalRate($(this));
 				reSum();
-				calDay($(this));
+				calDay($(this).parent().prev().children('.amount'));
 			});
 			
 			//카테고리명이 change일 때 옵션 속성 변경
@@ -273,7 +272,7 @@
 		$('.rate').on('keyup', function(){
 			reCalRate($(this));
 			reSum();
-			calDay($(this));
+			calDay($(this).parent().prev().children('.amount'));
 		});
 		
 		//삭제버튼 기능
@@ -377,6 +376,12 @@
 				calDay($(this));
 			});
 			reSum();
+		});
+		
+		$('#inputSD').on('keyup', function(){
+			if($(this).val()>28) {
+				$(this).val(28);
+			}
 		});
 		
 	});
