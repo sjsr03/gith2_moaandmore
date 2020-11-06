@@ -25,7 +25,7 @@ public interface RecordService {
 	public void insertRecord(MultipartHttpServletRequest request, BudgetDTO budgetDTO, BudgetDetailDTO budgetDetailDTO, NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBugetDetailDTO, Timestamp date) throws SQLException, IOException;
 
 	// 예산 번호로 해당 예산 기록 전부 가져오기
-	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum, String keyword)throws SQLException;
+	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum, String keyword, String searchDate)throws SQLException;
 
 	// type과 번호로 예산 or 예산외 체크해서 dao 호출 Delete(number, type)
 	public int deleteRecord(int number, String type)throws SQLException;

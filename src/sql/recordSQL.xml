@@ -31,25 +31,35 @@
   		insert into nobudget_detail values(${nobudget_no}, #{content}, #{memo}, #{img})
   	</insert>
  
- 	<!-- 예산번호로 예산 지출 내역 리스트 가져오기 V-->
+ 	<!-- 예산번호+ 날짜로 지출 내역 개수, 리스트 가져와야함(키워드 있어도 똑같이) -->
+ 
+ 	<!-- 예산번호와 날짜로 예산 지출 내역 리스트 가져오기 V-->
   	<select id="selectBudgetRecord" parameterType="hashmap" resultType="allRecordDTO">
-  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
-  	</select>
-  	  	
-  	 <!-- 예산번호로 예산 지출 내역 리스트 가져오기 (키워드가 있는 경우) V -->
-  	<select id="selectBudgetRecordByKeyword" parameterType="hashmap" resultType="allRecordDTO">
-  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND content LIKE '%'||#{keyword}||'%') ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
-  	</select>
-  	 	
-  	<!-- 예산번호로 예산지출 내역 총 개수 가져오기 V -->
-  	<select id="countBudgetRecord" parameterType="int" resultType="int">
-  		select count(*) from budget where budget_no=#{value}
+  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from
+  		(SELECT ROWNUM r, t1.* from(SELECT * FROM 
+  		(SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND TO_CHAR(reg, 'YYYY-MM-DD') = #{searchDate}) 
+  		ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
   	</select>
   	
-  	<!-- 예산번호로 예산지출 내역 총 개수 가져오기 (키워드가 있는 경우) V-->
-  	<select id="countBudgetRecordByKeyword" parameterType="map" resultType="int">
-  		SELECT count(*) FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND content LIKE '%${keyword}%'
+  	<!-- 예산번호와 날짜로 예산지출 내역 총 개수 가져오기 V -->
+  	<select id="countBudgetRecord" parameterType="hashmap" resultType="int">
+  		select count(*) from budget where budget_no=#{budgetNum} AND TO_CHAR(reg, 'YYYY-MM-DD') = #{searchDate}
+  	</select>  	
+  	  	
+  	 <!-- 예산번호와 날짜로 예산 지출 내역 리스트 가져오기 (키워드가 있는 경우) V -->
+  	<select id="selectBudgetRecordByKeyword" parameterType="hashmap" resultType="allRecordDTO">
+  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from
+  		(SELECT ROWNUM r, t1.* from(SELECT * FROM 
+  		(SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND TO_CHAR(reg, 'YYYY-MM-DD') = #{searchDate} AND content LIKE '%'||#{keyword}||'%') ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
   	</select>
+
+  	<!-- 예산번호와 날짜로 예산지출 내역 총 개수 가져오기 (키워드가 있는 경우) V-->
+  	<select id="countBudgetRecordByKeyword" parameterType="hashmap" resultType="int">
+  		SELECT count(*) FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND TO_CHAR(reg, 'YYYY-MM-DD') = #{searchDate} AND content LIKE '%${keyword}%'
+  	</select>
+  	
+  	
+  	
   	
   	<!-- 예산 지출 고유 번호로 해당 예산 내역 삭제 -->
   	<delete id="deleteBudgetRecord" parameterType="int" >
@@ -76,7 +86,7 @@
   	</select>
 
   	
-  	<!-- 예산 외 수입or지출 내역 총 개수 가져오기  날짜로 가져와라 (키워드가 있는 경우) V -->
+  	<!-- 예산 외 수입or지출 내역 총 개수 가져오기  날짜로 가져오기 (키워드가 있는 경우) V -->
   	<select id="countNoBudgetRecordByKeyword" parameterType="searchForRecordDTO" resultType="int">
   		SELECT count(*) FROM NOBUDGET n JOIN NOBUDGET_DETAIL nd ON n.NOBUDGET_NO = nd.NOBUDGET_NO WHERE id=#{id} AND TYPE=#{type} AND TO_CHAR(reg,'YYYY-MM')=#{searchDate} AND content LIKE '%${keyword}%'
   	</select>
@@ -202,10 +212,6 @@
 		 ORDER BY reg DESC)t1)t2 <![CDATA[WHERE r >=#{startRow} AND r <=#{endRow}]]>
   	</select>  	
   	
-  	
-  	
-  	
-  	
   	<!-- 주어진 날짜부터 오늘까지, 카테고리번호에 따른 예산지출값의 합
 	//map에는 category_no과 startDay 존재 -->
   	<select id="selectSumFromDateAndCatNo" parameterType="hashmap" resultType="int" >
@@ -249,10 +255,16 @@
   	
   	
   	
-  	<!-- ****예산 날짜 추가한거 *****  -->
+  	<!-- ****예산 날짜 추가한거 ***** 
+		예산 날짜 없이 하던거 다 날짜 추가로 변경 
+	-->
   	<!-- 예산번호로 예산 지출 내역 리스트 가져오기 V-->
   	<select id="selectBudgetRecordByDate" parameterType="hashmap" resultType="allRecordDTO">
-  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from(SELECT ROWNUM r, t1.* from(SELECT * FROM (SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum}) ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
+  		<![CDATA[SELECT t2.*, 'budget' AS "TYPE" from
+  		(SELECT ROWNUM r, t1.* from(SELECT * FROM 
+  		(SELECT b.BUDGET_OUTCOME_NO, b.BUDGET_NO, b.CATEGORY_NO AS OUTCOME_CATEGORY_NO, b.AMOUNT, b.ID, b.REG, bd.CONTENT, bd.IMG, bd.MEMO FROM BUDGET b 
+  		JOIN BUDGET_DETAIL bd ON b.BUDGET_OUTCOME_NO = bd.BUDGET_OUTCOME_NO WHERE budget_no=#{budgetNum} AND TO_CHAR(reg, 'YYYY-MM-DD') = #{날짜}) 
+  		ORDER BY reg DESC)t1)t2 WHERE r >=#{startRow} AND r <=#{endRow}]]>	 
   	</select>
   	  	
   	 <!-- 예산번호로 예산 지출 내역 리스트 가져오기 (키워드가 있는 경우) V -->

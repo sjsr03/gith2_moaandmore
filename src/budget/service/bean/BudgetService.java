@@ -44,7 +44,7 @@ public interface BudgetService {
 	public TotalBudgetDTO selectOneByNum(int budget_no) throws SQLException;
 	
 	// 예산 번호로 해당 예산 기록 전부 가져오기
-	public List selectAllBudgetByNum(int budgetNum, String pageNum)throws SQLException;
+	//public List selectAllBudgetByNum(int budgetNum, String pageNum)throws SQLException;
 
 	//현재 예산이 종료일이 지났는지 확인
 	public TotalBudgetDTO selectOutClose(String id) throws SQLException;

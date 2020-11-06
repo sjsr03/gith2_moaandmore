@@ -132,7 +132,7 @@ public class RecordServiceImpl implements RecordService{
 	}
 	// 예산번호로 해당 예산 기록 목록 가져오기(키워드가 있으면 키워드에 해당하는 내역 가져오기)
 	@Override
-	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum, String keyword) throws SQLException {
+	public RecordPageDTO selectAllBudgetByNum(int budgetNum, String pageNum, String keyword, String searchDate) throws SQLException {
 		
 		RecordPageDTO recordPage = new RecordPageDTO();
 		if(pageNum == "") {
@@ -151,11 +151,11 @@ public class RecordServiceImpl implements RecordService{
 		if(keyword == null) { // 키워드가 비어있으면 전체로 가져오기
 			System.out.println("키워드 값 X ");
 			// 전체 목록 수 가져오기 
-			count = recordBudgetDAO.countAllBudgetByNum(budgetNum);
-			//System.out.println("서비스에서!!!!!예산 개수 : " + count);
-			//System.out.println("서비스에서!!!!!버젯넘 : " + budgetNum);
+			count = recordBudgetDAO.countAllBudgetByNumDate(budgetNum, searchDate);
+			System.out.println("서비스에서!!!!!예산 개수 : " + count);
+			System.out.println("서비스에서!!!!!버젯넘 : " + budgetNum);
 			if(count > 0) { // 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
-				recordList = recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
+				recordList = recordBudgetDAO.selectAllBudgetByNumDate(budgetNum, startRow, endRow, searchDate);
 			}
 			recordPage.setCount(count);
 			recordPage.setCurrPage(currPage);
@@ -168,11 +168,11 @@ public class RecordServiceImpl implements RecordService{
 			
 			System.out.println("키워드 값 O");
 			// 전체 목록 수 가져오기 
-			count = recordBudgetDAO.countAllBudgetByNum(budgetNum, keyword);
+			count = recordBudgetDAO.countAllBudgetByNumDateKeyword(budgetNum, keyword, searchDate);
 			System.out.println("예산번호와 키워드로 에산 내역 개수 가져온 값 : " + count);
 			//System.out.println("서비스에서!!!!!버젯넘 : " + budgetNum);
 			if(count > 0) { // 예산 내 지출 내역이 하나라도 있으면 전체 리스트 가져오기 
-				recordList = recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow, keyword);
+				recordList = recordBudgetDAO.selectAllBudgetByNumDateKeyword(budgetNum, startRow, endRow, keyword, searchDate);
 			}
 			recordPage.setCount(count);
 			recordPage.setCurrPage(currPage);

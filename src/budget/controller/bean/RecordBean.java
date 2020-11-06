@@ -223,7 +223,7 @@ public class RecordBean {
 			// 카테고리 번호로 카테고리 이름 가져오기(hashmap으로)	
 			HashMap categories = categoryService.selectBudgetCategoryNames(categoryNums);		
 			// 예산번호로 예산 지출 내역 가져오기 
-			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum(), searchForRecordDTO.getKeyword());
+			RecordPageDTO recordPage = recordService.selectAllBudgetByNum(budgetNum, searchForRecordDTO.getPageNum(), searchForRecordDTO.getKeyword(), searchForRecordDTO.getSearchDate());
 			String searchDate = searchForRecordDTO.getSearchDate();
 			model.addAttribute("searchDate", searchDate);
 			
