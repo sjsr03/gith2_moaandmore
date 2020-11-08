@@ -75,6 +75,13 @@
                     <a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                     </a>
+                    <!-- 
+                    "https://kauth.kakao.com/oauth/authorize?client_id=e9c0f6009ba4056806aa70735e1bdcd7&redirect_uri=http://localhost:8080/moamore/member/kakaologin.moa&response_type=code"
+                     -->
+                    <c:out value="${kakao_url}"/>
+                    <a href="${kakao_url}" class="btn btn-facebook btn-user btn-block">
+                      <i class="fab fa-facebook-f fa-fw"></i> Login with Kakao 
+                    </a>
                   </form>
                   <hr>
                   <div class="text-center">

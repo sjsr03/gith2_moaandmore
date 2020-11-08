@@ -75,6 +75,7 @@ public class LoginCheckBean {
             out.println("<script>alert('로그인 후 이용하세요!');</script>");
             out.flush();
 			 */
+			System.out.println("???");
 			return "member/loginForm";
 		} else {	//로그인 상태인데
 //			TotalBudgetDTO TBdto = totalBudgetDAO.selectCurrentOne(id);

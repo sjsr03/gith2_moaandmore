@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.TotalBudgetDTO;
@@ -52,6 +55,9 @@ public class MemberBean {
 	@Autowired
 	private BudgetService budgetService = null;
 	
+	@Autowired
+	private KakaoController kakaoController = null;
+	
 	@RequestMapping("tutorial.moa")
 	public String tutorial() {
 		
@@ -59,13 +65,25 @@ public class MemberBean {
 		return "member/tutorial";
 	}
 
-
+	/*
 	@RequestMapping("loginForm.moa")
 	public String NLCloginForm() {
 
 		
 		return "member/loginForm"; 		
 	}
+	*/
+	@RequestMapping("loginForm.moa")
+	public ModelAndView NLCloginForm(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		String kakaoUrl = kakaoController.getAuthorizationUrl(session);
+		System.out.println("카카오 URL : " + kakaoUrl);
+		mav.addObject("kakao_url", kakaoUrl);
+		return mav;
+	}
+	
+	
 	
 	@RequestMapping("loginPro.moa")
 	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -276,8 +294,40 @@ public class MemberBean {
 		return "member/updateMember";
 	}
 	
-	
-	
+	@RequestMapping(value = "/kakaologin.moa", produces = "application/json", method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView kakaoLogin(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		System.out.println("카카오 로그인.moa 탔다");
+		ModelAndView mav = new ModelAndView();
+		
+		// 결과값을 node에 담아줌
+		JsonNode node = kakaoController.getAccessToken(code);
+		//  getAccessToken에 사용자의 로그인한 모든 정보가 들어있음
+		
+		JsonNode accessToken = node.get("access_token");
+		//사용자의 정보
+		JsonNode userInfo = kakaoController.getKakaoUserInfo(accessToken);
+		String kemail = null;
+		String kname = null;
+		String kimage = null;
+		
+		// 유저의 정보를 카카오에서 가져오기 get properties
+		JsonNode properties = userInfo.path("properties");
+		JsonNode kakao_account = userInfo.path("kakao_account");
+		kemail = kakao_account.path("email").asText();
+		kname = properties.path("nickname").asText();
+		kimage = properties.path("profile_image").asText();
+
+		session.setAttribute("kemail", kemail);
+		session.setAttribute("kname", kname);
+		session.setAttribute("kimage", kimage);
+		//mav.setViewName("/member/loginPro");
+		System.out.println("값이 먼ㄴ데~~ : " + mav.getViewName());
+		return mav;
+		//return "";
+		// 여기서 modelandview로 리턴을 해주니까..에러가 난닷..ㅜ...
+		// 여기서 이메일로 가입된건지 아닌지 체크 후에 처리해줘야함!
+		
+	}
 	
 	
 	
