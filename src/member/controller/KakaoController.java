@@ -31,15 +31,15 @@ public class KakaoController {
     
     
     public static String getAuthorizationUrl(HttpSession session) {
-    System.out.println("getAuthorizationUrl 탐");	
+    //System.out.println("getAuthorizationUrl");	
       String kakaoUrl = "https://kauth.kakao.com/oauth/authorize?"
-          + "client_id=" + K_CLIENT_ID + "&redirect_uri="
+          + "client_id=" + K_CLIENT_ID +"&scope=profile,account_email&" + "&redirect_uri="
           + K_REDIRECT_URI + "&response_type=code";
       return kakaoUrl;
     }
 
     public static JsonNode getAccessToken(String autorize_code) {
-    System.out.println("getAccessToken탔다");
+    //System.out.println("getAccessToken");
       final String RequestUrl = "https://kauth.kakao.com/oauth/token";
       final List<NameValuePair> postParams = new ArrayList<NameValuePair>();
       postParams.add(new BasicNameValuePair("grant_type", "authorization_code"));
@@ -81,7 +81,7 @@ public class KakaoController {
     }
 
     public static JsonNode getKakaoUserInfo(JsonNode accessToken) {
-    	System.out.println("getKakaoUserInfo탐");
+      //System.out.println("getKakaoUserInfo");
       final String RequestUrl = "https://kapi.kakao.com/v2/user/me";
       //String CLIENT_ID = K_CLIENT_ID; // REST API KEY
       //String REDIRECT_URI = K_REDIRECT_URI; // 리다이렉트 URI
@@ -116,7 +116,7 @@ public class KakaoController {
 
         // clear resources
       }
-      System.out.println("returnNode : " +returnNode);
+      //System.out.println("returnNode : " +returnNode);
       return returnNode;
     }
 

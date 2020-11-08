@@ -78,7 +78,7 @@ public class MemberBean {
 		ModelAndView mav = new ModelAndView();
 		
 		String kakaoUrl = kakaoController.getAuthorizationUrl(session);
-		System.out.println("카카오 URL : " + kakaoUrl);
+		//System.out.println("카카오 URL : " + kakaoUrl);
 		mav.addObject("kakao_url", kakaoUrl);
 		return mav;
 	}
@@ -295,8 +295,8 @@ public class MemberBean {
 	}
 	
 	@RequestMapping(value = "/kakaologin.moa", produces = "application/json", method = {RequestMethod.GET, RequestMethod.POST})
-	public ModelAndView kakaoLogin(@RequestParam("code") String code, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-		System.out.println("카카오 로그인.moa 탔다");
+	public String NLCkakaoLogin(@RequestParam("code") String code, Model model, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		//System.out.println("카카오 로그인");
 		ModelAndView mav = new ModelAndView();
 		
 		// 결과값을 node에 담아줌
@@ -314,18 +314,36 @@ public class MemberBean {
 		JsonNode properties = userInfo.path("properties");
 		JsonNode kakao_account = userInfo.path("kakao_account");
 		kemail = kakao_account.path("email").asText();
+
 		kname = properties.path("nickname").asText();
 		kimage = properties.path("profile_image").asText();
-
+		
 		session.setAttribute("kemail", kemail);
 		session.setAttribute("kname", kname);
 		session.setAttribute("kimage", kimage);
-		//mav.setViewName("/member/loginPro");
-		System.out.println("값이 먼ㄴ데~~ : " + mav.getViewName());
-		return mav;
-		//return "";
-		// 여기서 modelandview로 리턴을 해주니까..에러가 난닷..ㅜ...
-		// 여기서 이메일로 가입된건지 아닌지 체크 후에 처리해줘야함!
+
+		MemberDTO memberDTO = new MemberDTO();
+		
+		memberDTO.setId(kemail);
+		memberDTO.setNickname(kname);
+
+		
+		session.setAttribute("memId", memberDTO.getId());	//세션 만들고
+		session.setAttribute("memName", memberDTO.getNickname());
+		session.setAttribute("memImg", memberDTO.getProfile_img());
+		
+		model.addAttribute("result",1);
+	
+		//현재 진행중인 예산이 있다면
+		if(budgetService.selectCurrentOne(memberDTO.getId())!=null) {
+			//예산 만료되었는지 확인
+			budgetService.updateNewTB(memberDTO.getId());
+			//남은돈 계산
+			budgetService.calLeftMoney(memberDTO.getId());
+			//오늘의 예산 계산하기
+			budgetService.calTodayBudget(memberDTO.getId());	
+		}
+		return "member/loginPro";
 		
 	}
 	

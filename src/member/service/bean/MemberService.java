@@ -1,6 +1,7 @@
 package member.service.bean;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -31,5 +32,8 @@ public interface MemberService {
 	public int userIdCheck(String user_id) throws SQLException;
 	//닉네임 중복검사
 	public int nicknameCheck(String nickname) throws SQLException;
+	
+	// 카카오로 로그인했을 때 아이디 유무 체크  후  비밀번호 반환
+	public String socialIdCheck(MemberDTO dto) throws SQLException;
 
 }

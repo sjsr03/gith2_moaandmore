@@ -598,8 +598,6 @@ console.log("***moneyLog 안의 타입 : " + type);
 			//$(".forManyType").css("display", "none"); 
 		}// 끝
 
-		
-		
 	    /*팝업 오픈전 별도의 작업이 있을경우 구현*/ 
 	    popupOpen(); //레이어 팝업창 오픈 
 	    wrapWindowByMask(); //화면 마스크 효과 

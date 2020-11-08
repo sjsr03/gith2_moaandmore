@@ -187,4 +187,25 @@ public class MemberServiceImpl implements MemberService {
 		
 		return checkNick;
 	}
+
+
+	// 카카오로 로그인했을 때 아이디 유무 체크  비밀번호 반환
+	@Override
+	public String socialIdCheck(MemberDTO dto) throws SQLException {
+		
+		String pw ="";
+		int checkId = memberDAO.socialIdCheck(dto.getId());
+		if(checkId == 0) { // 아이디가 없으면 회원가입
+			dto.setProfile_img("defaultImg.gif");
+			dto.setPw("0000");
+			memberDAO.insertMember(dto);
+			categoryDAO.outcomeInsertCategory(dto.getId());
+			categoryDAO.incomeInsertCategory(dto.getId());
+			pw ="0000";
+		}else if(checkId ==1) { // 아이디가 있으면 비밀번호 가져와서 로그인
+			pw = memberDAO.getPwById(dto.getId());
+			
+		}
+		return pw;
+	}
 }

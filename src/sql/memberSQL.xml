@@ -40,5 +40,10 @@
  		select count(*) from member where nickname=#{nickname}
  	</select>
 	
-	
+	<select id="socialIdCheckk" parameterType="string" resultType="int">
+		select count(*) from member where id=#{value}
+	</select>
+	<select id="getPwById" parameterType="string" resultType="string" >
+		select pw from member where id =#{value}
+	</select>
  </mapper>
