@@ -303,6 +303,10 @@ $(document).ready(function(){
 	                  <i class="fas fa-align-left fa-sm fa-fw mr-2 text-gray-400"></i>
 	                  그룹승인
 	                </a>
+	                	<a class="dropdown-item" href="/moamore/admin/memberList.moa">
+	                  <i class="fas fa-align-left fa-sm fa-fw mr-2 text-gray-400"></i>
+	                  회원목록
+	                </a>
 	                </c:if>
 	                <div class="dropdown-divider"></div>
 	                <a class="dropdown-item" href="/moamore/member/logout.moa" data-toggle="modal" data-target="#logoutModal">

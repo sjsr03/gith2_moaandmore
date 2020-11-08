@@ -77,7 +77,7 @@
                     </a>
     
                     <a href="${kakao_url}" style="background-color:#F7E600; color:black;" class="btn btn-user btn-block">
-                    	Login with KaKao
+                    	Login with Kakao
                     </a>
                   </form>
                   <hr>

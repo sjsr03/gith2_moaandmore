@@ -29,7 +29,7 @@
 			<h1 class="h3 mb-0 text-gray-80"> 회원 목록 </h1>
 		</div>
 		
-		<c:if test="${memId eq 'admin'}">
+		<c:if test="${memId eq 'admin@naver.com'}">
 		<!-- 첫번째 줄 -->
 		<div class="row">
 			<div class="col-lg-12">
@@ -54,10 +54,9 @@
 										<table class="table table-bordered">
 											<thead>
 												<tr role="row">
-													<td style="width:30%">사진</td>
-													<td style="width:20%">아이디</td>
-													<td style="width:20%">닉네임</td>
-													<td style="width:20%">가입날짜</td>
+													<td style="width:30%">아이디</td>
+													<td style="width:30%">닉네임</td>
+													<td style="width:30%">가입날짜</td>
 													<td style="width:10%">탈퇴버튼</td>
 												</tr>
 											</thead>
@@ -65,10 +64,6 @@
 											<%-- 회원 수 만큼 for문 반복 --%>
 											<c:forEach var="members" items="${memberList.members}">
 												<tr>
-													<%-- 사진 --%>
-													<td>
-														<img  src="../resources/img/'${members.profile_img}'">	
-													</td>
 													<%-- 아이디 --%>
 													<td>
 														${members.id}
