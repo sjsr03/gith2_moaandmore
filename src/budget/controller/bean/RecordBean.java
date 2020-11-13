@@ -176,7 +176,7 @@ public class RecordBean {
 	// 내역 삭제
 	@RequestMapping("budgetRecordDelete.moa")
 	public void budgetRecordDelete(int number, String type, HttpServletResponse response) throws IOException, SQLException {
-		//System.out.println("타입 : " + number);
+		//System.out.println("number : " + number);
 		int result = 0;
 		ObjectMapper mapper = new ObjectMapper();
 		response.setContentType("application/json;charset=UTF-8");
@@ -298,7 +298,7 @@ public class RecordBean {
 		//System.out.println("타입확인 : " + type);
 		recordPage.setType(type);
 			
-		System.out.println("recordPage 내의 Type 확인 :" + recordPage.getType());		
+		//System.out.println("recordPage 내의 Type 확인 :" + recordPage.getType());		
 		model.addAttribute("keyword", searchForRecordDTO.getKeyword());
 		model.addAttribute("incomeCategories", incomeCategories);
 		model.addAttribute("outcomeCategories", outcomeCategories);

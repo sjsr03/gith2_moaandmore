@@ -83,7 +83,7 @@ a:hover { color: blue; text-decoration: underline;}
 						내역이 존재하지않습니다.
 					</c:if>
 					<%-- 내역이 있을 때  --%>
-					<c:if test="${recordPage.count >= 0}">
+					<c:if test="${recordPage.count > 0}">
 					<div class="table-responsive">
 						<div  class="col-lg-12 dataTables_wrapper dt-bootstrap4">
 							<div class="row">
@@ -331,24 +331,18 @@ var budgetDate;
 var budgetReg;
 var budget_no = 0;
 var uniqueNum =0;
-console.log("***moneyLog 안의 타입 : " + type);
+
 	$(document).ready(function(){	
-		if(type =="income" || type =="outcome" || type =="budget"){
-			
-			//$(".forManyType").css("display", "none"); 
+		if(type =="income" || type =="outcome" || type =="budget"){				
 			$(".forManyType").hide();
-		}else{
-			//$(".forManyType").css("display", "block"); 	
+		}else{		
 			$(".forManyType").show();
 		}		
-
-		console.log("레코드페이지 안의 타입222 :" + type);
 
 		
 		// 타입이 예산이고 date를 변경하면 해당 카테고리 불러오기 
 		$("#date").on('change', function(){
 			
-			console.log("작동안하냐");
 			if($("#recordType").val() == "budget"){
 				getBudgetCategories();
 			}
@@ -359,13 +353,12 @@ console.log("***moneyLog 안의 타입 : " + type);
 		$("button[name='btn_modify']").on('click',function(event){
 			modifyRecord();
 		
-			console.log(event);
+			//console.log(event);
 			var id = $(this).attr("id");
 			
 			var number = id.replace("btn_", "");
 			console.log("id >> " + id);
-				alert(number)
-				console.log("수정버튼이닷");
+
 				var check = false;
 				check = confirm("수정을 하시겠습니까?");
 				if(check){ // check가 true면
@@ -378,25 +371,19 @@ console.log("***moneyLog 안의 타입 : " + type);
 		// 삭제버튼 처리
 		$("button[name='btn_delete']").on('click',function(event){
 			console.log(event);
-			var id = $(this).attr("id");
-			
+			var id = $(this).attr("id");		
 			var number = id.replace("btn_", "");
 			console.log("id >> " + id);
-				alert(number)
-				console.log("삭제버튼이닷");
+	
 				var check = false;
 				check = confirm("정말 삭제하시겠습니까?");
 				if(check){ // check가 true면
-					var num = $("#number").val();
 					var type = $("#recordType").val();
-					deleteRecord(num, type);
+					deleteRecord(uniqueNum, type);
 				}else{// check가 false면 
 					alert("삭제를 취소합니다.");
 				}	
-		});//삭제 
-		
-		
-		
+		});//삭제 	
 		
 	});
 	
@@ -434,6 +421,8 @@ console.log("***moneyLog 안의 타입 : " + type);
 	}
 	// 삭제 Ajax	
 	function deleteRecord(num, type){
+		console.log("deleteRecord function에서의 num : " + num);
+	
 		$.ajax({
 			type:"POST",
 			url:"budgetRecordDelete.moa",
@@ -441,7 +430,7 @@ console.log("***moneyLog 안의 타입 : " + type);
 			data:{"number":num, "type":type},
 			success: function(result){
 				if(result=="OK"){
-					// 내용날리기 안되니까 걍 새로고침 ㅎㅎ;
+					// 실행되면 새로고침
 					location.reload();
 					alert("삭제완료");
 				}else{
@@ -533,7 +522,8 @@ console.log("***moneyLog 안의 타입 : " + type);
 	}
 	//, content, reg, amount, memo, img
 	function goDetail(cateNum, budget_outcome_num, nobuget_num, recordType, recordCategory, content, reg, amount, memo, img) {
-		
+		console.log("godetail에서 budget_outcome_num : " +  budget_outcome_num );
+		console.log("godetail에서 nobuget_num : " +  nobuget_num );
 		
 		// reg를 time과 date로 쪼개서 각각 대입해주기
 		budgetReg = reg;

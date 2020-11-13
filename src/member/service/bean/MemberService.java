@@ -34,6 +34,6 @@ public interface MemberService {
 	public int nicknameCheck(String nickname) throws SQLException;
 	
 	// 카카오로 로그인했을 때 아이디 유무 체크  후  비밀번호 반환
-	public String socialIdCheck(MemberDTO dto) throws SQLException;
+	public Map socialIdCheck(MemberDTO dto) throws SQLException;
 
 }

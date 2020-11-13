@@ -327,10 +327,10 @@ public class MemberBean {
 		memberDTO.setId(kemail);
 		memberDTO.setNickname(kname);
 
-		
+		Map info = memberService.socialIdCheck(memberDTO);
 		session.setAttribute("memId", memberDTO.getId());	//세션 만들고
 		session.setAttribute("memName", memberDTO.getNickname());
-		session.setAttribute("memImg", memberDTO.getProfile_img());
+		session.setAttribute("memImg", info.get("img"));
 		
 		model.addAttribute("result",1);
 	

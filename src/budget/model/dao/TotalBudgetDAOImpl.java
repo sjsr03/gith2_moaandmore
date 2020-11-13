@@ -68,10 +68,10 @@ public class TotalBudgetDAOImpl implements TotalBudgetDAO {
 	public List selectBudgetDate(String id) throws SQLException {
 		List budgetDate = new ArrayList();
 		String start = sqlSession.selectOne("totalBudget.selectBudgetStartDate", id);
-		System.out.println("토탈budget에서 startDate : " +  start);
+		//System.out.println("토탈budget에서 startDate : " +  start);
 		
 		String end = sqlSession.selectOne("totalBudget.selectBudgetEndDate", id);
-		System.out.println("토탈budget에서 endDate : " + end);
+		//System.out.println("토탈budget에서 endDate : " + end);
 		if(start == null) {
 			start = sqlSession.selectOne("totalBudget.selectCurrBudgetStartDate", id);		
 		}
