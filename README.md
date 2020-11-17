@@ -45,6 +45,6 @@
 
 
 ### API 및 기타 출처   
-- 그래프API : chart.js
+- 그래프API : chart.js, FullCalendar API, 카카오 로그인 API
 - 
 
