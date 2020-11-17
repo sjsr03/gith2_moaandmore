@@ -17,16 +17,16 @@ public interface RecordBudgetDAO {
 	public void insertBudgetDetail(BudgetDetailDTO budgetDetailDTO) throws SQLException;
 	
 	// 예산 번호로 지출 기록 가져오기 
-	public List selectAllBudgetByNum(int budgetNum, int startRow, int endRow) throws SQLException; 
+	public List selectAllBudgetByNumDate(int budgetNum, int startRow, int endRow, String searchDate) throws SQLException; 
 	
 	// 예산번호와 키워드로 지출 기록 가져오기
-	public List selectAllBudgetByNum(int budgetNum, int startRow, int endRow, String keyword) throws SQLException; 
+	public List selectAllBudgetByNumDateKeyword(int budgetNum, int startRow, int endRow, String keyword, String searchDate) throws SQLException; 
 	
 	// 예산번호로 지출 기록 총 개수 가져오기
-	public int countAllBudgetByNum(int budgetNum)throws SQLException;
+	public int countAllBudgetByNumDate(int budgetNum, String searchDate)throws SQLException;
 	
 	// 예산번호와 키워드로 지출 기록 총 개수 가져오기
-	public int countAllBudgetByNum(int budgetNum, String keyword)throws SQLException;
+	public int countAllBudgetByNumDateKeyword(int budgetNum, String keyword, String searchDate)throws SQLException;
 		
 	// 예산 번호로 예산 기록 삭제하기(budget 테이블만 삭제 -> detail도 알아서삭제됨)
 	public int deleteBudgetRecord(int budget_outcome_no)throws SQLException;

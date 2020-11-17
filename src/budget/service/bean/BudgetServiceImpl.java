@@ -439,6 +439,7 @@ public class BudgetServiceImpl implements BudgetService {
 	}
 	
 	// 예산번호로 해당 예산 기록 목록 가져오기
+	/*
 	@Override
 	public List selectAllBudgetByNum(int budgetNum, String pageNum) throws SQLException {
 		int startRow = 0;
@@ -447,7 +448,8 @@ public class BudgetServiceImpl implements BudgetService {
 		List budgetRecordList =  recordBudgetDAO.selectAllBudgetByNum(budgetNum, startRow, endRow);
 		return budgetRecordList;
 	}
-
+	*/
+	
 	@Override
 	public TotalBudgetDTO selectOutClose(String id) throws SQLException {
 		return memberDAO.selectOutClose(id);

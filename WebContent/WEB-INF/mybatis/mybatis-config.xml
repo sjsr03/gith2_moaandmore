@@ -37,7 +37,7 @@
  	
  	<mappers>
 		<mapper resource="/sql/goalsSQL.xml"/>	
- 		<mapper resource="/sql/memberSQL.xml"	/>
+ 		<mapper resource="/sql/memberSQL.xml"/>
  		<mapper resource="/sql/adminSQL.xml" />
  		<mapper resource="/sql/categorySQL.xml" />
  		<mapper resource="/sql/leftMoneySQL.xml" />

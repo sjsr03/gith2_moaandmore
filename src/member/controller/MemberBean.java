@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.databind.JsonNode;
 
 import budget.model.dto.BudgetDTO;
 import budget.model.dto.TotalBudgetDTO;
@@ -52,6 +55,9 @@ public class MemberBean {
 	@Autowired
 	private BudgetService budgetService = null;
 	
+	@Autowired
+	private KakaoController kakaoController = null;
+	
 	@RequestMapping("tutorial.moa")
 	public String tutorial() {
 		
@@ -59,13 +65,25 @@ public class MemberBean {
 		return "member/tutorial";
 	}
 
-
+	/*
 	@RequestMapping("loginForm.moa")
 	public String NLCloginForm() {
 
 		
 		return "member/loginForm"; 		
 	}
+	*/
+	@RequestMapping("loginForm.moa")
+	public ModelAndView NLCloginForm(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		
+		String kakaoUrl = kakaoController.getAuthorizationUrl(session);
+		//System.out.println("카카오 URL : " + kakaoUrl);
+		mav.addObject("kakao_url", kakaoUrl);
+		return mav;
+	}
+	
+	
 	
 	@RequestMapping("loginPro.moa")
 	public String NLloginPro(String id, String pw, String auto, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
@@ -276,8 +294,58 @@ public class MemberBean {
 		return "member/updateMember";
 	}
 	
+	@RequestMapping(value = "/kakaologin.moa", produces = "application/json", method = {RequestMethod.GET, RequestMethod.POST})
+	public String NLCkakaoLogin(@RequestParam("code") String code, Model model, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		//System.out.println("카카오 로그인");
+		ModelAndView mav = new ModelAndView();
+		
+		// 결과값을 node에 담아줌
+		JsonNode node = kakaoController.getAccessToken(code);
+		//  getAccessToken에 사용자의 로그인한 모든 정보가 들어있음
+		
+		JsonNode accessToken = node.get("access_token");
+		//사용자의 정보
+		JsonNode userInfo = kakaoController.getKakaoUserInfo(accessToken);
+		String kemail = null;
+		String kname = null;
+		String kimage = null;
+		
+		// 유저의 정보를 카카오에서 가져오기 get properties
+		JsonNode properties = userInfo.path("properties");
+		JsonNode kakao_account = userInfo.path("kakao_account");
+		kemail = kakao_account.path("email").asText();
+
+		kname = properties.path("nickname").asText();
+		kimage = properties.path("profile_image").asText();
+		
+		session.setAttribute("kemail", kemail);
+		session.setAttribute("kname", kname);
+		session.setAttribute("kimage", kimage);
+
+		MemberDTO memberDTO = new MemberDTO();
+		
+		memberDTO.setId(kemail);
+		memberDTO.setNickname(kname);
+
+		Map info = memberService.socialIdCheck(memberDTO);
+		session.setAttribute("memId", memberDTO.getId());	//세션 만들고
+		session.setAttribute("memName", memberDTO.getNickname());
+		session.setAttribute("memImg", info.get("img"));
+		
+		model.addAttribute("result",1);
 	
-	
+		//현재 진행중인 예산이 있다면
+		if(budgetService.selectCurrentOne(memberDTO.getId())!=null) {
+			//예산 만료되었는지 확인
+			budgetService.updateNewTB(memberDTO.getId());
+			//남은돈 계산
+			budgetService.calLeftMoney(memberDTO.getId());
+			//오늘의 예산 계산하기
+			budgetService.calTodayBudget(memberDTO.getId());	
+		}
+		return "member/loginPro";
+		
+	}
 	
 	
 	

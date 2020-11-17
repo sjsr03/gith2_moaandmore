@@ -34,6 +34,11 @@ public interface MemberDAO {
 	//닉네임 중복검사
 	public int checkOverNick(String nickname) throws SQLException;
 	
+	// 카카오 아이디 유무 체크
+	public int socialIdCheck(String id) throws SQLException;
+	
+	// 아이디로 비밀번호 가져오기
+	public String getPwById(String id) throws SQLException;
 	
 	
 }

@@ -79,8 +79,8 @@ var nowYear =2020;
 var nowMonth ="";
 
 	$(document).ready(function(){
-		console.log("시작하자마자 키워드 값 : " + keyword);
-		console.log(nowYear);
+		//console.log("시작하자마자 키워드 값 : " + keyword);
+		//console.log(nowYear);
 		$("#beforeBtn").click(function(){
 			minusYear();
 		});
@@ -88,9 +88,9 @@ var nowMonth ="";
 			plusYear();
 		});
 
-		console.log("searchDate : " + searchDate);
-		console.log("pageNum : " + pageNum);
-		console.log("type : " + type);
+		//console.log("searchDate : " + searchDate);
+		//console.log("pageNum : " + pageNum);
+		//console.log("type : " + type);
 		
 		$("#searchDate").on('change', function(){			
 			searchDate = $("#searchDate").val();	
@@ -113,11 +113,11 @@ var nowMonth ="";
 			pageNum ="";
 			recordCheck();
 			$("#searchKeyword").val('');
-			console.log("---");
-			console.log("체크하고 타입 체크 : " + type);
-			console.log("체크하고 페이지 넘 체크 : " + pageNum);
-			console.log("체크하고 데이트 체크 : " + searchDate);
-			console.log("---");
+			
+			//console.log("체크하고 타입 체크 : " + type);
+			//console.log("체크하고 페이지 넘 체크 : " + pageNum);
+			//console.log("체크하고 데이트 체크 : " + searchDate);
+			
 			searchDate ="";
 			type ="";
 			keyword="";
@@ -140,20 +140,20 @@ function selectRecordByTypeDateKeyword(){
 	if(type == "budget" && searchDate != null){ // budget일경우
 		$("#budget").prop("checked", true);
 		recordCheck();
-		console.log("ㅎㅎㅎ");
+		
 	}else if(type == "income" && searchDate != null){
 		$("#income").prop("checked", true);
 		$("#month").val(searchDate);
-		console.log("수우입");
+		//console.log("수우입");
 	}else if(type == "outcome" && searchDate != null){
 		$("#outcome").prop("checked", true);
 		$("#month").val(searchDate);
-		console.log("지추울");
+		//console.log("지추울");
 	}else if(type == "" && searchDate == ""){
-		console.log("다 비어있다");
+		//console.log("다 비어있다");
 	}else{ //여러개 인 경우
 		//체크 해주고 recordCheck 호출
-		console.log("타입 :   " + type);
+		//console.log("타입 :   " + type);
 		if(type == "budgetincome"){
 			$("#budget").prop("checked", true);
 			$("#income").prop("checked", true);
@@ -185,7 +185,7 @@ function selectRecordByTypeDateKeyword(){
 			chkArr.push($(this).val());		
 			chkStr += $(this).val();
 		});
-		console.log("recordCheck 타입 체크 : " + chkStr);
+		//console.log("recordCheck 타입 체크 : " + chkStr);
 		$("#type").val(chkStr);
 		type=chkStr;
 		if(chkArr.length > 1 ){ // 두개 이상 체크 한 경우 
@@ -193,12 +193,12 @@ function selectRecordByTypeDateKeyword(){
 			$("#afterBtn").css("display", "none");
 			$("#searchDate").css("display", "none");
 			$("#month").css("display", "none");	
-			console.log("recordCheckd에서 타입;;; : " + type);
+			//console.log("recordCheckd에서 타입;;; : " + type);
 			manycheck(pageNum, type, keyword);
 		
 		}else if(chkArr.length == 1){// 하나만 했을 때 
 			if(chkArr.indexOf("budget") >= 0){ // 값에 budget이 들어가있으면 
-				console.log("체크박스에 budget체크");
+				//console.log("체크박스에 budget체크");
 				$("#searchDate").css("display", "block");
 				$("#month").css("display", "none");
 				$("#beforeBtn").css("display", "none");
@@ -211,7 +211,7 @@ function selectRecordByTypeDateKeyword(){
 					// 현재 날짜 구하기
 					var date = new Date();
 					searchDate = moment(date).format('YYYY-MM-DD');
-					console.log("지금 날짜 나와라 :::" + searchDate);
+					//console.log("지금 날짜 나와라 :::" + searchDate);
 					$("#searchDate").val(searchDate);
 					selectBudget(searchDate, pageNum, type, keyword); 
 				}	
@@ -223,7 +223,7 @@ function selectRecordByTypeDateKeyword(){
 				makeMonth();
 				checkedMonth();
 
-				console.log("타아아아아입  : " + type );
+				//console.log("타아아아아입  : " + type );
 				$("#searchDate").css("display", "none");
 				$("#month").css("display", "block");
 
@@ -231,7 +231,7 @@ function selectRecordByTypeDateKeyword(){
 				
 			}
 		}else if(chkArr.length == 0 && type=="" & pageNum=="" && searchDate==""){  
-			console.log("여기니?????????????????????///");
+			
 			// 체크박스에 체크가 없으면 무조건 예산내역 뜨게 처리!
 			
 			// 현재 날짜 구하기

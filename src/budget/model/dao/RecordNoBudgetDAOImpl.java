@@ -42,12 +42,9 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 	@Override
 	public int CountAllNoBudgetById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
 		int count = 0;
-		System.out.println("디에이오에서~~");
-		System.out.println("아이디"+searchForRecordDTO.getId());	
-		System.out.println("날짜"+searchForRecordDTO.getSearchDate());
-		System.out.println("타입"+searchForRecordDTO.getType());
+		
 		count = sqlSession.selectOne("record.countNoBudgetRecord", searchForRecordDTO);
-		System.out.println("count ::: " + count);
+		//System.out.println("count : " + count);
 		
 		return count;
 	}
@@ -66,16 +63,16 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 	// 아이디, 타입, 예산외 기록 총 개수 가져오기
 	@Override
 	public int CountNoBudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
-		System.out.println("dao22222222222");
+		
 		int count = sqlSession.selectOne("record.countNoBudgetRecordById", searchForRecordDTO);
-		System.out.println("예산외!!!!!!!!!개수 : " + count);
+		//System.out.println("예산외!!!!!!!!!개수 : " + count);
 		return count;
 	}
 
 	// 아이디로 예산외 총 기록 가져오기(수입+지출 같이 가져옴) 
 	@Override
 	public List selectNobudgetRecordById(SearchForRecordDTO searchForRecordDTO) throws SQLException {
-		System.out.println("dao3333333333333");
+		
 		List recordList = sqlSession.selectList("record.selectNobudgetRecordAllType", searchForRecordDTO);
 		return recordList;
 	}
@@ -97,12 +94,11 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 
 	@Override
 	public List selectAllRecord(SearchForRecordDTO searchForRecordDTO) throws SQLException {
-		System.out.println("dao44444");
-		System.out.println("startRow!!!!!!! : " + searchForRecordDTO.getStartRow());
-		System.out.println("enRow!!!!!!! : " + searchForRecordDTO.getEndRow());
+		//System.out.println("startRow!!!!!!! : " + searchForRecordDTO.getStartRow());
+		//System.out.println("enRow!!!!!!! : " + searchForRecordDTO.getEndRow());
 		
 		List recordList = sqlSession.selectList("record.selectRecords", searchForRecordDTO);
-		System.out.println("dao44에서 사이즈 : " + recordList.size());
+		//System.out.println("dao에서 사이즈 체크함 !! : " + recordList.size());
 		return recordList;
 	}
 	// 기록 삭제 
@@ -115,8 +111,8 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 	@Override
 	public void modifyNoBudgetRecord(NoBudgetDTO noBudgetDTO, NoBudgetDetailDTO noBudgetDetailDTO) throws SQLException {
 		int result = 0;
-		System.out.println(noBudgetDTO.toString());
-		System.out.println(noBudgetDetailDTO.toString());
+		//System.out.println(noBudgetDTO.toString());
+		//System.out.println(noBudgetDetailDTO.toString());
 		
 		sqlSession.selectOne("record.modifyNoBudgetRecord", noBudgetDTO);
 		sqlSession.selectOne("record.modifyNoBudgetDetailRecord", noBudgetDetailDTO);
@@ -125,12 +121,9 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 	// 수입, 지출, 수입+지출 다  가져올 수 있음
 	@Override
 	public int CountNoBudgetRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException {
-		System.out.println("키워드 : "+ searchForRecordDTO.getKeyword());
-		System.out.println("타입 : "+ searchForRecordDTO.getType());
-		System.out.println("아이디 : "+ searchForRecordDTO.getId());
-		
+	
 		int count = sqlSession.selectOne("record.countNoBudgetRecordByIdKeyword", searchForRecordDTO);
-		System.out.println("DAO에서 예산 외 내역 개수 체크 : " + count);
+		//System.out.println("DAO에서 예산 외 내역 개수 체크 : " + count);
 		return count;
 	}
 	// 아이디, 타입으로 예산외 총 기록 가져오기(키워드 O)
@@ -140,12 +133,11 @@ public class RecordNoBudgetDAOImpl implements RecordNoBudgetDAO{
 		List recordList = sqlSession.selectList("record.selectNobudgetRecordAllTypeByKeyword", searchForRecordDTO);
 		return recordList;
 	}
-	
+
 	// 아이디, 타입으로 예산+예산외 총 기록 가져오기 (키워드 O)
 	// 수입+지출 내역을 제외한 나머지는 다 가져올 수 있음
 	public List selectAllRecordByIdKeyword(SearchForRecordDTO searchForRecordDTO) throws SQLException{
 		List recordList = sqlSession.selectList("record.selectRecordsByIdKeyword", searchForRecordDTO);
 		return recordList;
 	}
-
 }

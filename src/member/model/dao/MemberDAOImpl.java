@@ -105,6 +105,20 @@ public class MemberDAOImpl implements MemberDAO {
 		
 		return checkNick;
 	}
+
+	// 카카오 아이디 유무 체크
+	@Override
+	public int socialIdCheck(String id) throws SQLException {
+		int checkId = sqlSession.selectOne("member.socialIdCheckk", id);
+		return checkId;
+	}
+
+	// 아이디로 비밀번호 가져오기
+	@Override
+	public String getPwById(String id) throws SQLException {
+		String pw = sqlSession.selectOne("member.getPwById", id);
+		return pw;
+	}
 	
 	
 	

@@ -75,6 +75,10 @@
                     <a href="index.html" class="btn btn-facebook btn-user btn-block">
                       <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
                     </a>
+    
+                    <a href="${kakao_url}" style="background-color:#F7E600; color:black;" class="btn btn-user btn-block">
+                    	Login with Kakao
+                    </a>
                   </form>
                   <hr>
                   <div class="text-center">
